@@ -18,7 +18,7 @@ import { TOKEN_KEY } from "../../services";
 L10n.load(data);
 
 class Trainings extends Component {
-  typesDocument = new DataManager({
+  trainings = new DataManager({
     adaptor: new WebApiAdaptor(),
     url: `${config.URL_API}/${TRAININGS}`,
     headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }]
@@ -30,7 +30,7 @@ class Trainings extends Component {
     super(props);
 
     this.state = {
-      typesDocument: null
+      trainings: null
     };
 
     this.toolbarOptions = ["Add", "Edit", "Delete", "Update", "Cancel"];
@@ -101,7 +101,7 @@ class Trainings extends Component {
             <div className="card-body"></div>
             <Row>
               <GridComponent
-                dataSource={this.typesDocument}
+                dataSource={this.trainings}
                 locale="es-US"
                 allowPaging={true}
                 pageSettings={this.pageSettings}
@@ -128,6 +128,7 @@ class Trainings extends Component {
                     width="40"
                     isPrimaryKey={true}
                     isIdentity={true}
+                    visible={false}
                   />
                   <ColumnDirective
                     field="name"

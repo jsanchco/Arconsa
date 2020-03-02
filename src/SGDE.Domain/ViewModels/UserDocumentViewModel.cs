@@ -2,6 +2,7 @@
 {
     public class UserDocumentViewModel : BaseEntityViewModel
     {
+        public string fileName { get; set; }
         public string description { get; set; }
         public string observations { get; set; }
         public byte[] file { get; set; }

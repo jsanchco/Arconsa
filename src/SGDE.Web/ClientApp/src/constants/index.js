@@ -5,6 +5,7 @@ export const CLIENTS = "api/Clients";
 export const WORKS = "api/Works";
 export const TYPES_DOCUMENT = "api/TypesDocument";
 export const TRAININGS = "api/Trainings";
+export const DOCUMENTS = "api/UserDocuments";
 export const UPLOADBOX_SAVE = "api/UploadBox";
 export const AUTHENTICATE = "api/Users/authenticate";
 

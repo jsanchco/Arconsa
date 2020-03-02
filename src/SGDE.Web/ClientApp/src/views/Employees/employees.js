@@ -188,6 +188,7 @@ class Employees extends Component {
                     width="40"
                     isPrimaryKey={true}
                     isIdentity={true}
+                    visible={false}
                   />
                   <ColumnDirective
                     headerText="Foto"

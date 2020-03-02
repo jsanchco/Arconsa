@@ -2,6 +2,7 @@
 {
     public class UserDocument : BaseEntity
     {
+        public string FileName { get; set; }
         public string Description { get; set; }
         public string Observations { get; set; }
         public byte[] File { get; set; }

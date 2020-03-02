@@ -8,6 +8,7 @@ import {
 } from "@syncfusion/ej2-react-navigations";
 import BasicData from "./basic-data";
 import Trainings from "./trainings";
+import Documents from "./documents";
 
 class DetailEmployee extends Component {
   constructor(props) {
@@ -16,11 +17,12 @@ class DetailEmployee extends Component {
     this.headerText = [
       { text: "Datos Básicos" },
       { text: "Cursos" },
-      { text: "WhatsApp" }
+      { text: "Documentos" }
     ];
 
     this.contentTemplateBasicDate = this.contentTemplateBasicDate.bind(this);
     this.contentTemplateTrainings = this.contentTemplateTrainings.bind(this);
+    this.contentTemplateDocuments = this.contentTemplateDocuments.bind(this);
   }
 
   contentTemplateBasicDate() {
@@ -36,6 +38,16 @@ class DetailEmployee extends Component {
   contentTemplateTrainings() {
     return (
       <Trainings
+        user={this.props.history.location.state.user}
+        history={this.props.history}
+        showMessage={this.props.showMessage}
+      />
+    );
+  }
+
+  contentTemplateDocuments() {
+    return (
+      <Documents
         user={this.props.history.location.state.user}
         history={this.props.history}
         showMessage={this.props.showMessage}
@@ -68,6 +80,10 @@ class DetailEmployee extends Component {
                   <TabItemDirective
                     header={this.headerText[1]}
                     content={this.contentTemplateTrainings}
+                  />
+                  <TabItemDirective
+                    header={this.headerText[2]}
+                    content={this.contentTemplateDocuments}
                   />
                 </TabItemsDirective>
               </TabComponent>

@@ -141,6 +141,8 @@ namespace SGDE.DataEFCoreSQL.Migrations
                     WorksToRealize = table.Column<string>(nullable: true),
                     NumberPersonsRequested = table.Column<int>(nullable: false),
                     Open = table.Column<bool>(nullable: false),
+                    OpenDate = table.Column<DateTime>(nullable: false),
+                    CloseDate = table.Column<DateTime>(nullable: true),
                     ClientId = table.Column<int>(nullable: false),
                     TypeClientId = table.Column<int>(nullable: true)
                 },
@@ -232,6 +234,37 @@ namespace SGDE.DataEFCoreSQL.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "DailySigning",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    AddedDate = table.Column<DateTime>(nullable: true),
+                    ModifiedDate = table.Column<DateTime>(nullable: true),
+                    IPAddress = table.Column<string>(nullable: true),
+                    StartHour = table.Column<DateTime>(nullable: false),
+                    EndHour = table.Column<DateTime>(nullable: true),
+                    WorkId = table.Column<int>(nullable: false),
+                    UserId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DailySigning", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_DailySigning_User_UserId",
+                        column: x => x.UserId,
+                        principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_DailySigning_Work_WorkId",
+                        column: x => x.WorkId,
+                        principalTable: "Work",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Training",
                 columns: table => new
                 {
@@ -267,6 +300,7 @@ namespace SGDE.DataEFCoreSQL.Migrations
                     AddedDate = table.Column<DateTime>(nullable: true),
                     ModifiedDate = table.Column<DateTime>(nullable: true),
                     IPAddress = table.Column<string>(nullable: true),
+                    FileName = table.Column<string>(nullable: true),
                     Description = table.Column<string>(nullable: true),
                     Observations = table.Column<string>(nullable: true),
                     File = table.Column<byte[]>(nullable: true),
@@ -330,6 +364,16 @@ namespace SGDE.DataEFCoreSQL.Migrations
                 name: "IX_Client_TypeClientId",
                 table: "Client",
                 column: "TypeClientId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DailySigning_UserId",
+                table: "DailySigning",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DailySigning_WorkId",
+                table: "DailySigning",
+                column: "WorkId");
 
             migrationBuilder.CreateIndex(
                 name: "IFK_User_Training",
@@ -399,6 +443,9 @@ namespace SGDE.DataEFCoreSQL.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "DailySigning");
+
             migrationBuilder.DropTable(
                 name: "Training");
 

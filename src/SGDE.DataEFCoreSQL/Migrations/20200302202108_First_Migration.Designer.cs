@@ -10,7 +10,7 @@ using SGDE.DataEFCoreSQL;
 namespace SGDE.DataEFCoreSQL.Migrations
 {
     [DbContext(typeof(EFContextSQL))]
-    [Migration("20200228171830_First_Migration")]
+    [Migration("20200302202108_First_Migration")]
     partial class First_Migration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -64,6 +64,43 @@ namespace SGDE.DataEFCoreSQL.Migrations
                     b.HasIndex("TypeClientId");
 
                     b.ToTable("Client");
+                });
+
+            modelBuilder.Entity("SGDE.Domain.Entities.DailySigning", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime?>("AddedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("EndHour")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("IPAddress")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("StartHour")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("WorkId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.HasIndex("WorkId");
+
+                    b.ToTable("DailySigning");
                 });
 
             modelBuilder.Entity("SGDE.Domain.Entities.Profession", b =>
@@ -364,6 +401,9 @@ namespace SGDE.DataEFCoreSQL.Migrations
                     b.Property<byte[]>("File")
                         .HasColumnType("varbinary(max)");
 
+                    b.Property<string>("FileName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("IPAddress")
                         .HasColumnType("nvarchar(max)");
 
@@ -442,6 +482,9 @@ namespace SGDE.DataEFCoreSQL.Migrations
                     b.Property<int>("ClientId")
                         .HasColumnType("int");
 
+                    b.Property<DateTime?>("CloseDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("EstimatedDuration")
                         .HasColumnType("nvarchar(max)");
 
@@ -460,6 +503,9 @@ namespace SGDE.DataEFCoreSQL.Migrations
 
                     b.Property<bool>("Open")
                         .HasColumnType("bit");
+
+                    b.Property<DateTime>("OpenDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<int?>("TypeClientId")
                         .HasColumnType("int");
@@ -486,6 +532,21 @@ namespace SGDE.DataEFCoreSQL.Migrations
                     b.HasOne("SGDE.Domain.Entities.TypeClient", "TypeClient")
                         .WithMany()
                         .HasForeignKey("TypeClientId");
+                });
+
+            modelBuilder.Entity("SGDE.Domain.Entities.DailySigning", b =>
+                {
+                    b.HasOne("SGDE.Domain.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SGDE.Domain.Entities.Work", "Work")
+                        .WithMany()
+                        .HasForeignKey("WorkId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("SGDE.Domain.Entities.Training", b =>

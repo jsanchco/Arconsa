@@ -34,6 +34,7 @@
                 ModifiedDate = null,
                 IPAddress = newUserDocumentViewModel.iPAddress,
 
+                FileName = newUserDocumentViewModel.fileName,
                 Description = newUserDocumentViewModel.description,
                 Observations = newUserDocumentViewModel.observations,
                 File = newUserDocumentViewModel.file,
@@ -57,6 +58,7 @@
             userDocument.ModifiedDate = DateTime.Now;
             userDocument.IPAddress = userDocumentViewModel.iPAddress;
 
+            userDocument.FileName = userDocumentViewModel.fileName;
             userDocument.Description = userDocumentViewModel.description;
             userDocument.Observations = userDocumentViewModel.observations;
             userDocument.File = userDocumentViewModel.file;

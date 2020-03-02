@@ -111,6 +111,7 @@ class Roles extends Component {
                     width="40"
                     isPrimaryKey={true}
                     isIdentity={true}
+                    visible={false}
                   />
                   <ColumnDirective
                     field="name"

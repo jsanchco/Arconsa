@@ -23,6 +23,7 @@
                 modifiedDate = userDocument.ModifiedDate,
                 iPAddress = userDocument.IPAddress,
 
+                fileName = userDocument.FileName,
                 description = userDocument.Description,
                 observations = userDocument.Observations,
                 file = userDocument.File,
@@ -46,6 +47,7 @@
                     modifiedDate = userDocument.ModifiedDate,
                     iPAddress = userDocument.IPAddress,
 
+                    fileName = userDocument.FileName,
                     description = userDocument.Description,
                     observations = userDocument.Observations,
                     file = userDocument.File,
