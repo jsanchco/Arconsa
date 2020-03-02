@@ -1,0 +1,16 @@
+version: '3.4'
+
+services:
+  sgdeapi:
+    image: ${DOCKER_REGISTRY-}sgdeapi
+    build:
+      context: .
+      dockerfile: src/SGDE.API/Dockerfile
+
+  sgdeweb:
+    image: ${DOCKER_REGISTRY-}sgdeweb
+    build:
+      context: .
+      dockerfile: src/SGDE.Web/Dockerfile
+    depends_on: 
+      - sgdeapi

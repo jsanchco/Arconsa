@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" Sdk="Microsoft.Docker.Sdk">
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>5b52812e-f2aa-490c-89e0-e26fb4205992</ProjectGuid>
+    <DockerLaunchBrowser>True</DockerLaunchBrowser>
+    <DockerServiceUrl>{Scheme}://localhost:{ServicePort}/index.html</DockerServiceUrl>
+    <DockerServiceName>sgdeweb</DockerServiceName>
+    <DockerTargetOS>Linux</DockerTargetOS>
+    <ProjectVersion>2.1</ProjectVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="docker-compose.override.yml">
+      <DependentUpon>docker-compose.yml</DependentUpon>
+    </None>
+    <None Include="docker-compose.yml" />
+    <None Include=".dockerignore" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,15 @@
+version: '3.4'
+
+services:
+
+  sgdeapi:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - "8000:80"
+
+  sgdeweb:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - "8001:80"

@@ -1,0 +1,26 @@
+﻿namespace SGDE.API
+{
+    #region Using
+
+    using Microsoft.AspNetCore;
+    using Microsoft.AspNetCore.Hosting;
+    using Microsoft.Extensions.Logging;
+
+    #endregion
+
+    public class Program
+    {
+        public static void Main(string[] args)
+        {
+            CreateWebHostBuilder(args).Build().Run();
+        }
+
+        public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
+            WebHost.CreateDefaultBuilder(args)
+                .UseStartup<Startup>()
+                .ConfigureLogging(logging =>
+                {
+                    logging.ClearProviders();
+                });
+    }
+}
