@@ -40,7 +40,7 @@
                 WorksToRealize = newWorkViewModel.worksToRealize,
                 NumberPersonsRequested = newWorkViewModel.numberPersonsRequested,
                 Open = newWorkViewModel.open,
-                OpenDate = newWorkViewModel.openDate,
+                OpenDate = newWorkViewModel.openDate == null ? DateTime.Now : (DateTime)newWorkViewModel.openDate,
                 CloseDate = newWorkViewModel.closeDate,
                 ClientId = newWorkViewModel.clientId
             };
@@ -67,8 +67,18 @@
             work.WorksToRealize = workViewModel.worksToRealize;
             work.NumberPersonsRequested = workViewModel.numberPersonsRequested;
             work.Open = workViewModel.open;
-            work.OpenDate = workViewModel.openDate;
-            work.CloseDate = workViewModel.closeDate;
+
+            if (workViewModel.open)
+            {
+                work.OpenDate = DateTime.Now;
+                work.CloseDate = null;
+            }
+            else
+            {
+                work.OpenDate = (DateTime)workViewModel.openDate;
+                work.CloseDate = DateTime.Now;
+            }
+
             work.ClientId = workViewModel.clientId;
 
             return _workRepository.Update(work);

@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from "react";
-import { Row, Col } from "reactstrap";
+import { Row } from "reactstrap";
+import ReactTooltip from "react-tooltip";
 import {
   ColumnDirective,
   ColumnsDirective,
@@ -11,6 +12,8 @@ import {
   ForeignKey,
   ContextMenu
 } from "@syncfusion/ej2-react-grids";
+import { getValue } from "@syncfusion/ej2-base";
+import { DatePickerComponent } from "@syncfusion/ej2-react-calendars";
 import { DataManager, WebApiAdaptor } from "@syncfusion/ej2-data";
 import { config, WORKS, CLIENTS } from "../../constants";
 import { L10n } from "@syncfusion/ej2-base";
@@ -73,7 +76,6 @@ class Works extends Component {
     this.rowSelected = this.rowSelected.bind(this);
     this.contextMenuOpen = this.contextMenuOpen.bind(this);
     this.openTemplate = this.openTemplate.bind(this);
-    this.dateTemplate = this.dateTemplate.bind(this);
   }
 
   contextMenuOpen() {
@@ -91,16 +93,21 @@ class Works extends Component {
   }
 
   openTemplate(args) {
+    const title = `Fecha Apertura: ${this.formatDate(
+      args.openDate
+    )} <br /> Fecha Cierre: ${this.formatDate(args.closeDate)}`;
     if (args.open === true) {
       return (
         <div>
-          <span className="dot-green"></span>
+          <span className="dot-green" data-tip={title}></span>
+          <ReactTooltip html={true} />
         </div>
       );
     } else {
       return (
         <div>
-          <span className="dot-red"></span>
+          <span className="dot-red" data-tip={title}></span>
+          <ReactTooltip html={true} />
         </div>
       );
     }
@@ -123,19 +130,14 @@ class Works extends Component {
   }
 
   dateTemplate(args) {
-    const titleOpen = `${this.formatDate(args.openDate)}`;
-    const titleClose = `${this.formatDate(args.closeDate)}`;
     return (
-      <div>
-        <div style={{display: "flex"}}>
-          <div style={{ textAlign: "left", width: "50%" }}>Apertura:</div>
-          <div style={{ textAlign: "left", width: "50%" }}>{titleOpen}</div>
-        </div>
-        <div style={{display: "flex"}}>
-          <div style={{ textAlign: "left", width: "50%" }}>Cierre:</div>
-          <div style={{ textAlign: "left", width: "50%" }}>{titleClose}</div>
-        </div>
-      </div>
+      <DatePickerComponent
+        value={getValue("OrderDate", args)}
+        id="OrderDate"
+        placeholder="Fecha de Apertura de Obra"
+        floatLabelType="Never"
+        format="dd/MM/yyyy"
+      />
     );
   }
 
@@ -146,14 +148,14 @@ class Works extends Component {
       updateWork(workSelected).then(() => {
         this.grid.setCellValue(workSelected.id, "open", true);
         this.grid.setCellValue(workSelected.id, "closeDate", null);
-        this.grid.setCellValue(workSelected.id, "openDate", new Date());
+        this.grid.setCellValue(workSelected.id, "openDate", Date.now());
       });
     }
     if (args.item.id === "closeWork") {
       workSelected.open = false;
       updateWork(workSelected).then(() => {
         this.grid.setCellValue(workSelected.id, "open", false);
-        this.grid.setCellValue(workSelected.id, "closeDate", new Date());
+        this.grid.setCellValue(workSelected.id, "closeDate", Date.now());
       });
     }
   }
@@ -257,12 +259,32 @@ class Works extends Component {
                   />
                   <ColumnDirective
                     field="numberPersonsRequested"
-                    headerText="Personas"
+                    headerText="Nº de Personas Requeridas"
                     width="100"
                     fotmat="N0"
                     textAlign="right"
                     editType="numericedit"
                     edit={this.numericParams}
+                  />
+                  <ColumnDirective
+                    field="openDate"
+                    headerText="Fecha Abierta"
+                    width="100"
+                    type="date"
+                    format="dd/MM/yyyy"
+                    editTemplate={this.dateTemplate}
+                    allowEditing={false}
+                    visible={false}
+                  />
+                  <ColumnDirective
+                    field="closeDate"
+                    headerText="Fecha Cierre"
+                    width="100"
+                    type="date"
+                    format="dd/MM/yyyy"
+                    editTemplate={this.dateTemplate}
+                    allowEditing={false}
+                    visible={false}
                   />
                   <ColumnDirective
                     field="clientId"
@@ -275,14 +297,6 @@ class Works extends Component {
                     dataSource={this.clients}
                   />
                   <ColumnDirective
-                    field="closeDate"
-                    headerText="Fechas"
-                    width="100"
-                    template={this.dateTemplate}
-                    textAlign="Center"
-                    allowEditing={false}
-                  />
-                  <ColumnDirective
                     field="open"
                     headerText="Abierta/Cerrada"
                     width="100"
@@ -291,8 +305,6 @@ class Works extends Component {
                     allowEditing={false}
                     defaultValue={true}
                   />
-                  <ColumnDirective field="openDate" visible={false} />
-                  <ColumnDirective field="closeDate" visible={false} />
                 </ColumnsDirective>
                 <Inject
                   services={[ContextMenu, ForeignKey, Page, Toolbar, Edit]}
