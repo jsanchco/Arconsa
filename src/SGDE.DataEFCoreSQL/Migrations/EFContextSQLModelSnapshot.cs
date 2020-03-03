@@ -414,6 +414,9 @@ namespace SGDE.DataEFCoreSQL.Migrations
                     b.Property<int>("TypeDocumentId")
                         .HasColumnType("int");
 
+                    b.Property<string>("TypeFile")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 

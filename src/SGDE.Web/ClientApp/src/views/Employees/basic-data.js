@@ -1,7 +1,12 @@
 import React, { Component, Fragment } from "react";
 import { Form, Col, FormGroup, Input, Label, Row, Button } from "reactstrap";
 import { updateUser } from "../../services";
-import ModalSelectFile from "../Modals/modal-select-file";
+import ModalSelectImage from "../Modals/modal-select-image";
+import {
+  createSpinner,
+  showSpinner,
+  hideSpinner
+} from "@syncfusion/ej2-popups";
 
 class BasicData extends Component {
   constructor(props) {
@@ -64,7 +69,19 @@ class BasicData extends Component {
   }
 
   handleSubmit() {
-    updateUser(this.getUser());
+    const element = document.getElementById("container");
+
+    createSpinner({
+      target: element
+    });
+    showSpinner(element);
+    updateUser(this.getUser())
+      .then(() => {
+        hideSpinner(element);
+      })
+      .catch(() => {
+        hideSpinner(element);
+      });
   }
 
   handleCancel() {
@@ -93,7 +110,7 @@ class BasicData extends Component {
 
     return (
       <Fragment>
-        <ModalSelectFile
+        <ModalSelectImage
           isOpen={this.state.modal}
           toggle={this.toggleModal}
           updatePhoto={this.updatePhoto}
@@ -107,6 +124,7 @@ class BasicData extends Component {
             marginTop: 20,
             marginBottom: 20
           }}
+          id="container"
         >
           <Form>
             <Row>

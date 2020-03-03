@@ -304,6 +304,7 @@ namespace SGDE.DataEFCoreSQL.Migrations
                     Description = table.Column<string>(nullable: true),
                     Observations = table.Column<string>(nullable: true),
                     File = table.Column<byte[]>(nullable: true),
+                    TypeFile = table.Column<string>(nullable: true),
                     TypeDocumentId = table.Column<int>(nullable: false),
                     UserId = table.Column<int>(nullable: false)
                 },

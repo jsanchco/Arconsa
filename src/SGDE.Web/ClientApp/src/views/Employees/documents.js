@@ -13,7 +13,7 @@ import { DataManager, WebApiAdaptor, Query } from "@syncfusion/ej2-data";
 import { config, DOCUMENTS, TYPES_DOCUMENT } from "../../constants";
 import { L10n } from "@syncfusion/ej2-base";
 import data from "../../locales/locale.json";
-import { TOKEN_KEY } from "../../services";
+import { TOKEN_KEY, updateDocument } from "../../services";
 import ModalSelectFile from "../Modals/modal-select-file";
 
 L10n.load(data);
@@ -38,10 +38,23 @@ class Documents extends Component {
     super(props);
 
     this.state = {
-      modal: false
+      modal: false,
+      rowSelected: null
     };
 
-    this.toolbarOptions = ["Add", "Edit", "Delete", "Update", "Cancel"];
+    this.toolbarOptions = [
+      "Add",
+      "Edit",
+      "Delete",
+      "Update",
+      "Cancel",
+      {
+        text: "Subir Archivo",
+        tooltipText: "Subir Archivo",
+        prefixIcon: "e-custom-icons e-file-upload",
+        id: "UploadFile"
+      }
+    ];
     this.editSettings = {
       showDeleteConfirmDialog: true,
       allowEditing: true,
@@ -52,7 +65,10 @@ class Documents extends Component {
     this.pageSettings = { pageCount: 10, pageSize: 10 };
     this.actionFailure = this.actionFailure.bind(this);
     this.actionComplete = this.actionComplete.bind(this);
+    this.clickHandler = this.clickHandler.bind(this);
+    this.rowSelected = this.rowSelected.bind(this);
     this.toggleModal = this.toggleModal.bind(this);
+    this.updateDocument = this.updateDocument.bind(this);
 
     this.template = this.gridTemplate;
   }
@@ -61,15 +77,24 @@ class Documents extends Component {
     if (args.file !== null && args.file !== "") {
       return (
         <div>
-          <span className="dot-green" onClick={() => {this.toggleModal()}}></span>
+          <span className="dot-green"></span>
         </div>
       );
     } else {
       return (
         <div>
-          <span className="dot-red" onClick={() => {this.toggleModal()}}></span>
+          <span className="dot-red"></span>
         </div>
       );
+    }
+  }
+
+  clickHandler(args) {
+    if (args.item.id === "UploadFile") {
+      const { rowSelected } = this.state;
+      if (rowSelected !== null) {
+        this.toggleModal();
+      }
     }
   }
 
@@ -95,6 +120,7 @@ class Documents extends Component {
         responseText: "Operación realizada con éxito",
         type: "success"
       });
+      this.setState({ rowSelected: null });
     }
     if (args.requestType === "delete") {
       this.props.showMessage({
@@ -102,18 +128,45 @@ class Documents extends Component {
         responseText: "Operación realizada con éxito",
         type: "success"
       });
-    }
+      this.setState({ rowSelected: null });
+    } 
+  }
+
+  rowSelected() {
+    const selectedRecords = this.grid.getSelectedRecords();
+    this.setState({ rowSelected: selectedRecords[0] });
+  }
+
+  updateDocument(args) {
+    const documentSelected = this.state.rowSelected;
+    let remove = args.fileUrl.indexOf("base64,") + 7;
+
+    documentSelected.file = args.fileUrl.substring(remove);
+    documentSelected.fileName = args.fileName;
+    documentSelected.typeFile = args.file.type;
+
+    updateDocument(documentSelected).then(() => {
+      this.grid.setCellValue(
+        this.state.rowSelected.id,
+        "fileName",
+        documentSelected.fileName
+      );
+      
+      this.grid.setCellValue(this.state.rowSelected.id, "file", documentSelected.file);
+      this.grid.setCellValue(this.state.rowSelected.id, "typeFile", documentSelected.typeFile);
+    });
   }
 
   render() {
     return (
       <Fragment>
-          <ModalSelectFile
+        <ModalSelectFile
           isOpen={this.state.modal}
           toggle={this.toggleModal}
-          updatePhoto={this.updatePhoto}
+          updateDocument={this.updateDocument}
           userId={this.props.user.id}
-          type="image"
+          rowSelected={this.state.rowSelected}
+          type="document"
         />
         <div className="animated fadeIn">
           <div className="card" style={{ marginRight: "60px" }}>
@@ -187,9 +240,11 @@ class Documents extends Component {
                   />
                   <ColumnDirective
                     field="userId"
-                    headerText="User"
-                    width="100"
                     defaultValue={this.props.user.id}
+                    visible={false}
+                  />
+                  <ColumnDirective
+                    field="typeFile"
                     visible={false}
                   />
                 </ColumnsDirective>

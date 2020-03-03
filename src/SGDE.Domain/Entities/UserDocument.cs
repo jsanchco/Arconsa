@@ -6,6 +6,7 @@
         public string Description { get; set; }
         public string Observations { get; set; }
         public byte[] File { get; set; }
+        public string TypeFile { get; set; }
 
         public int TypeDocumentId { get; set; }
         public virtual TypeDocument TypeDocument { get; set; }

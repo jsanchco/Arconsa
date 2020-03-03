@@ -3,28 +3,25 @@ import PropTypes from "prop-types";
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
 import "./modal-select.css";
 
-class ModalSelectFile extends Component {
+class ModalSelectImage extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { file: "", fileName: "", fileUrl: "" };
+    this.state = { file: "", imagePreviewUrl: "" };
 
     this._handleOnClick = this._handleOnClick.bind(this);
   }
 
-  _handleFileChange(e) {
+  _handleImageChange(e) {
     e.preventDefault();
 
     let reader = new FileReader();
     let file = e.target.files[0];
-    let filename = file.name;
-    let extension = filename.substring(filename.lastIndexOf('.') + 1, filename.length) || filename;
 
     reader.onloadend = () => {
       this.setState({
         file: file,
-        fileName: `${this.props.rowSelected.typeDocumentName.replace(" ", "").toLowerCase()}_${this.props.rowSelected.userId}.${extension}`,
-        fileUrl: reader.result
+        imagePreviewUrl: reader.result
       });
     };
 
@@ -34,30 +31,41 @@ class ModalSelectFile extends Component {
   _handleOnClick() {
     this.props.toggle();
 
-    this.props.updateDocument(this.state);
+    this.props.updatePhoto(this.state.imagePreviewUrl);
   }
 
   render() {
-    let title = "";
-    if (
-      this.props.rowSelected !== null &&
-      this.props.rowSelected !== undefined
-    ) {
-      title = `Selecciona ${this.props.rowSelected.typeDocumentName}`;
+    let { imagePreviewUrl } = this.state;
+    let $imagePreview = null;
+    if (imagePreviewUrl) {
+      $imagePreview = <img src={imagePreviewUrl} alt="test" />;
+    } else {
+      $imagePreview = (
+        <div className="previewText">
+          Por favor, selecciona una imagen para previsualizarla
+        </div>
+      );
     }
 
     return (
       <Modal isOpen={this.props.isOpen} toggle={this.props.toggle}>
-        <ModalHeader toggle={this.props.toggle}>{title}</ModalHeader>
+        <ModalHeader toggle={this.props.toggle}>Selecciona archivo</ModalHeader>
         <ModalBody>
           <label htmlFor="file-upload" className="custom-file-upload">
-            <i className="fa fa-cloud-upload"></i> Seleccionar archivo
+            <i className="fa fa-cloud-upload"></i> Seleccionar imagen
           </label>
           <input
             id="file-upload"
+            accept="image/*"
             type="file"
-            onChange={e => this._handleFileChange(e)}
+            onChange={e => this._handleImageChange(e)}
           />
+          {/* <input
+            accept="image/*"
+            type="file"
+            onChange={e => this._handleImageChange(e)}
+          /> */}
+          <div className="imgPreview">{$imagePreview}</div>
         </ModalBody>
         <ModalFooter>
           <Button color="primary" onClick={this._handleOnClick}>
@@ -76,13 +84,12 @@ class ModalSelectFile extends Component {
   }
 }
 
-ModalSelectFile.propTypes = {
+ModalSelectImage.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   toggle: PropTypes.func.isRequired,
-  updateDocument: PropTypes.func,
+  updatePhoto: PropTypes.func,
   userId: PropTypes.number.isRequired,
-  type: PropTypes.string.isRequired,
-  rowSelected: PropTypes.object
+  type: PropTypes.string.isRequired
 };
 
-export default ModalSelectFile;
+export default ModalSelectImage;

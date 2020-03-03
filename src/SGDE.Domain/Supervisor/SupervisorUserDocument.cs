@@ -38,6 +38,7 @@
                 Description = newUserDocumentViewModel.description,
                 Observations = newUserDocumentViewModel.observations,
                 File = newUserDocumentViewModel.file,
+                TypeFile = newUserDocumentViewModel.typeFile,
                 TypeDocumentId = newUserDocumentViewModel.typeDocumentId,
                 UserId = newUserDocumentViewModel.userId
             };
@@ -62,6 +63,7 @@
             userDocument.Description = userDocumentViewModel.description;
             userDocument.Observations = userDocumentViewModel.observations;
             userDocument.File = userDocumentViewModel.file;
+            userDocument.TypeFile = userDocumentViewModel.typeFile;
             userDocument.TypeDocumentId = userDocumentViewModel.typeDocumentId;
             userDocument.UserId = userDocumentViewModel.userId;
 

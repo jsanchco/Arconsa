@@ -10,7 +10,7 @@ using SGDE.DataEFCoreSQL;
 namespace SGDE.DataEFCoreSQL.Migrations
 {
     [DbContext(typeof(EFContextSQL))]
-    [Migration("20200303070513_First_Migration")]
+    [Migration("20200303161533_First_Migration")]
     partial class First_Migration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -415,6 +415,9 @@ namespace SGDE.DataEFCoreSQL.Migrations
 
                     b.Property<int>("TypeDocumentId")
                         .HasColumnType("int");
+
+                    b.Property<string>("TypeFile")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
