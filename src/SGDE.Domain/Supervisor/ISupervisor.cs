@@ -111,7 +111,7 @@ namespace SGDE.Domain.Supervisor
 
         #region UserDocument
 
-        List<UserDocumentViewModel> GetAllUserDocument();
+        List<UserDocumentViewModel> GetAllUserDocument(int userId);
         UserDocumentViewModel GetUserDocumentById(int id);
         UserDocumentViewModel AddUserDocument(UserDocumentViewModel newUserDocumentViewModel);
         bool UpdateUserDocument(UserDocumentViewModel userDocumentViewModel);

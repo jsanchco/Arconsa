@@ -9,7 +9,7 @@
 
     public interface IUserDocumentRepository
     {
-        List<UserDocument> GetAll();
+        List<UserDocument> GetAll(int userId);
         UserDocument GetById(int id);
         UserDocument Add(UserDocument newUserDocument);
         bool Update(UserDocument userDocument);

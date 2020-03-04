@@ -29,8 +29,17 @@
             return GetById(id) != null;
         }
 
-        public List<UserDocument> GetAll()
+        public List<UserDocument> GetAll(int userId)
         {
+            if (userId != 0)
+            {
+                return _context.UserDocument
+                    .Include(x => x.TypeDocument)
+                    .Include(x => x.User)
+                    .Where(x => x.UserId == userId)
+                    .ToList();
+            }
+
             return _context.UserDocument
                 .Include(x => x.TypeDocument)
                 .Include(x => x.User)

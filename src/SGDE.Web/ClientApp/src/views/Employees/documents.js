@@ -71,6 +71,8 @@ class Documents extends Component {
     this.updateDocument = this.updateDocument.bind(this);
 
     this.template = this.gridTemplate;
+
+    this.query = new Query().addParams("userId", props.user.id);
   }
 
   gridTemplate(args) {
@@ -91,8 +93,7 @@ class Documents extends Component {
 
   clickHandler(args) {
     if (args.item.id === "UploadFile") {
-      const { rowSelected } = this.state;
-      if (rowSelected !== null) {
+      if (this.state.rowSelected !== null) {
         this.toggleModal();
       }
     }
@@ -134,7 +135,11 @@ class Documents extends Component {
 
   rowSelected() {
     const selectedRecords = this.grid.getSelectedRecords();
-    this.setState({ rowSelected: selectedRecords[0] });
+    if (Array.isArray(selectedRecords) && selectedRecords.length === 1) {
+      this.setState({ rowSelected: selectedRecords[0] });
+    } else {
+      this.setState({ rowSelected: null });
+    }
   }
 
   updateDocument(args) {
@@ -164,7 +169,7 @@ class Documents extends Component {
         <div className="animated fadeIn">
           <div className="card" style={{ marginRight: "60px" }}>
             <div className="card-header">
-              <i className="icon-layers"></i> Cursos
+              <i className="icon-layers"></i> Documentos
             </div>
             <div className="card-body"></div>
             <Row>
@@ -187,7 +192,7 @@ class Documents extends Component {
                 allowGrouping={false}
                 rowSelected={this.rowSelected}
                 ref={g => (this.grid = g)}
-                query={new Query().addParams("userId", this.props.user.id)}
+                query={this.query}
               >
                 <ColumnsDirective>
                   <ColumnDirective type="checkbox" width="50"></ColumnDirective>
@@ -226,6 +231,7 @@ class Documents extends Component {
                     dataSource={this.typesDocument}
                   />
                   <ColumnDirective
+                    field="fileName"
                     headerText="Archivo"
                     width="100"
                     template={this.template}

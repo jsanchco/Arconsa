@@ -46,7 +46,10 @@
         {
             try
             {
-                var data = _supervisor.GetAllUserDocument().ToList();
+                var queryString = Request.Query;
+                var userId = Convert.ToInt32(queryString["userId"]);
+
+                var data = _supervisor.GetAllUserDocument(userId).ToList();
                 return new { Items = data, data.Count };
             }
             catch (Exception ex)

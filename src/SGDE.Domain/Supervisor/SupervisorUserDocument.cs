@@ -14,9 +14,9 @@
 
     public partial class Supervisor
     {
-        public List<UserDocumentViewModel> GetAllUserDocument()
+        public List<UserDocumentViewModel> GetAllUserDocument(int userId)
         {
-            return UserDocumentConverter.ConvertList(_userDocumentRepository.GetAll());
+            return UserDocumentConverter.ConvertList(_userDocumentRepository.GetAll(userId));
         }
 
         public UserDocumentViewModel GetUserDocumentById(int id)

@@ -26,6 +26,14 @@ class Trainings extends Component {
 
   grid = null;
 
+  numericParams = {
+    params: {
+      decimals: 1,
+      format: "N",
+      validateDecimalOnType: true
+    }
+  };
+
   constructor(props) {
     super(props);
 
@@ -46,6 +54,8 @@ class Trainings extends Component {
     this.actionComplete = this.actionComplete.bind(this);
 
     this.template = this.gridTemplate;
+
+    this.query = new Query().addParams("userId", props.user.id);
   }
 
   gridTemplate(args) {
@@ -119,7 +129,7 @@ class Trainings extends Component {
                 allowGrouping={false}
                 rowSelected={this.rowSelected}
                 ref={g => (this.grid = g)}
-                query={new Query().addParams("userId", this.props.user.id)}
+                query={this.query}
               >
                 <ColumnsDirective>
                   <ColumnDirective
@@ -149,7 +159,9 @@ class Trainings extends Component {
                     field="hours"
                     headerText="Horas"
                     width="100"
-                    format="N1"
+                    textAlign="right"
+                    editType="numericedit"
+                    edit={this.numericParams}
                   />
                   <ColumnDirective
                     headerText="Archivo"
