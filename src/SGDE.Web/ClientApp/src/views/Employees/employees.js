@@ -122,6 +122,7 @@ class Employees extends Component {
         responseText: "Operación realizada con éxito",
         type: "success"
       });
+      this.setState({ rowSelected: null });
     }
     if (args.requestType === "delete") {
       this.props.showMessage({
@@ -129,6 +130,7 @@ class Employees extends Component {
         responseText: "Operación realizada con éxito",
         type: "success"
       });
+      this.setState({ rowSelected: null });
     }
   }
 
@@ -181,7 +183,7 @@ class Employees extends Component {
                 rowSelected={this.rowSelected}
                 ref={g => (this.grid = g)}
               >
-                <ColumnsDirective>
+                <ColumnsDirective>                  
                   <ColumnDirective
                     field="id"
                     headerText="Id"

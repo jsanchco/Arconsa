@@ -129,7 +129,7 @@ class Documents extends Component {
         type: "success"
       });
       this.setState({ rowSelected: null });
-    } 
+    }
   }
 
   rowSelected() {
@@ -146,14 +146,7 @@ class Documents extends Component {
     documentSelected.typeFile = args.file.type;
 
     updateDocument(documentSelected).then(() => {
-      this.grid.setCellValue(
-        this.state.rowSelected.id,
-        "fileName",
-        documentSelected.fileName
-      );
-      
-      this.grid.setCellValue(this.state.rowSelected.id, "file", documentSelected.file);
-      this.grid.setCellValue(this.state.rowSelected.id, "typeFile", documentSelected.typeFile);
+      this.grid.setRowData(this.state.rowSelected.id, documentSelected);
     });
   }
 
@@ -197,6 +190,7 @@ class Documents extends Component {
                 query={new Query().addParams("userId", this.props.user.id)}
               >
                 <ColumnsDirective>
+                  <ColumnDirective type="checkbox" width="50"></ColumnDirective>
                   <ColumnDirective
                     field="id"
                     headerText="Id"
@@ -243,10 +237,7 @@ class Documents extends Component {
                     defaultValue={this.props.user.id}
                     visible={false}
                   />
-                  <ColumnDirective
-                    field="typeFile"
-                    visible={false}
-                  />
+                  <ColumnDirective field="typeFile" visible={false} />
                 </ColumnsDirective>
                 <Inject services={[Page, Toolbar, Edit]} />
               </GridComponent>
