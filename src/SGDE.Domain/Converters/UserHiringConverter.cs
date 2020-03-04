@@ -27,8 +27,8 @@
                 endDate = userHiring.EndDate,
                 userId = userHiring.UserId,
                 userName = $"{userHiring.User.Name} {userHiring.User.Surname}",
-                builderId = userHiring.BuilderId,
-                builderName = userHiring.Builder.Name
+                workId = userHiring.WorkId,
+                workName = userHiring.Work.Name
             };
 
             return userHiringViewModel;
@@ -49,8 +49,8 @@
                     endDate = userHiring.EndDate,
                     userId = userHiring.UserId,
                     userName = $"{userHiring.User.Name} {userHiring.User.Surname}",
-                    builderId = userHiring.BuilderId,
-                    builderName = userHiring.Builder.Name
+                    workId = userHiring.WorkId,
+                    workName = userHiring.Work.Name
                 };
                 return model;
             })

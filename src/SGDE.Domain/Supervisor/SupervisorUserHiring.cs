@@ -14,7 +14,7 @@
 
     public partial class Supervisor
     {
-        public List<UserHiringViewModel> GetAllUserHiring()
+        public List<UserHiringViewModel> GetAllUserHiring(int userId = 0, int workId = 0)
         {
             return UserHiringConverter.ConvertList(_userHiringRepository.GetAll());
         }
@@ -36,7 +36,7 @@
 
                 StartDate = newUserHiringViewModel.startDate,
                 EndDate = newUserHiringViewModel.endDate,
-                BuilderId = newUserHiringViewModel.builderId,
+                WorkId = newUserHiringViewModel.workId,
                 UserId = newUserHiringViewModel.userId
             };
 
@@ -58,7 +58,7 @@
 
             userHiring.StartDate = userHiringViewModel.startDate;
             userHiring.EndDate = userHiringViewModel.endDate;
-            userHiring.BuilderId = userHiringViewModel.builderId;
+            userHiring.WorkId = userHiringViewModel.workId;
             userHiring.UserId = userHiringViewModel.userId;
 
             return _userHiringRepository.Update(userHiring);
@@ -67,6 +67,11 @@
         public bool DeleteUserHiring(int id)
         {
             return _userHiringRepository.Delete(id);
+        }
+
+        public List<UserHiringViewModel> AssignWorkers(WorkersInWorkViewModel workersInWorkViewModel)
+        {
+            return null;
         }
     }
 }

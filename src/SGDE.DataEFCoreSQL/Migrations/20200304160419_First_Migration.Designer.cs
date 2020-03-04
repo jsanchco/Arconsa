@@ -10,7 +10,7 @@ using SGDE.DataEFCoreSQL;
 namespace SGDE.DataEFCoreSQL.Migrations
 {
     [DbContext(typeof(EFContextSQL))]
-    [Migration("20200303161533_First_Migration")]
+    [Migration("20200304160419_First_Migration")]
     partial class First_Migration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -441,9 +441,6 @@ namespace SGDE.DataEFCoreSQL.Migrations
                     b.Property<DateTime?>("AddedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("BuilderId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
 
@@ -459,12 +456,16 @@ namespace SGDE.DataEFCoreSQL.Migrations
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.Property<int>("WorkId")
+                        .HasColumnType("int");
 
-                    b.HasIndex("BuilderId");
+                    b.HasKey("Id");
 
                     b.HasIndex("UserId")
                         .HasName("IFK_User_UserHiring");
+
+                    b.HasIndex("WorkId")
+                        .HasName("IFK_Work_UserHiring");
 
                     b.ToTable("UserHiring");
                 });
@@ -612,16 +613,17 @@ namespace SGDE.DataEFCoreSQL.Migrations
 
             modelBuilder.Entity("SGDE.Domain.Entities.UserHiring", b =>
                 {
-                    b.HasOne("SGDE.Domain.Entities.Client", "Builder")
-                        .WithMany()
-                        .HasForeignKey("BuilderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("SGDE.Domain.Entities.User", "User")
                         .WithMany("UserHirings")
                         .HasForeignKey("UserId")
                         .HasConstraintName("FK__UserHiring__UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SGDE.Domain.Entities.Work", "Work")
+                        .WithMany("UserHirings")
+                        .HasForeignKey("WorkId")
+                        .HasConstraintName("FK__UserHiring__WorkId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

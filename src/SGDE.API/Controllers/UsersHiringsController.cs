@@ -106,5 +106,19 @@ namespace SGDE.API.Controllers
                 return StatusCode(500, ex);
             }
         }
+
+        [HttpPost("assignworkers")]
+        public object AssignWorkers([FromBody]WorkersInWorkViewModel workersInWorkViewModel)
+        {
+            try
+            {
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Exception: ");
+                return StatusCode(500, ex);
+            }
+        }
     }
 }

@@ -22,5 +22,6 @@
         public virtual Client Client { get; set; }
 
         public virtual ICollection<User> WorkResponsibles { get; set; } = new HashSet<User>();
+        public virtual ICollection<UserHiring> UserHirings { get; set; } = new HashSet<UserHiring>();
     }
 }

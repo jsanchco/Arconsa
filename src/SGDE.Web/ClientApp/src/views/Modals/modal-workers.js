@@ -13,7 +13,7 @@ import { DialogComponent } from "@syncfusion/ej2-react-popups";
 import { config, USERS } from "../../constants";
 import { L10n } from "@syncfusion/ej2-base";
 import data from "../../locales/locale.json";
-import { TOKEN_KEY } from "../../services";
+import { TOKEN_KEY, updateWorkersInWork } from "../../services";
 import "./modal-worker.css";
 
 L10n.load(data);
@@ -49,8 +49,8 @@ class ModalWorkers extends Component {
           this.setState({ hideConfirmDialog: false });
 
           const selectedRecords = this.grid.getSelectedRecords();
-          this.props.updateWorkersInWork(selectedRecords);
-          
+          updateWorkersInWork(selectedRecords, this.props.workSelected.id);
+
           this.props.toggle();
         },
         buttonModel: { content: "Si", isPrimary: true }
@@ -168,8 +168,7 @@ class ModalWorkers extends Component {
 ModalWorkers.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   toggle: PropTypes.func.isRequired,
-  workSelected: PropTypes.object,
-  updateWorkersInWork: PropTypes.func.isRequired
+  workSelected: PropTypes.object
 };
 
 export default ModalWorkers;

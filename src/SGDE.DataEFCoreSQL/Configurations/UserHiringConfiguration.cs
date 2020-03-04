@@ -19,6 +19,9 @@
 
             entity.HasIndex(x => x.UserId).HasName("IFK_User_UserHiring");
             entity.HasOne(u => u.User).WithMany(a => a.UserHirings).HasForeignKey(a => a.UserId).HasConstraintName("FK__UserHiring__UserId");
+
+            entity.HasIndex(x => x.WorkId).HasName("IFK_Work_UserHiring");
+            entity.HasOne(u => u.Work).WithMany(a => a.UserHirings).HasForeignKey(a => a.WorkId).HasConstraintName("FK__UserHiring__WorkId");
         }
     }
 }

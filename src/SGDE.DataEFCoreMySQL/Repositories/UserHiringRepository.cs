@@ -29,10 +29,45 @@
             return GetById(id) != null;
         }
 
-        public List<UserHiring> GetAll()
+        public List<UserHiring> GetAll(int userId = 0, int workId = 0)
         {
+            if (userId == 0 && workId == 0)
+            {
+                return _context.UserHiring
+                    .Include(x => x.Work)
+                    .Include(x => x.User)
+                    .ToList();
+            }
+
+            if (userId != 0 && workId == 0)
+            {
+                return _context.UserHiring
+                    .Include(x => x.Work)
+                    .Include(x => x.User)
+                    .Where(x => x.UserId == userId)
+                    .ToList();
+            }
+
+            if (userId == 0 && workId != 0)
+            {
+                return _context.UserHiring
+                    .Include(x => x.Work)
+                    .Include(x => x.User)
+                    .Where(x => x.WorkId == workId)
+                    .ToList();
+            }
+
+            if (userId != 0 && workId != 0)
+            {
+                return _context.UserHiring
+                    .Include(x => x.Work)
+                    .Include(x => x.User)
+                    .Where(x => x.UserId == userId && x.WorkId == workId)
+                    .ToList();
+            }
+
             return _context.UserHiring
-                .Include(x => x.Builder)
+                .Include(x => x.Work)
                 .Include(x => x.User)
                 .ToList();
         }
@@ -40,7 +75,7 @@
         public UserHiring GetById(int id)
         {
             return _context.UserHiring
-                .Include(x => x.Builder)
+                .Include(x => x.Work)
                 .Include(x => x.User)
                 .FirstOrDefault(x => x.Id == id);
         }

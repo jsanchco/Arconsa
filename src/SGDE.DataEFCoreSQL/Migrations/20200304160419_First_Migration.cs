@@ -336,22 +336,22 @@ namespace SGDE.DataEFCoreSQL.Migrations
                     IPAddress = table.Column<string>(nullable: true),
                     StartDate = table.Column<DateTime>(nullable: false),
                     EndDate = table.Column<DateTime>(nullable: false),
-                    BuilderId = table.Column<int>(nullable: false),
+                    WorkId = table.Column<int>(nullable: false),
                     UserId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_UserHiring", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_UserHiring_Client_BuilderId",
-                        column: x => x.BuilderId,
-                        principalTable: "Client",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
                         name: "FK__UserHiring__UserId",
                         column: x => x.UserId,
                         principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK__UserHiring__WorkId",
+                        column: x => x.WorkId,
+                        principalTable: "Work",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -422,14 +422,14 @@ namespace SGDE.DataEFCoreSQL.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserHiring_BuilderId",
-                table: "UserHiring",
-                column: "BuilderId");
-
-            migrationBuilder.CreateIndex(
                 name: "IFK_User_UserHiring",
                 table: "UserHiring",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IFK_Work_UserHiring",
+                table: "UserHiring",
+                column: "WorkId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Work_ClientId",

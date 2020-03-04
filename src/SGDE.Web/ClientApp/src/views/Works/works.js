@@ -90,7 +90,6 @@ class Works extends Component {
     this.dateTemplate = this.dateTemplate.bind(this);
     this.clickHandler = this.clickHandler.bind(this);
     this.toggleModal = this.toggleModal.bind(this);
-    this.updateWorkersInWork = this.updateWorkersInWork.bind(this);
 
     this.selectionSettings = {
       checkboxMode: "ResetOnRowClick",
@@ -238,10 +237,6 @@ class Works extends Component {
     }
   }
 
-  updateWorkersInWork(args) {
-    console.log("args ->", args);
-  }
-
   render() {
     return (
       <div className="animated fadeIn" id="target-works">
@@ -249,7 +244,6 @@ class Works extends Component {
           isOpen={this.state.modal}
           toggle={this.toggleModal}
           workSelected={this.state.rowSelected}
-          updateWorkersInWork={this.updateWorkersInWork}
         />
         <div className="card">
           <div className="card-header">

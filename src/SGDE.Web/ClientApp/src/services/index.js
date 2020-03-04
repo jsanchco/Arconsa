@@ -1,4 +1,12 @@
-import { config, AUTHENTICATE, USERS, PROFESSIONS, WORKS, DOCUMENTS } from "../constants";
+import {
+  config,
+  AUTHENTICATE,
+  USERS,
+  PROFESSIONS,
+  WORKS,
+  DOCUMENTS,
+  ASSIGNWORKERS
+} from "../constants";
 import store from "../store/store";
 import ACTION_AUTHENTICATION from "../actions/authenticationAction";
 import ACTION_APPLICATION from "../actions/applicationAction";
@@ -94,50 +102,50 @@ export const getProfessions = () => {
 
 export const updateUser = user => {
   return new Promise((resolve, reject) => {
-  const url = `${config.URL_API}/${USERS}`;
-  fetch(url, {
-    headers: {
-      Accept: "text/plain",
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`
-    },
-    method: "PUT",
-    body: JSON.stringify(user)
-  })
-    .then(data => data.json())
-    .then(result => {
-      if (result.Message) {
-        console.log("error ->", result.Message);
+    const url = `${config.URL_API}/${USERS}`;
+    fetch(url, {
+      headers: {
+        Accept: "text/plain",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`
+      },
+      method: "PUT",
+      body: JSON.stringify(user)
+    })
+      .then(data => data.json())
+      .then(result => {
+        if (result.Message) {
+          console.log("error ->", result.Message);
+          store.dispatch(
+            ACTION_APPLICATION.showMessage({
+              statusText: result.Message,
+              responseText: result.Message,
+              type: "danger"
+            })
+          );
+          reject();
+        } else {
+          store.dispatch(
+            ACTION_APPLICATION.showMessage({
+              statusText: "200",
+              responseText: "Operación realizada con éxito",
+              type: "success"
+            })
+          );
+          resolve();
+        }
+      })
+      .catch(error => {
+        console.log("error ->", error);
         store.dispatch(
           ACTION_APPLICATION.showMessage({
-            statusText: result.Message,
-            responseText: result.Message,
+            statusText: error,
+            responseText: error,
             type: "danger"
           })
         );
         reject();
-      } else {
-        store.dispatch(
-          ACTION_APPLICATION.showMessage({
-            statusText: "200",
-            responseText: "Operación realizada con éxito",
-            type: "success"
-          })
-        );
-        resolve();
-      }
-    })
-    .catch(error => {
-      console.log("error ->", error);
-      store.dispatch(
-        ACTION_APPLICATION.showMessage({
-          statusText: error,
-          responseText: error,
-          type: "danger"
-        })
-      );
-      reject();
-    });
+      });
   });
 };
 
@@ -239,20 +247,75 @@ export const updateDocument = document => {
   });
 };
 
+export const updateWorkersInWork = (workers, idWork) => {
+  return new Promise((resolve, reject) => {
+    const url = `${config.URL_API}/${ASSIGNWORKERS}`;
+    let workersId = [];
+
+    workers.forEach(worker => {
+      workersId.push(worker.id);
+    });
+
+    fetch(url, {
+      headers: {
+        Accept: "text/plain",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`
+      },
+      method: "POST",
+      body: JSON.stringify({listIdUsers: workersId, idWork: idWork})
+    })
+      .then(data => data.json())
+      .then(result => {
+        if (result.Message) {
+          console.log("error ->", result.Message);
+          store.dispatch(
+            ACTION_APPLICATION.showMessage({
+              statusText: result.Message,
+              responseText: result.Message,
+              type: "danger"
+            })
+          );
+          reject();
+        } else {
+          store.dispatch(
+            ACTION_APPLICATION.showMessage({
+              statusText: "200",
+              responseText: "Operación realizada con éxito",
+              type: "success"
+            })
+          );
+          resolve();
+        }
+      })
+      .catch(error => {
+        console.log("error ->", error);
+        store.dispatch(
+          ACTION_APPLICATION.showMessage({
+            statusText: error,
+            responseText: error,
+            type: "danger"
+          })
+        );
+        reject();
+      });
+  });
+};
+
 export const base64ToArrayBuffer = base64 => {
   var binaryString = window.atob(base64);
   var binaryLen = binaryString.length;
   var bytes = new Uint8Array(binaryLen);
   for (var i = 0; i < binaryLen; i++) {
-     var ascii = binaryString.charCodeAt(i);
-     bytes[i] = ascii;
+    var ascii = binaryString.charCodeAt(i);
+    bytes[i] = ascii;
   }
   return bytes;
-}
+};
 
 export const saveByteArray = (reportName, byte, type) => {
-  var blob = new Blob([byte], {type: type});
-  var link = document.createElement('a');
+  var blob = new Blob([byte], { type: type });
+  var link = document.createElement("a");
   link.href = window.URL.createObjectURL(blob);
   var fileName = reportName;
   link.download = fileName;

@@ -11,8 +11,8 @@
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
 
-        public int BuilderId { get; set; }
-        public virtual Client Builder { get; set; }
+        public int WorkId { get; set; }
+        public virtual Work Work { get; set; }
 
         public int UserId { get; set; }
         public virtual User User { get; set; }
