@@ -18,12 +18,27 @@ class ModalSelectFile extends Component {
     let reader = new FileReader();
     let file = e.target.files[0];
     let filename = file.name;
-    let extension = filename.substring(filename.lastIndexOf('.') + 1, filename.length) || filename;
+    let extension =
+      filename.substring(filename.lastIndexOf(".") + 1, filename.length) ||
+      filename;
 
     reader.onloadend = () => {
+      let newFileName = this.props.rowSelected.typeDocumentName.split(" ").join("");
+      newFileName = newFileName.split(".").join("");
+      newFileName = newFileName.split("/").join("");
+      newFileName = newFileName.split("\\").join("");
+      newFileName = newFileName.split(":").join("");
+      newFileName = newFileName.split("*").join("");
+      newFileName = newFileName.split("?").join("");
+      newFileName = newFileName.split("\"").join("");
+      newFileName = newFileName.split("<").join("");
+      newFileName = newFileName.split(">").join("");
+      newFileName = newFileName.split("|").join("");
+      newFileName = newFileName.toLowerCase();
+      newFileName = `${newFileName}_${this.props.rowSelected.userId}.${extension}`;
       this.setState({
         file: file,
-        fileName: `${this.props.rowSelected.typeDocumentName.replace(" ", "").toLowerCase()}_${this.props.rowSelected.userId}.${extension}`,
+        fileName: newFileName,
         fileUrl: reader.result
       });
     };

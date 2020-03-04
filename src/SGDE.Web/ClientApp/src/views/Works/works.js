@@ -18,6 +18,7 @@ import data from "../../locales/locale.json";
 import { connect } from "react-redux";
 import ACTION_APPLICATION from "../../actions/applicationAction";
 import { TOKEN_KEY, updateWork } from "../../services";
+import ModalWorkers from "../Modals/modal-workers";
 
 L10n.load(data);
 
@@ -55,10 +56,23 @@ class Works extends Component {
       works: null,
       clients: null,
       rowSelected: null,
-      rowSelectedindex: null
+      rowSelectedindex: null,
+      modal: false
     };
 
-    this.toolbarOptions = ["Add", "Edit", "Delete", "Update", "Cancel"];
+    this.toolbarOptions = [
+      "Add",
+      "Edit",
+      "Delete",
+      "Update",
+      "Cancel",
+      {
+        text: "Trabajadores",
+        tooltipText: "Trabajadores",
+        prefixIcon: "e-custom-icons e-file-workers",
+        id: "Workers"
+      }
+    ];
     this.editSettings = {
       showDeleteConfirmDialog: true,
       allowEditing: true,
@@ -74,6 +88,36 @@ class Works extends Component {
     this.contextMenuOpen = this.contextMenuOpen.bind(this);
     this.openTemplate = this.openTemplate.bind(this);
     this.dateTemplate = this.dateTemplate.bind(this);
+    this.clickHandler = this.clickHandler.bind(this);
+    this.toggleModal = this.toggleModal.bind(this);
+
+    this.selectionSettings = {
+      checkboxMode: "ResetOnRowClick",
+      type: "Single"
+    };
+  }
+
+  clickHandler(args) {
+    if (args.item.id === "Workers") {
+      const selectedRecords = this.grid.getSelectedRecords();
+      if (Array.isArray(selectedRecords) && selectedRecords.length === 1) {
+        this.setState({ rowSelected: selectedRecords[0] });
+        this.toggleModal();
+      } else {
+        this.setState({ rowSelected: null });
+        this.props.showMessage({
+          statusText: "Debes seleccionar un solo registro",
+          responseText: "Debes seleccionar un solo registro",
+          type: "danger"
+        });
+      }
+    }
+  }
+
+  toggleModal() {
+    this.setState({
+      modal: !this.state.modal
+    });
   }
 
   contextMenuOpen() {
@@ -127,11 +171,11 @@ class Works extends Component {
     const titleClose = `${this.formatDate(args.closeDate)}`;
     return (
       <div>
-        <div style={{display: "flex"}}>
+        <div style={{ display: "flex" }}>
           <div style={{ textAlign: "left", width: "50%" }}>Apertura:</div>
           <div style={{ textAlign: "left", width: "50%" }}>{titleOpen}</div>
         </div>
-        <div style={{display: "flex"}}>
+        <div style={{ display: "flex" }}>
           <div style={{ textAlign: "left", width: "50%" }}>Cierre:</div>
           <div style={{ textAlign: "left", width: "50%" }}>{titleClose}</div>
         </div>
@@ -196,6 +240,11 @@ class Works extends Component {
   render() {
     return (
       <Fragment>
+        <ModalWorkers
+          isOpen={this.state.modal}
+          toggle={this.toggleModal}
+          rowSelected={this.state.rowSelected}
+        />
         <div className="animated fadeIn">
           <div className="card">
             <div className="card-header">
@@ -225,8 +274,10 @@ class Works extends Component {
                 contextMenuItems={this.contextMenuItems}
                 contextMenuOpen={this.contextMenuOpen}
                 contextMenuClick={this.contextMenuClick}
+                selectionSettings={this.selectionSettings}
               >
                 <ColumnsDirective>
+                  <ColumnDirective type="checkbox" width="50"></ColumnDirective>
                   <ColumnDirective
                     field="id"
                     headerText="Id"

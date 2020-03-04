@@ -13,7 +13,12 @@ import { DataManager, WebApiAdaptor, Query } from "@syncfusion/ej2-data";
 import { config, DOCUMENTS, TYPES_DOCUMENT } from "../../constants";
 import { L10n } from "@syncfusion/ej2-base";
 import data from "../../locales/locale.json";
-import { TOKEN_KEY, updateDocument } from "../../services";
+import {
+  TOKEN_KEY,
+  updateDocument,
+  base64ToArrayBuffer,
+  saveByteArray
+} from "../../services";
 import ModalSelectFile from "../Modals/modal-select-file";
 
 L10n.load(data);
@@ -53,6 +58,12 @@ class Documents extends Component {
         tooltipText: "Subir Archivo",
         prefixIcon: "e-custom-icons e-file-upload",
         id: "UploadFile"
+      },
+      {
+        text: "Descargar Archivo(s)",
+        tooltipText: "Descargar Archivo(s)",
+        prefixIcon: "e-custom-icons e-file-download",
+        id: "DownloadFile"
       }
     ];
     this.editSettings = {
@@ -66,13 +77,17 @@ class Documents extends Component {
     this.actionFailure = this.actionFailure.bind(this);
     this.actionComplete = this.actionComplete.bind(this);
     this.clickHandler = this.clickHandler.bind(this);
-    this.rowSelected = this.rowSelected.bind(this);
     this.toggleModal = this.toggleModal.bind(this);
     this.updateDocument = this.updateDocument.bind(this);
+    this.downloadDocuments = this.downloadDocuments.bind(this);
 
     this.template = this.gridTemplate;
 
     this.query = new Query().addParams("userId", props.user.id);
+
+    this.selectionSettings = {
+      checkboxMode: "ResetOnRowClick"
+    };
   }
 
   gridTemplate(args) {
@@ -93,8 +108,30 @@ class Documents extends Component {
 
   clickHandler(args) {
     if (args.item.id === "UploadFile") {
-      if (this.state.rowSelected !== null) {
+      const selectedRecords = this.grid.getSelectedRecords();
+      if (Array.isArray(selectedRecords) && selectedRecords.length === 1) {
+        this.setState({ rowSelected: selectedRecords[0] });
         this.toggleModal();
+      } else {
+        this.setState({ rowSelected: null });
+        this.props.showMessage({
+          statusText: "Debes seleccionar un solo registro",
+          responseText: "Debes seleccionar un solo registro",
+          type: "danger"
+        });
+      }
+    }
+
+    if (args.item.id === "DownloadFile") {
+      const selectedRecords = this.grid.getSelectedRecords();
+      if (Array.isArray(selectedRecords) && selectedRecords.length > 0) {
+        this.downloadDocuments();
+      } else {
+        this.props.showMessage({
+          statusText: "Debes seleccionar uno o más de un registro",
+          responseText: "Debes seleccionar uno o más de un registro",
+          type: "danger"
+        });
       }
     }
   }
@@ -133,15 +170,6 @@ class Documents extends Component {
     }
   }
 
-  rowSelected() {
-    const selectedRecords = this.grid.getSelectedRecords();
-    if (Array.isArray(selectedRecords) && selectedRecords.length === 1) {
-      this.setState({ rowSelected: selectedRecords[0] });
-    } else {
-      this.setState({ rowSelected: null });
-    }
-  }
-
   updateDocument(args) {
     const documentSelected = this.state.rowSelected;
     let remove = args.fileUrl.indexOf("base64,") + 7;
@@ -153,6 +181,31 @@ class Documents extends Component {
     updateDocument(documentSelected).then(() => {
       this.grid.setRowData(this.state.rowSelected.id, documentSelected);
     });
+  }
+
+  downloadDocuments() {
+    const selectedRecords = this.grid.getSelectedRecords();
+    let error = null;
+
+    if (Array.isArray(selectedRecords) && selectedRecords.length > 0) {
+      selectedRecords.forEach(document => {
+        if (document.file !== null && document.file !== undefined) {
+          const fileArr = base64ToArrayBuffer(document.file);
+          saveByteArray(document.fileName, fileArr, document.typeFile);
+        } else {
+          error =
+            "Algunos de los registros seleccionados no tienen el archivo subido";
+        }
+      });
+    }
+
+    if (error !== null) {
+      this.props.showMessage({
+        statusText: error,
+        responseText: error,
+        type: "warning"
+      });
+    }
   }
 
   render() {
@@ -190,9 +243,9 @@ class Documents extends Component {
                 actionFailure={this.actionFailure}
                 actionComplete={this.actionComplete}
                 allowGrouping={false}
-                rowSelected={this.rowSelected}
                 ref={g => (this.grid = g)}
                 query={this.query}
+                selectionSettings={this.selectionSettings}
               >
                 <ColumnsDirective>
                   <ColumnDirective type="checkbox" width="50"></ColumnDirective>

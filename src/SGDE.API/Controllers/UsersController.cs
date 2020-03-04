@@ -88,8 +88,9 @@
                 var skip = Convert.ToInt32(queryString["$skip"]);
                 var take = Convert.ToInt32(queryString["$top"]);
                 var filter = Util.Helper.getSearch(queryString["$filter"]);
+                var roleId = Convert.ToInt32(queryString["roleId"]);
 
-                var queryResult = _supervisor.GetAllUsers(skip, take, filter);
+                var queryResult = _supervisor.GetAllUsers(skip, take, filter, roleId);
 
                 return new { Items = queryResult.Data, Count = queryResult.Count };
             }

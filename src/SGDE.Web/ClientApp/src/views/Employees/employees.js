@@ -11,7 +11,7 @@ import {
   ForeignKey,
   Group
 } from "@syncfusion/ej2-react-grids";
-import { DataManager, WebApiAdaptor } from "@syncfusion/ej2-data";
+import { DataManager, WebApiAdaptor, Query } from "@syncfusion/ej2-data";
 import { config, USERS, PROFESSIONS, ROLES } from "../../constants";
 import { L10n } from "@syncfusion/ej2-base";
 import data from "../../locales/locale.json";
@@ -82,6 +82,8 @@ class Employees extends Component {
     this.rowSelected = this.rowSelected.bind(this);
 
     this.template = this.gridTemplate;
+
+    this.query = new Query().addParams("roleId", 1);
   }
 
   gridTemplate(args) {
@@ -182,6 +184,7 @@ class Employees extends Component {
                 allowGrouping={true}
                 rowSelected={this.rowSelected}
                 ref={g => (this.grid = g)}
+                query={this.query}
               >
                 <ColumnsDirective>                  
                   <ColumnDirective

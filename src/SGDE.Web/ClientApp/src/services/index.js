@@ -193,7 +193,6 @@ export const updateWork = work => {
 export const updateDocument = document => {
   return new Promise((resolve, reject) => {
     const url = `${config.URL_API}/${DOCUMENTS}`;
-    const u = JSON.stringify(document);
     fetch(url, {
       headers: {
         Accept: "text/plain",
@@ -238,4 +237,24 @@ export const updateDocument = document => {
         reject();
       });
   });
+};
+
+export const base64ToArrayBuffer = base64 => {
+  var binaryString = window.atob(base64);
+  var binaryLen = binaryString.length;
+  var bytes = new Uint8Array(binaryLen);
+  for (var i = 0; i < binaryLen; i++) {
+     var ascii = binaryString.charCodeAt(i);
+     bytes[i] = ascii;
+  }
+  return bytes;
+}
+
+export const saveByteArray = (reportName, byte, type) => {
+  var blob = new Blob([byte], {type: type});
+  var link = document.createElement('a');
+  link.href = window.URL.createObjectURL(blob);
+  var fileName = reportName;
+  link.download = fileName;
+  link.click();
 };

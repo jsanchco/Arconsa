@@ -92,14 +92,29 @@
             return true;
         }
 
-        public QueryResult<User> GetAll(int skip = 0, int take = 0, string filter = null)
+        public QueryResult<User> GetAll(int skip = 0, int take = 0, string filter = null, int roleId = 0)
         {
-            var data = _context.User
-                     .Include(x => x.Profession)
-                     .Include(x => x.Role)
-                     .Include(x => x.Client)
-                     .Include(x => x.Work)
-                     .ToList();
+            List<User> data;
+
+            if (roleId == 0)
+            {
+                data = _context.User
+                            .Include(x => x.Profession)
+                            .Include(x => x.Role)
+                            .Include(x => x.Client)
+                            .Include(x => x.Work)
+                            .ToList();
+            }
+            else
+            {
+                data = _context.User
+                            .Include(x => x.Profession)
+                            .Include(x => x.Role)
+                            .Include(x => x.Client)
+                            .Include(x => x.Work)
+                            .Where(x => x.RoleId == roleId)
+                            .ToList();
+            }
 
             if (!string.IsNullOrEmpty(filter))
             {
@@ -110,6 +125,7 @@
                         Searcher.RemoveAccentsWithNormalization(x.Email?.ToLower()).Contains(filter) ||
                         Searcher.RemoveAccentsWithNormalization(x.Name.ToLower()).Contains(filter) ||
                         Searcher.RemoveAccentsWithNormalization(x.Observations?.ToLower()).Contains(filter) ||
+                        Searcher.RemoveAccentsWithNormalization(x.PhoneNumber?.ToLower()).Contains(filter) ||
                         Searcher.RemoveAccentsWithNormalization(x.Surname.ToLower()).Contains(filter) ||
                         Searcher.RemoveAccentsWithNormalization(x.Username.ToLower()).Contains(filter) ||
                         Searcher.RemoveAccentsWithNormalization(x.Role.Name.ToLower()).Contains(filter) ||
@@ -128,7 +144,7 @@
                 }
                 : new QueryResult<User>
                 {
-                    Data = data.Skip(skip).Take(take).ToList(),
+                    Data = data.Skip(0).Take(count).ToList(),
                     Count = count
                 };
         }
