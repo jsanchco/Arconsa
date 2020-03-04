@@ -83,7 +83,7 @@ class Employees extends Component {
 
     this.template = this.gridTemplate;
 
-    this.query = new Query().addParams("roleId", 1);
+    this.query = new Query().addParams("roleId", 3);
   }
 
   gridTemplate(args) {

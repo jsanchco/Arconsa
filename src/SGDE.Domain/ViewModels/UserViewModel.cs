@@ -12,6 +12,12 @@ namespace SGDE.Domain.ViewModels
         public string name { get; set; }
         public string surname { get; set; }
         public string username { get; set; }
+        public string fullname { 
+            get 
+            {
+                return $"{name} {surname}";
+            }
+        }
         public string dni { get; set; }
         public DateTime? birthDate { get; set; }
         public string email { get; set; }

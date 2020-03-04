@@ -134,6 +134,7 @@ namespace SGDE.SeedData
                         PhoneNumber = "616203002",
                         RoleId = 1
                     });
+                    context.SaveChanges();
 
                     context.User.Add(new User
                     {
@@ -148,12 +149,13 @@ namespace SGDE.SeedData
                         RoleId = 2,
                         ProfessionId = 1
                     });
+                    context.SaveChanges();
 
                     for (var i = 0; i < 40; i++)
                     {
                         context.User.Add(new User
                         {
-                            Name = "Trabajador",
+                            Name = "Trabajador" + (i + 1),
                             Surname = "Apellidos" + (i + 1),
                             Username = "trabajador" + (i + 1),
                             AddedDate = DateTime.Now,
@@ -161,9 +163,8 @@ namespace SGDE.SeedData
                             RoleId = 3,
                             ProfessionId = 1
                         });
-                    }
-
-                    context.SaveChanges();
+                        context.SaveChanges();
+                    }                   
                 }
 
                 dbContextTransaction.Commit();

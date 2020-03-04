@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import { Row } from "reactstrap";
 import {
   ColumnDirective,
@@ -90,6 +90,7 @@ class Works extends Component {
     this.dateTemplate = this.dateTemplate.bind(this);
     this.clickHandler = this.clickHandler.bind(this);
     this.toggleModal = this.toggleModal.bind(this);
+    this.updateWorkersInWork = this.updateWorkersInWork.bind(this);
 
     this.selectionSettings = {
       checkboxMode: "ResetOnRowClick",
@@ -237,122 +238,121 @@ class Works extends Component {
     }
   }
 
+  updateWorkersInWork(args) {
+    console.log("args ->", args);
+  }
+
   render() {
     return (
-      <Fragment>
+      <div className="animated fadeIn" id="target-works">
         <ModalWorkers
           isOpen={this.state.modal}
           toggle={this.toggleModal}
-          rowSelected={this.state.rowSelected}
+          workSelected={this.state.rowSelected}
+          updateWorkersInWork={this.updateWorkersInWork}
         />
-        <div className="animated fadeIn">
-          <div className="card">
-            <div className="card-header">
-              <i className="icon-globe"></i> Obras
-            </div>
-            <div className="card-body"></div>
-            <Row>
-              <GridComponent
-                dataSource={this.works}
-                locale="es-US"
-                allowPaging={true}
-                pageSettings={this.pageSettings}
-                toolbar={this.toolbarOptions}
-                toolbarClick={this.clickHandler}
-                editSettings={this.editSettings}
-                style={{
-                  marginLeft: 30,
-                  marginRight: 30,
-                  marginTop: 20,
-                  marginBottom: 20
-                }}
-                actionFailure={this.actionFailure}
-                actionComplete={this.actionComplete}
-                allowGrouping={true}
-                rowSelected={this.rowSelected}
-                ref={g => (this.grid = g)}
-                contextMenuItems={this.contextMenuItems}
-                contextMenuOpen={this.contextMenuOpen}
-                contextMenuClick={this.contextMenuClick}
-                selectionSettings={this.selectionSettings}
-              >
-                <ColumnsDirective>
-                  <ColumnDirective type="checkbox" width="50"></ColumnDirective>
-                  <ColumnDirective
-                    field="id"
-                    headerText="Id"
-                    width="40"
-                    isPrimaryKey={true}
-                    isIdentity={true}
-                    visible={false}
-                  />
-                  <ColumnDirective
-                    field="name"
-                    headerText="Nombre"
-                    width="100"
-                  />
-                  <ColumnDirective
-                    field="address"
-                    headerText="Dirección"
-                    width="100"
-                  />
-                  <ColumnDirective
-                    field="estimatedDuration"
-                    headerText="Duración Estimada"
-                    width="100"
-                  />
-                  <ColumnDirective
-                    field="worksToRealize"
-                    headerText="Trabajos a Realizar"
-                    width="100"
-                  />
-                  <ColumnDirective
-                    field="numberPersonsRequested"
-                    headerText="Personas"
-                    width="100"
-                    fotmat="N0"
-                    textAlign="right"
-                    editType="numericedit"
-                    edit={this.numericParams}
-                  />
-                  <ColumnDirective
-                    field="clientId"
-                    headerText="Cliente"
-                    width="100"
-                    editType="dropdownedit"
-                    foreignKeyValue="name"
-                    foreignKeyField="id"
-                    validationRules={this.clientIdRules}
-                    dataSource={this.clients}
-                  />
-                  <ColumnDirective
-                    field="closeDate"
-                    headerText="Fechas"
-                    width="100"
-                    template={this.dateTemplate}
-                    textAlign="Center"
-                    allowEditing={false}
-                  />
-                  <ColumnDirective
-                    field="open"
-                    headerText="Abierta/Cerrada"
-                    width="100"
-                    template={this.openTemplate}
-                    textAlign="Center"
-                    allowEditing={false}
-                    defaultValue={true}
-                  />
-                  <ColumnDirective field="openDate" visible={false} />
-                  <ColumnDirective field="closeDate" visible={false} />
-                </ColumnsDirective>
-                <Inject
-                  services={[ContextMenu, ForeignKey, Page, Toolbar, Edit]}
-                />
-              </GridComponent>
-            </Row>
+        <div className="card">
+          <div className="card-header">
+            <i className="icon-globe"></i> Obras
           </div>
+          <div className="card-body"></div>
+          <Row>
+            <GridComponent
+              dataSource={this.works}
+              locale="es-US"
+              allowPaging={true}
+              pageSettings={this.pageSettings}
+              toolbar={this.toolbarOptions}
+              toolbarClick={this.clickHandler}
+              editSettings={this.editSettings}
+              style={{
+                marginLeft: 30,
+                marginRight: 30,
+                marginTop: 20,
+                marginBottom: 20
+              }}
+              actionFailure={this.actionFailure}
+              actionComplete={this.actionComplete}
+              allowGrouping={true}
+              rowSelected={this.rowSelected}
+              ref={g => (this.grid = g)}
+              contextMenuItems={this.contextMenuItems}
+              contextMenuOpen={this.contextMenuOpen}
+              contextMenuClick={this.contextMenuClick}
+              selectionSettings={this.selectionSettings}
+            >
+              <ColumnsDirective>
+                <ColumnDirective type="checkbox" width="50"></ColumnDirective>
+                <ColumnDirective
+                  field="id"
+                  headerText="Id"
+                  width="40"
+                  isPrimaryKey={true}
+                  isIdentity={true}
+                  visible={false}
+                />
+                <ColumnDirective field="name" headerText="Nombre" width="100" />
+                <ColumnDirective
+                  field="address"
+                  headerText="Dirección"
+                  width="100"
+                />
+                <ColumnDirective
+                  field="estimatedDuration"
+                  headerText="Duración Estimada"
+                  width="100"
+                />
+                <ColumnDirective
+                  field="worksToRealize"
+                  headerText="Trabajos a Realizar"
+                  width="100"
+                />
+                <ColumnDirective
+                  field="numberPersonsRequested"
+                  headerText="Personas"
+                  width="100"
+                  fotmat="N0"
+                  textAlign="right"
+                  editType="numericedit"
+                  edit={this.numericParams}
+                />
+                <ColumnDirective
+                  field="clientId"
+                  headerText="Cliente"
+                  width="100"
+                  editType="dropdownedit"
+                  foreignKeyValue="name"
+                  foreignKeyField="id"
+                  validationRules={this.clientIdRules}
+                  dataSource={this.clients}
+                />
+                <ColumnDirective
+                  field="closeDate"
+                  headerText="Fechas"
+                  width="100"
+                  template={this.dateTemplate}
+                  textAlign="Center"
+                  allowEditing={false}
+                />
+                <ColumnDirective
+                  field="open"
+                  headerText="Abierta/Cerrada"
+                  width="100"
+                  template={this.openTemplate}
+                  textAlign="Center"
+                  allowEditing={false}
+                  defaultValue={true}
+                />
+                <ColumnDirective field="openDate" visible={false} />
+                <ColumnDirective field="closeDate" visible={false} />
+              </ColumnsDirective>
+              <Inject
+                services={[ContextMenu, ForeignKey, Page, Toolbar, Edit]}
+              />
+            </GridComponent>
+          </Row>
         </div>
-      </Fragment>
+      </div>
     );
   }
 }
