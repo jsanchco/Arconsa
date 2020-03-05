@@ -94,6 +94,7 @@ namespace SGDE.Domain.Supervisor
 
         List<WorkViewModel> GetAllWork();
         WorkViewModel GetWorkById(int id);
+        List<UserViewModel> GetUsersByWork(int workId, int state = 0); // 0 = all, 1 = asset, 2 = no asset
         WorkViewModel AddWork(WorkViewModel newWorkViewModel);
         bool UpdateWork(WorkViewModel workViewModel);
         bool DeleteWork(int id);
@@ -147,6 +148,12 @@ namespace SGDE.Domain.Supervisor
         DailySigningViewModel AddDailySigning(DailySigningViewModel newDailySigningViewModel);
         bool UpdateDailySigning(DailySigningViewModel dailySigningViewModel);
         bool DeleteDailySigning(int id);
+
+        #endregion
+
+        #region WorkerHiring
+
+        QueryResult<WorkerHiringViewModel> GetAllWorkerHiring(int skip = 0, int take = 0, string filter = null, int workId = 0);
 
         #endregion
     }

@@ -6,11 +6,15 @@ import {
   ColumnDirective,
   ColumnsDirective,
   GridComponent,
-  Inject
+  Inject,
+  Toolbar,
+  Page,
+  ForeignKey,
+  Group
 } from "@syncfusion/ej2-react-grids";
-import { DataManager, WebApiAdaptor } from "@syncfusion/ej2-data";
+import { DataManager, WebApiAdaptor, Query } from "@syncfusion/ej2-data";
 import { DialogComponent } from "@syncfusion/ej2-react-popups";
-import { config, USERS } from "../../constants";
+import { config, WORKERSHIRING } from "../../constants";
 import { L10n } from "@syncfusion/ej2-base";
 import data from "../../locales/locale.json";
 import { TOKEN_KEY, updateWorkersInWork } from "../../services";
@@ -21,7 +25,7 @@ L10n.load(data);
 class ModalWorkers extends Component {
   workers = new DataManager({
     adaptor: new WebApiAdaptor(),
-    url: `${config.URL_API}/${USERS}`,
+    url: `${config.URL_API}/${WORKERSHIRING}`,
     headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }]
   });
 
@@ -33,15 +37,20 @@ class ModalWorkers extends Component {
     this.state = {
       workers: null,
       hideConfirmDialog: false,
-      workersSelected: null
+      workersSelected: null,
+      selectedRecords: null
     };
 
     this._handleOnClick = this._handleOnClick.bind(this);
     this.dialogClose = this.dialogClose.bind(this);
+    this.actionFailure = this.actionFailure.bind(this);
 
     this.selectionSettings = {
-      checkboxMode: "ResetOnRowClick"
+      checkboxMode: "ResetOnRowClick",
+      persistSelection: true
     };
+    this.pageSettings = { pageCount: 10, pageSize: 10 };
+    this.toolbarOptions = ["Search"];
 
     this.confirmButton = [
       {
@@ -62,12 +71,12 @@ class ModalWorkers extends Component {
         buttonModel: { content: "No" }
       }
     ];
+
     this.animationSettings = { effect: "None" };
   }
 
   _handleOnClick() {
     this.setState({ hideConfirmDialog: true });
-    //this.props.toggle();
   }
 
   dialogClose() {
@@ -76,13 +85,50 @@ class ModalWorkers extends Component {
     });
   }
 
+  actionFailure(args) {
+    const error = Array.isArray(args) ? args[0].error : args.error;
+    this.props.showMessage({
+      statusText: error.statusText,
+      responseText: error.responseText,
+      type: "danger"
+    });
+  }
+
+  stateTemplate(args) {
+    if (args.state === 0) {
+      return (
+        <div>
+          <span className="dot-red"></span>
+        </div>
+      );
+    }
+
+    if (args.state === 1) {
+      return (
+        <div>
+          <span className="dot-green"></span>
+        </div>
+      );
+    }
+
+    if (args.state === 2) {
+      return (
+        <div>
+          <span className="dot-orange"></span>
+        </div>
+      );
+    }
+  }
+
   render() {
     let title = "";
+    let query = null;
     if (
       this.props.workSelected !== null &&
       this.props.workSelected !== undefined
     ) {
       title = ` Trabajadores [${this.props.workSelected.name}]`;
+      query = new Query().addParams("workId", this.props.workSelected.id);
     }
 
     return (
@@ -111,15 +157,19 @@ class ModalWorkers extends Component {
               <GridComponent
                 dataSource={this.workers}
                 locale="es-US"
+                allowPaging={true}
+                pageSettings={this.pageSettings}
+                actionFailure={this.actionFailure}
+                toolbar={this.toolbarOptions}
                 style={{
                   marginLeft: 30,
                   marginRight: 30,
                   marginTop: 20,
                   marginBottom: 20
                 }}
-                rowSelected={this.rowSelected}
                 ref={g => (this.grid = g)}
                 selectionSettings={this.selectionSettings}
+                query={query}
               >
                 <ColumnsDirective>
                   <ColumnDirective
@@ -132,7 +182,7 @@ class ModalWorkers extends Component {
                   />
                   <ColumnDirective type="checkbox" width="50"></ColumnDirective>
                   <ColumnDirective
-                    field="fullname"
+                    field="name"
                     headerText="Nombre"
                     width="100"
                   />
@@ -142,8 +192,15 @@ class ModalWorkers extends Component {
                     headerText="Obra Asignada"
                     width="100"
                   />
+                  <ColumnDirective
+                    field="state"
+                    headerText="Estado"
+                    width="100"
+                    textAlign="Center"
+                    template={this.stateTemplate}
+                  />
                 </ColumnsDirective>
-                <Inject services={[]} />
+                <Inject services={[ForeignKey, Group, Page, Toolbar]} />
               </GridComponent>
             </Row>
           </ModalBody>
@@ -168,7 +225,8 @@ class ModalWorkers extends Component {
 ModalWorkers.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   toggle: PropTypes.func.isRequired,
-  workSelected: PropTypes.object
+  workSelected: PropTypes.object,
+  showMessage: PropTypes.func.isRequired
 };
 
 export default ModalWorkers;

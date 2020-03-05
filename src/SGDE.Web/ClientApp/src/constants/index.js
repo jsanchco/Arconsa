@@ -7,7 +7,8 @@ export const TYPES_DOCUMENT = "api/TypesDocument";
 export const TRAININGS = "api/Trainings";
 export const DOCUMENTS = "api/UserDocuments";
 export const UPLOADBOX_SAVE = "api/UploadBox";
-export const ASSIGNWORKERS = "api/UsersHirings/assignworkers";
+export const WORKERSHIRING = "api/WorkersHiring";
+export const ASSIGNWORKERS = "api/UsersHiring/assignworkers";
 export const AUTHENTICATE = "api/Users/authenticate";
 
 const dev = {

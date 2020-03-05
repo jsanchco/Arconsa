@@ -149,6 +149,15 @@
                 };
         }
 
+        public List<User> GetUsersByRole(List<int> roles)
+        {
+            return _context.User
+                .Include(x => x.Role)
+                .Include(x => x.Work)
+                .Where(x => roles.Contains(x.RoleId))
+                .ToList();
+        }
+
         public User GetById(int id)
         {
             return _context.User

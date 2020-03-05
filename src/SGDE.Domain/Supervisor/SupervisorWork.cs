@@ -26,6 +26,41 @@
             return workViewModel;
         }
 
+        // 0 = all, 1 = asset, 2 = no asset
+        public List<UserViewModel> GetUsersByWork(int workId, int state = 0)
+        {
+            var listUserViewModel = new List<UserViewModel>();
+            var userHirings = _workRepository.GetById(workId).UserHirings;
+
+            if (state == 0)
+            {
+                foreach(var userHiring in userHirings)
+                {
+                    AddUserToList(listUserViewModel, UserConverter.Convert(userHiring.User));
+                }
+            }
+
+            if (state == 1)
+            {
+                foreach (var userHiring in userHirings)
+                {
+                    if (userHiring.EndDate == null)
+                        AddUserToList(listUserViewModel, UserConverter.Convert(userHiring.User));
+                }
+            }
+
+            if (state == 2)
+            {
+                foreach (var userHiring in userHirings)
+                {
+                    if (userHiring.EndDate != null)
+                        AddUserToList(listUserViewModel, UserConverter.Convert(userHiring.User));
+                }
+            }
+
+            return listUserViewModel;
+        }
+
         public WorkViewModel AddWork(WorkViewModel newWorkViewModel)
         {
             var work = new Work
@@ -87,6 +122,12 @@
         public bool DeleteWork(int id)
         {
             return _workRepository.Delete(id);
+        }
+
+        private void AddUserToList(List<UserViewModel> listUserViewModel, UserViewModel userViewModel)
+        {
+            if (!listUserViewModel.Contains(userViewModel))
+                listUserViewModel.Add(userViewModel);
         }
     }
 }

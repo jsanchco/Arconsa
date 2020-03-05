@@ -72,6 +72,15 @@
                 .ToList();
         }
 
+        public List<UserHiring> GetOpen()
+        {
+            return _context.UserHiring
+                .Include(x => x.Work)
+                .Include(x => x.User)
+                .Where(x => x.EndDate == null)
+                .ToList();
+        }
+
         public UserHiring GetById(int id)
         {
             return _context.UserHiring

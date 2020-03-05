@@ -10,6 +10,7 @@
     public interface IUserHiringRepository
     {
         List<UserHiring> GetAll(int userId = 0, int workId = 0);
+        List<UserHiring> GetOpen();
         UserHiring GetById(int id);
         UserHiring Add(UserHiring newUserHiring);
         bool Update(UserHiring userHiring);

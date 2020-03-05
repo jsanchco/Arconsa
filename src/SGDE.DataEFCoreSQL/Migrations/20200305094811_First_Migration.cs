@@ -335,7 +335,7 @@ namespace SGDE.DataEFCoreSQL.Migrations
                     ModifiedDate = table.Column<DateTime>(nullable: true),
                     IPAddress = table.Column<string>(nullable: true),
                     StartDate = table.Column<DateTime>(nullable: false),
-                    EndDate = table.Column<DateTime>(nullable: false),
+                    EndDate = table.Column<DateTime>(nullable: true),
                     WorkId = table.Column<int>(nullable: false),
                     UserId = table.Column<int>(nullable: false)
                 },

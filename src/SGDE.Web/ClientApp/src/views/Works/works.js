@@ -244,6 +244,7 @@ class Works extends Component {
           isOpen={this.state.modal}
           toggle={this.toggleModal}
           workSelected={this.state.rowSelected}
+          showMessage={this.props.showMessage}
         />
         <div className="card">
           <div className="card-header">

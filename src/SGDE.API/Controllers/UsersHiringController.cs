@@ -16,12 +16,12 @@ namespace SGDE.API.Controllers
     [Authorize]
     [Route("api/[controller]")]
     [ApiController]
-    public class UsersHiringsController : ControllerBase
+    public class UsersHiringController : ControllerBase
     {
         private readonly ISupervisor _supervisor;
-        private readonly ILogger<UsersHiringsController> _logger;
+        private readonly ILogger<UsersHiringController> _logger;
 
-        public UsersHiringsController(ILogger<UsersHiringsController> logger, ISupervisor supervisor)
+        public UsersHiringController(ILogger<UsersHiringController> logger, ISupervisor supervisor)
         {
             _logger = logger;
             _supervisor = supervisor;
@@ -112,7 +112,7 @@ namespace SGDE.API.Controllers
         {
             try
             {
-                return Ok();
+                return _supervisor.AssignWorkers(workersInWorkViewModel);
             }
             catch (Exception ex)
             {

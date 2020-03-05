@@ -21,6 +21,7 @@
         Task<bool> DeleteAsync(int id, CancellationToken ct = default(CancellationToken));
 
         QueryResult<User> GetAll(int skip = 0, int take = 0, string filter = null, int roleId = 0);
+        List<User> GetUsersByRole(List<int> roles);
         User GetById(int id);
         User Add(User newUser);
         bool Update(User user);

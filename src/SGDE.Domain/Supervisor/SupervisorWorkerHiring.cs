@@ -1,0 +1,66 @@
+﻿namespace SGDE.Domain.Supervisor
+{
+    #region Using
+
+    using System;
+    using System.Collections.Generic;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using Converters;
+    using Entities;
+    using ViewModels;
+    using Domain.Helpers;
+    using System.Linq;
+
+    #endregion
+
+    public partial class Supervisor
+    {
+        public QueryResult<WorkerHiringViewModel> GetAllWorkerHiring(int skip = 0, int take = 0, string filter = null, int workId = 0)
+        {
+            var workersInUsers = _userRepository.GetUsersByRole(new List<int> { 3 });
+            if (!string.IsNullOrEmpty(filter))
+            {
+                workersInUsers = workersInUsers
+                    .Where(x =>
+                        Searcher.RemoveAccentsWithNormalization(x.Address?.ToLower()).Contains(filter) ||
+                        Searcher.RemoveAccentsWithNormalization(x.Dni?.ToLower()).Contains(filter) ||
+                        Searcher.RemoveAccentsWithNormalization(x.Email?.ToLower()).Contains(filter) ||
+                        Searcher.RemoveAccentsWithNormalization(x.Name.ToLower()).Contains(filter) ||
+                        Searcher.RemoveAccentsWithNormalization(x.Observations?.ToLower()).Contains(filter) ||
+                        Searcher.RemoveAccentsWithNormalization(x.PhoneNumber?.ToLower()).Contains(filter) ||
+                        Searcher.RemoveAccentsWithNormalization(x.Surname.ToLower()).Contains(filter) ||
+                        Searcher.RemoveAccentsWithNormalization(x.Username?.ToLower()).Contains(filter) ||
+                        Searcher.RemoveAccentsWithNormalization(x.Role.Name.ToLower()).Contains(filter) ||
+                        Searcher.RemoveAccentsWithNormalization(x.Profession?.Name.ToLower()).Contains(filter) ||
+                        Searcher.RemoveAccentsWithNormalization(x.Work?.Name.ToLower()).Contains(filter) ||
+                        Searcher.RemoveAccentsWithNormalization(x.Client?.Name.ToLower()).Contains(filter))
+                    .ToList();
+            }
+
+            var listWorkerHiringViewModel = new List<WorkerHiringViewModel>();
+            foreach (var worker in workersInUsers)
+            {
+                var state = worker.WorkId == workId ? 0 : worker.WorkId == null ? 1 : 2;
+                listWorkerHiringViewModel.Add(new WorkerHiringViewModel
+                {
+                    id = worker.Id,
+                    name = $"{worker.Name} {worker.Surname}",
+                    dni = worker.Dni,
+                    workId = worker.WorkId,
+                    workName = worker.Work?.Name,
+                    state = state,
+                    dateStart = state != 1 ? GetAllUserHiring(workId, 0)?.Find(x => x.endDate == null).startDate : null
+                }) ;
+            }
+
+            listWorkerHiringViewModel = listWorkerHiringViewModel.OrderBy(x => x.state).ToList();
+            var count = listWorkerHiringViewModel.Count;
+            return new QueryResult<WorkerHiringViewModel>
+            {
+                Data = listWorkerHiringViewModel.Skip(skip).Take(take).ToList(),
+                Count = count
+            };
+        }
+    }
+}

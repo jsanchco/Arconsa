@@ -9,7 +9,7 @@
     public class UserHiringViewModel : BaseEntityViewModel
     {
         public DateTime startDate { get; set; }
-        public DateTime endDate { get; set; }
+        public DateTime? endDate { get; set; }
 
         public int workId { get; set; }
         public string workName { get; set; }
