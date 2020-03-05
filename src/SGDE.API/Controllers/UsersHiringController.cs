@@ -47,7 +47,14 @@ namespace SGDE.API.Controllers
         {
             try
             {
-                var data = _supervisor.GetAllUserHiring().ToList();
+                var queryString = Request.Query;
+                var skip = Convert.ToInt32(queryString["$skip"]);
+                var take = Convert.ToInt32(queryString["$top"]);
+                var filter = Util.Helper.getSearch(queryString["$filter"]);
+                var userId = Convert.ToInt32(queryString["userId"]);
+                var workId = Convert.ToInt32(queryString["workId"]);
+
+                var data = _supervisor.GetAllUserHiring(userId, workId).ToList();
                 return new { Items = data, data.Count };
             }
             catch (Exception ex)

@@ -1,5 +1,5 @@
 ﻿namespace SGDE.DataEFCoreSQL.Repositories
-{
+{  
     #region Using
 
     using System.Collections.Generic;
@@ -7,6 +7,7 @@
     using Domain.Entities;
     using Domain.Repositories;
     using Microsoft.EntityFrameworkCore;
+    using System;
 
     #endregion
 
@@ -116,6 +117,110 @@
             _context.SaveChanges();
             return true;
 
+        }
+
+        public bool AssignWorkers(List<int> listUserId, int workId)
+        {
+            using (var transaction = _context.Database.BeginTransaction())
+            {
+                try
+                {
+                    var work = _context.Work
+                        .Include(x => x.UserHirings)
+                        .FirstOrDefault(x => x.Id == workId);
+                    if (work == null)
+                        throw new Exception("No existe esta obra");
+
+
+                    // Damos de baja los tragajadores que no estén incluidos en los seleccionados
+                    var workersInWork = work.UserHirings
+                        .ToList()
+                        .Where(r => r.EndDate == null)?
+                        .GroupBy(x => x.UserId).Select(y => y.First())
+                        .Select(z => z.UserId);
+
+                    if (workersInWork.Any())
+                    {
+                        var removeWorkerId = workersInWork.Except(listUserId);
+                        foreach(var remove in removeWorkerId)
+                        {
+                            var userHiring = _context.UserHiring
+                                .FirstOrDefault(x => x.UserId == remove && x.WorkId == workId && x.EndDate == null);
+                            if (userHiring == null)
+                                throw new Exception("No existe esta UserHiring");
+
+                            userHiring.EndDate = DateTime.Now;
+                            _context.UserHiring.Update(userHiring);
+
+                            var user = _context.User
+                                .Include(x => x.UserHirings)
+                                .Include(x => x.Work)
+                                .FirstOrDefault(x => x.Id == remove);
+                            if (user == null)
+                                throw new Exception("No existe este trabajador");
+
+                            user.Work = null;
+                            _context.User.Update(user);
+
+                            _context.SaveChanges();
+                        }
+                    }
+                    // Damos de baja los tragajadores que no estén incluidos en los seleccionados
+
+
+                    foreach (var userId in listUserId)
+                    {
+                        var user = _context.User
+                            .Include(x => x.UserHirings)
+                            .Include(x => x.Work)
+                            .FirstOrDefault(x => x.Id == userId);
+                        if (user == null)
+                            throw new Exception("No existe este trabajador");
+
+
+                        if (user.Work == null)
+                        {
+                            _context.UserHiring.Add(new UserHiring
+                            {
+                                AddedDate = DateTime.Now,
+                                ModifiedDate = null,
+
+                                StartDate = DateTime.Now,
+                                EndDate = null,
+                                WorkId = workId,
+                                UserId = userId
+                            });
+
+                            user.WorkId = workId;
+                            _context.User.Update(user);
+
+                            _context.SaveChanges();
+                        }
+                        else
+                        {
+                            var userHiring = user.UserHirings.ToList().FirstOrDefault(x => x.EndDate == null && x.WorkId != workId);
+                            if (userHiring != null)
+                            {
+                                userHiring.EndDate = DateTime.Now;
+                                _context.UserHiring.Update(userHiring);
+
+                                user.WorkId = workId;
+                                _context.User.Update(user);
+
+                                _context.SaveChanges();
+                            }
+                        }
+                    }
+                    transaction.Commit();
+                }
+                catch(Exception ex)
+                {
+                    transaction.Rollback();
+                    throw ex;
+                }
+            }
+
+            return true;
         }
     }
 }

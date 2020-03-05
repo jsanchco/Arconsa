@@ -38,12 +38,15 @@ class ModalWorkers extends Component {
       workers: null,
       hideConfirmDialog: false,
       workersSelected: null,
-      selectedRecords: null
+      selectedRecords: null,
+      selectedRowIndex: []
     };
 
     this._handleOnClick = this._handleOnClick.bind(this);
     this.dialogClose = this.dialogClose.bind(this);
     this.actionFailure = this.actionFailure.bind(this);
+    this.onDataBound = this.onDataBound.bind(this);
+    this.onRowDataBound = this.onRowDataBound.bind(this);
 
     this.selectionSettings = {
       checkboxMode: "ResetOnRowClick",
@@ -59,8 +62,6 @@ class ModalWorkers extends Component {
 
           const selectedRecords = this.grid.getSelectedRecords();
           updateWorkersInWork(selectedRecords, this.props.workSelected.id);
-
-          this.props.toggle();
         },
         buttonModel: { content: "Si", isPrimary: true }
       },
@@ -120,6 +121,19 @@ class ModalWorkers extends Component {
     }
   }
 
+  onDataBound() {
+    console.log("dataBound!!!");
+  }
+
+  onRowDataBound(args) {
+    if (args.data.state === 0) {
+      let { selectedRowIndex } = this.state;
+      selectedRowIndex.push(args.data.id);
+
+      this.setState({ selectedRowIndex: selectedRowIndex });
+    }
+  }
+
   render() {
     let title = "";
     let query = null;
@@ -170,6 +184,9 @@ class ModalWorkers extends Component {
                 ref={g => (this.grid = g)}
                 selectionSettings={this.selectionSettings}
                 query={query}
+                dataBound={this.onDataBound}
+                rowDataBound={this.onRowDataBound}
+                selectedRowIndex={[5, 8]}
               >
                 <ColumnsDirective>
                   <ColumnDirective

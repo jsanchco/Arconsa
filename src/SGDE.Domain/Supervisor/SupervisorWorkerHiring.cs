@@ -50,7 +50,7 @@
                     workId = worker.WorkId,
                     workName = worker.Work?.Name,
                     state = state,
-                    dateStart = state != 1 ? GetAllUserHiring(workId, 0)?.Find(x => x.endDate == null).startDate : null
+                    dateStart = state != 1 ? GetAllUserHiring(0, workId)?.Find(x => x.endDate == null).startDate : null
                 }) ;
             }
 

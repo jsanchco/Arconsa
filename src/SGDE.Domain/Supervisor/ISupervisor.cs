@@ -86,7 +86,7 @@ namespace SGDE.Domain.Supervisor
         UserHiringViewModel AddUserHiring(UserHiringViewModel newUserHiringViewModel);
         bool UpdateUserHiring(UserHiringViewModel userHiringViewModel);
         bool DeleteUserHiring(int id);
-        List<UserHiringViewModel> AssignWorkers(WorkersInWorkViewModel workersInWorkViewModel);
+        bool AssignWorkers(WorkersInWorkViewModel workersInWorkViewModel);
 
         #endregion
 

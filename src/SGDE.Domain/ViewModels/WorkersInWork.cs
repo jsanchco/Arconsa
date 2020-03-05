@@ -8,7 +8,7 @@
 
     public class WorkersInWorkViewModel
     {
-        public List<int> listIdUsers { get; set; }
-        public int idWork { get; set; }
+        public List<int> listUserId { get; set; }
+        public int workId { get; set; }
     }
 }

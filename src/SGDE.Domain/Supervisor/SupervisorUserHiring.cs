@@ -4,6 +4,7 @@
 
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
     using Converters;
@@ -16,7 +17,7 @@
     {
         public List<UserHiringViewModel> GetAllUserHiring(int userId = 0, int workId = 0)
         {
-            return UserHiringConverter.ConvertList(_userHiringRepository.GetAll());
+            return UserHiringConverter.ConvertList(_userHiringRepository.GetAll(userId, workId));
         }
 
         public UserHiringViewModel GetUserHiringById(int id)
@@ -69,9 +70,9 @@
             return _userHiringRepository.Delete(id);
         }
 
-        public List<UserHiringViewModel> AssignWorkers(WorkersInWorkViewModel workersInWorkViewModel)
+        public bool AssignWorkers(WorkersInWorkViewModel workersInWorkViewModel)
         {
-            return null;
+            return _userHiringRepository.AssignWorkers(workersInWorkViewModel.listUserId, workersInWorkViewModel.workId);
         }
     }
 }

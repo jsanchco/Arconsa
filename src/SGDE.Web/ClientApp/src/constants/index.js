@@ -8,6 +8,7 @@ export const TRAININGS = "api/Trainings";
 export const DOCUMENTS = "api/UserDocuments";
 export const UPLOADBOX_SAVE = "api/UploadBox";
 export const WORKERSHIRING = "api/WorkersHiring";
+export const USERSHIRING = "api/UsersHiring";
 export const ASSIGNWORKERS = "api/UsersHiring/assignworkers";
 export const AUTHENTICATE = "api/Users/authenticate";
 

@@ -49,6 +49,7 @@ const TypesDocument = React.lazy(() => import('./views/Settings/types-document')
 const Clients = React.lazy(() => import('./views/Clients/clients'));
 
 const Works = React.lazy(() => import('./views/Works/works'));
+const DetailWork = React.lazy(() => import('./views/Works/detail-work'));
 
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
 const routes = [
@@ -102,7 +103,8 @@ const routes = [
   { path: '/settings/professions', exact: true, name: 'Puestos de Trabajo', component: Professions },
   { path: '/settings/typesdocument', exact: true, name: 'Tipos de Documento', component: TypesDocument },
   { path: '/clients/clients', exact: true, name: 'Clientes', component: Clients },
-  { path: '/works/works', exact: true, name: 'Obras', component: Works }
+  { path: '/works/works', exact: true, name: 'Obras', component: Works },
+  { path: '/works/detailwork', exact: true, name: 'Detalle Obra', component: DetailWork }
 ];
 
 export default routes;

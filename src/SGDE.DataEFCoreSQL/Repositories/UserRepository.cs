@@ -168,6 +168,7 @@
                 .Include(x => x.Role)
                 .Include(x => x.Client)
                 .Include(x => x.Work)
+                .Include(x => x.UserHirings)
                 .FirstOrDefault(x => x.Id == id);
         }
 

@@ -15,5 +15,6 @@
         UserHiring Add(UserHiring newUserHiring);
         bool Update(UserHiring userHiring);
         bool Delete(int id);
+        bool AssignWorkers(List<int> listUserId, int workId);
     }
 }

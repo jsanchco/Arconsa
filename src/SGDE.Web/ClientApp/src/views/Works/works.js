@@ -67,8 +67,14 @@ class Works extends Component {
       "Update",
       "Cancel",
       {
-        text: "Trabajadores",
-        tooltipText: "Trabajadores",
+        text: "Detalles",
+        tooltipText: "Detalles",
+        prefixIcon: "e-custom-icons e-details",
+        id: "Details"
+      },
+      {
+        text: "Añadir/Quitar trabajadores",
+        tooltipText: "Añadir/Quitar Trabajadores",
         prefixIcon: "e-custom-icons e-file-workers",
         id: "Workers"
       }
@@ -98,6 +104,27 @@ class Works extends Component {
   }
 
   clickHandler(args) {
+    if (args.item.id === "Details") {
+      const selectedRecords = this.grid.getSelectedRecords();
+      if (Array.isArray(selectedRecords) && selectedRecords.length === 1) {
+        this.setState({ rowSelected: selectedRecords[0] });
+        
+        this.props.history.push({
+          pathname: "/works/detailwork",
+          state: {
+            work: selectedRecords[0]
+          }
+        });
+      } else {
+        this.setState({ rowSelected: null });
+        this.props.showMessage({
+          statusText: "Debes seleccionar un solo registro",
+          responseText: "Debes seleccionar un solo registro",
+          type: "danger"
+        });
+      }
+    }
+
     if (args.item.id === "Workers") {
       const selectedRecords = this.grid.getSelectedRecords();
       if (Array.isArray(selectedRecords) && selectedRecords.length === 1) {

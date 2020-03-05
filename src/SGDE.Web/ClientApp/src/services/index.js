@@ -247,7 +247,7 @@ export const updateDocument = document => {
   });
 };
 
-export const updateWorkersInWork = (workers, idWork) => {
+export const updateWorkersInWork = (workers, workId) => {
   return new Promise((resolve, reject) => {
     const url = `${config.URL_API}/${ASSIGNWORKERS}`;
     let workersId = [];
@@ -263,7 +263,7 @@ export const updateWorkersInWork = (workers, idWork) => {
         Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`
       },
       method: "POST",
-      body: JSON.stringify({listIdUsers: workersId, idWork: idWork})
+      body: JSON.stringify({listUserId: workersId, workId: workId})
     })
       .then(data => data.json())
       .then(result => {
