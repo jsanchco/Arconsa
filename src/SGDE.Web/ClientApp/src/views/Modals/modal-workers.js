@@ -9,8 +9,7 @@ import {
   Inject,
   Toolbar,
   Page,
-  ForeignKey,
-  Group
+  ForeignKey
 } from "@syncfusion/ej2-react-grids";
 import { DataManager, WebApiAdaptor, Query } from "@syncfusion/ej2-data";
 import { DialogComponent } from "@syncfusion/ej2-react-popups";
@@ -30,6 +29,8 @@ class ModalWorkers extends Component {
   });
 
   grid = null;
+  selectedRowIndex = [];
+  update = false;
 
   constructor(props) {
     super(props);
@@ -50,7 +51,9 @@ class ModalWorkers extends Component {
 
     this.selectionSettings = {
       checkboxMode: "ResetOnRowClick",
-      persistSelection: true
+      persistSelection: true,
+      type: "Multiple",
+      mode: "Row"
     };
     this.pageSettings = { pageCount: 10, pageSize: 10 };
     this.toolbarOptions = ["Search"];
@@ -122,15 +125,17 @@ class ModalWorkers extends Component {
   }
 
   onDataBound() {
-    console.log("dataBound!!!");
+    if (!this.update) {
+      this.grid.selectRows(this.selectedRowIndex);
+      this.update = true;
+    }   
   }
 
   onRowDataBound(args) {
     if (args.data.state === 0) {
-      let { selectedRowIndex } = this.state;
-      selectedRowIndex.push(args.data.id);
-
-      this.setState({ selectedRowIndex: selectedRowIndex });
+      this.selectedRowIndex.push(
+        this.grid.getRowIndexByPrimaryKey(args.data.id)
+      );
     }
   }
 
@@ -186,7 +191,6 @@ class ModalWorkers extends Component {
                 query={query}
                 dataBound={this.onDataBound}
                 rowDataBound={this.onRowDataBound}
-                selectedRowIndex={[5, 8]}
               >
                 <ColumnsDirective>
                   <ColumnDirective
@@ -217,7 +221,7 @@ class ModalWorkers extends Component {
                     template={this.stateTemplate}
                   />
                 </ColumnsDirective>
-                <Inject services={[ForeignKey, Group, Page, Toolbar]} />
+                <Inject services={[ForeignKey, Page, Toolbar]} />
               </GridComponent>
             </Row>
           </ModalBody>

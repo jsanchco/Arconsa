@@ -10,7 +10,7 @@ using SGDE.DataEFCoreSQL;
 namespace SGDE.DataEFCoreSQL.Migrations
 {
     [DbContext(typeof(EFContextSQL))]
-    [Migration("20200305094811_First_Migration")]
+    [Migration("20200305190139_First_Migration")]
     partial class First_Migration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
