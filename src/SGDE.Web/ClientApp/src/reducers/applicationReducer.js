@@ -6,7 +6,7 @@ const applicationReducer = (state = INITIAL_STATE.application, action) => {
     case ACTIONS.Types.SHOW_MESSAGE: {
       return {
         ...state,
-        message: action.payload  
+        message: action.payload
       };
     }
 

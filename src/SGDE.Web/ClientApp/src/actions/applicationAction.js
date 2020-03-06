@@ -1,6 +1,6 @@
 // types of action
 const Types = {
-  SHOW_MESSAGE: "SHOW_MESSAGE"
+  SHOW_MESSAGE: "SHOW_MESSAGE",
 };
 
 // actions

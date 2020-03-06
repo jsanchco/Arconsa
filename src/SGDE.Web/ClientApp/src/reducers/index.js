@@ -4,7 +4,8 @@ import authenticationReducer from "./authenticationReducer";
 
 export const INITIAL_STATE = {
   application: {
-    message: null
+    message: null,
+    selectedIndexWorkers: []
   },
   authentication: {
     user: null, 

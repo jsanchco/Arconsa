@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
-import { Row } from "reactstrap";
+import { Row, Col } from "reactstrap";
 import {
   ColumnDirective,
   ColumnsDirective,
@@ -31,23 +31,23 @@ class ModalWorkers extends Component {
   grid = null;
   selectedRowIndex = [];
   update = false;
+  workSelected = null;
 
   constructor(props) {
     super(props);
 
     this.state = {
       workers: null,
-      hideConfirmDialog: false,
-      workersSelected: null,
-      selectedRecords: null,
-      selectedRowIndex: []
+      hideConfirmDialog: false
     };
 
-    this._handleOnClick = this._handleOnClick.bind(this);
+    this._handleOnClickSave = this._handleOnClickSave.bind(this);
     this.dialogClose = this.dialogClose.bind(this);
     this.actionFailure = this.actionFailure.bind(this);
     this.onDataBound = this.onDataBound.bind(this);
     this.onRowDataBound = this.onRowDataBound.bind(this);
+    this.rowSelected = this.rowSelected.bind(this);
+    this.onClickWorkersInWork = this.onClickWorkersInWork.bind(this);
 
     this.selectionSettings = {
       checkboxMode: "ResetOnRowClick",
@@ -79,7 +79,7 @@ class ModalWorkers extends Component {
     this.animationSettings = { effect: "None" };
   }
 
-  _handleOnClick() {
+  _handleOnClickSave() {
     this.setState({ hideConfirmDialog: true });
   }
 
@@ -125,18 +125,38 @@ class ModalWorkers extends Component {
   }
 
   onDataBound() {
-    if (!this.update) {
-      this.grid.selectRows(this.selectedRowIndex);
-      this.update = true;
-    }   
+    // console.log("this.update ->", this.update);
+    // console.log("this.selectedRowIndex ->", this.selectedRowIndex);
+    // console.log("workSelected ->", this.props.workSelected);
+    // if (!this.update) {
+    //   this.grid.selectRows(this.selectedRowIndex);
+    //   this.update = true;
+    // }
   }
 
   onRowDataBound(args) {
-    if (args.data.state === 0) {
-      this.selectedRowIndex.push(
-        this.grid.getRowIndexByPrimaryKey(args.data.id)
-      );
-    }
+    // if (args.data.state === 0) {
+    //   const rowIndex = this.grid.getRowIndexByPrimaryKey(args.data.id);
+    //   //this.props.addSelection(rowIndex);
+    //   if (!this.selectedRowIndex.includes(rowIndex)) {
+    //     this.selectedRowIndex.push(rowIndex);
+    //   }
+    // }
+  }
+
+  rowSelected() {
+    this.selectedRowIndex = this.grid.getSelectedRowIndexes();
+  }
+
+  onClickWorkersInWork() {
+    const data = this.grid.getCurrentViewRecords();
+    data.forEach(row => {
+      if (row.state === 0) {
+        const rowIndex = this.grid.getRowIndexByPrimaryKey(row.id);
+        this.selectedRowIndex.push(rowIndex);
+      }
+      this.grid.selectRows(this.selectedRowIndex);
+    });
   }
 
   render() {
@@ -173,11 +193,18 @@ class ModalWorkers extends Component {
           <ModalHeader toggle={this.props.toggle}>{title}</ModalHeader>
           <ModalBody>
             <Row>
+              <Col>
+                <Button color="danger" style={{ marginLeft: "10px"}} onClick={this.onClickWorkersInWork}>
+                  Seleccionar Trabajadores en Obra
+                </Button>
+              </Col>
+            </Row>
+            <Row>
               <GridComponent
                 dataSource={this.workers}
                 locale="es-US"
-                allowPaging={true}
-                pageSettings={this.pageSettings}
+                // allowPaging={true}
+                // pageSettings={this.pageSettings}
                 actionFailure={this.actionFailure}
                 toolbar={this.toolbarOptions}
                 style={{
@@ -186,11 +213,13 @@ class ModalWorkers extends Component {
                   marginTop: 20,
                   marginBottom: 20
                 }}
+                height={500}
                 ref={g => (this.grid = g)}
                 selectionSettings={this.selectionSettings}
                 query={query}
                 dataBound={this.onDataBound}
                 rowDataBound={this.onRowDataBound}
+                rowSelected={this.rowSelected}
               >
                 <ColumnsDirective>
                   <ColumnDirective
@@ -226,7 +255,7 @@ class ModalWorkers extends Component {
             </Row>
           </ModalBody>
           <ModalFooter>
-            <Button color="primary" onClick={this._handleOnClick}>
+            <Button color="primary" onClick={this._handleOnClickSave}>
               Guardar
             </Button>
             <Button

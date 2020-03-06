@@ -108,7 +108,7 @@ class Works extends Component {
       const selectedRecords = this.grid.getSelectedRecords();
       if (Array.isArray(selectedRecords) && selectedRecords.length === 1) {
         this.setState({ rowSelected: selectedRecords[0] });
-        
+
         this.props.history.push({
           pathname: "/works/detailwork",
           state: {
@@ -383,12 +383,12 @@ Works.propTypes = {};
 
 const mapStateToProps = state => {
   return {
-    errorApplication: state.applicationReducer.error
+    
   };
 };
 
 const mapDispatchToProps = dispatch => ({
-  showMessage: message => dispatch(ACTION_APPLICATION.showMessage(message))
+  showMessage: message => dispatch(ACTION_APPLICATION.showMessage(message)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Works);

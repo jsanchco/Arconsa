@@ -102,12 +102,24 @@ class AuthorizeCancelWorkers extends Component {
     }
   }
 
-  dateTemplate(args) {
+  startDateTemplate(args) {
     return (
       <DatePickerComponent
-        value={getValue("OrderDate", args)}
-        id="OrderDate"
-        placeholder="Fecha de Apertura de Obra"
+        value={getValue("startDate", args)}
+        id="startDateDP"
+        placeholder="Fecha Inicio"
+        floatLabelType="Never"
+        format="dd/MM/yyyy"
+      />
+    );
+  }
+
+  endDateTemplate(args) {
+    return (
+      <DatePickerComponent
+        value={getValue("endDate", args)}
+        id="endDateDP"
+        placeholder="Fecha Fin"
         floatLabelType="Never"
         format="dd/MM/yyyy"
       />
@@ -165,7 +177,7 @@ class AuthorizeCancelWorkers extends Component {
                     width="100"
                     type="date"
                     format="dd/MM/yyyy"
-                    editTemplate={this.dateTemplate}
+                    editTemplate={this.startDateTemplate}
                   />
                   <ColumnDirective
                     field="endDate"
@@ -173,7 +185,7 @@ class AuthorizeCancelWorkers extends Component {
                     width="100"
                     type="date"
                     format="dd/MM/yyyy"
-                    editTemplate={this.dateTemplate}
+                    editTemplate={this.endDateTemplate}
                   />
                 </ColumnsDirective>
                 <Inject services={[Page, Toolbar, Edit]} />
