@@ -332,3 +332,7 @@ ASALocalRun/
 
 **/data/data.csv
 /src/SGDE.Web/ClientApp/.history/public
+
+# appsettings.json
+/src/SGDE.API/appsettings.json
+/src/SGDE.SeedData/appsettings.json
