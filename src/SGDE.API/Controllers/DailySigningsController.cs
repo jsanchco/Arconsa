@@ -15,12 +15,12 @@
     [Authorize]
     [Route("api/[controller]")]
     [ApiController]
-    public class DailySigningController : ControllerBase
+    public class DailySigningsController : ControllerBase
     {
         private readonly ISupervisor _supervisor;
-        private readonly ILogger<DailySigningController> _logger;
+        private readonly ILogger<DailySigningsController> _logger;
 
-        public DailySigningController(ILogger<DailySigningController> logger, ISupervisor supervisor)
+        public DailySigningsController(ILogger<DailySigningsController> logger, ISupervisor supervisor)
         {
             _logger = logger;
             _supervisor = supervisor;

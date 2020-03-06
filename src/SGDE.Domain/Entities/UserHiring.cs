@@ -3,6 +3,7 @@
     #region Using
 
     using System;
+    using System.Collections.Generic;
 
     #endregion
 
@@ -16,5 +17,7 @@
 
         public int UserId { get; set; }
         public virtual User User { get; set; }
+
+        public virtual ICollection<DailySigning> DailysSigning { get; set; } = new HashSet<DailySigning>();
     }
 }

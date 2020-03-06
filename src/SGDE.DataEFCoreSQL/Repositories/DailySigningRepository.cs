@@ -32,16 +32,20 @@
         public List<DailySigning> GetAll()
         {
             return _context.DailySigning
-                .Include(x => x.User)
-                .Include(x => x.Work)
+                .Include(x => x.UserHiring)
+                .ThenInclude(y => y.Work)
+                .Include(z => z.UserHiring)
+                .ThenInclude(w => w.User)
                 .ToList();
         }
 
         public DailySigning GetById(int id)
         {
             return _context.DailySigning
-                .Include(x => x.User)
-                .Include(x => x.Work)
+                .Include(x => x.UserHiring)
+                .ThenInclude(y => y.Work)
+                .Include(z => z.UserHiring)
+                .ThenInclude(w => w.User)
                 .FirstOrDefault(x => x.Id == id);
         }
 

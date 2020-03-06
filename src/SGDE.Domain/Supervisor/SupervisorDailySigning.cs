@@ -36,8 +36,7 @@
 
                 StartHour = newDailySigningViewModel.startHour,
                 EndHour = newDailySigningViewModel.endHour,
-                WorkId = newDailySigningViewModel.workId,
-                UserId = newDailySigningViewModel.userId
+                UserHiringId = newDailySigningViewModel.userHiringId
             };
 
             _dailySigningRepository.Add(dailySigning);
@@ -58,8 +57,7 @@
 
             dailySigning.StartHour = dailySigningViewModel.startHour;
             dailySigning.EndHour = dailySigningViewModel.endHour;
-            dailySigning.WorkId = dailySigningViewModel.workId;
-            dailySigning.UserId = dailySigningViewModel.userId;
+            dailySigning.UserHiringId = dailySigningViewModel.userHiringId;
 
             return _dailySigningRepository.Update(dailySigning);
         }

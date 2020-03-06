@@ -9,6 +9,7 @@ import {
 import BasicData from "./basic-data";
 import Trainings from "./trainings";
 import Documents from "./documents";
+import DailySignings from "./daily-signings";
 
 class DetailEmployee extends Component {
   constructor(props) {
@@ -17,12 +18,16 @@ class DetailEmployee extends Component {
     this.headerText = [
       { text: "Datos Básicos" },
       { text: "Cursos" },
-      { text: "Documentos" }
+      { text: "Documentos" },
+      { text: "Fichajes" }
     ];
 
     this.contentTemplateBasicDate = this.contentTemplateBasicDate.bind(this);
     this.contentTemplateTrainings = this.contentTemplateTrainings.bind(this);
     this.contentTemplateDocuments = this.contentTemplateDocuments.bind(this);
+    this.contentTemplateDailySignings = this.contentTemplateDailySignings.bind(
+      this
+    );
   }
 
   contentTemplateBasicDate() {
@@ -48,6 +53,16 @@ class DetailEmployee extends Component {
   contentTemplateDocuments() {
     return (
       <Documents
+        user={this.props.history.location.state.user}
+        history={this.props.history}
+        showMessage={this.props.showMessage}
+      />
+    );
+  }
+
+  contentTemplateDailySignings() {
+    return (
+      <DailySignings
         user={this.props.history.location.state.user}
         history={this.props.history}
         showMessage={this.props.showMessage}
@@ -84,6 +99,10 @@ class DetailEmployee extends Component {
                   <TabItemDirective
                     header={this.headerText[2]}
                     content={this.contentTemplateDocuments}
+                  />
+                  <TabItemDirective
+                    header={this.headerText[3]}
+                    content={this.contentTemplateDailySignings}
                   />
                 </TabItemsDirective>
               </TabComponent>

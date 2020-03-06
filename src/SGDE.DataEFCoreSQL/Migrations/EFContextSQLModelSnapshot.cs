@@ -86,13 +86,19 @@ namespace SGDE.DataEFCoreSQL.Migrations
                     b.Property<DateTime>("StartHour")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("UserId")
+                    b.Property<int>("UserHiringId")
                         .HasColumnType("int");
 
-                    b.Property<int>("WorkId")
+                    b.Property<int?>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("WorkId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("UserHiringId")
+                        .HasName("IFK_UserHiring_DailySigning");
 
                     b.HasIndex("UserId");
 
@@ -538,17 +544,20 @@ namespace SGDE.DataEFCoreSQL.Migrations
 
             modelBuilder.Entity("SGDE.Domain.Entities.DailySigning", b =>
                 {
-                    b.HasOne("SGDE.Domain.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
+                    b.HasOne("SGDE.Domain.Entities.UserHiring", "UserHiring")
+                        .WithMany("DailysSigning")
+                        .HasForeignKey("UserHiringId")
+                        .HasConstraintName("FK__DailySigning__UserHiringId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SGDE.Domain.Entities.Work", "Work")
-                        .WithMany()
-                        .HasForeignKey("WorkId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("SGDE.Domain.Entities.User", null)
+                        .WithMany("DailySignings")
+                        .HasForeignKey("UserId");
+
+                    b.HasOne("SGDE.Domain.Entities.Work", null)
+                        .WithMany("DailySignings")
+                        .HasForeignKey("WorkId");
                 });
 
             modelBuilder.Entity("SGDE.Domain.Entities.Training", b =>

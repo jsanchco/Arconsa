@@ -234,37 +234,6 @@ namespace SGDE.DataEFCoreSQL.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "DailySigning",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    AddedDate = table.Column<DateTime>(nullable: true),
-                    ModifiedDate = table.Column<DateTime>(nullable: true),
-                    IPAddress = table.Column<string>(nullable: true),
-                    StartHour = table.Column<DateTime>(nullable: false),
-                    EndHour = table.Column<DateTime>(nullable: true),
-                    WorkId = table.Column<int>(nullable: false),
-                    UserId = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_DailySigning", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_DailySigning_User_UserId",
-                        column: x => x.UserId,
-                        principalTable: "User",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_DailySigning_Work_WorkId",
-                        column: x => x.WorkId,
-                        principalTable: "Work",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Training",
                 columns: table => new
                 {
@@ -356,6 +325,44 @@ namespace SGDE.DataEFCoreSQL.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "DailySigning",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    AddedDate = table.Column<DateTime>(nullable: true),
+                    ModifiedDate = table.Column<DateTime>(nullable: true),
+                    IPAddress = table.Column<string>(nullable: true),
+                    StartHour = table.Column<DateTime>(nullable: false),
+                    EndHour = table.Column<DateTime>(nullable: true),
+                    UserHiringId = table.Column<int>(nullable: false),
+                    UserId = table.Column<int>(nullable: true),
+                    WorkId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DailySigning", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK__DailySigning__UserHiringId",
+                        column: x => x.UserHiringId,
+                        principalTable: "UserHiring",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_DailySigning_User_UserId",
+                        column: x => x.UserId,
+                        principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_DailySigning_Work_WorkId",
+                        column: x => x.WorkId,
+                        principalTable: "Work",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IFK_Promoter_Client",
                 table: "Client",
@@ -365,6 +372,11 @@ namespace SGDE.DataEFCoreSQL.Migrations
                 name: "IX_Client_TypeClientId",
                 table: "Client",
                 column: "TypeClientId");
+
+            migrationBuilder.CreateIndex(
+                name: "IFK_UserHiring_DailySigning",
+                table: "DailySigning",
+                column: "UserHiringId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_DailySigning_UserId",

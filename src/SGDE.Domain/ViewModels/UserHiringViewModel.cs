@@ -8,6 +8,14 @@
 
     public class UserHiringViewModel : BaseEntityViewModel
     {
+        public string userHiringName 
+        { 
+            get
+            {
+                return $"{workName} {startDate.ToShortDateString()}";
+            }
+        }
+
         public DateTime startDate { get; set; }
         public DateTime? endDate { get; set; }
 

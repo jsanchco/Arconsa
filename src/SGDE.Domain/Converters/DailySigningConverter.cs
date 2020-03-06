@@ -25,10 +25,8 @@
 
                 startHour = dailySigning.StartHour,
                 endHour = dailySigning.EndHour,
-                workId = dailySigning.WorkId,
-                workName = dailySigning.Work.Name,
-                userId = dailySigning.UserId,
-                userName = dailySigning.User.Username
+                userHiringId = dailySigning.UserHiringId,
+                userHiringName = $"{dailySigning.UserHiring.Work.Name} {dailySigning.UserHiring.StartDate.ToShortDateString()}"
             };
 
             return dailySigningViewModel;
@@ -47,10 +45,8 @@
 
                     startHour = dailySigning.StartHour,
                     endHour = dailySigning.EndHour,
-                    workId = dailySigning.WorkId,
-                    workName = dailySigning.Work.Name,
-                    userId = dailySigning.UserId,
-                    userName = dailySigning.User.Username
+                    userHiringId = dailySigning.UserHiringId,
+                    userHiringName = $"{dailySigning.UserHiring.Work.Name} {dailySigning.UserHiring.StartDate.ToShortDateString()}"
                 };
                 return model;
             })

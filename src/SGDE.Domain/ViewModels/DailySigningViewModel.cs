@@ -10,11 +10,8 @@
     {
         public DateTime startHour { get; set; }
         public DateTime? endHour { get; set; }
-
-        public int workId { get; set; }
-        public string workName { get; set; }
-
-        public int userId { get; set; }
-        public string userName { get; set; }
+        
+        public int userHiringId { get; set; }
+        public string userHiringName { get; set; }
     }
 }
