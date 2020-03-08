@@ -14,5 +14,6 @@
         DailySigning Add(DailySigning newDailySigning);
         bool Update(DailySigning dailySigning);
         bool Delete(int id);
+        bool ValidateDalilySigning(DailySigning dailySigning);
     }
 }

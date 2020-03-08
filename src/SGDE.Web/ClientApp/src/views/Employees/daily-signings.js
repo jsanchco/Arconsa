@@ -9,7 +9,7 @@ import {
   Toolbar,
   Page
 } from "@syncfusion/ej2-react-grids";
-import { DatePickerComponent } from "@syncfusion/ej2-react-calendars";
+import { DateTimePickerComponent } from "@syncfusion/ej2-react-calendars";
 import { getValue } from "@syncfusion/ej2-base";
 import { DataManager, WebApiAdaptor, Query } from "@syncfusion/ej2-data";
 import { config, DAILYSIGNINGS, USERSHIRING } from "../../constants";
@@ -54,11 +54,11 @@ class DailySignings extends Component {
     this.pageSettings = { pageCount: 10, pageSize: 10 };
     this.actionFailure = this.actionFailure.bind(this);
     this.actionComplete = this.actionComplete.bind(this);
+    this.actionBegin = this.actionBegin.bind(this);
 
     this.template = this.gridTemplate;
 
     this.queryDailySignings = new Query().addParams("userId", props.user.id);
-    this.queryUserHirings = new Query().addParams("userId", props.user.id).addParams("worId", props.user.workId);
   }
 
   gridTemplate(args) {
@@ -75,6 +75,15 @@ class DailySignings extends Component {
         </div>
       );
     }
+  }
+
+  actionBegin(args) { 
+    if (args.requestType === "add" || args.requestType === "beginEdit") { 
+        this.grid.columns[0].edit.params.query.params = []; 
+        this.grid.columns[0].edit.params.query
+          .addParams("userId", this.props.user.id)
+          .addParams("workId", this.props.user.workId);
+    } 
   }
 
   actionFailure(args) {
@@ -105,24 +114,24 @@ class DailySignings extends Component {
 
   startHourTemplate(args) {
     return (
-      <DatePickerComponent
+      <DateTimePickerComponent
         value={getValue("startHour", args)}
-        id="startHourDP"
+        id="startHour"
         placeholder="Hora Inicio"
         floatLabelType="Never"
-        format="dd/MM/yyyy"
+        format="dd/MM/yyyy HH:mm"
       />
     );
   }
 
   endHourTemplate(args) {
     return (
-      <DatePickerComponent
+      <DateTimePickerComponent
         value={getValue("endHour", args)}
-        id="endHourDP"
+        id="endHour"
         placeholder="Hora Fin"
         floatLabelType="Never"
-        format="dd/MM/yyyy"
+        format="dd/MM/yyyy HH:mm"
       />
     );
   }
@@ -153,6 +162,7 @@ class DailySignings extends Component {
                 }}
                 actionFailure={this.actionFailure}
                 actionComplete={this.actionComplete}
+                actionBegin={this.actionBegin}
                 allowGrouping={false}
                 rowSelected={this.rowSelected}
                 ref={g => (this.grid = g)}
@@ -163,11 +173,12 @@ class DailySignings extends Component {
                     field="userHiringId"
                     headerText="Obra"
                     width="100"
-                    editType="dropdownedit"
-                    foreignKeyValue="userHiringName"
-                    foreignKeyField="id"
+                    editType="dropdownedit"                    
                     validationRules={this.userHiringIdRules}
+                    textAlign="Center"
                     dataSource={this.userHirings}
+                    foreignKeyValue="name"
+                    foreignKeyField="id"
                   />
                   <ColumnDirective
                     field="id"
@@ -182,16 +193,25 @@ class DailySignings extends Component {
                     headerText="Hora Inicio"
                     width="100"
                     type="date"
-                    format="dd/MM/yyyy"
+                    format="dd/MM/yyyy HH:mm"
                     editTemplate={this.startHourTemplate}
+                    textAlign="Center"
                   />
                   <ColumnDirective
-                    field="endDate"
+                    field="endHour"
                     headerText="Hora Fin"
                     width="100"
                     type="date"
-                    format="dd/MM/yyyy"
+                    format="dd/MM/yyyy HH:mm"
                     editTemplate={this.endHourTemplate}
+                    textAlign="Center"
+                  />
+                  <ColumnDirective
+                    field="totalHours"
+                    headerText="Horas Totales"
+                    width="100"
+                    allowEditing={false}
+                    textAlign="Right"
                   />
                 </ColumnsDirective>
                 <Inject services={[Page, Toolbar, Edit]} />

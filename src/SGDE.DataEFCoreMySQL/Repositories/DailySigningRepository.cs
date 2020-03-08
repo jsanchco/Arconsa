@@ -76,7 +76,23 @@
             _context.DailySigning.Remove(toRemove);
             _context.SaveChanges();
             return true;
+        }
 
+        public bool ValidateDalilySigning(DailySigning dailySigning)
+        {
+            if (dailySigning.StartHour >= dailySigning.EndHour)
+                return false;
+
+            if (_context.DailySigning.FirstOrDefault(x => x.StartHour <= dailySigning.StartHour && x.EndHour >= dailySigning.StartHour) != null)
+                return false;
+
+            if (_context.DailySigning.FirstOrDefault(x => x.StartHour <= dailySigning.EndHour && x.EndHour >= dailySigning.StartHour) != null)
+                return false;
+
+            if (_context.DailySigning.FirstOrDefault(x => x.StartHour <= dailySigning.StartHour && x.EndHour >= dailySigning.EndHour) != null)
+                return false;
+
+            return true;
         }
     }
 }

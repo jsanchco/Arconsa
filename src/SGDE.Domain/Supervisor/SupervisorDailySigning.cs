@@ -4,6 +4,7 @@
 
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Threading;
     using System.Threading.Tasks;
     using Converters;
@@ -34,10 +35,17 @@
                 ModifiedDate = null,
                 IPAddress = newDailySigningViewModel.iPAddress,
 
-                StartHour = newDailySigningViewModel.startHour,
-                EndHour = newDailySigningViewModel.endHour,
+                StartHour = DateTime.Parse(newDailySigningViewModel.startHour),
+
+                EndHour = string.IsNullOrEmpty(newDailySigningViewModel.endHour)
+                ? null :
+                (DateTime?)DateTime.Parse(newDailySigningViewModel.endHour),
+
                 UserHiringId = newDailySigningViewModel.userHiringId
             };
+
+            if (!_dailySigningRepository.ValidateDalilySigning(dailySigning))
+                throw new Exception("El fichaje está mal configurado");
 
             _dailySigningRepository.Add(dailySigning);
             return newDailySigningViewModel;
@@ -55,9 +63,16 @@
             dailySigning.ModifiedDate = DateTime.Now;
             dailySigning.IPAddress = dailySigningViewModel.iPAddress;
 
-            dailySigning.StartHour = dailySigningViewModel.startHour;
-            dailySigning.EndHour = dailySigningViewModel.endHour;
+            dailySigning.StartHour = DateTime.Parse(dailySigningViewModel.startHour);
+
+            dailySigning.EndHour = string.IsNullOrEmpty(dailySigningViewModel.endHour)
+                ? null
+                : (DateTime?)DateTime.Parse(dailySigningViewModel.endHour);
+
             dailySigning.UserHiringId = dailySigningViewModel.userHiringId;
+
+            if (!_dailySigningRepository.ValidateDalilySigning(dailySigning))
+                throw new Exception("El fichaje está mal configurado");
 
             return _dailySigningRepository.Update(dailySigning);
         }

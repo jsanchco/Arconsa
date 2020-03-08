@@ -8,7 +8,7 @@
 
     public class UserHiringViewModel : BaseEntityViewModel
     {
-        public string userHiringName 
+        public string name 
         { 
             get
             {
