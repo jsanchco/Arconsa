@@ -37,7 +37,7 @@
                 var take = Convert.ToInt32(queryString["$top"]);
                 var startDate = queryString["startDate"];
                 var endDate = queryString["endDate"];
-                var userId = Convert.ToInt32(queryString["userId"]);
+                var workerId = Convert.ToInt32(queryString["workerId"]);
                 var workId = Convert.ToInt32(queryString["workId"]);
                 var clientId = Convert.ToInt32(queryString["clientId"]);
 
@@ -48,22 +48,22 @@
                 {
                     startDate = startDate,
                     endDate = endDate,
-                    userId = userId,
+                    workerId = workerId,
                     workId = workId,
                     clientId = clientId
                 };
 
                 var data = new List<ReportResultViewModel>();
-                if (userId != 0 && workId == 0 && clientId == 0)
+                if (workerId != 0 && workId == 0 && clientId == 0)
                     data = _supervisor.GetHoursByUser(reportViewModel);
 
-                if (userId == 0 && workId != 0 && clientId == 0)
+                if (workerId == 0 && workId != 0 && clientId == 0)
                     data = _supervisor.GetHoursByWork(reportViewModel);
 
-                if (userId == 0 && workId == 0 && clientId != 0)
+                if (workerId == 0 && workId == 0 && clientId != 0)
                     data = _supervisor.GetHoursByClient(reportViewModel);
 
-                if (userId == 0 && workId == 0 && clientId == 0)
+                if (workerId == 0 && workId == 0 && clientId == 0)
                     throw new Exception("Informe mal configurado");
 
                 return new { Items = data, data.Count };

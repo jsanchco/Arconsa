@@ -1,31 +1,23 @@
 import React, { Component, Fragment } from "react";
 import { Row } from "reactstrap";
-import { DataManager, WebApiAdaptor } from "@syncfusion/ej2-data";
-import { config, REPORTS, ROLES } from "../../constants";
 import { connect } from "react-redux";
 import ACTION_APPLICATION from "../../actions/applicationAction";
-import { TOKEN_KEY, } from "../../services";
 import HeaderSettings from "./header-settings";
 import GridSelection from "./grid-selection";
 
 class ReportHoursUser extends Component {
-  dataSource = new DataManager({
-    adaptor: new WebApiAdaptor(),
-    url: `${config.URL_API}/${ROLES}`,
-    headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }]
-  });
-
   constructor(props) {
     super(props);
+
+    this.state = {
+      settings: null
+    };
 
     this.updateReport = this.updateReport.bind(this);
   }
 
   updateReport(type, start, end, selection) {
-    console.log("type ->", type);
-    console.log("start ->", start);
-    console.log("end ->", end);
-    console.log("selection ->", selection);
+    this.setState({ settings: { type, start, end, selection } });
   }
 
   render() {
@@ -48,6 +40,7 @@ class ReportHoursUser extends Component {
               <GridSelection
                 showMessage={this.props.showMessage}
                 dataSource={this.dataSource}
+                settings={this.state.settings}
               />
             </Row>
           </div>

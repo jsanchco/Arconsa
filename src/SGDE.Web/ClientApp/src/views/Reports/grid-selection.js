@@ -9,8 +9,8 @@ import {
   Toolbar,
   Page
 } from "@syncfusion/ej2-react-grids";
-import { DataManager, WebApiAdaptor } from "@syncfusion/ej2-data";
-import { config, ROLES } from "../../constants";
+import { DataManager, WebApiAdaptor, Query } from "@syncfusion/ej2-data";
+import { config, REPORTS } from "../../constants";
 import { L10n } from "@syncfusion/ej2-base";
 import data from "../../locales/locale.json";
 import { TOKEN_KEY } from "../../services";
@@ -18,20 +18,11 @@ import { TOKEN_KEY } from "../../services";
 L10n.load(data);
 
 class GridSelection extends Component {
-  reportHoursUser = new DataManager({
-    adaptor: new WebApiAdaptor(),
-    url: `${config.URL_API}/${ROLES}`,
-    headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }]
-  });
 
   grid = null;
 
   constructor(props) {
     super(props);
-
-    this.state = {
-      roles: null
-    };
 
     this.toolbarOptions = ["Add", "Edit", "Delete", "Update", "Cancel"];
     this.editSettings = {
@@ -44,6 +35,30 @@ class GridSelection extends Component {
     this.pageSettings = { pageCount: 10, pageSize: 10 };
     this.actionFailure = this.actionFailure.bind(this);
     this.actionComplete = this.actionComplete.bind(this);
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.settings !== this.props.settings) {
+      const { settings } = this.props;
+      switch (settings.type) {
+        case "workers":
+          this.grid.dataSource = new DataManager({
+            adaptor: new WebApiAdaptor(),
+            url: `${config.URL_API}/${REPORTS}`,
+            headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }]
+          });
+          this.grid.query = new Query()
+          .addParams("workerId", settings.selection)
+          .addParams("startDate", settings.start)
+          .addParams("endDate", settings.start);
+
+          this.grid.refresh();
+          break;
+
+        default:
+          break;
+      }
+    }
   }
 
   actionFailure(args) {
@@ -75,7 +90,7 @@ class GridSelection extends Component {
   render() {
     return (
       <GridComponent
-        dataSource={this.reportHoursUser}
+        dataSource={null}
         locale="es-US"
         allowPaging={true}
         pageSettings={this.pageSettings}
@@ -93,6 +108,7 @@ class GridSelection extends Component {
         allowGrouping={true}
         rowSelected={this.rowSelected}
         ref={g => (this.grid = g)}
+        // query={null}
       >
         <ColumnsDirective>
           <ColumnDirective
