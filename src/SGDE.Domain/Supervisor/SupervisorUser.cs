@@ -47,7 +47,9 @@ namespace SGDE.Domain.Supervisor
                 Name = newUserViewModel.name,
                 Surname = newUserViewModel.surname,
                 Username = newUserViewModel.username,
-                BirthDate = newUserViewModel.birthDate,
+                BirthDate = string.IsNullOrEmpty(newUserViewModel.birthDate)
+                ? null
+                : (DateTime?)DateTime.Parse(newUserViewModel.birthDate),
                 Email = newUserViewModel.email,
                 Password = "123456",
                 ProfessionId = newUserViewModel.professionId
@@ -73,7 +75,9 @@ namespace SGDE.Domain.Supervisor
             user.Name = userViewModel.name;
             user.Surname = userViewModel.surname;
             user.Username = userViewModel.username;
-            user.BirthDate = userViewModel.birthDate;
+            user.BirthDate = string.IsNullOrEmpty(userViewModel.birthDate)
+                ? null
+                : (DateTime?)DateTime.Parse(userViewModel.birthDate);
             user.Email = userViewModel.email;            
             user.ProfessionId = userViewModel.professionId;
 
@@ -113,7 +117,9 @@ namespace SGDE.Domain.Supervisor
                 Surname = newUserViewModel.surname,
                 Username = newUserViewModel.username,
                 Dni = newUserViewModel.dni,
-                BirthDate = newUserViewModel.birthDate,
+                BirthDate = string.IsNullOrEmpty(newUserViewModel.birthDate)
+                    ? null
+                    : (DateTime?)DateTime.Parse(newUserViewModel.birthDate),
                 Email = newUserViewModel.email,
                 Address = newUserViewModel.address,
                 PhoneNumber = newUserViewModel.phoneNumber,
@@ -148,7 +154,9 @@ namespace SGDE.Domain.Supervisor
             user.Surname = userViewModel.surname;
             user.Username = userViewModel.username;
             user.Dni = userViewModel.dni;
-            user.BirthDate = userViewModel.birthDate;
+            user.BirthDate = string.IsNullOrEmpty(userViewModel.birthDate)
+                ? null
+                : (DateTime?)DateTime.Parse(userViewModel.birthDate);
             user.Email = userViewModel.email;
             user.Address = userViewModel.address;
             user.PhoneNumber = userViewModel.phoneNumber;

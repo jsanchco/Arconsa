@@ -14,8 +14,8 @@
         public string worksToRealize { get; set; }
         public int numberPersonsRequested { get; set; }
         public bool open { get; set; }
-        public DateTime? openDate { get; set; }
-        public DateTime? closeDate { get; set; }
+        public string openDate { get; set; }
+        public string closeDate { get; set; }
 
         public int clientId { get; set; }
         public string clientName { get; set; }

@@ -25,10 +25,6 @@
 
         public string startHour { get; set; }
         public string endHour { get; set; }
-
-        //public DateTime startHour { get; set; }
-        //public DateTime? endHour { get; set; }
-
         public int userHiringId { get; set; }
         public string userHiringName { get; set; }
     }

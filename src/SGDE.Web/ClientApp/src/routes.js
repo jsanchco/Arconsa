@@ -51,6 +51,8 @@ const Clients = React.lazy(() => import('./views/Clients/clients'));
 const Works = React.lazy(() => import('./views/Works/works'));
 const DetailWork = React.lazy(() => import('./views/Works/detail-work'));
 
+const ReportHoursUser = React.lazy(() => import('./views/Reports/report-hours-user'));
+
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
 const routes = [
   { path: '/', exact: true, name: 'Inicio' },
@@ -104,7 +106,8 @@ const routes = [
   { path: '/settings/typesdocument', exact: true, name: 'Tipos de Documento', component: TypesDocument },
   { path: '/clients/clients', exact: true, name: 'Clientes', component: Clients },
   { path: '/works/works', exact: true, name: 'Obras', component: Works },
-  { path: '/works/detailwork', exact: true, name: 'Detalle Obra', component: DetailWork }
+  { path: '/works/detailwork', exact: true, name: 'Detalle Obra', component: DetailWork },
+  { path: '/reports/reporthoursuser', exact: true, name: 'Informe Horas Trabajador', component: ReportHoursUser }
 ];
 
 export default routes;

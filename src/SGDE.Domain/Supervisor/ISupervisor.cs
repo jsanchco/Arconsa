@@ -156,5 +156,13 @@ namespace SGDE.Domain.Supervisor
         QueryResult<WorkerHiringViewModel> GetAllWorkerHiring(int skip = 0, int take = 0, string filter = null, int workId = 0);
 
         #endregion
+
+        #region Report
+
+        List<ReportResultViewModel> GetHoursByUser(ReportQueryViewModel reportViewModel);
+        List<ReportResultViewModel> GetHoursByWork(ReportQueryViewModel reportViewModel);
+        List<ReportResultViewModel> GetHoursByClient(ReportQueryViewModel reportViewModel);
+
+        #endregion
     }
 }

@@ -19,7 +19,7 @@ namespace SGDE.Domain.ViewModels
             }
         }
         public string dni { get; set; }
-        public DateTime? birthDate { get; set; }
+        public string birthDate { get; set; }
         public string email { get; set; }
         public string password { get; set; }
         public string address { get; set; }

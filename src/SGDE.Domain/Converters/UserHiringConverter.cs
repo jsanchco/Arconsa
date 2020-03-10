@@ -23,8 +23,8 @@
                 modifiedDate = userHiring.ModifiedDate,
                 iPAddress = userHiring.IPAddress,
 
-                startDate = userHiring.StartDate,
-                endDate = userHiring.EndDate,
+                startDate = userHiring.StartDate.ToString("dd/MM/yyyy"),
+                endDate = userHiring.EndDate?.ToString("dd/MM/yyyy"),
                 userId = userHiring.UserId,
                 userName = $"{userHiring.User.Name} {userHiring.User.Surname}",
                 workId = userHiring.WorkId,
@@ -45,8 +45,8 @@
                     modifiedDate = userHiring.ModifiedDate,
                     iPAddress = userHiring.IPAddress,
 
-                    startDate = userHiring.StartDate,
-                    endDate = userHiring.EndDate,
+                    startDate = userHiring.StartDate.ToString("dd/MM/yyyy"),
+                    endDate = userHiring.EndDate?.ToString("dd/MM/yyyy"),
                     userId = userHiring.UserId,
                     userName = $"{userHiring.User.Name} {userHiring.User.Surname}",
                     workId = userHiring.WorkId,

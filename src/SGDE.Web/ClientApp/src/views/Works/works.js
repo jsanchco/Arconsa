@@ -194,17 +194,17 @@ class Works extends Component {
   }
 
   dateTemplate(args) {
-    const titleOpen = `${this.formatDate(args.openDate)}`;
-    const titleClose = `${this.formatDate(args.closeDate)}`;
+    // const titleOpen = `${this.formatDate(args.openDate)}`;
+    // const titleClose = `${this.formatDate(args.closeDate)}`;
     return (
       <div>
         <div style={{ display: "flex" }}>
           <div style={{ textAlign: "left", width: "50%" }}>Apertura:</div>
-          <div style={{ textAlign: "left", width: "50%" }}>{titleOpen}</div>
+          <div style={{ textAlign: "left", width: "50%" }}>{args.openDate}</div>
         </div>
         <div style={{ display: "flex" }}>
           <div style={{ textAlign: "left", width: "50%" }}>Cierre:</div>
-          <div style={{ textAlign: "left", width: "50%" }}>{titleClose}</div>
+          <div style={{ textAlign: "left", width: "50%" }}>{args.closeDate}</div>
         </div>
       </div>
     );
@@ -217,14 +217,14 @@ class Works extends Component {
       updateWork(workSelected).then(() => {
         this.grid.setCellValue(workSelected.id, "open", true);
         this.grid.setCellValue(workSelected.id, "closeDate", null);
-        this.grid.setCellValue(workSelected.id, "openDate", new Date());
+        this.grid.setCellValue(workSelected.id, "openDate", this.formatDate(new Date()));
       });
     }
     if (args.item.id === "closeWork") {
       workSelected.open = false;
       updateWork(workSelected).then(() => {
         this.grid.setCellValue(workSelected.id, "open", false);
-        this.grid.setCellValue(workSelected.id, "closeDate", new Date());
+        this.grid.setCellValue(workSelected.id, "closeDate", this.formatDate(new Date()));
       });
     }
   }

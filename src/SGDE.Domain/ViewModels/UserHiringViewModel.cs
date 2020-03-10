@@ -9,15 +9,17 @@
     public class UserHiringViewModel : BaseEntityViewModel
     {
         public string name 
-        { 
+        {
             get
             {
-                return $"{workName} {startDate.ToShortDateString()}";
+                var dtStartDate = DateTime.Parse(startDate);
+
+                return $"{workName} {dtStartDate.ToShortDateString()}";
             }
         }
 
-        public DateTime startDate { get; set; }
-        public DateTime? endDate { get; set; }
+        public string startDate { get; set; }
+        public string endDate { get; set; }
 
         public int workId { get; set; }
         public string workName { get; set; }

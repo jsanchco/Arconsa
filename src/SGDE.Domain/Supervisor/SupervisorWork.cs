@@ -75,8 +75,12 @@
                 WorksToRealize = newWorkViewModel.worksToRealize,
                 NumberPersonsRequested = newWorkViewModel.numberPersonsRequested,
                 Open = newWorkViewModel.open,
-                OpenDate = newWorkViewModel.openDate == null ? DateTime.Now : (DateTime)newWorkViewModel.openDate,
-                CloseDate = newWorkViewModel.closeDate,
+
+                OpenDate = newWorkViewModel.openDate == null ? DateTime.Now : DateTime.Parse(newWorkViewModel.openDate),
+                CloseDate = string.IsNullOrEmpty(newWorkViewModel.closeDate)
+                    ? null :
+                    (DateTime?)DateTime.Parse(newWorkViewModel.closeDate),
+
                 ClientId = newWorkViewModel.clientId
             };
 
@@ -110,7 +114,7 @@
             }
             else
             {
-                work.OpenDate = (DateTime)workViewModel.openDate;
+                work.OpenDate = DateTime.Parse(workViewModel.openDate);
                 work.CloseDate = DateTime.Now;
             }
 

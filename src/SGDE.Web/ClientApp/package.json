@@ -17,6 +17,7 @@
     "@coreui/icons": "0.3.0",
     "@coreui/react": "~2.5.0",
     "@syncfusion/ej2-react-calendars": "^17.4.51",
+    "@syncfusion/ej2-react-dropdowns": "^17.4.51",
     "@syncfusion/ej2-react-grids": "^17.3.29",
     "@syncfusion/ej2-react-inputs": "^17.4.47",
     "@syncfusion/ej2-react-navigations": "^17.4.49",

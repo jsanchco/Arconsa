@@ -5,7 +5,8 @@ import {
   PROFESSIONS,
   WORKS,
   DOCUMENTS,
-  ASSIGNWORKERS
+  ASSIGNWORKERS,
+  WORKERSHIRING
 } from "../constants";
 import store from "../store/store";
 import ACTION_AUTHENTICATION from "../actions/authenticationAction";
@@ -263,7 +264,7 @@ export const updateWorkersInWork = (workers, workId) => {
         Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`
       },
       method: "POST",
-      body: JSON.stringify({listUserId: workersId, workId: workId})
+      body: JSON.stringify({ listUserId: workersId, workId: workId })
     })
       .then(data => data.json())
       .then(result => {
@@ -299,6 +300,28 @@ export const updateWorkersInWork = (workers, workId) => {
         );
         reject();
       });
+  });
+};
+
+export const getWorkers = () => {
+  return new Promise((resolve, reject) => {
+  const url = `${config.URL_API}/${WORKERSHIRING}`;
+  fetch(url, {
+    headers: {
+      Accept: "text/plain",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`
+    },
+    method: "GET"
+  })
+    .then(data => data.json())
+    .then(result => {
+      resolve(result.Items);
+    })
+    .catch(error => {
+      console.log("error ->", error);
+      reject();
+    });
   });
 };
 

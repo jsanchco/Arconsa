@@ -1,5 +1,9 @@
 {
   "es-US": {
+    "datepicker": { 
+      "placeholder": "Wählen Sie ein Datum aus",
+      "today": "hoy" 
+    },
     "schedule": {
       "day": "Día",
       "week": "Semana",

@@ -35,8 +35,11 @@
                 ModifiedDate = null,
                 IPAddress = newUserHiringViewModel.iPAddress,
 
-                StartDate = newUserHiringViewModel.startDate,
-                EndDate = newUserHiringViewModel.endDate,
+                StartDate = DateTime.Parse(newUserHiringViewModel.startDate),
+                EndDate = string.IsNullOrEmpty(newUserHiringViewModel.endDate)
+                    ? null
+                    : (DateTime?)DateTime.Parse(newUserHiringViewModel.endDate),
+
                 WorkId = newUserHiringViewModel.workId,
                 UserId = newUserHiringViewModel.userId
             };
@@ -57,8 +60,11 @@
             userHiring.ModifiedDate = DateTime.Now;
             userHiring.IPAddress = userHiringViewModel.iPAddress;
 
-            userHiring.StartDate = userHiringViewModel.startDate;
-            userHiring.EndDate = userHiringViewModel.endDate;
+            userHiring.StartDate = DateTime.Parse(userHiringViewModel.startDate);
+            userHiring.EndDate = string.IsNullOrEmpty(userHiringViewModel.endDate)
+                    ? null
+                    : (DateTime?)DateTime.Parse(userHiringViewModel.endDate);
+
             userHiring.WorkId = userHiringViewModel.workId;
             userHiring.UserId = userHiringViewModel.userId;
 

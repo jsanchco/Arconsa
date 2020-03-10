@@ -13,7 +13,7 @@
         public string dni { get; set; }
         public int? workId { get; set; }
         public string workName { get; set; }
-        public DateTime? dateStart { get; set; }
+        public string dateStart { get; set; }
         public int state { get; set; }
     }
 }

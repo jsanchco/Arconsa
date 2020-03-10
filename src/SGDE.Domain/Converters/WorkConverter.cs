@@ -29,8 +29,10 @@
                 worksToRealize = work.WorksToRealize,
                 numberPersonsRequested = work.NumberPersonsRequested,
                 open = work.Open,
-                openDate = work.OpenDate,
-                closeDate = work.CloseDate,
+
+                openDate = work.OpenDate.ToString("dd/MM/yyyy"),
+                closeDate = work.CloseDate?.ToString("dd/MM/yyyy"),
+
                 clientId = work.ClientId,
                 clientName = work.Client.Name
             };
@@ -55,8 +57,10 @@
                     worksToRealize = work.WorksToRealize,
                     numberPersonsRequested = work.NumberPersonsRequested,
                     open = work.Open,
-                    openDate = work.OpenDate,
-                    closeDate = work.CloseDate,
+
+                    openDate = work.OpenDate.ToString("dd/MM/yyyy"),
+                    closeDate = work.CloseDate?.ToString("dd/MM/yyyy"),
+
                     clientId = work.ClientId,
                     clientName = work.Client.Name
                 };
