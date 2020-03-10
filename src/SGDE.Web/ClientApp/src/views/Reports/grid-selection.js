@@ -18,7 +18,6 @@ import { TOKEN_KEY } from "../../services";
 L10n.load(data);
 
 class GridSelection extends Component {
-
   grid = null;
 
   constructor(props) {
@@ -45,12 +44,14 @@ class GridSelection extends Component {
           this.grid.dataSource = new DataManager({
             adaptor: new WebApiAdaptor(),
             url: `${config.URL_API}/${REPORTS}`,
-            headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }]
+            headers: [
+              { Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }
+            ]
           });
           this.grid.query = new Query()
-          .addParams("workerId", settings.selection)
-          .addParams("startDate", settings.start)
-          .addParams("endDate", settings.start);
+            .addParams("workerId", settings.selection)
+            .addParams("startDate", settings.start)
+            .addParams("endDate", settings.start);
 
           this.grid.refresh();
           break;
@@ -112,14 +113,33 @@ class GridSelection extends Component {
       >
         <ColumnsDirective>
           <ColumnDirective
-            field="id"
-            headerText="Id"
-            width="40"
-            isPrimaryKey={true}
-            isIdentity={true}
-            visible={false}
+            field="clientName"
+            headerText="Cliente"
+            width="100"
           />
-          <ColumnDirective field="name" headerText="Nombre" width="100" />
+          <ColumnDirective field="workName" headerText="Obra" width="100" />
+          <ColumnDirective
+            field="userName"
+            headerText="Trabajador"
+            width="100"
+          />
+          <ColumnDirective field="dateHour" headerText="Fecha" width="100" />
+          <ColumnDirective
+            field="priceHour"
+            headerText="Precio"
+            width="100"
+            fotmat="C1"
+            textAlign="right"
+            editType="numericedit"
+          />
+          <ColumnDirective
+            field="priceHourSale"
+            headerText="Precio Venta"
+            width="100"
+            fotmat="C1"
+            textAlign="right"
+            editType="numericedit"
+          />
         </ColumnsDirective>
         <Inject services={[Page, Toolbar, Edit]} />
       </GridComponent>
