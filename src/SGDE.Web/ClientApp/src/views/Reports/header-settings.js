@@ -5,7 +5,7 @@ import { DatePickerComponent } from "@syncfusion/ej2-react-calendars";
 import { DropDownListComponent } from "@syncfusion/ej2-react-dropdowns";
 import { L10n, loadCldr } from "@syncfusion/ej2-base";
 import data from "../../locales/locale.json";
-import { getWorkers } from "../../services";
+import { getWorkers, getWorks, getClients } from "../../services";
 
 import * as gregorian from "cldr-data/main/es-US/ca-gregorian.json";
 import * as numbers from "cldr-data/main/es-US/numbers.json";
@@ -33,6 +33,18 @@ class HeaderSettings extends Component {
   componentDidMount() {
     if (this.props.type === "workers") {
       getWorkers().then(items => {
+        this.ddl.dataSource = items;
+      });
+    }
+
+    if (this.props.type === "works") {
+      getWorks().then(items => {
+        this.ddl.dataSource = items;
+      });
+    }
+
+    if (this.props.type === "clients") {
+      getClients().then(items => {
         this.ddl.dataSource = items;
       });
     }
@@ -97,8 +109,12 @@ class HeaderSettings extends Component {
         title = "Trabajador";
         break;
 
+      case "works":
+        title = "Obra";
+        break;
+
       case "clients":
-        title = "Clientes";
+        title = "Cliente";
         break;
 
       default:

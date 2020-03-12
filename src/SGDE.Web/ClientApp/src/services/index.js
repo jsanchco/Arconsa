@@ -6,7 +6,8 @@ import {
   WORKS,
   DOCUMENTS,
   ASSIGNWORKERS,
-  WORKERSHIRING
+  WORKERSHIRING,
+  CLIENTS
 } from "../constants";
 import store from "../store/store";
 import ACTION_AUTHENTICATION from "../actions/authenticationAction";
@@ -305,23 +306,67 @@ export const updateWorkersInWork = (workers, workId) => {
 
 export const getWorkers = () => {
   return new Promise((resolve, reject) => {
-  const url = `${config.URL_API}/${WORKERSHIRING}`;
-  fetch(url, {
-    headers: {
-      Accept: "text/plain",
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`
-    },
-    method: "GET"
-  })
-    .then(data => data.json())
-    .then(result => {
-      resolve(result.Items);
+    const url = `${config.URL_API}/${WORKERSHIRING}`;
+    fetch(url, {
+      headers: {
+        Accept: "text/plain",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`
+      },
+      method: "GET"
     })
-    .catch(error => {
-      console.log("error ->", error);
-      reject();
-    });
+      .then(data => data.json())
+      .then(result => {
+        resolve(result.Items);
+      })
+      .catch(error => {
+        console.log("error ->", error);
+        reject();
+      });
+  });
+};
+
+export const getWorks = () => {
+  return new Promise((resolve, reject) => {
+    const url = `${config.URL_API}/${WORKS}`;
+    fetch(url, {
+      headers: {
+        Accept: "text/plain",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`
+      },
+      method: "GET"
+    })
+      .then(data => data.json())
+      .then(result => {
+        resolve(result.Items);
+      })
+      .catch(error => {
+        console.log("error ->", error);
+        reject();
+      });
+  });
+};
+
+export const getClients = () => {
+  return new Promise((resolve, reject) => {
+    const url = `${config.URL_API}/${CLIENTS}`;
+    fetch(url, {
+      headers: {
+        Accept: "text/plain",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`
+      },
+      method: "GET"
+    })
+      .then(data => data.json())
+      .then(result => {
+        resolve(result.Items);
+      })
+      .catch(error => {
+        console.log("error ->", error);
+        reject();
+      });
   });
 };
 

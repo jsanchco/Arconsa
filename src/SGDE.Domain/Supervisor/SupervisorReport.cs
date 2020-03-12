@@ -21,12 +21,12 @@
 
         public List<ReportResultViewModel> GetHoursByWork(ReportQueryViewModel reportViewModel)
         {
-            return ReportResultConverter.ConvertList(_dailySigningRepository.GetByWorkId(reportViewModel.startDate, reportViewModel.endDate, (int)reportViewModel.workerId));
+            return ReportResultConverter.ConvertList(_dailySigningRepository.GetByWorkId(reportViewModel.startDate, reportViewModel.endDate, (int)reportViewModel.workId));
         }
 
         public List<ReportResultViewModel> GetHoursByClient(ReportQueryViewModel reportViewModel)
         {
-            return ReportResultConverter.ConvertList(_dailySigningRepository.GetByClientId(reportViewModel.startDate, reportViewModel.endDate, (int)reportViewModel.workerId));
+            return ReportResultConverter.ConvertList(_dailySigningRepository.GetByClientId(reportViewModel.startDate, reportViewModel.endDate, (int)reportViewModel.clientId));
         }
     }
 }

@@ -121,7 +121,7 @@ class Trainings extends Component {
                 style={{
                   marginLeft: 30,
                   marginRight: 30,
-                  marginTop: 20,
+                  marginTop: -20,
                   marginBottom: 20
                 }}
                 actionFailure={this.actionFailure}

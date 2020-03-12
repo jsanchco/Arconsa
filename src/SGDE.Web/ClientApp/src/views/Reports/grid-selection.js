@@ -7,7 +7,13 @@ import {
   Edit,
   Inject,
   Toolbar,
-  Page
+  Page,
+  Group,
+  Aggregate,
+  AggregateColumnsDirective,
+  AggregateColumnDirective,
+  AggregateDirective,
+  AggregatesDirective
 } from "@syncfusion/ej2-react-grids";
 import { DataManager, WebApiAdaptor, Query } from "@syncfusion/ej2-data";
 import { config, REPORTS } from "../../constants";
@@ -23,7 +29,7 @@ class GridSelection extends Component {
   constructor(props) {
     super(props);
 
-    this.toolbarOptions = ["Add", "Edit", "Delete", "Update", "Cancel"];
+    this.toolbarOptions = ["Print"];
     this.editSettings = {
       showDeleteConfirmDialog: true,
       allowEditing: true,
@@ -34,6 +40,9 @@ class GridSelection extends Component {
     this.pageSettings = { pageCount: 10, pageSize: 10 };
     this.actionFailure = this.actionFailure.bind(this);
     this.actionComplete = this.actionComplete.bind(this);
+    this.renderWorker = this.renderWorker.bind(this);
+    this.renderWork = this.renderWork.bind(this);
+    this.renderClient = this.renderClient.bind(this);
   }
 
   componentDidUpdate(prevProps) {
@@ -50,6 +59,38 @@ class GridSelection extends Component {
           });
           this.grid.query = new Query()
             .addParams("workerId", settings.selection)
+            .addParams("startDate", settings.start)
+            .addParams("endDate", settings.end);
+
+          this.grid.refresh();
+          break;
+
+        case "works":
+          this.grid.dataSource = new DataManager({
+            adaptor: new WebApiAdaptor(),
+            url: `${config.URL_API}/${REPORTS}`,
+            headers: [
+              { Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }
+            ]
+          });
+          this.grid.query = new Query()
+            .addParams("workId", settings.selection)
+            .addParams("startDate", settings.start)
+            .addParams("endDate", settings.end);
+
+          this.grid.refresh();
+          break;
+
+        case "clients":
+          this.grid.dataSource = new DataManager({
+            adaptor: new WebApiAdaptor(),
+            url: `${config.URL_API}/${REPORTS}`,
+            headers: [
+              { Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }
+            ]
+          });
+          this.grid.query = new Query()
+            .addParams("clientId", settings.selection)
             .addParams("startDate", settings.start)
             .addParams("endDate", settings.end);
 
@@ -88,6 +129,54 @@ class GridSelection extends Component {
     }
   }
 
+  footerSum(args) {
+    return <span>Total: {args.Sum} horas</span>;
+  }
+
+  footerSumEuros(args) {
+    return <span>Total: {args.Sum}€</span>;
+  }
+
+  renderWorker() {
+    if (
+      this.props.settings !== null &&
+      this.props.settings !== undefined &&
+      this.props.settings.type === "workers"
+    ) {
+      return null;
+    } else {
+      return (
+        <ColumnDirective field="userName" headerText="Trabajador" width="100" />
+      );
+    }
+  }
+
+  renderWork() {
+    if (
+      this.props.settings !== null &&
+      this.props.settings !== undefined &&
+      this.props.settings.type === "works"
+    ) {
+      return null;
+    } else {
+      return <ColumnDirective field="workName" headerText="Obra" width="100" />;
+    }
+  }
+
+  renderClient() {
+    if (
+      this.props.settings !== null &&
+      this.props.settings !== undefined &&
+      this.props.settings.type === "clients"
+    ) {
+      return null;
+    } else {
+      return (
+        <ColumnDirective field="clientName" headerText="Cliente" width="100" />
+      );
+    }
+  }
+
   render() {
     return (
       <GridComponent
@@ -101,7 +190,7 @@ class GridSelection extends Component {
         style={{
           marginLeft: 30,
           marginRight: 30,
-          marginTop: 20,
+          marginTop: -20,
           marginBottom: 20
         }}
         actionFailure={this.actionFailure}
@@ -112,17 +201,12 @@ class GridSelection extends Component {
         // query={null}
       >
         <ColumnsDirective>
-          <ColumnDirective
-            field="clientName"
-            headerText="Cliente"
-            width="100"
-          />
-          <ColumnDirective field="workName" headerText="Obra" width="100" />
-          <ColumnDirective
-            field="userName"
-            headerText="Trabajador"
-            width="100"
-          />
+          {this.renderClient()}
+
+          {this.renderWork()}
+
+          {this.renderWorker()}
+
           <ColumnDirective field="dateHour" headerText="Fecha" width="100" />
           <ColumnDirective
             field="hours"
@@ -131,12 +215,12 @@ class GridSelection extends Component {
             fotmat="N1"
             textAlign="right"
             editType="numericedit"
-          />      
+          />
           <ColumnDirective
             field="priceHour"
             headerText="Precio"
             width="100"
-            fotmat="N1"
+            fotmat="C1"
             textAlign="right"
             editType="numericedit"
           />
@@ -144,19 +228,89 @@ class GridSelection extends Component {
             field="priceHourSale"
             headerText="Precio Venta"
             width="100"
-            fotmat="N1"
+            fotmat="C1"
             textAlign="right"
             editType="numericedit"
           />
         </ColumnsDirective>
-        <Inject services={[Page, Toolbar, Edit]} />
+
+        <AggregatesDirective>
+          <AggregateDirective>
+            <AggregateColumnsDirective>
+              <AggregateColumnDirective
+                field="hours"
+                type="Sum"
+                format="C2"
+                footerTemplate={this.footerSum}
+              >
+                {" "}
+              </AggregateColumnDirective>
+
+              <AggregateColumnDirective
+                field="priceHour"
+                type="Sum"
+                format="C2"
+                footerTemplate={this.footerSumEuros}
+              >
+                {" "}
+              </AggregateColumnDirective>
+
+              <AggregateColumnDirective
+                field="priceHourSale"
+                type="Sum"
+                format="C2"
+                footerTemplate={this.footerSumEuros}
+              >
+                {" "}
+              </AggregateColumnDirective>
+            </AggregateColumnsDirective>
+          </AggregateDirective>
+
+          <AggregateDirective>
+            <AggregateColumnsDirective>
+              <AggregateColumnDirective
+                field="hours"
+                type="Sum"
+                groupCaptionTemplate={this.footerSum}
+              >
+                {" "}
+              </AggregateColumnDirective>
+            </AggregateColumnsDirective>
+          </AggregateDirective>
+
+          <AggregateDirective>
+            <AggregateColumnsDirective>
+              <AggregateColumnDirective
+                field="priceHour"
+                type="Sum"
+                groupCaptionTemplate={this.footerSumEuros}
+              >
+                {" "}
+              </AggregateColumnDirective>
+            </AggregateColumnsDirective>
+          </AggregateDirective>
+
+          <AggregateDirective>
+            <AggregateColumnsDirective>
+              <AggregateColumnDirective
+                field="priceHourSale"
+                type="Sum"
+                groupCaptionTemplate={this.footerSumEuros}
+              >
+                {" "}
+              </AggregateColumnDirective>
+            </AggregateColumnsDirective>
+          </AggregateDirective>
+        </AggregatesDirective>
+
+        <Inject services={[Group, Page, Toolbar, Edit, Aggregate]} />
       </GridComponent>
     );
   }
 }
 
 GridSelection.propTypes = {
-  dataSource: PropTypes.object.isRequired,
+  settings: PropTypes.object.isRequired,
   showMessage: PropTypes.func.isRequired
 };
 

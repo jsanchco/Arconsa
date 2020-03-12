@@ -5,7 +5,7 @@ import ACTION_APPLICATION from "../../actions/applicationAction";
 import HeaderSettings from "./header-settings";
 import GridSelection from "./grid-selection";
 
-class ReportHoursUser extends Component {
+class ReportHoursClient extends Component {
   constructor(props) {
     super(props);
 
@@ -26,12 +26,12 @@ class ReportHoursUser extends Component {
         <div className="animated fadeIn">
           <div className="card">
             <div className="card-header">
-              <i className="icon-list"></i> Informe de Horas por Tabajador
+              <i className="icon-list"></i> Informe de Horas por Cliente
             </div>
             <div className="card-body"></div>
             <div>
               <HeaderSettings
-                type="workers"
+                type="clients"
                 showMessage={this.props.showMessage}
                 updateReport={this.updateReport}
               />
@@ -49,7 +49,7 @@ class ReportHoursUser extends Component {
   }
 }
 
-ReportHoursUser.propTypes = {};
+ReportHoursClient.propTypes = {};
 
 const mapStateToProps = state => {
   return {
@@ -61,4 +61,4 @@ const mapDispatchToProps = dispatch => ({
   showMessage: message => dispatch(ACTION_APPLICATION.showMessage(message))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(ReportHoursUser);
+export default connect(mapStateToProps, mapDispatchToProps)(ReportHoursClient);

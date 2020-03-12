@@ -113,6 +113,7 @@
       "Update": "Actualizar",
       "Cancel": "Cancelar",
       "Search": "Buscar",
+      "Print": "Imprimir",
       "EmptyDataSourceError": "DataSource darf bei der Erstauslastung nicht leer sein, da Spalten aus der dataSource im AutoGenerate Spaltenraster",
       "EmptyRecord": "No existen registros",
       "GroupDropArea": "Arrastra hasta aquí una columna para poder agrupar por ella",

@@ -110,13 +110,25 @@
             if (dailySigning.StartHour >= dailySigning.EndHour)
                 return false;
 
-            if (_context.DailySigning.FirstOrDefault(x => x.StartHour <= dailySigning.StartHour && x.EndHour >= dailySigning.StartHour && x.Id != dailySigning.Id) != null)
+            if (_context.DailySigning.FirstOrDefault(x => 
+                x.StartHour <= dailySigning.StartHour && 
+                x.EndHour >= dailySigning.StartHour && 
+                x.Id != dailySigning.Id && 
+                x.UserHiringId == dailySigning.UserHiringId) != null)
                 return false;
 
-            if (_context.DailySigning.FirstOrDefault(x => x.StartHour <= dailySigning.EndHour && x.EndHour >= dailySigning.StartHour && x.Id != dailySigning.Id) != null)
+            if (_context.DailySigning.FirstOrDefault(x => 
+                x.StartHour <= dailySigning.EndHour && 
+                x.EndHour >= dailySigning.StartHour && 
+                x.Id != dailySigning.Id &&
+                x.UserHiringId == dailySigning.UserHiringId) != null)
                 return false;
 
-            if (_context.DailySigning.FirstOrDefault(x => x.StartHour <= dailySigning.StartHour && x.EndHour >= dailySigning.EndHour && x.Id != dailySigning.Id) != null)
+            if (_context.DailySigning.FirstOrDefault(x => 
+                x.StartHour <= dailySigning.StartHour && 
+                x.EndHour >= dailySigning.EndHour && 
+                x.Id != dailySigning.Id &&
+                x.UserHiringId == dailySigning.UserHiringId) != null)
                 return false;
 
             return true;
@@ -178,7 +190,8 @@
                 .ThenInclude(x => x.Work.Client)
                 .Include(x => x.UserHiring)
                 .ThenInclude(x => x.User)
-                .Where(x => x.StartHour >= dtStart && x.EndHour >= dtEnd && x.UserHiring.UserId == userId)
+                .Where(x => x.StartHour >= dtStart && x.EndHour <= dtEnd && x.UserHiring.UserId == userId)
+                .OrderBy(x => x.StartHour)
                 .ToList();
         }
 

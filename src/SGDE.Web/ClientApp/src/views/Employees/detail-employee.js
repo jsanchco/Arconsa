@@ -17,9 +17,9 @@ class DetailEmployee extends Component {
 
     this.headerText = [
       { text: "Datos Básicos" },
-      { text: "Cursos" },
       { text: "Documentos" },
       { text: "Fichajes" }
+      //{ text: "Cursos" }
     ];
 
     this.contentTemplateBasicDate = this.contentTemplateBasicDate.bind(this);
@@ -94,16 +94,16 @@ class DetailEmployee extends Component {
                   />
                   <TabItemDirective
                     header={this.headerText[1]}
-                    content={this.contentTemplateTrainings}
-                  />
-                  <TabItemDirective
-                    header={this.headerText[2]}
                     content={this.contentTemplateDocuments}
                   />
                   <TabItemDirective
-                    header={this.headerText[3]}
+                    header={this.headerText[2]}
                     content={this.contentTemplateDailySignings}
                   />
+                  {/* <TabItemDirective
+                    header={this.headerText[3]}
+                    content={this.contentTemplateTrainings}
+                  /> */}
                 </TabItemsDirective>
               </TabComponent>
             </div>

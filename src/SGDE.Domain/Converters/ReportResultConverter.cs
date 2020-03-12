@@ -42,8 +42,8 @@
                     clientName = dailySigning.UserHiring.Work.Client.Name,
                     hours = ((DateTime)dailySigning.EndHour - dailySigning.StartHour).TotalHours,
                     dateHour = dailySigning.StartHour.ToString("dd/MM/yyyy"),
-                    priceHour = dailySigning.UserHiring.User.PriceHour,
-                    priceHourSale = dailySigning.UserHiring.User.PriceHourSale
+                    priceHour = (decimal)((DateTime)dailySigning.EndHour - dailySigning.StartHour).TotalHours * dailySigning.UserHiring.User.PriceHour,
+                    priceHourSale = (decimal)((DateTime)dailySigning.EndHour - dailySigning.StartHour).TotalHours * dailySigning.UserHiring.User.PriceHourSale
                 };
                 return model;
             })

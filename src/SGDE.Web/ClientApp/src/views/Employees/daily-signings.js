@@ -68,7 +68,7 @@ class DailySignings extends Component {
     this.formatDate = this.formatDate.bind(this);
 
     this.template = this.gridTemplate;
-    this.format = { type: "dateTime", format: "dd/MM/yyyy hh:mm" };
+    this.format = { type: "dateTime", format: "dd/MM/yyyy HH:mm" };
 
     this.queryDailySignings = new Query().addParams("userId", props.user.id);
   }
@@ -198,7 +198,7 @@ class DailySignings extends Component {
                 style={{
                   marginLeft: 30,
                   marginRight: 30,
-                  marginTop: 20,
+                  marginTop: -20,
                   marginBottom: 20
                 }}
                 actionFailure={this.actionFailure}

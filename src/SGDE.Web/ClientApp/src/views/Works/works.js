@@ -9,7 +9,8 @@ import {
   Toolbar,
   Page,
   ForeignKey,
-  ContextMenu
+  ContextMenu,
+  Group
 } from "@syncfusion/ej2-react-grids";
 import { DataManager, WebApiAdaptor } from "@syncfusion/ej2-data";
 import { config, WORKS, CLIENTS } from "../../constants";
@@ -290,7 +291,7 @@ class Works extends Component {
               style={{
                 marginLeft: 30,
                 marginRight: 30,
-                marginTop: 20,
+                marginTop: -20,
                 marginBottom: 20
               }}
               actionFailure={this.actionFailure}
@@ -369,7 +370,7 @@ class Works extends Component {
                 <ColumnDirective field="closeDate" visible={false} />
               </ColumnsDirective>
               <Inject
-                services={[ContextMenu, ForeignKey, Page, Toolbar, Edit]}
+                services={[Group, ContextMenu, ForeignKey, Page, Toolbar, Edit]}
               />
             </GridComponent>
           </Row>
