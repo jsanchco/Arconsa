@@ -20,6 +20,7 @@ import { connect } from "react-redux";
 import ACTION_APPLICATION from "../../actions/applicationAction";
 import { TOKEN_KEY, updateWork } from "../../services";
 import ModalWorkers from "../Modals/modal-workers";
+import Legend from "../../components/legend";
 
 L10n.load(data);
 
@@ -205,7 +206,9 @@ class Works extends Component {
         </div>
         <div style={{ display: "flex" }}>
           <div style={{ textAlign: "left", width: "50%" }}>Cierre:</div>
-          <div style={{ textAlign: "left", width: "50%" }}>{args.closeDate}</div>
+          <div style={{ textAlign: "left", width: "50%" }}>
+            {args.closeDate}
+          </div>
         </div>
       </div>
     );
@@ -218,14 +221,22 @@ class Works extends Component {
       updateWork(workSelected).then(() => {
         this.grid.setCellValue(workSelected.id, "open", true);
         this.grid.setCellValue(workSelected.id, "closeDate", null);
-        this.grid.setCellValue(workSelected.id, "openDate", this.formatDate(new Date()));
+        this.grid.setCellValue(
+          workSelected.id,
+          "openDate",
+          this.formatDate(new Date())
+        );
       });
     }
     if (args.item.id === "closeWork") {
       workSelected.open = false;
       updateWork(workSelected).then(() => {
         this.grid.setCellValue(workSelected.id, "open", false);
-        this.grid.setCellValue(workSelected.id, "closeDate", this.formatDate(new Date()));
+        this.grid.setCellValue(
+          workSelected.id,
+          "closeDate",
+          this.formatDate(new Date())
+        );
       });
     }
   }
@@ -279,6 +290,17 @@ class Works extends Component {
             <i className="icon-globe"></i> Obras
           </div>
           <div className="card-body"></div>
+
+          <div
+            style={{
+              marginLeft: "35px",
+              marginTop: "-20px",
+              marginBottom: "30px"
+            }}
+          >
+            <Legend elements={["red", "green"]} />
+          </div>
+
           <Row>
             <GridComponent
               dataSource={this.works}
@@ -383,13 +405,11 @@ class Works extends Component {
 Works.propTypes = {};
 
 const mapStateToProps = state => {
-  return {
-    
-  };
+  return {};
 };
 
 const mapDispatchToProps = dispatch => ({
-  showMessage: message => dispatch(ACTION_APPLICATION.showMessage(message)),
+  showMessage: message => dispatch(ACTION_APPLICATION.showMessage(message))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Works);
