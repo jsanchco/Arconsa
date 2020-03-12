@@ -13,9 +13,16 @@ import { DateTimePickerComponent } from "@syncfusion/ej2-react-calendars";
 import { getValue } from "@syncfusion/ej2-base";
 import { DataManager, WebApiAdaptor, Query } from "@syncfusion/ej2-data";
 import { config, DAILYSIGNINGS, USERSHIRING } from "../../constants";
-import { L10n } from "@syncfusion/ej2-base";
+import { loadCldr, L10n } from "@syncfusion/ej2-base";
 import data from "../../locales/locale.json";
 import { TOKEN_KEY } from "../../services";
+
+import * as numberingSystems from "cldr-data/supplemental/numberingSystems.json";
+import * as gregorian from "cldr-data/main/es-US/ca-gregorian.json";
+import * as numbers from "cldr-data/main/es-US/numbers.json";
+import * as timeZoneNames from "cldr-data/main/es-US/timeZoneNames.json";
+
+loadCldr(numberingSystems, gregorian, numbers, timeZoneNames);
 
 L10n.load(data);
 
@@ -40,7 +47,8 @@ class DailySignings extends Component {
 
     this.state = {
       dailySignings: null,
-      userHirings: null
+      userHirings: null,
+      rowSelected: null
     };
 
     this.toolbarOptions = ["Add", "Edit", "Delete", "Update", "Cancel"];
@@ -55,8 +63,12 @@ class DailySignings extends Component {
     this.actionFailure = this.actionFailure.bind(this);
     this.actionComplete = this.actionComplete.bind(this);
     this.actionBegin = this.actionBegin.bind(this);
+    this.rowSelected = this.rowSelected.bind(this);
+    this.startHourTemplate = this.startHourTemplate.bind(this);
+    this.formatDate = this.formatDate.bind(this);
 
     this.template = this.gridTemplate;
+    this.format = { type: "dateTime", format: "dd/MM/yyyy hh:mm" };
 
     this.queryDailySignings = new Query().addParams("userId", props.user.id);
   }
@@ -77,13 +89,37 @@ class DailySignings extends Component {
     }
   }
 
-  actionBegin(args) { 
-    if (args.requestType === "add" || args.requestType === "beginEdit") { 
-        this.grid.columns[0].edit.params.query.params = []; 
-        this.grid.columns[0].edit.params.query
-          .addParams("userId", this.props.user.id)
-          .addParams("workId", this.props.user.workId);
-    } 
+  actionBegin(args) {
+    if (args.requestType === "add" || args.requestType === "beginEdit") {
+      this.grid.columns[0].edit.params.query.params = [];
+      this.grid.columns[0].edit.params.query
+        .addParams("userId", this.props.user.id)
+        .addParams("workId", this.props.user.workId);
+    }
+
+    if (args.requestType === "save") {
+      let date = this.formatDate(args.data.startHour);
+      args.data.startHour = date;
+
+      if (
+        args.data.endHour !== null &&
+        args.data.endHour !== "" &&
+        args.data.endHour !== undefined
+      ) {
+        date = this.formatDate(args.data.endHour);
+        args.data.endHour = date;
+      }
+    }
+  }
+
+  formatDate(args) {
+    var date = new Date(args);
+    var month = ("0" + (date.getMonth() + 1)).slice(-2);
+    var day = ("0" + date.getDate()).slice(-2);
+    var hours = ("0" + date.getHours()).slice(-2);
+    var minutes = ("0" + date.getMinutes()).slice(-2);
+
+    return `${[day, month, date.getFullYear()].join("/")} ${hours}:${minutes}`;
   }
 
   actionFailure(args) {
@@ -136,6 +172,11 @@ class DailySignings extends Component {
     );
   }
 
+  rowSelected() {
+    const selectedRecords = this.grid.getSelectedRecords();
+    this.setState({ rowSelected: selectedRecords[0] });
+  }
+
   render() {
     return (
       <Fragment>
@@ -173,7 +214,7 @@ class DailySignings extends Component {
                     field="userHiringId"
                     headerText="Obra"
                     width="100"
-                    editType="dropdownedit"                    
+                    editType="dropdownedit"
                     validationRules={this.userHiringIdRules}
                     textAlign="Center"
                     dataSource={this.userHirings}
@@ -192,19 +233,21 @@ class DailySignings extends Component {
                     field="startHour"
                     headerText="Hora Inicio"
                     width="100"
+                    editType="datetimepickeredit"
                     type="date"
-                    format="dd/MM/yyyy HH:mm"
-                    editTemplate={this.startHourTemplate}
+                    format={this.format}
                     textAlign="Center"
+                    //editTemplate={this.startHourTemplate}
                   />
                   <ColumnDirective
                     field="endHour"
                     headerText="Hora Fin"
                     width="100"
+                    editType="datetimepickeredit"
                     type="date"
-                    format="dd/MM/yyyy HH:mm"
-                    editTemplate={this.endHourTemplate}
+                    format={this.format}
                     textAlign="Center"
+                    //editTemplate={this.endHourTemplate}
                   />
                   <ColumnDirective
                     field="totalHours"

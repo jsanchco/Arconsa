@@ -46,8 +46,14 @@
         {
             try
             {
-                var data = _supervisor.GetAllDailySigning().ToList();
-                return new { Items = data, data.Count };
+                var queryString = Request.Query;
+                var skip = Convert.ToInt32(queryString["$skip"]);
+                var take = Convert.ToInt32(queryString["$top"]);
+                var userId = Convert.ToInt32(queryString["userId"]);
+
+                var queryResult = _supervisor.GetAllDailySigning(skip, take, userId);
+
+                return new { Items = queryResult.Data, Count = queryResult.Count };
             }
             catch (Exception ex)
             {

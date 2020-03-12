@@ -9,15 +9,21 @@
     using System.Threading.Tasks;
     using Converters;
     using Entities;
+    using SGDE.Domain.Helpers;
     using ViewModels;
 
     #endregion
 
     public partial class Supervisor
     {
-        public List<DailySigningViewModel> GetAllDailySigning()
+        public QueryResult<DailySigningViewModel> GetAllDailySigning(int skip = 0, int take = 0, int userId = 0)
         {
-            return DailySigningConverter.ConvertList(_dailySigningRepository.GetAll());
+            var queryResult = _dailySigningRepository.GetAll(skip, take, userId);
+            return new QueryResult<DailySigningViewModel>
+            {
+                Data = DailySigningConverter.ConvertList(queryResult.Data),
+                Count = queryResult.Count
+            };
         }
 
         public DailySigningViewModel GetDailySigningById(int id)

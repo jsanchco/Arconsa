@@ -143,7 +143,7 @@ namespace SGDE.Domain.Supervisor
 
         #region DailySigning
 
-        List<DailySigningViewModel> GetAllDailySigning();
+        QueryResult<DailySigningViewModel> GetAllDailySigning(int skip = 0, int take = 0, int userId = 0);
         DailySigningViewModel GetDailySigningById(int id);
         DailySigningViewModel AddDailySigning(DailySigningViewModel newDailySigningViewModel);
         bool UpdateDailySigning(DailySigningViewModel dailySigningViewModel);

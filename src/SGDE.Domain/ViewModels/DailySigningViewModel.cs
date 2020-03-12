@@ -16,8 +16,8 @@
                 if (endHour == null)
                     return null;
 
-                var dtStartHour = DateTime.Parse(startHour);
-                var dtEndHour = DateTime.Parse(endHour);
+                var dtStartHour = DateTime.ParseExact(startHour, "MM/dd/yyyy hh:mm", null);
+                var dtEndHour = DateTime.ParseExact(endHour, "MM/dd/yyyy hh:mm", null);
 
                 return ((DateTime)dtEndHour - dtStartHour).TotalHours;
             }

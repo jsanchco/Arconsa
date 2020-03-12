@@ -51,7 +51,7 @@ class GridSelection extends Component {
           this.grid.query = new Query()
             .addParams("workerId", settings.selection)
             .addParams("startDate", settings.start)
-            .addParams("endDate", settings.start);
+            .addParams("endDate", settings.end);
 
           this.grid.refresh();
           break;
@@ -125,10 +125,18 @@ class GridSelection extends Component {
           />
           <ColumnDirective field="dateHour" headerText="Fecha" width="100" />
           <ColumnDirective
+            field="hours"
+            headerText="Horas"
+            width="100"
+            fotmat="N1"
+            textAlign="right"
+            editType="numericedit"
+          />      
+          <ColumnDirective
             field="priceHour"
             headerText="Precio"
             width="100"
-            fotmat="C1"
+            fotmat="N1"
             textAlign="right"
             editType="numericedit"
           />
@@ -136,7 +144,7 @@ class GridSelection extends Component {
             field="priceHourSale"
             headerText="Precio Venta"
             width="100"
-            fotmat="C1"
+            fotmat="N1"
             textAlign="right"
             editType="numericedit"
           />
