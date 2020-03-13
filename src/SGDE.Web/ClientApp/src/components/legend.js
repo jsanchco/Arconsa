@@ -1,25 +1,29 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
 
 class Legend extends Component {
   render() {
     return (
       <div style={{ display: "flex" }}>
-        <div style={{ textAlign: "left", width: "5%" }}>
-          <span className="dot-red"></span>
-        </div>
-        <div style={{ textAlign: "left", width: "20%" }}>Obra Cerrada</div>
-        <div style={{ textAlign: "left", width: "5%" }}>
-          <span className="dot-green"></span>
-        </div>
-        <div style={{ textAlign: "left", width: "20%" }}>Obra Abierta</div>
+        {this.props.elements.map((element, i) => {
+          return (
+            <Fragment>
+              <div style={{ textAlign: "left", width: "5%" }}>
+                <span className={element.color}></span>
+              </div>
+              <div style={{ textAlign: "left", width: "20%" }}>
+                {element.text}
+              </div>
+            </Fragment>
+          );
+        })}
       </div>
     );
   }
 }
 
 Legend.propTypes = {
-  elements: PropTypes.object.isRequired
+  elements: PropTypes.array.isRequired
 };
 
 export default Legend;

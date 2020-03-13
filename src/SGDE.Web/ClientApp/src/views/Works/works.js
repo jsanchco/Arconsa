@@ -298,7 +298,12 @@ class Works extends Component {
               marginBottom: "30px"
             }}
           >
-            <Legend elements={["red", "green"]} />
+            <Legend
+              elements={[
+                { color: "dot-green", text: "Obra Abierta" },
+                { color: "dot-red", text: "Obra Cerrada" }
+              ]}
+            />
           </div>
 
           <Row>

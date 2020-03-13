@@ -18,6 +18,7 @@ import { L10n } from "@syncfusion/ej2-base";
 import data from "../../locales/locale.json";
 import { TOKEN_KEY, updateWorkersInWork } from "../../services";
 import "./modal-worker.css";
+import Legend from "../../components/legend";
 
 L10n.load(data);
 
@@ -194,11 +195,31 @@ class ModalWorkers extends Component {
           <ModalBody>
             <Row>
               <Col>
-                <Button color="danger" style={{ marginLeft: "10px"}} onClick={this.onClickWorkersInWork}>
+                <Button
+                  color="danger"
+                  style={{ marginLeft: "10px" }}
+                  onClick={this.onClickWorkersInWork}
+                >
                   Seleccionar Trabajadores en Obra
                 </Button>
               </Col>
             </Row>
+            <div
+              style={{
+                marginLeft: "18px",
+                marginTop: "5px",
+                marginBottom: "-17px"
+              }}
+            >
+              <Legend
+                elements={[
+                  { color: "dot-green", text: "Activo" },
+                  { color: "dot-red", text: "Sin trabajar" },
+                  { color: "dot-orange", text: "En otra obra" }
+                ]}
+              />
+            </div>
+
             <Row>
               <GridComponent
                 dataSource={this.workers}
