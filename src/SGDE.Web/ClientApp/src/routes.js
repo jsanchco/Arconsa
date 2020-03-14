@@ -47,6 +47,7 @@ const Professions = React.lazy(() => import('./views/Settings/professions'));
 const TypesDocument = React.lazy(() => import('./views/Settings/types-document'));
 
 const Clients = React.lazy(() => import('./views/Clients/clients'));
+const DetailClient = React.lazy(() => import('./views/Clients/detail-client'));
 
 const Works = React.lazy(() => import('./views/Works/works'));
 const DetailWork = React.lazy(() => import('./views/Works/detail-work'));
@@ -107,6 +108,7 @@ const routes = [
   { path: '/settings/professions', exact: true, name: 'Puestos de Trabajo', component: Professions },
   { path: '/settings/typesdocument', exact: true, name: 'Tipos de Documento', component: TypesDocument },
   { path: '/clients/clients', exact: true, name: 'Clientes', component: Clients },
+  { path: '/clients/detailclient', exact: true, name: 'Detalle Cliente', component: DetailClient },
   { path: '/works/works', exact: true, name: 'Obras', component: Works },
   { path: '/works/detailwork', exact: true, name: 'Detalle Obra', component: DetailWork },
   { path: '/reports/reporthoursuser', exact: true, name: 'Informe Horas Trabajador', component: ReportHoursUser },

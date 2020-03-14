@@ -32,10 +32,22 @@ class Clients extends Component {
     super(props);
 
     this.state = {
-      roles: null
+      rowSelected: null
     };
 
-    this.toolbarOptions = ["Add", "Edit", "Delete", "Update", "Cancel"];
+    this.toolbarOptions = [
+      "Add",
+      "Edit",
+      "Delete",
+      "Update",
+      "Cancel",
+      {
+        text: "Detalles",
+        tooltipText: "Detalles",
+        prefixIcon: "e-custom-icons e-details",
+        id: "Details"
+      }
+    ];
     this.editSettings = {
       showDeleteConfirmDialog: true,
       allowEditing: true,
@@ -46,6 +58,30 @@ class Clients extends Component {
     this.pageSettings = { pageCount: 10, pageSize: 10 };
     this.actionFailure = this.actionFailure.bind(this);
     this.actionComplete = this.actionComplete.bind(this);
+    this.clickHandler = this.clickHandler.bind(this);
+  }
+
+  clickHandler(args) {
+    if (args.item.id === "Details") {
+      const selectedRecords = this.grid.getSelectedRecords();
+      if (Array.isArray(selectedRecords) && selectedRecords.length === 1) {
+        this.setState({ rowSelected: selectedRecords[0] });
+
+        this.props.history.push({
+          pathname: "/clients/detailclient",
+          state: {
+            client: selectedRecords[0]
+          }
+        });
+      } else {
+        this.setState({ rowSelected: null });
+        this.props.showMessage({
+          statusText: "Debes seleccionar un solo registro",
+          responseText: "Debes seleccionar un solo registro",
+          type: "danger"
+        });
+      }
+    }
   }
 
   actionFailure(args) {

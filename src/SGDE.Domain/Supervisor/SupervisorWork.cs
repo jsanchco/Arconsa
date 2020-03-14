@@ -1,22 +1,21 @@
 ﻿namespace SGDE.Domain.Supervisor
 {
-    #region Using
+    º#region Using
 
     using System;
     using System.Collections.Generic;
-    using System.Threading;
-    using System.Threading.Tasks;
     using Converters;
     using Entities;
     using ViewModels;
+    using Domain.Helpers;
 
     #endregion
 
     public partial class Supervisor
     {
-        public List<WorkViewModel> GetAllWork()
+        public QueryResult<WorkViewModel> GetAllWork(int skip = 0, int take = 0, string filter = null, int clientId = 0)
         {
-            return WorkConverter.ConvertList(_workRepository.GetAll());
+            return WorkConverter.ConvertList(_workRepository.GetAll(skip, take, filter, clientId));
         }
 
         public WorkViewModel GetWorkById(int id)
