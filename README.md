@@ -16,6 +16,7 @@ DEPENDIENDO del Proyecto (MySQL o SQL)
 3- Ejecutamos en Power-Shell 'add-migration First_Migration -Context SGDE.DataEFCoreMySQL.EFContextMySQL'
                              'add-migration First_Migration -Context SGDE.DataEFCoreSQL.EFContextSQL'
 4- Se creará en SGDE.Domain una carpeta en donde se creará la migración
+4.1 - Establecemos el entorno en el que se va a hacer la migración : $env:ASPNETCORE_ENVIRONMENT='Development'  or  $env:ASPNETCORE_ENVIRONMENT='Production'
 5- Construimos la base de datos en donde haya indicado la cadena de conexión ejecutando en Power-Shell 'Update-Database -Context SGDE.DataEFCoreMySQL.EFContextMySQL'
                                                                                                        'Update-Database -Context SGDE.DataEFCoreSQL.EFContextSQL'
 6- Corremos la app SGDE.SeedData

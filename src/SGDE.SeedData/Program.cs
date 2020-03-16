@@ -27,8 +27,9 @@ namespace SGDE.SeedData
             Console.WriteLine("");
             Console.WriteLine("Choose Provider ...");
             Console.WriteLine("");
-            Console.WriteLine("1 - SQL");
-            Console.WriteLine("2 - MySQL");
+            Console.WriteLine("1 - SQL (local)");
+            Console.WriteLine("2 - SQL (azure)");
+            Console.WriteLine("3 - MySQL");
             Console.WriteLine("");
 
             try
@@ -45,10 +46,12 @@ namespace SGDE.SeedData
                 switch (typeSeed.KeyChar)
                 {
                     case '1':
-                        SeedFromSQL(configuration.GetSection("ConnectionStrings")["SQL"]);
+                        SeedFromSQL(configuration.GetSection("ConnectionStrings")["SQL_local"]);
                         break;
-
                     case '2':
+                        SeedFromSQL(configuration.GetSection("ConnectionStrings")["SQL_azure"]);
+                        break;
+                    case '3':
                         SeedFromMySQL(configuration.GetSection("ConnectionStrings")["MySQL"]);
                         break;
 
