@@ -127,12 +127,20 @@ class AuthorizeCancelWorkers extends Component {
   }
 
   render() {
+    let title = "";
+    if (
+      this.props.work !== null &&
+      this.props.work !== undefined
+    ) {
+      title = ` Contratos [${this.props.work.name}]`;
+    }
+
     return (
       <Fragment>
         <div className="animated fadeIn">
           <div className="card" style={{ marginRight: "60px" }}>
             <div className="card-header">
-              <i className="icon-layers"></i> Contratos
+              <i className="icon-layers"></i>{title}
             </div>
             <div className="card-body"></div>
             <Row>

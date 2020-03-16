@@ -1,6 +1,6 @@
 ﻿namespace SGDE.Domain.Supervisor
 {
-    º#region Using
+    #region Using
 
     using System;
     using System.Collections.Generic;
@@ -15,7 +15,12 @@
     {
         public QueryResult<WorkViewModel> GetAllWork(int skip = 0, int take = 0, string filter = null, int clientId = 0)
         {
-            return WorkConverter.ConvertList(_workRepository.GetAll(skip, take, filter, clientId));
+            var queryResult = _workRepository.GetAll(skip, take, filter, clientId);
+            return new QueryResult<WorkViewModel>
+            {
+                Data = WorkConverter.ConvertList(queryResult.Data),
+                Count = queryResult.Count
+            };
         }
 
         public WorkViewModel GetWorkById(int id)

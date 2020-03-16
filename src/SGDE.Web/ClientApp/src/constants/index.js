@@ -16,10 +16,11 @@ export const AUTHENTICATE = "api/Users/authenticate";
 
 const dev = {
   URL_API: "http://localhost:51667"
+  //URL_API: "https://arconsa-api.azurewebsites.net"
 };
 
 const prod = {
-  URL_API: "http://localhost:8000"
+  URL_API: "https://arconsa-api.azurewebsites.net"
 };
 
 export const config = process.env.NODE_ENV === "development" ? dev : prod;

@@ -12,9 +12,7 @@ class DetailClient extends Component {
   constructor(props) {
     super(props);
 
-    this.headerText = [
-      { text: "Obras" }
-    ];
+    this.headerText = [{ text: "Obras" }];
 
     this.contentTemplateWorks = this.contentTemplateWorks.bind(this);
   }
@@ -30,12 +28,21 @@ class DetailClient extends Component {
   }
 
   render() {
+    let title = "";
+    if (
+      this.props.history.location.state.client !== null &&
+      this.props.history.location.state.client !== undefined
+    ) {
+      title = ` Detalle Cliente [${this.props.history.location.state.client.name}]`;
+    }
+
     return (
       <Fragment>
         <div className="animated fadeIn">
           <div className="card">
             <div className="card-header">
-              <i className="icon-book-open"></i> Detalle Cliente
+              <i className="icon-book-open"></i>
+              {title}
             </div>
             <div className="card-body">
               <TabComponent

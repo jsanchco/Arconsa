@@ -53,8 +53,9 @@ namespace SGDE.API.Controllers
                 var filter = Util.Helper.getSearch(queryString["$filter"]);
                 var clientId = Convert.ToInt32(queryString["clientId"]);
 
-                var data = _supervisor.GetAllWork(skip, take, filter, clientId).ToList();
-                return new { Items = data, data.Count };
+                var queryResult = _supervisor.GetAllWork(skip, take, filter, clientId);
+
+                return new { Items = queryResult.Data, Count = queryResult.Count };
             }
             catch (Exception ex)
             {

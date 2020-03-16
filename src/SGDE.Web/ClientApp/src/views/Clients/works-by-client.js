@@ -121,11 +121,19 @@ class WorksByClient extends Component {
   }
 
   render() {
+    let title = "";
+    if (
+      this.props.client !== null &&
+      this.props.client !== undefined
+    ) {
+      title = ` Obras [${this.props.client.name}]`;
+    }
+
     return (
       <div className="animated fadeIn" id="target-works">
         <div className="card" style={{ marginRight: "60px" }}>
           <div className="card-header">
-            <i className="icon-globe"></i> Obras
+            <i className="icon-globe"></i>{title} 
           </div>
           <div className="card-body"></div>
 

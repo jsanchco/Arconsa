@@ -7,7 +7,7 @@ class Legend extends Component {
       <div style={{ display: "flex" }}>
         {this.props.elements.map((element, i) => {
           return (
-            <Fragment>
+            <Fragment key={element.color}>
               <div style={{ textAlign: "left", width: "5%" }}>
                 <span className={element.color}></span>
               </div>

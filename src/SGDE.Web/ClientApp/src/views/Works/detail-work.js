@@ -30,12 +30,20 @@ class DetailWork extends Component {
   }
 
   render() {
+    let title = "";
+    if (
+      this.props.history.location.state.work !== null &&
+      this.props.history.location.state.work !== undefined
+    ) {
+      title = ` Detalle Trabajador [${this.props.history.location.state.work.name}]`;
+    }
+
     return (
       <Fragment>
         <div className="animated fadeIn">
           <div className="card">
             <div className="card-header">
-              <i className="icon-book-open"></i> Detalle Trabajador
+              <i className="icon-book-open"></i>{title}
             </div>
             <div className="card-body">
               <TabComponent

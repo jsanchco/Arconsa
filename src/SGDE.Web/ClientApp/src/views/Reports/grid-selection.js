@@ -190,7 +190,7 @@ class GridSelection extends Component {
         style={{
           marginLeft: 30,
           marginRight: 30,
-          marginTop: -20,
+          marginTop: 10,
           marginBottom: 20
         }}
         actionFailure={this.actionFailure}
