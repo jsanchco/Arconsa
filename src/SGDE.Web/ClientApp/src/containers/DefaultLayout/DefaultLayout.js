@@ -18,6 +18,9 @@ import {
 } from "@coreui/react";
 // sidebar nav config
 import navigation from "../../_nav";
+import navigation1 from "../../nav-by-role/_nav-1";
+import navigation2 from "../../nav-by-role/_nav-2";
+import navigation3 from "../../nav-by-role/_nav-3";
 // routes config
 import routes from "../../routes";
 import ReactNotification, { store } from "react-notifications-component";
@@ -71,7 +74,48 @@ class DefaultLayout extends Component {
       width: 800
     });
   }
-  
+
+  renderAppSidebarNav() {
+    const user = JSON.parse(localStorage.getItem("user"));
+    console.log("user ->", user);
+
+    switch (user.roleId) {
+      case 1:
+        return (
+          <AppSidebarNav
+            navConfig={navigation1}
+            {...this.props}
+            router={router}
+          />
+        );
+      case 2:
+        return (
+          <AppSidebarNav
+            navConfig={navigation2}
+            {...this.props}
+            router={router}
+          />
+        );
+      case 3:
+        return (
+          <AppSidebarNav
+            navConfig={navigation3}
+            {...this.props}
+            router={router}
+          />
+        );
+
+      default:
+        return (
+          <AppSidebarNav
+            navConfig={navigation}
+            {...this.props}
+            router={router}
+          />
+        );
+    }
+  }
+
   render() {
     return (
       <Fragment>
@@ -87,11 +131,14 @@ class DefaultLayout extends Component {
               <AppSidebarHeader />
               <AppSidebarForm />
               <Suspense>
-                <AppSidebarNav
+
+                {this.renderAppSidebarNav()}
+
+                {/* <AppSidebarNav
                   navConfig={navigation}
                   {...this.props}
                   router={router}
-                />
+                /> */}
               </Suspense>
               <AppSidebarFooter />
               <AppSidebarMinimizer />
