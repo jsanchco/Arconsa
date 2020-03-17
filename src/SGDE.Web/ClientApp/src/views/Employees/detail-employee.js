@@ -10,6 +10,7 @@ import BasicData from "./basic-data";
 import Trainings from "./trainings";
 import Documents from "./documents";
 import DailySignings from "./daily-signings";
+import ChangePassword from "./change-password";
 
 class DetailEmployee extends Component {
   constructor(props) {
@@ -21,12 +22,14 @@ class DetailEmployee extends Component {
       this.headerText = [
         { text: "Datos Básicos" },
         { text: "Documentos" },
-        { text: "Fichajes" }
+        { text: "Fichajes" },
+        { text: "Cambiar Contraseña" }
       ];
     } else {
       this.headerText = [
         { text: "Datos Básicos" },
         { text: "Documentos" },
+        { text: "Cambiar Contraseña" }
         //{ text: "Fichajes" }
       ];
     }
@@ -35,6 +38,10 @@ class DetailEmployee extends Component {
     this.contentTemplateTrainings = this.contentTemplateTrainings.bind(this);
     this.contentTemplateDocuments = this.contentTemplateDocuments.bind(this);
     this.contentTemplateDailySignings = this.contentTemplateDailySignings.bind(
+      this
+    );
+    this.contentTemplatChangePassword = this.contentTemplatChangePassword.bind(this);
+    this.renderTemplateDailySignings = this.renderTemplateDailySignings.bind(
       this
     );
   }
@@ -79,6 +86,30 @@ class DetailEmployee extends Component {
     );
   }
 
+  contentTemplatChangePassword() {
+    return (
+      <ChangePassword
+        user={this.props.history.location.state.user}
+        history={this.props.history}
+        showMessage={this.props.showMessage}
+      />
+    );
+  }
+
+  renderTemplateDailySignings() {
+    if (this.props.history.location.state.user.roleId === 3) {
+      return (
+        <TabItemDirective
+          header={this.headerText[2]}
+          content={this.contentTemplateDailySignings}
+        />
+      );
+    } else {
+      return null;
+    }
+
+  }
+
   render() {
     return (
       <Fragment>
@@ -105,9 +136,12 @@ class DetailEmployee extends Component {
                     header={this.headerText[1]}
                     content={this.contentTemplateDocuments}
                   />
+
+                  {this.renderTemplateDailySignings()}
+
                   <TabItemDirective
-                    header={this.headerText[2]}
-                    content={this.contentTemplateDailySignings}
+                    header={this.headerText[this.headerText.length - 1]}
+                    content={this.contentTemplatChangePassword}
                   />
                 </TabItemsDirective>
               </TabComponent>

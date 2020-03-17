@@ -186,7 +186,7 @@ class Employees extends Component {
                 ref={g => (this.grid = g)}
                 query={this.query}
               >
-                <ColumnsDirective>                  
+                <ColumnsDirective>
                   <ColumnDirective
                     field="id"
                     headerText="Id"
@@ -238,11 +238,8 @@ class Employees extends Component {
                     field="roleId"
                     headerText="Role"
                     width="100"
-                    editType="dropdownedit"
-                    foreignKeyValue="name"
-                    foreignKeyField="id"
-                    validationRules={this.roleIdRules}
-                    dataSource={this.roles}
+                    visible={false}
+                    defaultValue={3}
                   />
                 </ColumnsDirective>
                 <Inject services={[ForeignKey, Group, Page, Toolbar, Edit]} />

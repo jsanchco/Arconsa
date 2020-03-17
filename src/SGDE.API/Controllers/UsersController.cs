@@ -199,5 +199,20 @@
 
             return (tokenHandler.WriteToken(token));
         }
+
+        [HttpPut("updatepassword")]
+        public object UpdatePassword([FromBody]UserViewModel userViewModel)
+        {
+            try
+            {
+                var result = _supervisor.UpdatePassword(userViewModel);
+                return result;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Exception: ");
+                return StatusCode(500, ex);
+            }
+        }
     }
 }

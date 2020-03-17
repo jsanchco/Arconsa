@@ -155,6 +155,40 @@ class UsersNoWorker extends Component {
     this.setState({ rowSelected: selectedRecords[0] });
   }
 
+  renderColumnRole() {
+    const user = JSON.parse(localStorage.getItem("user"));
+
+    switch (user.roleId) {
+      case 1:
+        return (
+          <ColumnDirective
+            field="roleId"
+            headerText="Role"
+            width="100"
+            editType="dropdownedit"
+            foreignKeyValue="name"
+            foreignKeyField="id"
+            validationRules={this.roleIdRules}
+            dataSource={this.roles}
+          />
+        );
+
+      case 2:
+        return (
+          <ColumnDirective
+          field="roleId"
+          headerText="Role"
+          width="100"
+          visible={false}
+          defaultValue={2}
+        />
+        );
+
+        default:
+          return null;
+    }
+  }
+
   render() {
     return (
       <Fragment>
@@ -234,16 +268,9 @@ class UsersNoWorker extends Component {
                     validationRules={this.professionIdRules}
                     dataSource={this.professions}
                   />
-                  <ColumnDirective
-                    field="roleId"
-                    headerText="Role"
-                    width="100"
-                    editType="dropdownedit"
-                    foreignKeyValue="name"
-                    foreignKeyField="id"
-                    validationRules={this.roleIdRules}
-                    dataSource={this.roles}
-                  />
+
+                  {this.renderColumnRole()}
+                  
                 </ColumnsDirective>
                 <Inject services={[ForeignKey, Group, Page, Toolbar, Edit]} />
               </GridComponent>

@@ -26,6 +26,7 @@ namespace SGDE.Domain.Supervisor
         UserViewModel GetUserById(int id);
         UserViewModel AddUser(UserViewModel newUserViewModel);
         bool UpdateUser(UserViewModel userViewModel);
+        bool UpdatePassword(UserViewModel userViewModel);
         bool UpdateUserPhoto(int userId, byte[] photo);
         bool DeleteUser(int id);
 

@@ -7,7 +7,8 @@ import {
   DOCUMENTS,
   ASSIGNWORKERS,
   WORKERSHIRING,
-  CLIENTS
+  CLIENTS,
+  UPDATEPASSWORD
 } from "../constants";
 import store from "../store/store";
 import ACTION_AUTHENTICATION from "../actions/authenticationAction";
@@ -33,15 +34,15 @@ export const login = (username, password, history) => {
         store.dispatch(ACTION_AUTHENTICATION.logIn(result.user, result.token));
         history.push("/dashboard");
       } else {
-        if (result.Message) {
-          console.log("error ->", result.Message);
+        if (result.message) {
+          console.log("error ->", result.message);
           localStorage.removeItem("user");
           localStorage.removeItem(TOKEN_KEY);
           store.dispatch(ACTION_AUTHENTICATION.logOut());
           store.dispatch(
             ACTION_APPLICATION.showMessage({
-              statusText: result.Message,
-              responseText: result.Message,
+              statusText: result.message,
+              responseText: result.message,
               type: "danger"
             })
           );
@@ -105,6 +106,55 @@ export const getProfessions = () => {
 export const updateUser = user => {
   return new Promise((resolve, reject) => {
     const url = `${config.URL_API}/${USERS}`;
+    fetch(url, {
+      headers: {
+        Accept: "text/plain",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`
+      },
+      method: "PUT",
+      body: JSON.stringify(user)
+    })
+      .then(data => data.json())
+      .then(result => {
+        if (result.Message) {
+          console.log("error ->", result.Message);
+          store.dispatch(
+            ACTION_APPLICATION.showMessage({
+              statusText: result.Message,
+              responseText: result.Message,
+              type: "danger"
+            })
+          );
+          reject();
+        } else {
+          store.dispatch(
+            ACTION_APPLICATION.showMessage({
+              statusText: "200",
+              responseText: "Operación realizada con éxito",
+              type: "success"
+            })
+          );
+          resolve();
+        }
+      })
+      .catch(error => {
+        console.log("error ->", error);
+        store.dispatch(
+          ACTION_APPLICATION.showMessage({
+            statusText: error,
+            responseText: error,
+            type: "danger"
+          })
+        );
+        reject();
+      });
+  });
+};
+
+export const updatePassword = user => {
+  return new Promise((resolve, reject) => {
+    const url = `${config.URL_API}/${UPDATEPASSWORD}`;
     fetch(url, {
       headers: {
         Accept: "text/plain",

@@ -22,6 +22,7 @@ namespace SGDE.Domain.ViewModels
         public string birthDate { get; set; }
         public string email { get; set; }
         public string password { get; set; }
+        public string newPassword { get; set; }
         public string address { get; set; }
         public string phoneNumber { get; set; }
         public Decimal priceHour { get; set; }

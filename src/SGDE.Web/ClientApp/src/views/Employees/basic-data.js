@@ -290,13 +290,13 @@ class BasicData extends Component {
                   <Button color="primary" onClick={this.handleSubmit}>
                     Guardar
                   </Button>
-                  <Button
+                  {/* <Button
                     color="secondary"
                     style={{ marginLeft: "10px" }}
                     onClick={this.handleCancel}
                   >
                     Cancelar
-                  </Button>
+                  </Button> */}
                 </div>
               </Col>
             </Row>

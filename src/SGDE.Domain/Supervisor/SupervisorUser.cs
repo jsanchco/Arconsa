@@ -172,6 +172,26 @@ namespace SGDE.Domain.Supervisor
             return _userRepository.Update(user);
         }
 
+        public bool UpdatePassword(UserViewModel userViewModel)
+        {
+            if (userViewModel.id == null)
+                return false;
+
+            var user = _userRepository.GetById((int)userViewModel.id);
+
+            if (user == null) return false;
+
+            if (user.Password != userViewModel.password)
+                throw new Exception("La contraseña introducida no coincide con la guardada");
+
+            if (user.Password == userViewModel.newPassword)
+                throw new Exception("La contraseña introducida no puede coincidir con la guardada");
+
+            user.Password = userViewModel.newPassword;
+
+            return _userRepository.Update(user);
+        }
+
         public bool UpdateUserPhoto(int userId, byte[] photo)
         {
             var user = _userRepository.GetById(userId);

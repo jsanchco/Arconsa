@@ -13,6 +13,7 @@ export const ASSIGNWORKERS = "api/UsersHiring/assignworkers";
 export const DAILYSIGNINGS = "api/dailysignings";
 export const REPORTS = "api/Reports";
 export const AUTHENTICATE = "api/Users/authenticate";
+export const UPDATEPASSWORD = "api/Users/updatepassword";
 
 const dev = {
   URL_API: "http://localhost:51667"
