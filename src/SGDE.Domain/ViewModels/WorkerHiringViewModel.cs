@@ -11,6 +11,7 @@
         public int id { get; set; }
         public string name { get; set; }
         public string dni { get; set; }
+        public string professionName { get; set; }
         public int? workId { get; set; }
         public string workName { get; set; }
         public string dateStart { get; set; }

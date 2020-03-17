@@ -47,6 +47,7 @@
                     id = worker.Id,
                     name = $"{worker.Name} {worker.Surname}",
                     dni = worker.Dni,
+                    professionName = worker.Profession?.Name,
                     workId = worker.WorkId,
                     workName = worker.Work?.Name,
                     state = state,

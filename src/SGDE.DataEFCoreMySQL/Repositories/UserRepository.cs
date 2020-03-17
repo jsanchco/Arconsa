@@ -154,6 +154,7 @@
             return _context.User
                 .Include(x => x.Role)
                 .Include(x => x.Work)
+                .Include(x => x.Profession)
                 .Where(x => roles.Contains(x.RoleId))
                 .ToList();
         }

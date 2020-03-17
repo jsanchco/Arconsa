@@ -214,7 +214,7 @@ class ModalWorkers extends Component {
               <Legend
                 elements={[
                   { color: "dot-green", text: "Activo" },
-                  { color: "dot-red", text: "Sin trabajar" },
+                  { color: "dot-red", text: "En esta obra" },
                   { color: "dot-orange", text: "En otra obra" }
                 ]}
               />
@@ -257,7 +257,11 @@ class ModalWorkers extends Component {
                     headerText="Nombre"
                     width="100"
                   />
-                  <ColumnDirective field="dni" headerText="DNI" width="100" />
+                  <ColumnDirective
+                    field="professionName"
+                    headerText="Profesión"
+                    width="100"
+                  />
                   <ColumnDirective
                     field="workName"
                     headerText="Obra Asignada"
