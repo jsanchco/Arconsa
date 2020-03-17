@@ -92,11 +92,11 @@
             return true;
         }
 
-        public QueryResult<User> GetAll(int skip = 0, int take = 0, string filter = null, int roleId = 0)
+        public QueryResult<User> GetAll(int skip = 0, int take = 0, string filter = null, List<int> roles = null)
         {
             List<User> data;
 
-            if (roleId == 0)
+            if (roles == null)
             {
                 data = _context.User
                             .Include(x => x.Profession)
@@ -112,7 +112,7 @@
                             .Include(x => x.Role)
                             .Include(x => x.Client)
                             .Include(x => x.Work)
-                            .Where(x => x.RoleId == roleId)
+                            .Where(x => roles.Contains(x.RoleId))
                             .ToList();
             }
 

@@ -15,12 +15,21 @@ class DetailEmployee extends Component {
   constructor(props) {
     super(props);
 
-    this.headerText = [
-      { text: "Datos Básicos" },
-      { text: "Documentos" },
-      { text: "Fichajes" }
-      //{ text: "Cursos" }
-    ];
+    this.headerText = null;
+
+    if (this.props.history.location.state.user.roleId === 3) {
+      this.headerText = [
+        { text: "Datos Básicos" },
+        { text: "Documentos" },
+        { text: "Fichajes" }
+      ];
+    } else {
+      this.headerText = [
+        { text: "Datos Básicos" },
+        { text: "Documentos" },
+        //{ text: "Fichajes" }
+      ];
+    }
 
     this.contentTemplateBasicDate = this.contentTemplateBasicDate.bind(this);
     this.contentTemplateTrainings = this.contentTemplateTrainings.bind(this);
@@ -100,10 +109,6 @@ class DetailEmployee extends Component {
                     header={this.headerText[2]}
                     content={this.contentTemplateDailySignings}
                   />
-                  {/* <TabItemDirective
-                    header={this.headerText[3]}
-                    content={this.contentTemplateTrainings}
-                  /> */}
                 </TabItemsDirective>
               </TabComponent>
             </div>

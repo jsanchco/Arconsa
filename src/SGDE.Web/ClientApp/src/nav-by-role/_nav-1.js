@@ -30,7 +30,7 @@ export default {
           },
           {
             name: 'Agregar Usuarios',
-            url: '/settings/typesdocument',
+            url: '/settings/usersnoworker',
             icon: 'icon-people',
           }
         ],

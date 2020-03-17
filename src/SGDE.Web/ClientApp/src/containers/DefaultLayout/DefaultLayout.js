@@ -77,8 +77,7 @@ class DefaultLayout extends Component {
 
   renderAppSidebarNav() {
     const user = JSON.parse(localStorage.getItem("user"));
-    console.log("user ->", user);
-
+    
     switch (user.roleId) {
       case 1:
         return (

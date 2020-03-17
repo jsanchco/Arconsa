@@ -85,7 +85,11 @@ class BasicData extends Component {
   }
 
   handleCancel() {
-    this.props.history.push("/employees/employees");
+    if (this.props.user.roleId === 3) {
+      this.props.history.push("/employees/employees");
+    } else {
+      this.props.history.push("/settings/usersnoworker");
+    }
   }
 
   updatePhoto(newPhoto) {

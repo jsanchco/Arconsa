@@ -89,9 +89,9 @@ namespace SGDE.Domain.Supervisor
             return await _userRepository.DeleteAsync(id, ct);
         }
 
-        public QueryResult<UserViewModel> GetAllUsers(int skip = 0, int take = 0, string filter = null, int roleId = 0)
+        public QueryResult<UserViewModel> GetAllUsers(int skip = 0, int take = 0, string filter = null, List<int> roles = null)
         {
-            var queryResult = _userRepository.GetAll(skip, take, filter, roleId);
+            var queryResult = _userRepository.GetAll(skip, take, filter, roles);
             return new QueryResult<UserViewModel>
             {
                 Data = UserConverter.ConvertList(queryResult.Data),

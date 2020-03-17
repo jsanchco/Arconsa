@@ -45,6 +45,7 @@ const BasicData = React.lazy(() => import('./views/Employees/basic-data'));
 const Roles = React.lazy(() => import('./views/Settings/roles'));
 const Professions = React.lazy(() => import('./views/Settings/professions'));
 const TypesDocument = React.lazy(() => import('./views/Settings/types-document'));
+const UsersNoWorker = React.lazy(() => import('./views/Settings/users-no-worker'));
 
 const Clients = React.lazy(() => import('./views/Clients/clients'));
 const DetailClient = React.lazy(() => import('./views/Clients/detail-client'));
@@ -107,6 +108,7 @@ const routes = [
   { path: '/settings/roles', exact: true, name: 'Roles', component: Roles },
   { path: '/settings/professions', exact: true, name: 'Puestos de Trabajo', component: Professions },
   { path: '/settings/typesdocument', exact: true, name: 'Tipos de Documento', component: TypesDocument },
+  { path: '/settings/usersnoworker', exact: true, name: 'Usuarios', component: UsersNoWorker },
   { path: '/clients/clients', exact: true, name: 'Clientes', component: Clients },
   { path: '/clients/detailclient', exact: true, name: 'Detalle Cliente', component: DetailClient },
   { path: '/works/works', exact: true, name: 'Obras', component: Works },

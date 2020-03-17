@@ -21,7 +21,7 @@ import { TOKEN_KEY } from "../../services";
 
 L10n.load(data);
 
-class Employees extends Component {
+class UsersNoWorker extends Component {
   users = new DataManager({
     adaptor: new WebApiAdaptor(),
     url: `${config.URL_API}/${USERS}`,
@@ -83,7 +83,7 @@ class Employees extends Component {
 
     this.template = this.gridTemplate;
 
-    this.query = new Query().addParams("roles", [3]);
+    this.query = new Query().addParams("roles", [1, 2]);
   }
 
   gridTemplate(args) {
@@ -161,7 +161,7 @@ class Employees extends Component {
         <div className="animated fadeIn">
           <div className="card">
             <div className="card-header">
-              <i className="icon-list"></i> Trabajadores
+              <i className="icon-list"></i> Usuarios
             </div>
             <div className="card-body"></div>
             <Row>
@@ -255,7 +255,7 @@ class Employees extends Component {
   }
 }
 
-Employees.propTypes = {};
+UsersNoWorker.propTypes = {};
 
 const mapStateToProps = state => {
   return {
@@ -267,4 +267,4 @@ const mapDispatchToProps = dispatch => ({
   showMessage: message => dispatch(ACTION_APPLICATION.showMessage(message))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Employees);
+export default connect(mapStateToProps, mapDispatchToProps)(UsersNoWorker);
