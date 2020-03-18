@@ -136,8 +136,8 @@ class BasicData extends Component {
                 <img
                   src={src}
                   alt={this.state.username}
-                  width="230"
-                  height="210"
+                  width="200"
+                  height="180"
                   onDoubleClick={this.toggleModal}
                   style={{ cursor: "pointer" }}
                 />
@@ -275,8 +275,8 @@ class BasicData extends Component {
               <Col
                 xs="12"
                 style={{
-                  marginTop: -20,
-                  marginLeft: 40,
+                  marginTop: -40,
+                  marginLeft: 20,
                   fontSize: 10,
                   fontWeight: "bold"
                 }}

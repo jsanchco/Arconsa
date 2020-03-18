@@ -54,7 +54,8 @@
                 throw new Exception("El fichaje está mal configurado");
 
             _dailySigningRepository.Add(dailySigning);
-            return newDailySigningViewModel;
+
+            return GetDailySigningById(dailySigning.Id);
         }
 
         public bool UpdateDailySigning(DailySigningViewModel dailySigningViewModel)

@@ -131,7 +131,7 @@ class WorksByClient extends Component {
 
     return (
       <div className="animated fadeIn" id="target-works">
-        <div className="card" style={{ marginRight: "60px" }}>
+        <div className="card" style={{ marginRight: "60px", marginTop: "20px" }}>
           <div className="card-header">
             <i className="icon-globe"></i>{title} 
           </div>

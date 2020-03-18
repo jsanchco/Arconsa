@@ -9,7 +9,6 @@ import {
   Toolbar,
   Page
 } from "@syncfusion/ej2-react-grids";
-import { DatePickerComponent } from "@syncfusion/ej2-react-calendars";
 import { DataManager, WebApiAdaptor, Query } from "@syncfusion/ej2-data";
 import { config, USERSHIRING } from "../../constants";
 import { L10n } from "@syncfusion/ej2-base";
@@ -26,14 +25,6 @@ class AuthorizeCancelWorkers extends Component {
   });
 
   grid = null;
-
-  numericParams = {
-    params: {
-      decimals: 1,
-      format: "N",
-      validateDecimalOnType: true
-    }
-  };
 
   constructor(props) {
     super(props);
@@ -135,43 +126,6 @@ class AuthorizeCancelWorkers extends Component {
     }
   }
 
-  startDateTemplate(args) {
-    return (
-      <DatePickerComponent
-        value={new Date(args.startDate)}
-        id="startDateDP"
-        placeholder="Fecha Inicio"
-        floatLabelType="Never"
-        format="dd/MM/yyyy"
-      />
-    );
-  }
-
-  endDateTemplate(args) {
-    if (args.endDate === null || args.endDate === undefined) {
-      return (
-        <DatePickerComponent
-          value={null}
-          id="endDateDP"
-          placeholder="Fecha Fin"
-          floatLabelType="Never"
-          format="dd/MM/yyyy"
-        />
-      );
-    } else {
-      return (
-        <DatePickerComponent
-          value={new Date(args.endDate)}
-          id="endDateDP"
-          placeholder="Fecha Fin"
-          floatLabelType="Never"
-          format="dd/MM/yyyy"
-        />
-      );
-    }
-
-  }
-
   render() {
     let title = "";
     if (
@@ -184,7 +138,7 @@ class AuthorizeCancelWorkers extends Component {
     return (
       <Fragment>
         <div className="animated fadeIn">
-          <div className="card" style={{ marginRight: "60px" }}>
+          <div className="card" style={{ marginRight: "60px", marginTop: "20px" }}>
             <div className="card-header">
               <i className="icon-layers"></i>{title}
             </div>

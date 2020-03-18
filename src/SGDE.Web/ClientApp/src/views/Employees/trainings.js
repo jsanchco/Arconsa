@@ -104,7 +104,7 @@ class Trainings extends Component {
     return (
       <Fragment>
         <div className="animated fadeIn">
-          <div className="card" style={{ marginRight: "60px" }}>
+          <div className="card" style={{ marginRight: "60px", marginTop: "20px" }}>
             <div className="card-header">
               <i className="icon-layers"></i> Cursos
             </div>

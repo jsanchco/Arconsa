@@ -207,8 +207,8 @@ class ModalWorkers extends Component {
             <div
               style={{
                 marginLeft: "18px",
-                marginTop: "5px",
-                marginBottom: "-17px"
+                marginTop: "10px",
+                marginBottom: "-10px"
               }}
             >
               <Legend
