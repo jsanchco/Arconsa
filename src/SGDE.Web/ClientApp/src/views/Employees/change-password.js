@@ -74,11 +74,11 @@ class ChangePassword extends Component {
   render() {
     return (
       <Fragment>
-        <div
+        {/* <div
           className="app flex-row align-items-center"
           style={{ marginTop: "-200px", marginBottom: "-150px" }}
-        >
-          <Container>
+        > */}
+          <Container  style={{ marginTop: "100px", marginBottom: "100px" }}>
             <Row className="justify-content-center">
               <Col md="5">
                 <CardGroup>
@@ -153,7 +153,7 @@ class ChangePassword extends Component {
               </Col>
             </Row>
           </Container>
-        </div>
+        {/* </div> */}
       </Fragment>
     );
   }

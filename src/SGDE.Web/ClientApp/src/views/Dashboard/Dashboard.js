@@ -19,6 +19,7 @@ import {
   Progress,
   Row,
   Table,
+  Container
 } from 'reactstrap';
 import { CustomTooltips } from '@coreui/coreui-plugin-chartjs-custom-tooltips';
 import { getStyle, hexToRgba } from '@coreui/coreui/dist/js/coreui-utilities'
@@ -480,6 +481,25 @@ class Dashboard extends Component {
   loading = () => <div className="animated fadeIn pt-1 text-center">Loading...</div>
 
   render() {
+    return (
+      <Container>
+      <Row className="justify-content-center">
+        <Col md="6">
+          <div
+            style={{ cursor: "pointer" }}
+            className="clearfix"
+          >
+            <h1 className="float-left display-3 mr-4">ARCONSA</h1>
+            <h4 className="pt-3">Test</h4>
+            <p className="text-muted float-left">Página de presentación</p>
+          </div>
+        </Col>
+      </Row>
+    </Container>
+    );
+  }
+
+  render_old() {
 
     return (
       <div className="animated fadeIn">
