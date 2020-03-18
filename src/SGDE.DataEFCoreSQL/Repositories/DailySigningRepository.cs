@@ -42,6 +42,7 @@
                 .ThenInclude(y => y.Work)
                 .Include(z => z.UserHiring)
                 .ThenInclude(w => w.User)
+                .OrderByDescending(x => x.StartHour)
                 .ToList();
             }
             else {
@@ -51,6 +52,7 @@
                 .Include(z => z.UserHiring)
                 .ThenInclude(w => w.User)
                 .Where(x => x.UserHiring.User.Id == userId)
+                .OrderByDescending(x => x.StartHour)
                 .ToList();
             }
             var count = data.Count;
