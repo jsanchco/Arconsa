@@ -89,6 +89,17 @@ class DailySignings extends Component {
     }
   }
 
+
+  formatDate(args) {
+    var date = new Date(args);
+    var month = ("0" + (date.getMonth() + 1)).slice(-2);
+    var day = ("0" + date.getDate()).slice(-2);
+    var hours = ("0" + date.getHours()).slice(-2);
+    var minutes = ("0" + date.getMinutes()).slice(-2);
+
+    return `${[day, month, date.getFullYear()].join("/")} ${hours}:${minutes}`;
+  }
+
   actionBegin(args) {
     if (args.requestType === "add" || args.requestType === "beginEdit") {
       this.grid.columns[0].edit.params.query.params = [];
@@ -110,16 +121,6 @@ class DailySignings extends Component {
         args.data.endHour = date;
       }
     }
-  }
-
-  formatDate(args) {
-    var date = new Date(args);
-    var month = ("0" + (date.getMonth() + 1)).slice(-2);
-    var day = ("0" + date.getDate()).slice(-2);
-    var hours = ("0" + date.getHours()).slice(-2);
-    var minutes = ("0" + date.getMinutes()).slice(-2);
-
-    return `${[day, month, date.getFullYear()].join("/")} ${hours}:${minutes}`;
   }
 
   actionFailure(args) {
