@@ -48,7 +48,11 @@ class ModalSelectImage extends Component {
     }
 
     return (
-      <Modal isOpen={this.props.isOpen} toggle={this.props.toggle}>
+      <Modal
+        isOpen={this.props.isOpen}
+        toggle={this.props.toggle}
+        className={"modal-primary"}
+      >
         <ModalHeader toggle={this.props.toggle}>Selecciona archivo</ModalHeader>
         <ModalBody>
           <label htmlFor="file-upload" className="custom-file-upload">

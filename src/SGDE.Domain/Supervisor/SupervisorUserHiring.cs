@@ -60,10 +60,10 @@
             userHiring.ModifiedDate = DateTime.Now;
             userHiring.IPAddress = userHiringViewModel.iPAddress;
 
-            userHiring.StartDate = DateTime.Parse(userHiringViewModel.startDate);
+            userHiring.StartDate = DateTime.ParseExact(userHiringViewModel.startDate, "dd/MM/yyyy", null);
             userHiring.EndDate = string.IsNullOrEmpty(userHiringViewModel.endDate)
                     ? null
-                    : (DateTime?)DateTime.Parse(userHiringViewModel.endDate);
+                    : (DateTime?)DateTime.ParseExact(userHiringViewModel.endDate, "dd/MM/yyyy", null);
 
             userHiring.WorkId = userHiringViewModel.workId;
             userHiring.UserId = userHiringViewModel.userId;

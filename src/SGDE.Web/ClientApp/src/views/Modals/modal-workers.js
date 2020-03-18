@@ -189,7 +189,7 @@ class ModalWorkers extends Component {
         <Modal
           isOpen={this.props.isOpen}
           toggle={this.props.toggle}
-          className={"modal-lg"}
+          className={"modal-lg modal-primary"}
         >
           <ModalHeader toggle={this.props.toggle}>{title}</ModalHeader>
           <ModalBody>

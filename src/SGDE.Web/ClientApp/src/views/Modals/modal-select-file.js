@@ -23,14 +23,16 @@ class ModalSelectFile extends Component {
       filename;
 
     reader.onloadend = () => {
-      let newFileName = this.props.rowSelected.typeDocumentName.split(" ").join("");
+      let newFileName = this.props.rowSelected.typeDocumentName
+        .split(" ")
+        .join("");
       newFileName = newFileName.split(".").join("");
       newFileName = newFileName.split("/").join("");
       newFileName = newFileName.split("\\").join("");
       newFileName = newFileName.split(":").join("");
       newFileName = newFileName.split("*").join("");
       newFileName = newFileName.split("?").join("");
-      newFileName = newFileName.split("\"").join("");
+      newFileName = newFileName.split('"').join("");
       newFileName = newFileName.split("<").join("");
       newFileName = newFileName.split(">").join("");
       newFileName = newFileName.split("|").join("");
@@ -62,7 +64,11 @@ class ModalSelectFile extends Component {
     }
 
     return (
-      <Modal isOpen={this.props.isOpen} toggle={this.props.toggle}>
+      <Modal
+        isOpen={this.props.isOpen}
+        toggle={this.props.toggle}
+        className={"modal-primary"}
+      >
         <ModalHeader toggle={this.props.toggle}>{title}</ModalHeader>
         <ModalBody>
           <label htmlFor="file-upload" className="custom-file-upload">
