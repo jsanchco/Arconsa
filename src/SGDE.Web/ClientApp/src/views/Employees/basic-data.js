@@ -133,14 +133,24 @@ class BasicData extends Component {
           <Form>
             <Row>
               <Col xs="2">
-                <img
-                  src={src}
-                  alt={this.state.username}
-                  width="200"
-                  height="180"
-                  onDoubleClick={this.toggleModal}
-                  style={{ cursor: "pointer" }}
-                />
+                <div>
+                  <img
+                    src={src}
+                    alt={this.state.username}
+                    onDoubleClick={this.toggleModal}
+                    style={{ cursor: "pointer", width: "100%" }}
+                  />
+                  <div style={{ textAlign: "center" }}>
+                    <span
+                      style={{
+                        fontSize: 10,
+                        fontWeight: "bold"
+                      }}
+                    >
+                      Doble click para cambiar la imagen
+                    </span>
+                  </div>
+                </div>
               </Col>
               <Col xs="10">
                 <Row>
@@ -269,19 +279,6 @@ class BasicData extends Component {
                     </FormGroup>
                   </Col>
                 </Row>
-              </Col>
-            </Row>
-            <Row>
-              <Col
-                xs="12"
-                style={{
-                  marginTop: -40,
-                  marginLeft: 20,
-                  fontSize: 10,
-                  fontWeight: "bold"
-                }}
-              >
-                Doble click para cambiar la imagen
               </Col>
             </Row>
             <Row>
