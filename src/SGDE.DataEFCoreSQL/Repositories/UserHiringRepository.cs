@@ -102,8 +102,38 @@
             if (!UserHiringExists(userHiring.Id))
                 return false;
 
-            _context.UserHiring.Update(userHiring);
-            _context.SaveChanges();
+            ValidateUpdateUserHiring(userHiring);
+
+            using (var transaction = _context.Database.BeginTransaction())
+            {
+                try
+                {
+                    _context.UserHiring.Update(userHiring);
+
+                    var user = _context.User.FirstOrDefault(x => x.Id == userHiring.UserId);
+                    if (user == null) return false;
+
+                    if (userHiring.EndDate == null)
+                    {
+                        user.WorkId = userHiring.WorkId;
+                    }
+                    else
+                    {
+                        user.WorkId = null;
+                    }
+                    _context.User.Update(user);
+
+                    _context.SaveChanges();
+
+                    transaction.Commit();
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    throw ex;
+                }
+            }
+
             return true;
         }
 
@@ -113,8 +143,32 @@
                 return false;
 
             var toRemove = _context.UserHiring.Find(id);
-            _context.UserHiring.Remove(toRemove);
-            _context.SaveChanges();
+            using (var transaction = _context.Database.BeginTransaction())
+            {
+                try
+                {
+                    _context.UserHiring.Remove(toRemove);
+
+                    var user = _context.User.FirstOrDefault(x => x.Id == toRemove.UserId);
+                    if (user == null) return false;
+
+                    if (toRemove.EndDate == null)
+                    {
+                        user.WorkId = null;
+                        _context.User.Update(user);
+                    }
+
+                    _context.SaveChanges();
+
+                    transaction.Commit();
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    throw ex;
+                }
+            }
+
             return true;
 
         }
@@ -199,10 +253,21 @@
                         else
                         {
                             var userHiring = user.UserHirings.ToList().FirstOrDefault(x => x.EndDate == null && x.WorkId != workId);
-                            if (userHiring != null)
+                            if (userHiring != null && user.WorkId != workId)
                             {
                                 userHiring.EndDate = DateTime.Now;
                                 _context.UserHiring.Update(userHiring);
+
+                                _context.UserHiring.Add(new UserHiring
+                                {
+                                    AddedDate = DateTime.Now,
+                                    ModifiedDate = null,
+
+                                    StartDate = DateTime.Now,
+                                    EndDate = null,
+                                    WorkId = workId,
+                                    UserId = userId
+                                });
 
                                 user.WorkId = workId;
                                 _context.User.Update(user);
@@ -221,6 +286,16 @@
             }
 
             return true;
+        }
+
+        private void ValidateUpdateUserHiring(UserHiring userHiring)
+        {
+            var listUserHiringsByUser = GetAll(userHiring.UserId);
+            var openUserHiring = listUserHiringsByUser.FirstOrDefault(x => x.EndDate == null && x.Id != userHiring.Id);
+            if (openUserHiring != null && userHiring.EndDate == null)
+            {
+                throw new Exception("No se puede actualizar esta contratación, existe otra en uso");
+            }
         }
     }
 }

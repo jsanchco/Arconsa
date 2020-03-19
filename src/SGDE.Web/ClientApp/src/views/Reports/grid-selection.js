@@ -218,7 +218,7 @@ class GridSelection extends Component {
           />
           <ColumnDirective
             field="priceHour"
-            headerText="Precio"
+            headerText="Precio Coste"
             width="100"
             fotmat="C1"
             textAlign="right"

@@ -171,6 +171,13 @@ class ModalWorkers extends Component {
       query = new Query().addParams("workId", this.props.workSelected.id);
     }
 
+    const checkBoxHeader = document.getElementsByClassName("e-checkbox-wrapper e-css");
+    if (Array.isArray(checkBoxHeader) && checkBoxHeader.length > 0) {
+      console.log("checkBoxHeader ->", checkBoxHeader[0]);
+      checkBoxHeader[0].style.display = "none";
+    }
+    
+
     return (
       <Fragment>
         <DialogComponent

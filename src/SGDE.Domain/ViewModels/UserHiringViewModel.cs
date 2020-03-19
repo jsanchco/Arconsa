@@ -14,7 +14,7 @@
             {
                 var dtStartDate = DateTime.ParseExact(startDate, "MM/dd/yyyy", null);
 
-                return $"{workName} {dtStartDate.ToShortDateString()}";
+                return $"{workName} {dtStartDate.ToString("dd/MM/yyyy")}";
             }
         }
 

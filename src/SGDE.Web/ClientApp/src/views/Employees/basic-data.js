@@ -231,7 +231,7 @@ class BasicData extends Component {
                 <Row>
                   <Col xs="4">
                     <FormGroup>
-                      <Label htmlFor="priceHour">Precio Hora</Label>
+                      <Label htmlFor="priceHour">Precio Coste Hora</Label>
                       <Input
                         type="number"
                         id="priceHour"
