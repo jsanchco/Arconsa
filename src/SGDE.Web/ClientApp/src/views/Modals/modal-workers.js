@@ -160,6 +160,11 @@ class ModalWorkers extends Component {
     });
   }
 
+  headerCellInfo(args) {
+    args.node.getElementsByClassName("e-checkbox-wrapper")[0] &&
+      args.node.getElementsByClassName("e-checkbox-wrapper")[0].remove();
+  }
+
   render() {
     let title = "";
     let query = null;
@@ -170,13 +175,6 @@ class ModalWorkers extends Component {
       title = ` Trabajadores [${this.props.workSelected.name}]`;
       query = new Query().addParams("workId", this.props.workSelected.id);
     }
-
-    const checkBoxHeader = document.getElementsByClassName("e-checkbox-wrapper e-css");
-    if (Array.isArray(checkBoxHeader) && checkBoxHeader.length > 0) {
-      console.log("checkBoxHeader ->", checkBoxHeader[0]);
-      checkBoxHeader[0].style.display = "none";
-    }
-    
 
     return (
       <Fragment>
@@ -248,6 +246,7 @@ class ModalWorkers extends Component {
                 dataBound={this.onDataBound}
                 rowDataBound={this.onRowDataBound}
                 rowSelected={this.rowSelected}
+                headerCellInfo={this.headerCellInfo}
               >
                 <ColumnsDirective>
                   <ColumnDirective
