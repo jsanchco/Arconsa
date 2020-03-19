@@ -170,7 +170,6 @@
             }
 
             return true;
-
         }
 
         public bool AssignWorkers(List<int> listUserId, int workId)

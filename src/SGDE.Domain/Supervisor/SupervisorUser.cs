@@ -130,7 +130,8 @@ namespace SGDE.Domain.Supervisor
                 RoleId = newUserViewModel.roleId,
                 ProfessionId = newUserViewModel.professionId,
                 WorkId = newUserViewModel.workId,
-                ClientId = newUserViewModel.clientId
+                ClientId = newUserViewModel.clientId,
+                Password = "123456"
             };
 
             _userRepository.Add(user);
