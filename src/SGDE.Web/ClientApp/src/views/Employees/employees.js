@@ -78,10 +78,13 @@ class Employees extends Component {
     this.pageSettings = { pageCount: 10, pageSize: 10 };
     this.actionFailure = this.actionFailure.bind(this);
     this.actionComplete = this.actionComplete.bind(this);
+    this.actionBegin = this.actionBegin.bind(this);
     this.clickHandler = this.clickHandler.bind(this);
     this.rowSelected = this.rowSelected.bind(this);
+    this.formatDate = this.formatDate.bind(this);
 
     this.template = this.gridTemplate;
+    this.format = { type: "dateTime", format: "dd/MM/yyyy" };
 
     this.query = new Query().addParams("roles", [3]);
   }
@@ -136,6 +139,19 @@ class Employees extends Component {
     }
   }
 
+  actionBegin(args) {
+    if (args.requestType === "save") {
+      if (
+        args.data.birthDate !== null &&
+        args.data.birthDate !== "" &&
+        args.data.birthDate !== undefined
+      ) {
+        let date = this.formatDate(args.data.birthDate);
+        args.data.birthDate = date;
+      }
+    }
+  }
+
   clickHandler(args) {
     if (args.item.id === "Details") {
       const { rowSelected } = this.state;
@@ -147,6 +163,22 @@ class Employees extends Component {
           }
         });
       }
+    }
+  }
+
+  formatDate(args) {
+    if (args === null || args === "") {
+      return "";
+    }
+
+    const day = args.getDate();
+    const month = args.getMonth() + 1;
+    const year = args.getFullYear();
+
+    if (month < 10) {
+      return `${day}/0${month}/${year}`;
+    } else {
+      return `${day}/${month}/${year}`;
     }
   }
 
@@ -181,6 +213,7 @@ class Employees extends Component {
                 }}
                 actionFailure={this.actionFailure}
                 actionComplete={this.actionComplete}
+                actionBegin={this.actionBegin}
                 allowGrouping={true}
                 rowSelected={this.rowSelected}
                 ref={g => (this.grid = g)}
@@ -202,27 +235,34 @@ class Employees extends Component {
                     textAlign="Center"
                     allowEditing={false}
                   />
-                  <ColumnDirective field="dni" headerText="DNI" width="100" />
                   <ColumnDirective
                     field="name"
                     headerText="Nombre"
-                    width="100"
+                    width="50"
                   />
                   <ColumnDirective
                     field="surname"
                     headerText="Apellidos"
-                    width="100"
+                    width="70"
                   />
                   <ColumnDirective
-                    field="username"
-                    headerText="Código Acceso"
+                    field="birthDate"
+                    headerText="F. Nacimiento"
                     width="100"
-                    required={true}
+                    type="date"
+                    format={this.format}
+                    editType="datepickeredit"
+                  />
+                  <ColumnDirective field="dni" headerText="DNI" width="50" />
+                  <ColumnDirective
+                    field="securitySocialNumber"
+                    headerText="S. Social"
+                    width="50"
                   />
                   <ColumnDirective
                     field="phoneNumber"
                     headerText="Teléfono"
-                    width="100"
+                    width="50"
                   />
                   <ColumnDirective
                     field="professionId"

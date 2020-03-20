@@ -48,8 +48,8 @@ namespace SGDE.Domain.Supervisor
                 Surname = newUserViewModel.surname,
                 Username = newUserViewModel.username,
                 BirthDate = string.IsNullOrEmpty(newUserViewModel.birthDate)
-                ? null
-                : (DateTime?)DateTime.Parse(newUserViewModel.birthDate),
+                    ? null
+                    : (DateTime?)DateTime.Parse(newUserViewModel.birthDate),
                 Email = newUserViewModel.email,
                 Password = "123456",
                 ProfessionId = newUserViewModel.professionId
@@ -117,6 +117,7 @@ namespace SGDE.Domain.Supervisor
                 Surname = newUserViewModel.surname,
                 Username = newUserViewModel.username,
                 Dni = newUserViewModel.dni,
+                SecuritySocialNumber = newUserViewModel.securitySocialNumber,
                 BirthDate = string.IsNullOrEmpty(newUserViewModel.birthDate)
                     ? null
                     : (DateTime?)DateTime.Parse(newUserViewModel.birthDate),
@@ -155,6 +156,7 @@ namespace SGDE.Domain.Supervisor
             user.Surname = userViewModel.surname;
             user.Username = userViewModel.username;
             user.Dni = userViewModel.dni;
+            user.SecuritySocialNumber = userViewModel.securitySocialNumber;
             user.BirthDate = string.IsNullOrEmpty(userViewModel.birthDate)
                 ? null
                 : (DateTime?)DateTime.Parse(userViewModel.birthDate);

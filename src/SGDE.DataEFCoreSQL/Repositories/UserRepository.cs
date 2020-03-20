@@ -125,6 +125,7 @@
                     .Where(x =>
                         Searcher.RemoveAccentsWithNormalization(x.Address?.ToLower()).Contains(filter) ||
                         Searcher.RemoveAccentsWithNormalization(x.Dni?.ToLower()).Contains(filter) ||
+                        Searcher.RemoveAccentsWithNormalization(x.SecuritySocialNumber?.ToLower()).Contains(filter) ||
                         Searcher.RemoveAccentsWithNormalization(x.Email?.ToLower()).Contains(filter) ||
                         Searcher.RemoveAccentsWithNormalization(x.Name.ToLower()).Contains(filter) ||
                         Searcher.RemoveAccentsWithNormalization(x.Observations?.ToLower()).Contains(filter) ||

@@ -10,6 +10,7 @@ class ModalSelectImage extends Component {
     this.state = { file: "", imagePreviewUrl: "" };
 
     this._handleOnClick = this._handleOnClick.bind(this);
+    this._handleRotate = this._handleRotate.bind(this);
   }
 
   _handleImageChange(e) {
@@ -32,6 +33,11 @@ class ModalSelectImage extends Component {
     this.props.toggle();
 
     this.props.updatePhoto(this.state.imagePreviewUrl);
+  }
+
+  _handleRotate() {
+    const element = document.getElementById("photo");
+    element.setAttribute("style", "transform:rotate(90deg)");
   }
 
   render() {
@@ -69,7 +75,9 @@ class ModalSelectImage extends Component {
             type="file"
             onChange={e => this._handleImageChange(e)}
           /> */}
-          <div className="imgPreview">{$imagePreview}</div>
+          <div className="imgPreview" id="photo">
+            {$imagePreview}
+          </div>
         </ModalBody>
         <ModalFooter>
           <Button color="primary" onClick={this._handleOnClick}>
@@ -81,6 +89,13 @@ class ModalSelectImage extends Component {
             onClick={this.props.toggle}
           >
             Cancelar
+          </Button>
+          <Button
+            color="secondary"
+            style={{ marginLeft: "10px" }}
+            onClick={this._handleRotate}
+          >
+            Rotate
           </Button>
         </ModalFooter>
       </Modal>

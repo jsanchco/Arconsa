@@ -19,6 +19,7 @@ namespace SGDE.Domain.ViewModels
             }
         }
         public string dni { get; set; }
+        public string securitySocialNumber { get; set; }
         public string birthDate { get; set; }
         public string email { get; set; }
         public string password { get; set; }

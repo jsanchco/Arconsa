@@ -89,7 +89,6 @@ class DailySignings extends Component {
     }
   }
 
-
   formatDate(args) {
     var date = new Date(args);
     var month = ("0" + (date.getMonth() + 1)).slice(-2);

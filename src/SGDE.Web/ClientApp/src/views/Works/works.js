@@ -345,22 +345,22 @@ class Works extends Component {
                 <ColumnDirective
                   field="address"
                   headerText="Dirección"
-                  width="100"
+                  width="200"
                 />
-                <ColumnDirective
+                {/* <ColumnDirective
                   field="estimatedDuration"
                   headerText="Duración Estimada"
                   width="100"
-                />
+                /> */}
                 <ColumnDirective
                   field="worksToRealize"
-                  headerText="Trabajos a Realizar"
-                  width="100"
+                  headerText="Tipo"
+                  width="50"
                 />
                 <ColumnDirective
                   field="numberPersonsRequested"
                   headerText="Personas"
-                  width="100"
+                  width="50"
                   fotmat="N0"
                   textAlign="right"
                   editType="numericedit"
@@ -386,7 +386,7 @@ class Works extends Component {
                 />
                 <ColumnDirective
                   field="open"
-                  headerText="Abierta/Cerrada"
+                  headerText="Ab./Cer."
                   width="100"
                   template={this.openTemplate}
                   textAlign="Center"
