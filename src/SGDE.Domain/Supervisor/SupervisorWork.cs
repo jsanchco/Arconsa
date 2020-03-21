@@ -109,6 +109,40 @@
             work.EstimatedDuration = workViewModel.estimatedDuration;
             work.WorksToRealize = workViewModel.worksToRealize;
             work.NumberPersonsRequested = workViewModel.numberPersonsRequested;
+
+            work.OpenDate = DateTime.ParseExact(workViewModel.openDate, "dd/MM/yyyy", null);
+            work.CloseDate = string.IsNullOrEmpty(workViewModel.closeDate)
+                    ? null
+                    : (DateTime?)DateTime.ParseExact(workViewModel.closeDate, "dd/MM/yyyy", null);
+            work.Open = string.IsNullOrEmpty(workViewModel.closeDate);
+
+            if (work.OpenDate > work.CloseDate)
+            {
+                throw new Exception("Fechas inconsistentes");
+            }
+
+            work.ClientId = workViewModel.clientId;
+
+            return _workRepository.Update(work);
+        }
+
+        public bool UpdateDatesWork(WorkViewModel workViewModel)
+        {
+            if (workViewModel.id == null)
+                return false;
+
+            var work = _workRepository.GetById((int)workViewModel.id);
+
+            if (work == null) return false;
+
+            work.ModifiedDate = DateTime.Now;
+            work.IPAddress = workViewModel.iPAddress;
+
+            work.Name = workViewModel.name;
+            work.Address = workViewModel.address;
+            work.EstimatedDuration = workViewModel.estimatedDuration;
+            work.WorksToRealize = workViewModel.worksToRealize;
+            work.NumberPersonsRequested = workViewModel.numberPersonsRequested;
             work.Open = workViewModel.open;
 
             if (workViewModel.open)

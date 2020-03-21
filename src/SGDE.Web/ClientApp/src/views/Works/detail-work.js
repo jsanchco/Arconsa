@@ -7,16 +7,33 @@ import {
   TabItemsDirective
 } from "@syncfusion/ej2-react-navigations";
 import AuthorizeCancelWorkers from "./authorize-cancel-workers";
+import BasicDataWork from "./basic-data-work";
 
 class DetailWork extends Component {
   constructor(props) {
     super(props);
 
     this.headerText = [
+      { text: "Datos Básicos" },
       { text: "Altas/Bajas de Trabajadores" }
     ];
 
-    this.contentTemplateAuthorizeCancelWorkers = this.contentTemplateAuthorizeCancelWorkers.bind(this);
+    this.contentTemplateAuthorizeCancelWorkers = this.contentTemplateAuthorizeCancelWorkers.bind(
+      this
+    );
+    this.contentTemplateBasicDataWork = this.contentTemplateBasicDataWork.bind(
+      this
+    );
+  }
+
+  contentTemplateBasicDataWork() {
+    return (
+      <BasicDataWork
+        work={this.props.history.location.state.work}
+        history={this.props.history}
+        showMessage={this.props.showMessage}
+      />
+    );
   }
 
   contentTemplateAuthorizeCancelWorkers() {
@@ -35,7 +52,7 @@ class DetailWork extends Component {
       this.props.history.location.state.work !== null &&
       this.props.history.location.state.work !== undefined
     ) {
-      title = ` Detalle Trabajador [${this.props.history.location.state.work.name}]`;
+      title = ` Detalle Obra [${this.props.history.location.state.work.name}]`;
     }
 
     return (
@@ -43,7 +60,8 @@ class DetailWork extends Component {
         <div className="animated fadeIn">
           <div className="card">
             <div className="card-header">
-              <i className="icon-book-open"></i>{title}
+              <i className="icon-book-open"></i>
+              {title}
             </div>
             <div className="card-body">
               <TabComponent
@@ -57,6 +75,10 @@ class DetailWork extends Component {
                 <TabItemsDirective>
                   <TabItemDirective
                     header={this.headerText[0]}
+                    content={this.contentTemplateBasicDataWork}
+                  />
+                  <TabItemDirective
+                    header={this.headerText[1]}
                     content={this.contentTemplateAuthorizeCancelWorkers}
                   />
                 </TabItemsDirective>

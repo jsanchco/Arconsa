@@ -18,7 +18,7 @@ import { L10n } from "@syncfusion/ej2-base";
 import data from "../../locales/locale.json";
 import { connect } from "react-redux";
 import ACTION_APPLICATION from "../../actions/applicationAction";
-import { TOKEN_KEY, updateWork } from "../../services";
+import { TOKEN_KEY, updateDatesWork } from "../../services";
 import ModalWorkers from "../Modals/modal-workers";
 import Legend from "../../components/legend";
 
@@ -201,11 +201,11 @@ class Works extends Component {
     return (
       <div>
         <div style={{ display: "flex" }}>
-          <div style={{ textAlign: "left", width: "50%" }}>Apertura:</div>
+          <div style={{ textAlign: "left", width: "50%" }}>Aper.:</div>
           <div style={{ textAlign: "left", width: "50%" }}>{args.openDate}</div>
         </div>
         <div style={{ display: "flex" }}>
-          <div style={{ textAlign: "left", width: "50%" }}>Cierre:</div>
+          <div style={{ textAlign: "left", width: "50%" }}>Cier.:</div>
           <div style={{ textAlign: "left", width: "50%" }}>
             {args.closeDate}
           </div>
@@ -218,25 +218,25 @@ class Works extends Component {
     const workSelected = this.state.rowSelected;
     if (args.item.id === "openWork") {
       workSelected.open = true;
-      updateWork(workSelected).then(() => {
-        this.grid.setCellValue(workSelected.id, "open", true);
+      updateDatesWork(workSelected).then(() => {        
         this.grid.setCellValue(workSelected.id, "closeDate", null);
         this.grid.setCellValue(
           workSelected.id,
           "openDate",
           this.formatDate(new Date())
         );
+        this.grid.setCellValue(workSelected.id, "open", true);
       });
     }
     if (args.item.id === "closeWork") {
       workSelected.open = false;
-      updateWork(workSelected).then(() => {
-        this.grid.setCellValue(workSelected.id, "open", false);
+      updateDatesWork(workSelected).then(() => {        
         this.grid.setCellValue(
           workSelected.id,
           "closeDate",
           this.formatDate(new Date())
         );
+        this.grid.setCellValue(workSelected.id, "open", false);
       });
     }
   }
@@ -377,7 +377,7 @@ class Works extends Component {
                   dataSource={this.clients}
                 />
                 <ColumnDirective
-                  field="closeDate"
+                  field="open"
                   headerText="Fechas"
                   width="100"
                   template={this.dateTemplate}

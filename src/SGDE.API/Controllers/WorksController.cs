@@ -98,6 +98,25 @@ namespace SGDE.API.Controllers
             }
         }
 
+        [HttpPut("updatedateswork")]
+        public object UpdateDatesWork([FromBody]WorkViewModel workViewModel)
+        {
+            try
+            {
+                if (_supervisor.UpdateDatesWork(workViewModel) && workViewModel.id != null)
+                {
+                    return _supervisor.GetWorkById((int)workViewModel.id);
+                }
+
+                return null;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Exception: ");
+                return StatusCode(500, ex);
+            }
+        }
+
         // DELETE: api/work/5
         [HttpDelete("{id:int}")]
         //[Route("work/{id:int}")]

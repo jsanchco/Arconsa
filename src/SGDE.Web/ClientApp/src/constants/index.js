@@ -3,6 +3,7 @@ export const ROLES = "api/Roles";
 export const USERS = "api/Users";
 export const CLIENTS = "api/Clients";
 export const WORKS = "api/Works";
+export const UPDATEDATESWORK = "api/Works/updatedateswork";
 export const TYPES_DOCUMENT = "api/TypesDocument";
 export const TRAININGS = "api/Trainings";
 export const DOCUMENTS = "api/UserDocuments";

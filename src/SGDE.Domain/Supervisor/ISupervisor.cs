@@ -98,6 +98,7 @@ namespace SGDE.Domain.Supervisor
         List<UserViewModel> GetUsersByWork(int workId, int state = 0); // 0 = all, 1 = asset, 2 = no asset
         WorkViewModel AddWork(WorkViewModel newWorkViewModel);
         bool UpdateWork(WorkViewModel workViewModel);
+        bool UpdateDatesWork(WorkViewModel workViewModel);
         bool DeleteWork(int id);
 
         #endregion
