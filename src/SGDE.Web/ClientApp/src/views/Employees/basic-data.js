@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from "react";
 import { Form, Col, FormGroup, Input, Label, Row, Button } from "reactstrap";
+import { DatePickerComponent } from "@syncfusion/ej2-react-calendars";
 import { updateUser } from "../../services";
 import ModalSelectImage from "../Modals/modal-select-image";
 import {
@@ -17,6 +18,8 @@ class BasicData extends Component {
       name: props.user.name,
       surname: props.user.surname,
       dni: props.user.dni,
+      securitySocialNumber: props.user.securitySocialNumber,
+      birthDate: props.user.birthDate,
       username: props.user.username,
       address: props.user.address,
       phoneNumber: props.user.phoneNumber,
@@ -54,6 +57,8 @@ class BasicData extends Component {
       name: this.state.name,
       surname: this.state.surname,
       dni: this.state.dni,
+      securitySocialNumber: this.state.securitySocialNumber,
+      birthDate: this.state.birthDate,
       username: this.state.username,
       address: this.state.address,
       phoneNumber: this.state.phoneNumber,
@@ -199,14 +204,15 @@ class BasicData extends Component {
                 <Row>
                   <Col xs="4">
                     <FormGroup>
-                      <Label htmlFor="username">Códgio Acceso</Label>
+                      <Label htmlFor="securitySocialNumber">
+                        Nº Seguridad Social
+                      </Label>
                       <Input
                         type="text"
-                        id="username"
-                        name="username"
-                        placeholder="código acceso"
-                        required
-                        value={this.state.username}
+                        id="securitySocialNumber"
+                        name="securitySocialNumber"
+                        placeholder="número de la seguridad social"
+                        value={this.state.securitySocialNumber}
                         onChange={this.handleInputChange}
                       />
                     </FormGroup>
@@ -267,6 +273,36 @@ class BasicData extends Component {
                   </Col>
                   <Col xs="4">
                     <FormGroup>
+                      <Label htmlFor="birthDate">Fecha de Nacimiento</Label>
+                      <DatePickerComponent
+                        id="birthDate"
+                        name="birthDate"
+                        placeholder="fecha de nacimiento"
+                        required
+                        format="dd/MM/yyyy"
+                        value={this.state.birthDate}
+                        onChange={this.handleInputChange}
+                      />
+                    </FormGroup>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col xs="4">
+                    <FormGroup>
+                      <Label htmlFor="username">Códgio Acceso</Label>
+                      <Input
+                        type="text"
+                        id="username"
+                        name="username"
+                        placeholder="código acceso"
+                        required
+                        value={this.state.username}
+                        onChange={this.handleInputChange}
+                      />
+                    </FormGroup>
+                  </Col>
+                  <Col xs="8">
+                    <FormGroup>
                       <Label htmlFor="observations">Observaciones</Label>
                       <Input
                         type="text"
@@ -287,13 +323,6 @@ class BasicData extends Component {
                   <Button color="primary" onClick={this.handleSubmit}>
                     Guardar
                   </Button>
-                  {/* <Button
-                    color="secondary"
-                    style={{ marginLeft: "10px" }}
-                    onClick={this.handleCancel}
-                  >
-                    Cancelar
-                  </Button> */}
                 </div>
               </Col>
             </Row>
