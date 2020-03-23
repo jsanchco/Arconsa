@@ -166,5 +166,22 @@ namespace SGDE.Domain.Supervisor
         List<ReportResultViewModel> GetHoursByClient(ReportQueryViewModel reportViewModel);
 
         #endregion
+
+        #region Invoice
+
+        InvoiceViewModel GetInvoice(InvoiceQueryViewModel invoiceQueryViewModel);
+
+        #endregion
+
+        #region Setting
+
+        List<SettingViewModel> GetAllSetting();
+        SettingViewModel GetSettingById(int id);
+        SettingViewModel GetSettingByName(string name);
+        SettingViewModel AddSetting(SettingViewModel newSettingViewModel);
+        bool UpdateSetting(SettingViewModel settingViewModel);
+        bool DeleteSetting(int id);
+
+        #endregion
     }
 }

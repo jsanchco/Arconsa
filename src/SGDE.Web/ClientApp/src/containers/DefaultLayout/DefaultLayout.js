@@ -52,8 +52,11 @@ class DefaultLayout extends Component {
   showMessage() {
     let message;
     if (this.props.messageApplication.type === "danger") {
-      message = this.props.messageApplication.statusText;
-      console.log("error ->", this.props.messageApplication.responseText);
+      if (this.props.messageApplication.statusText !== undefined) {
+        message = this.props.messageApplication.statusText.toString();
+      } else {
+        message = this.props.messageApplication.toString();
+      }
     } else {
       message = this.props.messageApplication.responseText;
     }

@@ -37,7 +37,9 @@
                 Name = newClientViewModel.name,
                 Cif = newClientViewModel.cif,
                 PhoneNumber = newClientViewModel.phoneNumber,
-                Address = newClientViewModel.address
+                Address = newClientViewModel.address,
+                WayToPay = newClientViewModel.wayToPay,
+                AccountNumber = newClientViewModel.accountNumber
             };
 
             _clientRepository.Add(builder);
@@ -60,6 +62,8 @@
             client.Cif = clientViewModel.cif;
             client.PhoneNumber = clientViewModel.phoneNumber;
             client.Address = clientViewModel.address;
+            client.WayToPay = clientViewModel.wayToPay;
+            client.AccountNumber = clientViewModel.accountNumber;
 
             return _clientRepository.Update(client);
         }

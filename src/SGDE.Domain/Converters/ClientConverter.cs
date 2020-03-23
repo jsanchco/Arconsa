@@ -27,6 +27,8 @@
                 cif = client.Cif,
                 address = client.Address,
                 phoneNumber = client.PhoneNumber,
+                wayToPay = client.WayToPay,
+                accountNumber = client.AccountNumber,
                 typeClientId = client.TypeClientId,
                 typeClientName = client.TypeClient?.Name
             };
@@ -49,6 +51,8 @@
                     cif = client.Cif,
                     address = client.Address,
                     phoneNumber = client.PhoneNumber,
+                    wayToPay = client.WayToPay,
+                    accountNumber = client.AccountNumber,
                     typeClientId = client.TypeClientId,
                     typeClientName = client.TypeClient?.Name
                 };

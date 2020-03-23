@@ -42,6 +42,7 @@ const Employees = React.lazy(() => import('./views/Employees/employees'));
 const DetailEmployee = React.lazy(() => import('./views/Employees/detail-employee'));
 const BasicData = React.lazy(() => import('./views/Employees/basic-data'));
 
+const CompanyData = React.lazy(() => import('./views/Settings/company-data'));
 const Roles = React.lazy(() => import('./views/Settings/roles'));
 const Professions = React.lazy(() => import('./views/Settings/professions'));
 const TypesDocument = React.lazy(() => import('./views/Settings/types-document'));
@@ -57,6 +58,8 @@ const BasicDataWork = React.lazy(() => import('./views/Works/basic-data-work'));
 const ReportHoursUser = React.lazy(() => import('./views/Reports/report-hours-user'));
 const ReportHoursWork = React.lazy(() => import('./views/Reports/report-hours-work'));
 const ReportHoursClient = React.lazy(() => import('./views/Reports/report-hours-client'));
+
+const Invoices = React.lazy(() => import('./views/Invoices/invoices'));
 
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
 const routes = [
@@ -106,6 +109,7 @@ const routes = [
   { path: '/employees/employees', exact: true, name: 'Trabajadores', component: Employees },
   { path: '/employees/detailemployee', exact: true, name: 'Detalle Trabajador', component: DetailEmployee },
   { path: '/employees/basicdata', exact: true, name: 'Datos Básicos', component: BasicData },
+  { path: '/settings/companydata', exact: true, name: 'Datos de Empresa', component: CompanyData },
   { path: '/settings/roles', exact: true, name: 'Roles', component: Roles },
   { path: '/settings/professions', exact: true, name: 'Puestos de Trabajo', component: Professions },
   { path: '/settings/typesdocument', exact: true, name: 'Tipos de Documento', component: TypesDocument },
@@ -117,7 +121,8 @@ const routes = [
   { path: '/works/basicdatawork', exact: true, name: 'Datos Básicos', component: BasicDataWork },
   { path: '/reports/reporthoursuser', exact: true, name: 'Informe Horas Trabajador', component: ReportHoursUser },
   { path: '/reports/reporthourswork', exact: true, name: 'Informe Horas Obra', component: ReportHoursWork },
-  { path: '/reports/reporthoursclient', exact: true, name: 'Informe Horas Cliente', component: ReportHoursClient }
+  { path: '/reports/reporthoursclient', exact: true, name: 'Informe Horas Cliente', component: ReportHoursClient },
+  { path: '/invoices/invoices', exact: true, name: 'Facturas', component: Invoices }
 ];
 
 export default routes;

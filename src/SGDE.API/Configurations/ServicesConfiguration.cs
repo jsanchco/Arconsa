@@ -37,7 +37,8 @@
                         .AddScoped<IUserDocumentRepository, DataEFCoreSQL.Repositories.UserDocumentRepository>()
                         .AddScoped<ITypeDocumentRepository, DataEFCoreSQL.Repositories.TypeDocumentRepository>()
                         .AddScoped<ITypeClientRepository, DataEFCoreSQL.Repositories.TypeClientRepository>()
-                        .AddScoped<IDailySigningRepository, DataEFCoreSQL.Repositories.DailySigningRepository>();
+                        .AddScoped<IDailySigningRepository, DataEFCoreSQL.Repositories.DailySigningRepository>()
+                        .AddScoped<ISettingRepository, DataEFCoreSQL.Repositories.SettingRepository>();
                     break;
                 case "MySQL":
                     services
@@ -52,7 +53,8 @@
                         .AddScoped<IUserDocumentRepository, DataEFCoreMySQL.Repositories.UserDocumentRepository>()
                         .AddScoped<ITypeDocumentRepository, DataEFCoreMySQL.Repositories.TypeDocumentRepository>()
                         .AddScoped<ITypeClientRepository, DataEFCoreMySQL.Repositories.TypeClientRepository>()
-                        .AddScoped<IDailySigningRepository, DataEFCoreMySQL.Repositories.DailySigningRepository>();
+                        .AddScoped<IDailySigningRepository, DataEFCoreMySQL.Repositories.DailySigningRepository>()
+                        .AddScoped<ISettingRepository, DataEFCoreMySQL.Repositories.SettingRepository>();
                     break;
 
                 default:
@@ -67,7 +69,8 @@
                         .AddScoped<IUserDocumentRepository, DataEFCoreMySQL.Repositories.UserDocumentRepository>()
                         .AddScoped<ITypeDocumentRepository, DataEFCoreMySQL.Repositories.TypeDocumentRepository>()
                         .AddScoped<ITypeClientRepository, DataEFCoreMySQL.Repositories.TypeClientRepository>()
-                        .AddScoped<IDailySigningRepository, DataEFCoreMySQL.Repositories.DailySigningRepository>();
+                        .AddScoped<IDailySigningRepository, DataEFCoreMySQL.Repositories.DailySigningRepository>()
+                        .AddScoped<ISettingRepository, DataEFCoreMySQL.Repositories.SettingRepository>();
                     break;
             }
 

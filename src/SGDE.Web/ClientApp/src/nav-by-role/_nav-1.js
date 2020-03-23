@@ -14,6 +14,11 @@ export default {
       icon: "icon-settings",
       children: [
         {
+          name: "Datos de la Empresa",
+          url: "/settings/companydata",
+          icon: "icon-note"
+        },
+        {
           name: "Roles",
           url: "/settings/roles",
           icon: "icon-people"
@@ -71,6 +76,11 @@ export default {
           icon: "icon-list"
         }
       ]
+    },
+    {
+      name: "Facturas",
+      url: "/invoices/Invoices",
+      icon: "cui-file"
     }
   ]
 };

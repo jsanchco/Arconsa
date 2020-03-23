@@ -29,6 +29,7 @@ namespace SGDE.DataEFCoreSQL
         public virtual DbSet<TypeDocument> TypeDocument { get; set; }
         public virtual DbSet<TypeClient> TypeClient { get; set; }
         public virtual DbSet<DailySigning> DailySigning { get; set; }
+        public virtual DbSet<Setting> Setting { get; set; }
 
         public static long InstanceCount;
 
@@ -50,6 +51,7 @@ namespace SGDE.DataEFCoreSQL
             new TypeDocumentConfiguration(modelBuilder.Entity<TypeDocument>());
             new TypeClientConfiguration(modelBuilder.Entity<TypeClient>());
             new DailySigningConfiguration(modelBuilder.Entity<DailySigning>());
+            new SettingConfiguration(modelBuilder.Entity<Setting>());
         }
 
         //public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<EFContextSQL>

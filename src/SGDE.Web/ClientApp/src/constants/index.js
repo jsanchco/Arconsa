@@ -15,6 +15,9 @@ export const DAILYSIGNINGS = "api/dailysignings";
 export const REPORTS = "api/Reports";
 export const AUTHENTICATE = "api/Users/authenticate";
 export const UPDATEPASSWORD = "api/Users/updatepassword";
+export const INVOICES = "api/Invoices";
+export const SETTINGS = "api/Settings";
+export const COMPANY_DATA = "COMPANY_DATA";
 
 const dev = {
   URL_API: "http://localhost:51667"

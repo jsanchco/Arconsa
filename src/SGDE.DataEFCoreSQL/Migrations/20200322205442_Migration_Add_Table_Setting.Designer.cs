@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SGDE.DataEFCoreSQL;
 
 namespace SGDE.DataEFCoreSQL.Migrations
 {
     [DbContext(typeof(EFContextSQL))]
-    partial class EFContextSQLModelSnapshot : ModelSnapshot
+    [Migration("20200322205442_Migration_Add_Table_Setting")]
+    partial class Migration_Add_Table_Setting
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -25,9 +27,6 @@ namespace SGDE.DataEFCoreSQL.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("AccountNumber")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("AddedDate")
                         .HasColumnType("datetime2");
@@ -56,9 +55,6 @@ namespace SGDE.DataEFCoreSQL.Migrations
 
                     b.Property<int?>("TypeClientId")
                         .HasColumnType("int");
-
-                    b.Property<string>("WayToPay")
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 

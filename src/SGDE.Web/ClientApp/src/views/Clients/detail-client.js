@@ -6,15 +6,29 @@ import {
   TabItemDirective,
   TabItemsDirective
 } from "@syncfusion/ej2-react-navigations";
+import BasicDataClient from "./basic-data-client";
 import WorksByClient from "./works-by-client";
 
 class DetailClient extends Component {
   constructor(props) {
     super(props);
 
-    this.headerText = [{ text: "Obras" }];
+    this.headerText = [{ text: "Datos Básicos" }, { text: "Obras" }];
 
     this.contentTemplateWorks = this.contentTemplateWorks.bind(this);
+    this.contentTemplateBasicDataClient = this.contentTemplateBasicDataClient.bind(
+      this
+    );
+  }
+
+  contentTemplateBasicDataClient() {
+    return (
+      <BasicDataClient
+        client={this.props.history.location.state.client}
+        history={this.props.history}
+        showMessage={this.props.showMessage}
+      />
+    );
   }
 
   contentTemplateWorks() {
@@ -56,6 +70,11 @@ class DetailClient extends Component {
                 <TabItemsDirective>
                   <TabItemDirective
                     header={this.headerText[0]}
+                    content={this.contentTemplateBasicDataClient}
+                  />
+
+                  <TabItemDirective
+                    header={this.headerText[1]}
                     content={this.contentTemplateWorks}
                   />
                 </TabItemsDirective>

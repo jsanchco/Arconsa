@@ -9,7 +9,10 @@ import {
   WORKERSHIRING,
   CLIENTS,
   UPDATEPASSWORD,
-  UPDATEDATESWORK
+  UPDATEDATESWORK,
+  INVOICES,
+  COMPANY_DATA,
+  SETTINGS
 } from "../constants";
 import store from "../store/store";
 import ACTION_AUTHENTICATION from "../actions/authenticationAction";
@@ -164,6 +167,55 @@ export const updatePassword = user => {
       },
       method: "PUT",
       body: JSON.stringify(user)
+    })
+      .then(data => data.json())
+      .then(result => {
+        if (result.Message) {
+          console.log("error ->", result.Message);
+          store.dispatch(
+            ACTION_APPLICATION.showMessage({
+              statusText: result.Message,
+              responseText: result.Message,
+              type: "danger"
+            })
+          );
+          reject();
+        } else {
+          store.dispatch(
+            ACTION_APPLICATION.showMessage({
+              statusText: "200",
+              responseText: "Operación realizada con éxito",
+              type: "success"
+            })
+          );
+          resolve();
+        }
+      })
+      .catch(error => {
+        console.log("error ->", error);
+        store.dispatch(
+          ACTION_APPLICATION.showMessage({
+            statusText: error,
+            responseText: error,
+            type: "danger"
+          })
+        );
+        reject();
+      });
+  });
+};
+
+export const updateClient = client => {
+  return new Promise((resolve, reject) => {
+    const url = `${config.URL_API}/${CLIENTS}`;
+    fetch(url, {
+      headers: {
+        Accept: "text/plain",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`
+      },
+      method: "PUT",
+      body: JSON.stringify(client)
     })
       .then(data => data.json())
       .then(result => {
@@ -465,6 +517,136 @@ export const getClients = () => {
       })
       .catch(error => {
         console.log("error ->", error);
+        reject();
+      });
+  });
+};
+
+export const getInvoice = invoice => {
+  return new Promise((resolve, reject) => {
+    const url = `${config.URL_API}/${INVOICES}`;
+    fetch(url, {
+      headers: {
+        Accept: "text/plain",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`
+      },
+      method: "POST",
+      body: JSON.stringify(invoice)
+    })
+      .then(data => data.json())
+      .then(result => {
+        store.dispatch(
+          ACTION_APPLICATION.showMessage({
+            statusText: "Facturada generada correctamente",
+            responseText: "Facturada generada correctamente",
+            type: "success"
+          })
+        );
+        resolve(result.Items);
+      })
+      .catch(error => {
+        store.dispatch(
+          ACTION_APPLICATION.showMessage({
+            statusText: error.message,
+            responseText: error.message,
+            type: "danger"
+          })
+        );
+        reject();
+      });
+  });
+};
+
+export const getSettings = name => {
+  return new Promise((resolve, reject) => {
+    const url = `${config.URL_API}/${SETTINGS}/${name}`;
+    fetch(url, {
+      headers: {
+        Accept: "text/plain",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`
+      },
+      method: "GET"
+    })
+      .then(data => data.json())
+      .then(result => {
+        if (result.Message) {
+          console.log("error ->", result.Message);
+          store.dispatch(
+            ACTION_APPLICATION.showMessage({
+              statusText: result.Message,
+              responseText: result.Message,
+              type: "danger"
+            })
+          );
+          reject();
+        } else {
+          resolve(result);
+        }
+      })
+      .catch(error => {
+        console.log("error ->", error);
+        store.dispatch(
+          ACTION_APPLICATION.showMessage({
+            statusText: error,
+            responseText: error,
+            type: "danger"
+          })
+        );
+        reject();
+      });
+  });
+};
+
+export const updateSettings = setting => {
+  return new Promise((resolve, reject) => {
+    const url = `${config.URL_API}/${SETTINGS}`;
+    const newSetting = JSON.stringify({
+      name: COMPANY_DATA,
+      data: JSON.stringify(setting)
+    });
+    fetch(url, {
+      headers: {
+        Accept: "text/plain",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`
+      },
+      method: "POST",
+      body: newSetting
+    })
+      .then(data => data.json())
+      .then(result => {
+        if (result.Message) {
+          console.log("error ->", result.Message);
+          store.dispatch(
+            ACTION_APPLICATION.showMessage({
+              statusText: result.Message,
+              responseText: result.Message,
+              type: "danger"
+            })
+          );
+          reject();
+        } else {
+          store.dispatch(
+            ACTION_APPLICATION.showMessage({
+              statusText: "200",
+              responseText: "Operación realizada con éxito",
+              type: "success"
+            })
+          );
+          resolve();
+        }
+      })
+      .catch(error => {
+        console.log("error ->", error);
+        store.dispatch(
+          ACTION_APPLICATION.showMessage({
+            statusText: error,
+            responseText: error,
+            type: "danger"
+          })
+        );
         reject();
       });
   });
