@@ -1,39 +1,89 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="es">
+
 <head>
-  <title>Bootstrap Example</title>
+  <!-- Required meta tags -->
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+  <title>Arconsa - Invoice</title>
 </head>
+
 <body>
 
-<div class="jumbotron text-center">
-  <h1>My First Bootstrap Page</h1>
-  <p>Resize this responsive page to see the effect!</p> 
-</div>
-  
-<div class="container">
-  <div class="row">
-    <div class="col-sm-4">
-      <h3>Column 1</h3>
-      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit...</p>
-      <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris...</p>
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-4">
+        <a href="#">
+          <img alt="" src="[routeImage]">
+        </a>
+      </div>
+      <div class="col-sm-5 offset-sm-3">
+        <div class="row">
+          [companyName]
+        </div>
+        <div class="row">
+          [cif]
+        </div>
+        <div class="row">
+          [address]
+        </div>
+        <div class="row">
+          [phoneNumber]
+        </div>
+      </div>
     </div>
-    <div class="col-sm-4">
-      <h3>Column 2</h3>
-      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit...</p>
-      <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris...</p>
-    </div>
-    <div class="col-sm-4">
-      <h3>Column 3</h3>        
-      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit...</p>
-      <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris...</p>
+    <div class="row mt-5">
+      <div class="col-sm-7">
+        <div class="row">
+          <div class="col-sm-3 bg-info border border-dark border-bottom-0">
+            <span>Empresa</span>
+          </div>
+          <div class="col-sm-4 border border-dark border-bottom-0 border-left-0">
+            [clientName]
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-3 bg-info border border-dark border-bottom-0 border-top-0">
+            <span>Dirección</span>
+          </div>
+          <div class="col-sm-4 border border-dark border-bottom-0 border-top-0 border-left-0">
+            [clientAddress]
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-3 bg-info border border-dark border-bottom-0 border-top-0">
+            <span>Teléfono</span>
+          </div>
+          <div class="col-sm-4 border border-dark border-bottom-0 border-top-0 border-left-0">
+            [clientPhoneNumber]
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-3 bg-info border border-dark border-top-0">
+            <span>Obra</span>
+          </div>
+          <div class="col-sm-4 border border-dark border-top-0 border-left-0">
+            [clientWorkName]
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-</div>
 
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
 </body>
+
 </html>

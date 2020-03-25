@@ -130,8 +130,8 @@
                         Searcher.RemoveAccentsWithNormalization(x.Name.ToLower()).Contains(filter) ||
                         Searcher.RemoveAccentsWithNormalization(x.Observations?.ToLower()).Contains(filter) ||
                         Searcher.RemoveAccentsWithNormalization(x.PhoneNumber?.ToLower()).Contains(filter) ||
-                        Searcher.RemoveAccentsWithNormalization(x.Surname.ToLower()).Contains(filter) ||
-                        Searcher.RemoveAccentsWithNormalization(x.Username.ToLower()).Contains(filter) ||
+                        Searcher.RemoveAccentsWithNormalization(x.Surname?.ToLower()).Contains(filter) ||
+                        Searcher.RemoveAccentsWithNormalization(x.Username?.ToLower()).Contains(filter) ||
                         Searcher.RemoveAccentsWithNormalization(x.Role.Name.ToLower()).Contains(filter) ||
                         Searcher.RemoveAccentsWithNormalization(x.Profession?.Name.ToLower()).Contains(filter) ||
                         Searcher.RemoveAccentsWithNormalization(x.Work?.Name.ToLower()).Contains(filter) ||

@@ -536,14 +536,25 @@ export const getInvoice = invoice => {
     })
       .then(data => data.json())
       .then(result => {
-        store.dispatch(
-          ACTION_APPLICATION.showMessage({
-            statusText: "Facturada generada correctamente",
-            responseText: "Facturada generada correctamente",
-            type: "success"
-          })
-        );
-        resolve(result.Items);
+        if (result.Message) {
+          store.dispatch(
+            ACTION_APPLICATION.showMessage({
+              statusText: result.Message,
+              responseText: result.Message,
+              type: "danger"
+            })
+          );
+          reject();
+        } else {
+          store.dispatch(
+            ACTION_APPLICATION.showMessage({
+              statusText: "Facturada generada correctamente",
+              responseText: "Facturada generada correctamente",
+              type: "success"
+            })
+          );
+          resolve(result.Items);
+        }
       })
       .catch(error => {
         store.dispatch(

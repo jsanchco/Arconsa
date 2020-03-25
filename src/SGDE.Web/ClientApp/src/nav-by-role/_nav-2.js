@@ -28,11 +28,11 @@ export default {
             url: '/settings/typesdocument',
             icon: 'icon-layers',
           },
-          {
-            name: 'Agregar Usuarios',
-            url: '/settings/usersnoworker',
-            icon: 'icon-people',
-          }
+          // {
+          //   name: 'Agregar Usuarios',
+          //   url: '/settings/usersnoworker',
+          //   icon: 'icon-people',
+          // }
         ],
       },
       {
