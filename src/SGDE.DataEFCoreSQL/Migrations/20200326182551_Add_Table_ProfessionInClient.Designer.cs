@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SGDE.DataEFCoreSQL;
 
 namespace SGDE.DataEFCoreSQL.Migrations
 {
     [DbContext(typeof(EFContextSQL))]
-    partial class EFContextSQLModelSnapshot : ModelSnapshot
+    [Migration("20200326182551_Add_Table_ProfessionInClient")]
+    partial class Add_Table_ProfessionInClient
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -542,8 +544,7 @@ namespace SGDE.DataEFCoreSQL.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProfessionId")
-                        .HasName("IFK_Profession_UserHiring");
+                    b.HasIndex("ProfessionId");
 
                     b.HasIndex("UserId")
                         .HasName("IFK_User_UserHiring");
@@ -718,10 +719,9 @@ namespace SGDE.DataEFCoreSQL.Migrations
 
             modelBuilder.Entity("SGDE.Domain.Entities.UserHiring", b =>
                 {
-                    b.HasOne("SGDE.Domain.Entities.Profession", "Profession")
+                    b.HasOne("SGDE.Domain.Entities.Profession", null)
                         .WithMany("UserHirings")
-                        .HasForeignKey("ProfessionId")
-                        .HasConstraintName("FK__UserHiring__ProfessionId");
+                        .HasForeignKey("ProfessionId");
 
                     b.HasOne("SGDE.Domain.Entities.User", "User")
                         .WithMany("UserHirings")

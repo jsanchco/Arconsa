@@ -30,6 +30,10 @@
     <Compile Remove="Migrations\20200306121335_First_Migration.Designer.cs" />
     <Compile Remove="Migrations\20200306121438_First_Migration.cs" />
     <Compile Remove="Migrations\20200306121438_First_Migration.Designer.cs" />
+    <Compile Remove="Migrations\20200326145624_Add_Table_ProfessionInClient.cs" />
+    <Compile Remove="Migrations\20200326145624_Add_Table_ProfessionInClient.Designer.cs" />
+    <Compile Remove="Migrations\20200326184118_Add_Field_ProfessionId.cs" />
+    <Compile Remove="Migrations\20200326184118_Add_Field_ProfessionId.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

@@ -41,7 +41,8 @@
                     : (DateTime?)DateTime.Parse(newUserHiringViewModel.endDate),
 
                 WorkId = newUserHiringViewModel.workId,
-                UserId = newUserHiringViewModel.userId
+                UserId = newUserHiringViewModel.userId,
+                ProfessionId = newUserHiringViewModel.professionId
             };
 
             _userHiringRepository.Add(userHiring);
@@ -67,6 +68,7 @@
 
             userHiring.WorkId = userHiringViewModel.workId;
             userHiring.UserId = userHiringViewModel.userId;
+            userHiring.ProfessionId = userHiringViewModel.professionId;
 
             return _userHiringRepository.Update(userHiring);
         }

@@ -37,6 +37,7 @@
                 return _context.UserHiring
                     .Include(x => x.Work)
                     .Include(x => x.User)
+                    .Include(x => x.Profession)
                     .ToList();
             }
 
@@ -45,6 +46,7 @@
                 return _context.UserHiring
                     .Include(x => x.Work)
                     .Include(x => x.User)
+                    .Include(x => x.Profession)
                     .Where(x => x.UserId == userId)
                     .ToList();
             }
@@ -54,6 +56,7 @@
                 return _context.UserHiring
                     .Include(x => x.Work)
                     .Include(x => x.User)
+                    .Include(x => x.Profession)
                     .Where(x => x.WorkId == workId)
                     .ToList();
             }
@@ -63,6 +66,7 @@
                 return _context.UserHiring
                     .Include(x => x.Work)
                     .Include(x => x.User)
+                    .Include(x => x.Profession)
                     .Where(x => x.UserId == userId && x.WorkId == workId)
                     .ToList();
             }
@@ -70,6 +74,7 @@
             return _context.UserHiring
                 .Include(x => x.Work)
                 .Include(x => x.User)
+                .Include(x => x.Profession)
                 .ToList();
         }
 
@@ -78,6 +83,7 @@
             return _context.UserHiring
                 .Include(x => x.Work)
                 .Include(x => x.User)
+                .Include(x => x.Profession)
                 .Where(x => x.EndDate == null)
                 .ToList();
         }
@@ -87,6 +93,7 @@
             return _context.UserHiring
                 .Include(x => x.Work)
                 .Include(x => x.User)
+                .Include(x => x.Profession)
                 .FirstOrDefault(x => x.Id == id);
         }
 

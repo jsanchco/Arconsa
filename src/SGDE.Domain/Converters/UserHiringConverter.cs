@@ -28,7 +28,9 @@
                 userId = userHiring.UserId,
                 userName = $"{userHiring.User.Name} {userHiring.User.Surname}",
                 workId = userHiring.WorkId,
-                workName = userHiring.Work.Name
+                workName = userHiring.Work.Name,
+                professionId = userHiring.ProfessionId,
+                professionName = userHiring.Profession?.Name
             };
 
             return userHiringViewModel;
@@ -50,7 +52,9 @@
                     userId = userHiring.UserId,
                     userName = $"{userHiring.User.Name} {userHiring.User.Surname}",
                     workId = userHiring.WorkId,
-                    workName = userHiring.Work.Name
+                    workName = userHiring.Work.Name,
+                    professionId = userHiring.ProfessionId,
+                    professionName = userHiring.Profession?.Name
                 };
                 return model;
             })
