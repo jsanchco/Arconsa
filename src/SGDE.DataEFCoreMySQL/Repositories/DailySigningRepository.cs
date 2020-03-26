@@ -136,6 +136,7 @@
                 .ThenInclude(x => x.Work.Client)
                 .Include(x => x.UserHiring)
                 .ThenInclude(x => x.User)
+                .ThenInclude(x => x.Profession)
                 .Where(x => x.UserHiring.StartDate >= dtStart && x.UserHiring.EndDate <= dtEnd && x.UserHiring.UserId == userId)
                 .ToList();
         }
@@ -152,6 +153,7 @@
                 .ThenInclude(x => x.Work.Client)
                 .Include(x => x.UserHiring)
                 .ThenInclude(x => x.User)
+                .ThenInclude(x => x.Profession)
                 .Where(x => x.UserHiring.StartDate >= dtStart && x.UserHiring.EndDate <= dtEnd && x.UserHiring.WorkId == workId)
                 .ToList();
 
@@ -169,6 +171,7 @@
                 .ThenInclude(x => x.Work.Client)
                 .Include(x => x.UserHiring)
                 .ThenInclude(x => x.User)
+                .ThenInclude(x => x.Profession)
                 .Where(x => x.UserHiring.StartDate >= dtStart && x.UserHiring.EndDate <= dtEnd && x.UserHiring.Work.ClientId == clientId)
                 .ToList();
         }
