@@ -276,6 +276,11 @@ class Works extends Component {
     }
   }
 
+  headerCellInfo(args) {
+    args.node.getElementsByClassName("e-checkbox-wrapper")[0] &&
+      args.node.getElementsByClassName("e-checkbox-wrapper")[0].remove();
+  }
+
   render() {
     return (
       <div className="animated fadeIn" id="target-works">
@@ -330,6 +335,7 @@ class Works extends Component {
               contextMenuOpen={this.contextMenuOpen}
               contextMenuClick={this.contextMenuClick}
               selectionSettings={this.selectionSettings}
+              headerCellInfo={this.headerCellInfo}
             >
               <ColumnsDirective>
                 <ColumnDirective type="checkbox" width="50"></ColumnDirective>

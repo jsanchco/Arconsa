@@ -88,6 +88,7 @@ namespace SGDE.Domain.Supervisor
         bool UpdateUserHiring(UserHiringViewModel userHiringViewModel);
         bool DeleteUserHiring(int id);
         bool AssignWorkers(WorkersInWorkViewModel workersInWorkViewModel);
+        bool IsProfessionInClient(int? professionId, int workId = 0, int clientId = 0);
 
         #endregion
 
@@ -181,6 +182,16 @@ namespace SGDE.Domain.Supervisor
         SettingViewModel AddSetting(SettingViewModel newSettingViewModel);
         bool UpdateSetting(SettingViewModel settingViewModel);
         bool DeleteSetting(int id);
+
+        #endregion
+
+        #region ProfessionInClient
+
+        QueryResult<ProfessionInClientViewModel> GetAllProfessionInClient(int skip = 0, int take = 0, string filter = null, int professionId = 0, int clientId = 0);
+        ProfessionInClientViewModel GetProfessionInClientById(int id);
+        ProfessionInClientViewModel AddProfessionInClient(ProfessionInClientViewModel newProfessionInClientViewModel);
+        bool UpdateProfessionInClient(ProfessionInClientViewModel professionInClientViewModel);
+        bool DeleteProfessionInClient(int id);
 
         #endregion
     }

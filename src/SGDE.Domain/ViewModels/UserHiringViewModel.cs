@@ -26,5 +26,8 @@
 
         public int userId { get; set; }
         public string userName { get; set; }
+
+        public int? professionId { get; set; }
+        public string professionName { get; set; }
     }
 }

@@ -9,6 +9,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Files\**" />
+    <Compile Remove="Log\**" />
+    <Content Remove="Files\**" />
+    <Content Remove="Log\**" />
+    <EmbeddedResource Remove="Files\**" />
+    <EmbeddedResource Remove="Log\**" />
+    <None Remove="Files\**" />
+    <None Remove="Log\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.1">
@@ -41,10 +52,6 @@
     <ProjectReference Include="..\SGDE.DataEFCoreMySQL\SGDE.DataEFCoreMySQL.csproj" />
     <ProjectReference Include="..\SGDE.DataEFCoreSQL\SGDE.DataEFCoreSQL.csproj" />
     <ProjectReference Include="..\SGDE.Domain\SGDE.Domain.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Files\" />
   </ItemGroup>
 
   <ProjectExtensions><VisualStudio><UserProperties Properties_4launchSettings_1json__JSONSchema="" appsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>

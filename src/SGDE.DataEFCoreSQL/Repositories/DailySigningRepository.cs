@@ -141,50 +141,6 @@
             var dtStart = DateTime.ParseExact(startDate, "d/MM/yyyy", null);
             var dtEnd = DateTime.ParseExact(endDate, "d/MM/yyyy", null);
 
-            //var data = _context.DailySigning
-            //    .Include(x => x.UserHiring)
-            //    .ThenInclude(x => x.Work)
-            //    .Include(x => x.UserHiring)
-            //    .ThenInclude(x => x.Work.Client)
-            //    .Include(x => x.UserHiring)
-            //    .ThenInclude(x => x.User)
-            //    //.Where(x => x.StartHour >= dtStart && x.EndHour <= dtEnd && x.UserHiring.UserId == userId)
-            //    .Where(x => x.UserHiring.UserId == userId)
-            //    .ToList();
-
-            //data = _context.DailySigning
-            //    .Include(x => x.UserHiring)
-            //    .ThenInclude(x => x.Work)
-            //    .Include(x => x.UserHiring)
-            //    .ThenInclude(x => x.Work.Client)
-            //    .Include(x => x.UserHiring)
-            //    .ThenInclude(x => x.User)
-            //    //.Where(x => x.StartHour >= dtStart && x.EndHour <= dtEnd && x.UserHiring.UserId == userId)
-            //    .Where(x => x.StartHour >= dtStart)
-            //    .ToList();
-
-            //data = _context.DailySigning
-            //    .Include(x => x.UserHiring)
-            //    .ThenInclude(x => x.Work)
-            //    .Include(x => x.UserHiring)
-            //    .ThenInclude(x => x.Work.Client)
-            //    .Include(x => x.UserHiring)
-            //    .ThenInclude(x => x.User)
-            //    //.Where(x => x.StartHour >= dtStart && x.EndHour <= dtEnd && x.UserHiring.UserId == userId)
-            //    .Where(x => x.StartHour >= dtStart && x.EndHour <= dtEnd)
-            //    .ToList();
-
-            //data = _context.DailySigning
-            //    .Include(x => x.UserHiring)
-            //    .ThenInclude(x => x.Work)
-            //    .Include(x => x.UserHiring)
-            //    .ThenInclude(x => x.Work.Client)
-            //    .Include(x => x.UserHiring)
-            //    .ThenInclude(x => x.User)
-            //    //.Where(x => x.StartHour >= dtStart && x.EndHour <= dtEnd && x.UserHiring.UserId == userId)
-            //    .Where(x => x.EndHour <= dtEnd)
-            //    .ToList();
-
             return _context.DailySigning
                 .Include(x => x.UserHiring)
                 .ThenInclude(x => x.Work)
@@ -192,6 +148,7 @@
                 .ThenInclude(x => x.Work.Client)
                 .Include(x => x.UserHiring)
                 .ThenInclude(x => x.User)
+                .ThenInclude(x => x.Profession)
                 .Where(x => x.StartHour >= dtStart && x.EndHour <= dtEnd && x.UserHiring.UserId == userId)
                 .OrderBy(x => x.StartHour)
                 .ToList();
@@ -209,6 +166,7 @@
                 .ThenInclude(x => x.Work.Client)
                 .Include(x => x.UserHiring)
                 .ThenInclude(x => x.User)
+                .ThenInclude(x => x.Profession)
                 .Where(x => x.StartHour >= dtStart && x.EndHour <= dtEnd && x.UserHiring.WorkId == workId)
                 .ToList();
 
@@ -226,6 +184,7 @@
                 .ThenInclude(x => x.Work.Client)
                 .Include(x => x.UserHiring)
                 .ThenInclude(x => x.User)
+                .ThenInclude(x => x.Profession)
                 .Where(x => x.StartHour >= dtStart && x.EndHour <= dtEnd && x.UserHiring.Work.ClientId == clientId)
                 .ToList();
         }

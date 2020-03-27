@@ -37,6 +37,7 @@
                 return _context.UserHiring
                     .Include(x => x.Work)
                     .Include(x => x.User)
+                    .Include(x => x.Profession)
                     .ToList();
             }
 
@@ -45,6 +46,7 @@
                 return _context.UserHiring
                     .Include(x => x.Work)
                     .Include(x => x.User)
+                    .Include(x => x.Profession)
                     .Where(x => x.UserId == userId)
                     .ToList();
             }
@@ -54,6 +56,7 @@
                 return _context.UserHiring
                     .Include(x => x.Work)
                     .Include(x => x.User)
+                    .Include(x => x.Profession)
                     .Where(x => x.WorkId == workId)
                     .ToList();
             }
@@ -63,6 +66,7 @@
                 return _context.UserHiring
                     .Include(x => x.Work)
                     .Include(x => x.User)
+                    .Include(x => x.Profession)
                     .Where(x => x.UserId == userId && x.WorkId == workId)
                     .ToList();
             }
@@ -70,6 +74,7 @@
             return _context.UserHiring
                 .Include(x => x.Work)
                 .Include(x => x.User)
+                .Include(x => x.Profession)
                 .ToList();
         }
 
@@ -78,6 +83,7 @@
             return _context.UserHiring
                 .Include(x => x.Work)
                 .Include(x => x.User)
+                .Include(x => x.Profession)
                 .Where(x => x.EndDate == null)
                 .ToList();
         }
@@ -87,6 +93,7 @@
             return _context.UserHiring
                 .Include(x => x.Work)
                 .Include(x => x.User)
+                .Include(x => x.Profession)
                 .FirstOrDefault(x => x.Id == id);
         }
 
@@ -174,6 +181,7 @@
 
         public bool AssignWorkers(List<int> listUserId, int workId)
         {
+            var result = true;
             using (var transaction = _context.Database.BeginTransaction())
             {
                 try
@@ -241,8 +249,11 @@
                                 StartDate = DateTime.Now,
                                 EndDate = null,
                                 WorkId = workId,
-                                UserId = userId
+                                UserId = userId,
+                                ProfessionId = user.ProfessionId
                             });
+                            if (result == true)
+                                result = IsProfessionInClient(user.ProfessionId, 0, work.ClientId);
 
                             user.WorkId = workId;
                             _context.User.Update(user);
@@ -265,8 +276,11 @@
                                     StartDate = DateTime.Now,
                                     EndDate = null,
                                     WorkId = workId,
-                                    UserId = userId
+                                    UserId = userId,
+                                    ProfessionId = user.ProfessionId
                                 });
+                                if (result == true)
+                                    result = IsProfessionInClient(user.ProfessionId, 0, work.ClientId);
 
                                 user.WorkId = workId;
                                 _context.User.Update(user);
@@ -284,7 +298,59 @@
                 }
             }
 
-            return true;
+            return result;
+        }
+
+        public bool IsProfessionInClient(int? professionId, int workId = 0, int clientId = 0)
+        {
+            if (professionId == null)
+                return false;
+
+            if (workId == 0 && clientId != 0)
+            {
+                var client = _context.Client
+                                .Include(x => x.ProfessionInClients)
+                                .FirstOrDefault(x => x.Id == clientId);
+                if (client == null)
+                    return false;
+
+                if (client.ProfessionInClients.Select(x => x.ProfessionId).Contains((int)professionId))
+                    return true;
+                else
+                    return false;
+            }
+
+            if (workId != 0 && clientId == 0)
+            {
+                var work = _context.Work
+                                .Include(x => x.Client)
+                                .ThenInclude(x => x.ProfessionInClients)
+                                .FirstOrDefault(x => x.Id == workId);
+
+                if (work.Client == null)
+                    return false;
+
+                if (work.Client.ProfessionInClients.Select(x => x.ProfessionId).Contains((int)professionId))
+                    return true;
+                else
+                    return false;
+            }
+
+            if (workId != 0 && clientId != 0)
+            {
+                var client = _context.Client
+                                .Include(x => x.ProfessionInClients)
+                                .FirstOrDefault(x => x.Id == clientId);
+                if (client == null)
+                    return false;
+
+                if (client.ProfessionInClients.Select(x => x.ProfessionId).Contains((int)professionId))
+                    return true;
+                else
+                    return false;
+            }
+
+            return false;
         }
 
         private void ValidateUpdateUserHiring(UserHiring userHiring)

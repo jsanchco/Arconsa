@@ -13,7 +13,7 @@ import {
 } from "@syncfusion/ej2-react-grids";
 import { DataManager, WebApiAdaptor, Query } from "@syncfusion/ej2-data";
 import { DialogComponent } from "@syncfusion/ej2-react-popups";
-import { config, WORKERSHIRING } from "../../constants";
+import { config, WORKERSHIRING, PROFESSIONS } from "../../constants";
 import { L10n } from "@syncfusion/ej2-base";
 import data from "../../locales/locale.json";
 import { TOKEN_KEY, updateWorkersInWork } from "../../services";
@@ -26,6 +26,12 @@ class ModalWorkers extends Component {
   workers = new DataManager({
     adaptor: new WebApiAdaptor(),
     url: `${config.URL_API}/${WORKERSHIRING}`,
+    headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }]
+  });
+
+  professions = new DataManager({
+    adaptor: new WebApiAdaptor(),
+    url: `${config.URL_API}/${PROFESSIONS}`,
     headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }]
   });
 
@@ -58,6 +64,9 @@ class ModalWorkers extends Component {
     };
     this.pageSettings = { pageCount: 10, pageSize: 10 };
     this.toolbarOptions = ["Search"];
+    // this.editSettings = {
+    //   allowEditing: true
+    // };
 
     this.confirmButton = [
       {
@@ -78,6 +87,7 @@ class ModalWorkers extends Component {
     ];
 
     this.animationSettings = { effect: "None" };
+    this.professionIdRules = { required: true };
   }
 
   _handleOnClickSave() {
@@ -247,6 +257,7 @@ class ModalWorkers extends Component {
                 rowDataBound={this.onRowDataBound}
                 rowSelected={this.rowSelected}
                 headerCellInfo={this.headerCellInfo}
+                editSettings={this.editSettings}
               >
                 <ColumnsDirective>
                   <ColumnDirective
@@ -264,9 +275,14 @@ class ModalWorkers extends Component {
                     width="100"
                   />
                   <ColumnDirective
-                    field="professionName"
+                    field="professionId"
                     headerText="Profesión"
                     width="100"
+                    editType="dropdownedit"
+                    foreignKeyValue="name"
+                    foreignKeyField="id"
+                    validationRules={this.professionIdRules}
+                    dataSource={this.professions}
                   />
                   <ColumnDirective
                     field="workName"

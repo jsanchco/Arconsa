@@ -33,6 +33,7 @@
         {
             return _context.Client
                 .Include(x => x.ClientResponsibles)
+                .Include(x => x.ProfessionInClients)
                 .ToList();
         }
 
@@ -40,6 +41,7 @@
         {
             return _context.Client
                 .Include(x => x.ClientResponsibles)
+                .Include(x => x.ProfessionInClients)
                 .FirstOrDefault(x => x.Id == id);
         }
 

@@ -41,7 +41,8 @@
                     : (DateTime?)DateTime.Parse(newUserHiringViewModel.endDate),
 
                 WorkId = newUserHiringViewModel.workId,
-                UserId = newUserHiringViewModel.userId
+                UserId = newUserHiringViewModel.userId,
+                ProfessionId = newUserHiringViewModel.professionId
             };
 
             _userHiringRepository.Add(userHiring);
@@ -67,6 +68,7 @@
 
             userHiring.WorkId = userHiringViewModel.workId;
             userHiring.UserId = userHiringViewModel.userId;
+            userHiring.ProfessionId = userHiringViewModel.professionId;
 
             return _userHiringRepository.Update(userHiring);
         }
@@ -74,6 +76,11 @@
         public bool DeleteUserHiring(int id)
         {
             return _userHiringRepository.Delete(id);
+        }
+
+        public bool IsProfessionInClient(int? professionId, int workId = 0, int clientId = 0)
+        {
+            return _userHiringRepository.IsProfessionInClient(professionId, workId, clientId);
         }
 
         public bool AssignWorkers(WorkersInWorkViewModel workersInWorkViewModel)

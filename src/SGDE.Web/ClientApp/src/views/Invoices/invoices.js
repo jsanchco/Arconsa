@@ -10,7 +10,7 @@ import {
   showSpinner,
   hideSpinner
 } from "@syncfusion/ej2-popups";
-import { getInvoice } from "../../services";
+import { getInvoice, base64ToArrayBuffer, saveByteArray } from "../../services";
 
 class Invoices extends Component {
   constructor(props) {
@@ -33,6 +33,7 @@ class Invoices extends Component {
     });
 
     this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleWorkChange = this.handleWorkChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.formatDate = this.formatDate.bind(this);
     this.getDataInvoice = this.getDataInvoice.bind(this);
@@ -45,7 +46,8 @@ class Invoices extends Component {
       endDate: this.state.endDate,
       issueDate: this.state.issueDate,
       typeInvoice: this.state.typeInvoice,
-      clientId: this.state.clientId
+      clientId: this.state.clientId,
+      workId: this.state.workId
     };
   }
 
@@ -62,6 +64,12 @@ class Invoices extends Component {
         [name]: target.value
       });
     }
+  }
+
+  handleWorkChange(event) {
+    this.setState({
+      workId: event.value
+    });
   }
 
   formatDate(args) {
@@ -107,15 +115,13 @@ class Invoices extends Component {
     });
     showSpinner(element);
     getInvoice(this.getDataInvoice())
-      .then(() => {
+      .then(result => {
+        console.log("result ->", result);
+        const fileArr = base64ToArrayBuffer(result.file);
+        saveByteArray(result.fileName, fileArr, result.typeFile);
         hideSpinner(element);
       })
       .catch(error => {
-        this.props.showMessage({
-          statusText: error,
-          responseText: error,
-          type: "danger"
-        });
         hideSpinner(element);
       });
   }
@@ -164,7 +170,7 @@ class Invoices extends Component {
                           dataSource={this.dataSource}
                           fields={this.fields}
                           placeholder="selecciona obra"
-                          onChange={this.handleInputChange}
+                          change={this.handleWorkChange}
                           ref={g => (this.ddl = g)}
                         />
                       </FormGroup>

@@ -10,17 +10,17 @@ import {
   Page
 } from "@syncfusion/ej2-react-grids";
 import { DataManager, WebApiAdaptor, Query } from "@syncfusion/ej2-data";
-import { config, USERSHIRING, PROFESSIONS } from "../../constants";
+import { config, PROFESSIONINCLIENTS, PROFESSIONS } from "../../constants";
 import { L10n } from "@syncfusion/ej2-base";
 import data from "../../locales/locale.json";
 import { TOKEN_KEY } from "../../services";
 
 L10n.load(data);
 
-class AuthorizeCancelWorkers extends Component {
-  usersHiring = new DataManager({
+class ProfessionInClient extends Component {
+  professionInClients = new DataManager({
     adaptor: new WebApiAdaptor(),
-    url: `${config.URL_API}/${USERSHIRING}`,
+    url: `${config.URL_API}/${PROFESSIONINCLIENTS}`,
     headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }]
   });
 
@@ -29,18 +29,17 @@ class AuthorizeCancelWorkers extends Component {
     url: `${config.URL_API}/${PROFESSIONS}`,
     headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }]
   });
-  grid = null;
 
-  professionIdRules = { required: false };
+  grid = null;
 
   constructor(props) {
     super(props);
 
     this.state = {
-      usersHiring: null
+      roles: null
     };
 
-    this.toolbarOptions = ["Edit", "Delete", "Update", "Cancel"];
+    this.toolbarOptions = ["Add", "Edit", "Delete", "Update", "Cancel"];
     this.editSettings = {
       showDeleteConfirmDialog: true,
       allowEditing: true,
@@ -51,60 +50,16 @@ class AuthorizeCancelWorkers extends Component {
     this.pageSettings = { pageCount: 10, pageSize: 10 };
     this.actionFailure = this.actionFailure.bind(this);
     this.actionComplete = this.actionComplete.bind(this);
-    this.actionBegin = this.actionBegin.bind(this);
 
-    this.template = this.gridTemplate;
-    this.format = { type: "dateTime", format: "dd/MM/yyyy" };
-
-    this.query = new Query().addParams("workId", props.work.id);
-  }
-
-  gridTemplate(args) {
-    if (args.file !== null && args.file !== "") {
-      return (
-        <div>
-          <span className="dot-green"></span>
-        </div>
-      );
-    } else {
-      return (
-        <div>
-          <span className="dot-red"></span>
-        </div>
-      );
-    }
-  }
-
-  formatDate(args) {
-    if (args === null || args === "") {
-      return "";
-    }
-
-    const day = args.getDate();
-    const month = args.getMonth() + 1;
-    const year = args.getFullYear();
-
-    if (month < 10) {
-      return `${day}/0${month}/${year}`;
-    } else {
-      return `${day}/${month}/${year}`;
-    }
-  }
-
-  actionBegin(args) {
-    if (args.requestType === "save") {
-      let date = this.formatDate(args.data.startDate);
-      args.data.startDate = date;
-
-      if (
-        args.data.endDate !== null &&
-        args.data.endDate !== "" &&
-        args.data.endDate !== undefined
-      ) {
-        date = this.formatDate(args.data.endDate);
-        args.data.endDate = date;
+    this.query = new Query().addParams("clientId", props.client.id);
+    this.professionIdRules = { required: true };
+    this.numericParams = {
+      params: {
+        decimals: 1,
+        format: "N",
+        validateDecimalOnType: true
       }
-    }
+    };
   }
 
   actionFailure(args) {
@@ -135,25 +90,21 @@ class AuthorizeCancelWorkers extends Component {
 
   render() {
     let title = "";
-    if (this.props.work !== null && this.props.work !== undefined) {
-      title = ` Contratos [${this.props.work.name}]`;
+    if (this.props.client !== null && this.props.client !== undefined) {
+      title = ` Precios por Profesión [${this.props.client.name}]`;
     }
 
     return (
       <Fragment>
         <div className="animated fadeIn">
-          <div
-            className="card"
-            style={{ marginRight: "60px", marginTop: "20px" }}
-          >
+          <div className="card" style={{ marginRight: "60px", marginTop: "20px" }}>
             <div className="card-header">
-              <i className="icon-layers"></i>
-              {title}
+              <i className="icon-people"></i> {title}
             </div>
             <div className="card-body"></div>
             <Row>
               <GridComponent
-                dataSource={this.usersHiring}
+                dataSource={this.professionInClients}
                 locale="es-US"
                 allowPaging={true}
                 pageSettings={this.pageSettings}
@@ -168,8 +119,6 @@ class AuthorizeCancelWorkers extends Component {
                 }}
                 actionFailure={this.actionFailure}
                 actionComplete={this.actionComplete}
-                actionBegin={this.actionBegin}
-                allowGrouping={false}
                 rowSelected={this.rowSelected}
                 ref={g => (this.grid = g)}
                 query={this.query}
@@ -184,12 +133,6 @@ class AuthorizeCancelWorkers extends Component {
                     visible={false}
                   />
                   <ColumnDirective
-                    field="userName"
-                    headerText="Trabajador"
-                    width="100"
-                    allowEditing={false}
-                  />
-                  <ColumnDirective
                     field="professionId"
                     headerText="Profesión"
                     width="100"
@@ -200,20 +143,18 @@ class AuthorizeCancelWorkers extends Component {
                     dataSource={this.professions}
                   />
                   <ColumnDirective
-                    field="startDate"
-                    headerText="Fecha Inicio"
+                    field="priceHourSale"
+                    headerText="Precio Venta"
                     width="100"
-                    type="date"
-                    format={this.format}
-                    editType="datepickeredit"
+                    fotmat="N1"
+                    textAlign="left"
+                    editType="numericedit"
+                    edit={this.numericParams}
                   />
                   <ColumnDirective
-                    field="endDate"
-                    headerText="Fecha Fin"
-                    width="100"
-                    type="date"
-                    format={this.format}
-                    editType="datepickeredit"
+                    field="clientId"
+                    defaultValue={this.props.client.id}
+                    visible={false}
                   />
                 </ColumnsDirective>
                 <Inject services={[Page, Toolbar, Edit]} />
@@ -226,6 +167,6 @@ class AuthorizeCancelWorkers extends Component {
   }
 }
 
-AuthorizeCancelWorkers.propTypes = {};
+ProfessionInClient.propTypes = {};
 
-export default AuthorizeCancelWorkers;
+export default ProfessionInClient;

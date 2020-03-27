@@ -20,6 +20,8 @@
             var reportResultViewModel = new ReportResultViewModel
             {
                 userName = $"{dailySigning.UserHiring.User.Name} {dailySigning.UserHiring.User.Surname}",
+                professionName = dailySigning.UserHiring.User.Profession?.Name,
+                professionId = dailySigning.UserHiring.User.Profession?.Id,
                 workName = dailySigning.UserHiring.Work.Name,
                 clientName = dailySigning.UserHiring.Work.Client.Name,
                 hours = ((DateTime)dailySigning.EndHour - dailySigning.StartHour).TotalHours,
@@ -38,6 +40,8 @@
                 var model = new ReportResultViewModel
                 {
                     userName = $"{dailySigning.UserHiring.User.Name} {dailySigning.UserHiring.User.Surname}",
+                    professionName = dailySigning.UserHiring.User.Profession?.Name,
+                    professionId = dailySigning.UserHiring.User.Profession?.Id,
                     workName = dailySigning.UserHiring.Work.Name,
                     clientName = dailySigning.UserHiring.Work.Client.Name,
                     hours = ((DateTime)dailySigning.EndHour - dailySigning.StartHour).TotalHours,

@@ -42,7 +42,7 @@
             foreach (var worker in workersInUsers)
             {
                 var state = worker.WorkId == workId ? 0 : worker.WorkId == null ? 1 : 2;
-                listWorkerHiringViewModel.Add(new WorkerHiringViewModel
+                var workerHiringViewModel = new WorkerHiringViewModel
                 {
                     id = worker.Id,
                     name = $"{worker.Name} {worker.Surname}",
@@ -52,7 +52,31 @@
                     workName = worker.Work?.Name,
                     state = state,
                     dateStart = state != 1 ? GetAllUserHiring(0, workId)?.Find(x => x.endDate == null)?.startDate : null
-                }) ;
+                };
+                if (state == 0)
+                {
+                    var userHiring = GetAllUserHiring(worker.Id, 0)?.Find(x => x.endDate == null);
+                    if (userHiring?.professionId != null)
+                    {
+                        workerHiringViewModel.professionId = (int)userHiring.professionId;
+                    }
+                    else
+                    {
+                        if (worker.ProfessionId != null)
+                        {
+                            workerHiringViewModel.professionId = (int)worker.ProfessionId;
+                        }                        
+                    }                   
+                }
+                else
+                {
+                    if (worker.ProfessionId != null)
+                    {
+                        workerHiringViewModel.professionId = (int)worker.ProfessionId;
+                    }
+                }
+
+                listWorkerHiringViewModel.Add(workerHiringViewModel);
             }
 
             listWorkerHiringViewModel = listWorkerHiringViewModel.OrderBy(x => x.state).ToList();
