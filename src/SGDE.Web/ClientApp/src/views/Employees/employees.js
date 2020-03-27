@@ -162,6 +162,12 @@ class Employees extends Component {
             user: rowSelected
           }
         });
+      } else {
+        this.props.showMessage({
+          statusText: "Debes seleccionar un usuario",
+          responseText: "Debes seleccionar un usuario",
+          type: "danger"
+        });
       }
     }
   }
@@ -241,7 +247,7 @@ class Employees extends Component {
                   <ColumnDirective
                     field="name"
                     headerText="Nombre"
-                    width="50"
+                    width="60"
                   />
                   <ColumnDirective
                     field="surname"
@@ -250,22 +256,22 @@ class Employees extends Component {
                   />
                   <ColumnDirective
                     field="birthDate"
-                    headerText="F. Nacimiento"
-                    width="100"
+                    headerText="F. Nacim."
+                    width="70"
                     type="date"
                     format={this.format}
                     editType="datepickeredit"
                   />
-                  <ColumnDirective field="dni" headerText="DNI" width="50" />
+                  <ColumnDirective field="dni" headerText="DNI" width="70" />
                   <ColumnDirective
                     field="securitySocialNumber"
                     headerText="S. Social"
-                    width="50"
+                    width="70"
                   />
                   <ColumnDirective
                     field="phoneNumber"
                     headerText="Teléfono"
-                    width="50"
+                    width="70"
                   />
                   <ColumnDirective
                     field="professionId"

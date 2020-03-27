@@ -127,6 +127,7 @@ namespace SGDE.Domain.Supervisor
                 PriceHour = newUserViewModel.priceHour,
                 PriceHourSale = newUserViewModel.priceHourSale,
                 Observations = newUserViewModel.observations,
+                AccountNumber = newUserViewModel.accountNumber,
                 Photo = newUserViewModel.photo,
                 RoleId = newUserViewModel.roleId,
                 ProfessionId = newUserViewModel.professionId,
@@ -166,6 +167,7 @@ namespace SGDE.Domain.Supervisor
             user.PriceHour = userViewModel.priceHour;
             user.PriceHourSale = userViewModel.priceHourSale;
             user.Observations = userViewModel.observations;
+            user.AccountNumber = userViewModel.accountNumber;
             user.Photo = userViewModel.photo;
             user.RoleId = userViewModel.roleId;
             user.ProfessionId = userViewModel.professionId;

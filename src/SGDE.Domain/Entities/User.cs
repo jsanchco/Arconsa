@@ -22,6 +22,7 @@
         public Decimal PriceHour { get; set; }
         public Decimal PriceHourSale { get; set; }
         public string Observations { get; set; }
+        public string AccountNumber { get; set; }
         public byte[] Photo { get; set; }
         public string Token { get; set; }
 

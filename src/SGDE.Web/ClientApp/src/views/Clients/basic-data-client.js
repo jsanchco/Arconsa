@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from "react";
 import { Form, Col, FormGroup, Input, Label, Row, Button } from "reactstrap";
+import { MaskedTextBoxComponent } from "@syncfusion/ej2-react-inputs";
 import { updateClient } from "../../services";
 import {
   createSpinner,
@@ -150,12 +151,11 @@ class BasicDataClient extends Component {
               <Col xs="4">
                 <FormGroup>
                   <Label htmlFor="accountNumber">Nº de Cuenta</Label>
-                  <Input
-                    type="text"
+                  <MaskedTextBoxComponent
+                    mask={"LL00-0000-0000-0000"}
                     id="accountNumber"
                     name="accountNumber"
-                    placeholder="número de cuenta"
-                    required
+                    placeholder="nº de cuenta"
                     value={this.state.accountNumber || ""}
                     onChange={this.handleInputChange}
                   />

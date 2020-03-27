@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from "react";
 import { Form, Col, FormGroup, Input, Label, Row, Button } from "reactstrap";
 import { DatePickerComponent } from "@syncfusion/ej2-react-calendars";
+import { MaskedTextBoxComponent } from "@syncfusion/ej2-react-inputs";
 import { updateUser } from "../../services";
 import ModalSelectImage from "../Modals/modal-select-image";
 import {
@@ -25,6 +26,7 @@ class BasicData extends Component {
       phoneNumber: props.user.phoneNumber,
       priceHour: props.user.priceHour,
       priceHourSale: props.user.priceHourSale,
+      accountNumber: props.user.accountNumber,
       observations: props.user.observations,
       photo: props.user.photo,
       roleId: props.user.roleId,
@@ -48,7 +50,10 @@ class BasicData extends Component {
       return "";
     }
 
-    return `${args.substring(3, 5)}/${args.substring(0, 2)}/${args.substring(6, 10)}`
+    return `${args.substring(3, 5)}/${args.substring(0, 2)}/${args.substring(
+      6,
+      10
+    )}`;
   }
 
   handleInputChange(event) {
@@ -73,6 +78,7 @@ class BasicData extends Component {
       phoneNumber: this.state.phoneNumber,
       priceHour: this.state.priceHour,
       priceHourSale: this.state.priceHourSale,
+      accountNumber: this.state.accountNumber,
       observations: this.state.observations,
       photo: this.state.photo,
       roleId: this.state.roleId,
@@ -256,6 +262,33 @@ class BasicData extends Component {
                 <Row>
                   <Col xs="4">
                     <FormGroup>
+                      <Label htmlFor="username">Códgio Acceso</Label>
+                      <Input
+                        type="text"
+                        id="username"
+                        name="username"
+                        placeholder="código acceso"
+                        required
+                        value={this.state.username}
+                        onChange={this.handleInputChange}
+                      />
+                    </FormGroup>
+                  </Col>
+                  <Col xs="4">
+                    <FormGroup>
+                      <Label htmlFor="accountNumber">Nº de Cuenta</Label>
+                      <MaskedTextBoxComponent
+                        mask={"LL00-0000-0000-0000"}
+                        id="accountNumber"
+                        name="accountNumber"
+                        placeholder="nº de cuenta"
+                        value={this.state.accountNumber || ""}
+                        onChange={this.handleInputChange}
+                      />
+                    </FormGroup>
+                  </Col>
+                  {/* <Col xs="4">
+                    <FormGroup>
                       <Label htmlFor="priceHour">Precio Coste Hora</Label>
                       <Input
                         type="number"
@@ -279,7 +312,7 @@ class BasicData extends Component {
                         onChange={this.handleInputChange}
                       />
                     </FormGroup>
-                  </Col>
+                  </Col> */}
                   <Col xs="4">
                     <FormGroup>
                       <Label htmlFor="birthDate">Fecha de Nacimiento</Label>
@@ -296,21 +329,7 @@ class BasicData extends Component {
                   </Col>
                 </Row>
                 <Row>
-                  <Col xs="4">
-                    <FormGroup>
-                      <Label htmlFor="username">Códgio Acceso</Label>
-                      <Input
-                        type="text"
-                        id="username"
-                        name="username"
-                        placeholder="código acceso"
-                        required
-                        value={this.state.username}
-                        onChange={this.handleInputChange}
-                      />
-                    </FormGroup>
-                  </Col>
-                  <Col xs="8">
+                  <Col xs="12">
                     <FormGroup>
                       <Label htmlFor="observations">Observaciones</Label>
                       <Input

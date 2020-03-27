@@ -29,6 +29,7 @@ namespace SGDE.Domain.ViewModels
         public Decimal priceHour { get; set; }
         public Decimal priceHourSale { get; set; }
         public string observations { get; set; }
+        public string accountNumber { get; set; }
         public byte[] photo { get; set; }
         public string token { get; set; }
         public int? professionId { get; set; }
