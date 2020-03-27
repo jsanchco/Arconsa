@@ -19,7 +19,7 @@ class BasicData extends Component {
       surname: props.user.surname,
       dni: props.user.dni,
       securitySocialNumber: props.user.securitySocialNumber,
-      birthDate: props.user.birthDate,
+      birthDate: this.parseDate(props.user.birthDate),
       username: props.user.username,
       address: props.user.address,
       phoneNumber: props.user.phoneNumber,
@@ -40,6 +40,15 @@ class BasicData extends Component {
     this.toggleModal = this.toggleModal.bind(this);
     this.updatePhoto = this.updatePhoto.bind(this);
     this.getUser = this.getUser.bind(this);
+    this.parseDate = this.parseDate.bind(this);
+  }
+
+  parseDate(args) {
+    if (args === null || args === undefined || args === "") {
+      return "";
+    }
+
+    return `${args.substring(3, 5)}/${args.substring(0, 2)}/${args.substring(6, 10)}`
   }
 
   handleInputChange(event) {
