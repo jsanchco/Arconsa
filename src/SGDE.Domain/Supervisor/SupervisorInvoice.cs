@@ -33,6 +33,8 @@
         public static readonly Font _STANDARFONT_14_BOLD_WHITE =
             FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 14, BaseColor.White);
 
+        public decimal Total = 0;
+
         public InvoiceViewModel GetInvoice(InvoiceQueryViewModel invoiceQueryViewModel)
         {
             var invoiceViewModel = new InvoiceViewModel
@@ -341,11 +343,14 @@
                 workId = invoiceQueryViewModel.workId
             });
 
-            var listGrouped = listReportResultViewModel.GroupBy(x => x.professionName)
+            var work = _workRepository.GetById((int)invoiceQueryViewModel.workId);
+
+            var listGrouped = listReportResultViewModel.GroupBy(x => x.professionId)
                 .Select(
                         x => new
                         {
                             Key = x.Key,
+                            ProfessionName = x.Select(y => y.professionName),
                             Hours = x.Sum(y => y.hours)
                         });
 
@@ -353,10 +358,25 @@
             var widths = new[] { 40f, 20f, 20f, 20f };
             pdfPTable.SetWidths(widths);
 
- 
+            Total = 0;
             foreach (var item in listGrouped)
             {
-                var pdfCell = new PdfPCell(new Phrase(item.Key, _STANDARFONT_10))
+                decimal priceUnity = 0;
+                decimal priceTotal = 0;
+                var professionName = string.Empty;
+                
+                var professionInClient = work.Client.ProfessionInClients.FirstOrDefault(x => x.ProfessionId == item.Key);
+                if (professionInClient != null)
+                {
+                    priceUnity = professionInClient.PriceHourSale;
+                    priceTotal = professionInClient.PriceHourSale * (int)item.Hours;
+                    professionName = professionInClient.Profession.Name;
+
+                    Total += priceTotal;
+                }
+
+                var title = $"HORAS ORDINARIAS {professionName.ToUpper()}";
+                var pdfCell = new PdfPCell(new Phrase(title, _STANDARFONT_10))
                 {
                     HorizontalAlignment = Element.ALIGN_LEFT,
                     VerticalAlignment = Element.ALIGN_MIDDLE,
@@ -376,7 +396,7 @@
                 };
                 pdfPTable.AddCell(pdfCell);
 
-                pdfCell = new PdfPCell(new Phrase(" ", _STANDARFONT_10))
+                pdfCell = new PdfPCell(new Phrase(priceUnity.ToString(), _STANDARFONT_10))
                 {
                     HorizontalAlignment = Element.ALIGN_RIGHT,
                     VerticalAlignment = Element.ALIGN_MIDDLE,
@@ -386,7 +406,7 @@
                 };
                 pdfPTable.AddCell(pdfCell);
 
-                pdfCell = new PdfPCell(new Phrase(" ", _STANDARFONT_10))
+                pdfCell = new PdfPCell(new Phrase(priceTotal.ToString(), _STANDARFONT_10))
                 {
                     HorizontalAlignment = Element.ALIGN_RIGHT,
                     VerticalAlignment = Element.ALIGN_MIDDLE,
@@ -398,13 +418,13 @@
             }
 
             var countRows = listGrouped.Count();
-            if (countRows > 6)
+            if (countRows > 5)
             {
                 pdf.NewPage();
             }
             else
             {
-                for (var i = 0; i < (5 - countRows); i++)
+                for (var i = 0; i < (4 - countRows); i++)
                 {
                     var pdfCell = new PdfPCell(new Phrase(" ", _STANDARFONT_10))
                     {
@@ -466,7 +486,7 @@
             pdfPTable.AddCell(pdfCell);
             pdfCell = new PdfPCell(new Phrase("Base Imponible", _STANDARFONT_10_BOLD_CUSTOMCOLOR)) { BorderWidth = 0 };
             pdfPTable.AddCell(pdfCell);
-            pdfCell = new PdfPCell(new Phrase("€", _STANDARFONT_10)) { BorderWidth = 0 };
+            pdfCell = new PdfPCell(new Phrase($"{Math.Round(Total, 2)} €", _STANDARFONT_10)) { BorderWidth = 0 };
             pdfPTable.AddCell(pdfCell);
             pdfCell = new PdfPCell(new Phrase(" ", _STANDARFONT_10)) { BorderWidth = 0 };
             pdfPTable.AddCell(pdfCell);
@@ -474,7 +494,9 @@
             pdfPTable.AddCell(pdfCell);
             pdfCell = new PdfPCell(new Phrase("I.V.A.", _STANDARFONT_10_BOLD_CUSTOMCOLOR)) { BorderWidth = 0 };
             pdfPTable.AddCell(pdfCell);
-            pdfCell = new PdfPCell(new Phrase("€", _STANDARFONT_10)) { BorderWidth = 0 };
+
+            var iva = Math.Round(decimal.ToDouble(Total) * 0.21, 2);
+            pdfCell = new PdfPCell(new Phrase($"{iva} €", _STANDARFONT_10)) { BorderWidth = 0 };
             pdfPTable.AddCell(pdfCell);
             pdfCell = new PdfPCell(new Phrase(" ", _STANDARFONT_10)) { BorderWidth = 0 };
             pdfPTable.AddCell(pdfCell);
@@ -482,20 +504,21 @@
             pdfPTable.AddCell(pdfCell);
             pdfCell = new PdfPCell(new Phrase("Total Factura", _STANDARFONT_10_BOLD_CUSTOMCOLOR)) { BorderWidth = 0 };
             pdfPTable.AddCell(pdfCell);
-            pdfCell = new PdfPCell(new Phrase("€", _STANDARFONT_10)) { BorderWidth = 0 };
-            pdfPTable.AddCell(pdfCell);
-            pdfCell = new PdfPCell(new Phrase(" ", _STANDARFONT_10)) { BorderWidth = 0 };
-            pdfPTable.AddCell(pdfCell);
-            pdfCell = new PdfPCell(new Phrase(" ", _STANDARFONT_10)) { BorderWidth = 0 };
-            pdfPTable.AddCell(pdfCell);
 
+            var totalPlusIva = Math.Round(iva + decimal.ToDouble(Total), 2);
+            pdfCell = new PdfPCell(new Phrase($"{totalPlusIva} €", _STANDARFONT_10)) { BorderWidth = 0 };
+            pdfPTable.AddCell(pdfCell);
+            pdfCell = new PdfPCell(new Phrase(" ", _STANDARFONT_10)) { BorderWidth = 0 };
+            pdfPTable.AddCell(pdfCell);
+            pdfCell = new PdfPCell(new Phrase(" ", _STANDARFONT_10)) { BorderWidth = 0 };
+            pdfPTable.AddCell(pdfCell);
 
             return pdfPTable;
         }
 
         private PdfPTable GetSignAndStamp()
         {
-            var pdfPTable = new PdfPTable(1) { WidthPercentage = 30, HorizontalAlignment = 2 };
+            var pdfPTable = new PdfPTable(1) { WidthPercentage = 40, HorizontalAlignment = 2 };
 
             var pdfCell = new PdfPCell(new Phrase("Firma y Sello", _STANDARFONT_12_BOLD))
             {
@@ -506,6 +529,18 @@
             };
             pdfPTable.AddCell(pdfCell);
             pdfCell = new PdfPCell(new Phrase("", _STANDARFONT_12_BOLD))
+            {
+                BorderWidthBottom = 0,
+                BorderWidthTop = 0
+            };
+            pdfPTable.AddCell(pdfCell);
+            pdfCell = new PdfPCell(new Phrase(" ", _STANDARFONT_12_BOLD))
+            {
+                BorderWidthBottom = 0,
+                BorderWidthTop = 0
+            };
+            pdfPTable.AddCell(pdfCell);
+            pdfCell = new PdfPCell(new Phrase(" ", _STANDARFONT_12_BOLD))
             {
                 BorderWidthBottom = 0,
                 BorderWidthTop = 0

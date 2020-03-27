@@ -8,15 +8,23 @@ import {
 } from "@syncfusion/ej2-react-navigations";
 import BasicDataClient from "./basic-data-client";
 import WorksByClient from "./works-by-client";
+import ProfessionInClient from "./profession-in-client";
 
 class DetailClient extends Component {
   constructor(props) {
     super(props);
 
-    this.headerText = [{ text: "Datos Básicos" }, { text: "Obras" }];
+    this.headerText = [
+      { text: "Datos Básicos" },
+      { text: "Obras" },
+      { text: "Precios por Profesión" }
+    ];
 
     this.contentTemplateWorks = this.contentTemplateWorks.bind(this);
     this.contentTemplateBasicDataClient = this.contentTemplateBasicDataClient.bind(
+      this
+    );
+    this.contentTemplateProfessionInClient = this.contentTemplateProfessionInClient.bind(
       this
     );
   }
@@ -34,6 +42,16 @@ class DetailClient extends Component {
   contentTemplateWorks() {
     return (
       <WorksByClient
+        client={this.props.history.location.state.client}
+        history={this.props.history}
+        showMessage={this.props.showMessage}
+      />
+    );
+  }
+
+  contentTemplateProfessionInClient() {
+    return (
+      <ProfessionInClient
         client={this.props.history.location.state.client}
         history={this.props.history}
         showMessage={this.props.showMessage}
@@ -76,6 +94,11 @@ class DetailClient extends Component {
                   <TabItemDirective
                     header={this.headerText[1]}
                     content={this.contentTemplateWorks}
+                  />
+
+                  <TabItemDirective
+                    header={this.headerText[2]}
+                    content={this.contentTemplateProfessionInClient}
                   />
                 </TabItemsDirective>
               </TabComponent>

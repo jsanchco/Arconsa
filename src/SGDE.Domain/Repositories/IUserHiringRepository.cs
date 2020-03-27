@@ -16,5 +16,6 @@
         bool Update(UserHiring userHiring);
         bool Delete(int id);
         bool AssignWorkers(List<int> listUserId, int workId);
+        bool IsProfessionInClient(int? professionId, int workId = 0, int clientId = 0);
     }
 }

@@ -52,13 +52,13 @@ class DefaultLayout extends Component {
   showMessage() {
     let message;
     if (this.props.messageApplication.type === "danger") {
-      if (this.props.messageApplication.statusText !== undefined) {
-        message = this.props.messageApplication.statusText.toString();
+      if (this.props.messageApplication.responseText !== undefined) {
+        message = this.props.messageApplication.responseText.toString();
       } else {
         message = this.props.messageApplication.toString();
       }
     } else {
-      message = this.props.messageApplication.responseText;
+      message = this.props.messageApplication.statusText;
     }
     if (message === "" || message === undefined) {
       message = "ERROR en la petición";

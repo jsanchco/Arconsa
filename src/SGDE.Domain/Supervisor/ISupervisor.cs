@@ -88,6 +88,7 @@ namespace SGDE.Domain.Supervisor
         bool UpdateUserHiring(UserHiringViewModel userHiringViewModel);
         bool DeleteUserHiring(int id);
         bool AssignWorkers(WorkersInWorkViewModel workersInWorkViewModel);
+        bool IsProfessionInClient(int? professionId, int workId = 0, int clientId = 0);
 
         #endregion
 

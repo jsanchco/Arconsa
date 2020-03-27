@@ -78,6 +78,11 @@
             return _userHiringRepository.Delete(id);
         }
 
+        public bool IsProfessionInClient(int? professionId, int workId = 0, int clientId = 0)
+        {
+            return _userHiringRepository.IsProfessionInClient(professionId, workId, clientId);
+        }
+
         public bool AssignWorkers(WorkersInWorkViewModel workersInWorkViewModel)
         {
             return _userHiringRepository.AssignWorkers(workersInWorkViewModel.listUserId, workersInWorkViewModel.workId);

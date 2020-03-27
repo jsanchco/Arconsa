@@ -17,6 +17,7 @@ export const AUTHENTICATE = "api/Users/authenticate";
 export const UPDATEPASSWORD = "api/Users/updatepassword";
 export const INVOICES = "api/Invoices";
 export const SETTINGS = "api/Settings";
+export const PROFESSIONINCLIENTS = "api/ProfessionInClients";
 export const COMPANY_DATA = "COMPANY_DATA";
 
 const dev = {

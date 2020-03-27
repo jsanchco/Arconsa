@@ -76,6 +76,7 @@
         {
             return _context.Work
                 .Include(x => x.Client)
+                .ThenInclude(x => x.ProfessionInClients)
                 .FirstOrDefault(x => x.Id == id);
         }
 

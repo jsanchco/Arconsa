@@ -11,6 +11,7 @@
         public string clientName { get; set; }
         public string workName { get; set; }
         public string userName { get; set; }
+        public int? professionId { get; set; }
         public string professionName { get; set; }
         public string dateHour { get; set; }
         public double hours { get; set; }

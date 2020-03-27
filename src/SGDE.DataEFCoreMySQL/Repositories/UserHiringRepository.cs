@@ -181,6 +181,7 @@
 
         public bool AssignWorkers(List<int> listUserId, int workId)
         {
+            var result = true;
             using (var transaction = _context.Database.BeginTransaction())
             {
                 try
@@ -248,8 +249,11 @@
                                 StartDate = DateTime.Now,
                                 EndDate = null,
                                 WorkId = workId,
-                                UserId = userId
+                                UserId = userId,
+                                ProfessionId = user.ProfessionId
                             });
+                            if (result == true)
+                                result = IsProfessionInClient(user.ProfessionId, 0, work.ClientId);
 
                             user.WorkId = workId;
                             _context.User.Update(user);
@@ -272,8 +276,11 @@
                                     StartDate = DateTime.Now,
                                     EndDate = null,
                                     WorkId = workId,
-                                    UserId = userId
+                                    UserId = userId,
+                                    ProfessionId = user.ProfessionId
                                 });
+                                if (result == true)
+                                    result = IsProfessionInClient(user.ProfessionId, 0, work.ClientId);
 
                                 user.WorkId = workId;
                                 _context.User.Update(user);
@@ -291,7 +298,58 @@
                 }
             }
 
-            return true;
+            return result;
+        }
+
+        public bool IsProfessionInClient(int? professionId, int workId = 0, int clientId = 0)
+        {
+            if (professionId == null)
+                return false;
+
+            if (workId == 0 && clientId != 0)
+            {
+                var client = _context.Client
+                                .Include(x => x.ProfessionInClients)
+                                .FirstOrDefault(x => x.Id == clientId);
+                if (client == null)
+                    return false;
+
+                if (client.ProfessionInClients.Select(x => x.ProfessionId).Contains((int)professionId))
+                    return true;
+                else
+                    return false;
+            }
+
+            if (workId != 0 && clientId == 0)
+            {
+                var work = _context.Work
+                                .Include(x => x.Client)
+                                .FirstOrDefault(x => x.Id == workId);
+
+                if (work.Client == null)
+                    return false;
+
+                if (work.Client.ProfessionInClients.Select(x => x.ProfessionId).Contains((int)professionId))
+                    return true;
+                else
+                    return false;
+            }
+
+            if (workId != 0 && clientId != 0)
+            {
+                var client = _context.Client
+                                .Include(x => x.ProfessionInClients)
+                                .FirstOrDefault(x => x.Id == clientId);
+                if (client == null)
+                    return false;
+
+                if (client.ProfessionInClients.Select(x => x.ProfessionId).Contains((int)professionId))
+                    return true;
+                else
+                    return false;
+            }
+
+            return false;
         }
 
         private void ValidateUpdateUserHiring(UserHiring userHiring)
