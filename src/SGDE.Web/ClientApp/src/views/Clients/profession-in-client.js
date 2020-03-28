@@ -29,6 +29,15 @@ class ProfessionInClient extends Component {
     url: `${config.URL_API}/${PROFESSIONS}`,
     headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }]
   });
+  
+  professionIdRules = { required: true };
+  numericParams = {
+    params: {
+      decimals: 1,
+      format: "N",
+      validateDecimalOnType: true
+    }
+  };
 
   grid = null;
 
@@ -52,14 +61,6 @@ class ProfessionInClient extends Component {
     this.actionComplete = this.actionComplete.bind(this);
 
     this.query = new Query().addParams("clientId", props.client.id);
-    this.professionIdRules = { required: true };
-    this.numericParams = {
-      params: {
-        decimals: 1,
-        format: "N",
-        validateDecimalOnType: true
-      }
-    };
   }
 
   actionFailure(args) {

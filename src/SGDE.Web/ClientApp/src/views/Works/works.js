@@ -79,7 +79,8 @@ class Works extends Component {
         tooltipText: "Añadir/Quitar Trabajadores",
         prefixIcon: "e-custom-icons e-file-workers",
         id: "Workers"
-      }
+      },
+      "Search"
     ];
     this.editSettings = {
       showDeleteConfirmDialog: true,

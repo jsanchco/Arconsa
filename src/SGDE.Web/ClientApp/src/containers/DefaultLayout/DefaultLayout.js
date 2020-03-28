@@ -58,7 +58,11 @@ class DefaultLayout extends Component {
         message = this.props.messageApplication.toString();
       }
     } else {
-      message = this.props.messageApplication.statusText;
+      if (this.props.messageApplication.responseText !== undefined) {
+        message = this.props.messageApplication.responseText.toString();
+      } else {
+        message = this.props.messageApplication.toString();
+      }
     }
     if (message === "" || message === undefined) {
       message = "ERROR en la petición";

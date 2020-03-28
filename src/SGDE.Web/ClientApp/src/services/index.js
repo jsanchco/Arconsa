@@ -12,7 +12,8 @@ import {
   UPDATEDATESWORK,
   INVOICES,
   COMPANY_DATA,
-  SETTINGS
+  SETTINGS,
+  RESTOREPASSWORD
 } from "../constants";
 import store from "../store/store";
 import ACTION_AUTHENTICATION from "../actions/authenticationAction";
@@ -435,6 +436,54 @@ export const updateWorkersInWork = (workers, workId) => {
           store.dispatch(
             ACTION_APPLICATION.showMessage({
               statusText: "200",
+              responseText: "Operación realizada con éxito",
+              type: "success"
+            })
+          );
+          resolve();
+        }
+      })
+      .catch(error => {
+        console.log("error ->", error);
+        store.dispatch(
+          ACTION_APPLICATION.showMessage({
+            statusText: error,
+            responseText: error,
+            type: "danger"
+          })
+        );
+        reject();
+      });
+  });
+};
+
+export const restorePassword = userId => {
+  return new Promise((resolve, reject) => {
+    const url = `${config.URL_API}/${RESTOREPASSWORD}/${userId}`;
+    fetch(url, {
+      headers: {
+        Accept: "text/plain",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`
+      },
+      method: "PUT"
+    })
+      .then(data => data.json())
+      .then(result => {
+        if (result !== true) {
+          console.log("error ->", result.Message);
+          store.dispatch(
+            ACTION_APPLICATION.showMessage({
+              statusText: "Ha ocurrido un error al ralizar la operación",
+              responseText: "Ha ocurrido un error al ralizar la operación",
+              type: "danger"
+            })
+          );
+          reject();
+        } else {
+          store.dispatch(
+            ACTION_APPLICATION.showMessage({
+              statusText: "Operación realizada con éxito",
               responseText: "Operación realizada con éxito",
               type: "success"
             })

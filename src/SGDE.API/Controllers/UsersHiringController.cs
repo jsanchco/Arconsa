@@ -84,14 +84,14 @@ namespace SGDE.API.Controllers
         {
             try
             {
+                if (userHiringViewModel.professionId == null)
+                    throw new Exception("Debes seleccionar una profesión");
+
+                if (!_supervisor.IsProfessionInClient((int)userHiringViewModel.professionId, userHiringViewModel.workId, 0))
+                    throw new Exception("Algunos de los Trabajadores asignados no están registrados en las profesiones del Clienten");
+
                 if (_supervisor.UpdateUserHiring(userHiringViewModel) && userHiringViewModel.id != null)
                 {
-                    if (userHiringViewModel.professionId == null)
-                        return new { message = "Debes seleccionar una profesión" };
-
-                    if (!_supervisor.IsProfessionInClient((int)userHiringViewModel.professionId, userHiringViewModel.workId, 0))
-                        throw new Exception("Algunos de los Trabajadores asignados no están registrados en las profesiones del Cliente");
-
                     return _supervisor.GetUserHiringById((int)userHiringViewModel.id);
                 }
 

@@ -27,6 +27,7 @@ namespace SGDE.Domain.Supervisor
         UserViewModel AddUser(UserViewModel newUserViewModel);
         bool UpdateUser(UserViewModel userViewModel);
         bool UpdatePassword(UserViewModel userViewModel);
+        bool RestorePassword(int userId);
         bool UpdateUserPhoto(int userId, byte[] photo);
         bool DeleteUser(int id);
 
@@ -52,7 +53,7 @@ namespace SGDE.Domain.Supervisor
 
         #region Client
 
-        List<ClientViewModel> GetAllClient();
+        QueryResult<ClientViewModel> GetAllClient(int skip = 0, int take = 0, string filter = null);
         ClientViewModel GetClientById(int id);
         ClientViewModel AddClient(ClientViewModel newClientViewModel);
         bool UpdateClient(ClientViewModel clientViewModel);

@@ -152,7 +152,7 @@ class BasicDataClient extends Component {
                 <FormGroup>
                   <Label htmlFor="accountNumber">Nº de Cuenta</Label>
                   <MaskedTextBoxComponent
-                    mask={"LL00-0000-0000-0000"}
+                    mask={"LL00-0000-0000-0000-0000-0000"}
                     id="accountNumber"
                     name="accountNumber"
                     placeholder="nº de cuenta"

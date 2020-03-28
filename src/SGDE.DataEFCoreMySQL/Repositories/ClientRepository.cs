@@ -7,6 +7,7 @@
     using Domain.Entities;
     using Domain.Repositories;
     using Microsoft.EntityFrameworkCore;
+    using SGDE.Domain.Helpers;
 
     #endregion
 
@@ -29,12 +30,35 @@
             return GetById(id) != null;
         }
 
-        public List<Client> GetAll()
+        public QueryResult<Client> GetAll(int skip = 0, int take = 0, string filter = null)
         {
-            return _context.Client
+            var data = _context.Client
                 .Include(x => x.ClientResponsibles)
                 .Include(x => x.ProfessionInClients)
                 .ToList();
+
+            if (!string.IsNullOrEmpty(filter))
+            {
+                data = data
+                    .Where(x =>
+                        Searcher.RemoveAccentsWithNormalization(x.Address?.ToLower()).Contains(filter) ||
+                        Searcher.RemoveAccentsWithNormalization(x.Name.ToLower()).Contains(filter) ||
+                        Searcher.RemoveAccentsWithNormalization(x.WayToPay?.ToLower()).Contains(filter))
+                    .ToList();
+            }
+
+            var count = data.Count;
+            return (skip != 0 || take != 0)
+                ? new QueryResult<Client>
+                {
+                    Data = data.Skip(skip).Take(take).ToList(),
+                    Count = count
+                }
+                : new QueryResult<Client>
+                {
+                    Data = data.Skip(0).Take(count).ToList(),
+                    Count = count
+                };
         }
 
         public Client GetById(int id)

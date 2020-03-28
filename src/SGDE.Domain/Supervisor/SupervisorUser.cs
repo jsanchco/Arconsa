@@ -197,6 +197,17 @@ namespace SGDE.Domain.Supervisor
             return _userRepository.Update(user);
         }
 
+        public bool RestorePassword(int userId)
+        {
+            var user = _userRepository.GetById(userId);
+
+            if (user == null) return false;
+
+            user.Password = "123456";
+
+            return _userRepository.Update(user);
+        }
+
         public bool UpdateUserPhoto(int userId, byte[] photo)
         {
             var user = _userRepository.GetById(userId);

@@ -4,19 +4,23 @@
 
     using System;
     using System.Collections.Generic;
-    using System.Threading;
-    using System.Threading.Tasks;
     using Converters;
     using Entities;
+    using SGDE.Domain.Helpers;
     using ViewModels;
 
     #endregion
 
     public partial class Supervisor
     {
-        public List<ClientViewModel> GetAllClient()
+        public QueryResult<ClientViewModel> GetAllClient(int skip = 0, int take = 0, string filter = null)
         {
-            return ClientConverter.ConvertList(_clientRepository.GetAll());
+            var queryResult = _clientRepository.GetAll(skip, take, filter);
+            return new QueryResult<ClientViewModel>
+            {
+                Data = ClientConverter.ConvertList(queryResult.Data),
+                Count = queryResult.Count
+            };
         }
 
         public ClientViewModel GetClientById(int id)

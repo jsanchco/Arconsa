@@ -163,7 +163,7 @@
                 _logger.LogError(ex, "Exception: ");
                 return StatusCode(500, ex);
             }
-        }
+        } 
 
         // DELETE: api/users/5
         [HttpDelete("{id:int}")]
@@ -206,6 +206,24 @@
             try
             {
                 var result = _supervisor.UpdatePassword(userViewModel);
+                return result;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Exception: ");
+                return StatusCode(500, ex);
+            }
+        }
+
+        [HttpPut("restorepassword/{userId:int}")]
+        public object RestorePassword(int userId)
+        {
+            try
+            {
+                var result = _supervisor.RestorePassword(userId);
+                if (result == false)
+                    throw new Exception("Ha ocurrido un error al resetar la contraseña");
+
                 return result;
             }
             catch (Exception ex)

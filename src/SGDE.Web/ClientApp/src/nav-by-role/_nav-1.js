@@ -34,7 +34,7 @@ export default {
           icon: "icon-layers"
         },
         {
-          name: "Agregar Usuarios",
+          name: "Gestión de Usuarios",
           url: "/settings/usersnoworker",
           icon: "icon-people"
         }

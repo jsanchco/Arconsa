@@ -46,7 +46,8 @@ class Clients extends Component {
         tooltipText: "Detalles",
         prefixIcon: "e-custom-icons e-details",
         id: "Details"
-      }
+      },
+      "Search"
     ];
     this.editSettings = {
       showDeleteConfirmDialog: true,
