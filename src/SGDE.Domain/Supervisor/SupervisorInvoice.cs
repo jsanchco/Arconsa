@@ -368,8 +368,8 @@
                 var professionInClient = work.Client.ProfessionInClients.FirstOrDefault(x => x.ProfessionId == item.Key);
                 if (professionInClient != null)
                 {
-                    priceUnity = professionInClient.PriceHourSale;
-                    priceTotal = professionInClient.PriceHourSale * (int)item.Hours;
+                    priceUnity = professionInClient.PriceHourOrdinary;
+                    priceTotal = professionInClient.PriceHourOrdinary * (int)item.Hours;
                     professionName = professionInClient.Profession.Name;
 
                     Total += priceTotal;

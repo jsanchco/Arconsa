@@ -38,7 +38,12 @@
                 ModifiedDate = null,
                 IPAddress = newProfessionInClientViewModel.iPAddress,
 
-                PriceHourSale = newProfessionInClientViewModel.priceHourSale,
+                PriceHourOrdinary = newProfessionInClientViewModel.priceHourOrdinary,
+                PriceHourExtra = newProfessionInClientViewModel.priceHourExtra,
+                PriceHourFestive = newProfessionInClientViewModel.priceHourFestive,
+                PriceHourSaleOrdinary = newProfessionInClientViewModel.priceHourSaleOrdinary,
+                PriceHourSaleExtra = newProfessionInClientViewModel.priceHourSaleExtra,
+                PriceHourSaleFestive = newProfessionInClientViewModel.priceHourSaleFestive,
                 ClientId = newProfessionInClientViewModel.clientId,
                 ProfessionId = newProfessionInClientViewModel.professionId
             };
@@ -59,7 +64,12 @@
             professionInClient.ModifiedDate = DateTime.Now;
             professionInClient.IPAddress = professionInClientViewModel.iPAddress;
 
-            professionInClient.PriceHourSale = professionInClientViewModel.priceHourSale;
+            professionInClient.PriceHourOrdinary = professionInClientViewModel.priceHourOrdinary;
+            professionInClient.PriceHourExtra = professionInClientViewModel.priceHourExtra;
+            professionInClient.PriceHourFestive = professionInClientViewModel.priceHourFestive;
+            professionInClient.PriceHourSaleOrdinary = professionInClientViewModel.priceHourSaleOrdinary;
+            professionInClient.PriceHourSaleExtra = professionInClientViewModel.priceHourSaleExtra;
+            professionInClient.PriceHourSaleFestive = professionInClientViewModel.priceHourSaleFestive;
             professionInClient.ClientId = professionInClientViewModel.clientId;
             professionInClient.ProfessionId = professionInClientViewModel.professionId;
 
