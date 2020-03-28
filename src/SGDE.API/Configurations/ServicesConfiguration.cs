@@ -39,7 +39,8 @@
                         .AddScoped<ITypeClientRepository, DataEFCoreSQL.Repositories.TypeClientRepository>()
                         .AddScoped<IDailySigningRepository, DataEFCoreSQL.Repositories.DailySigningRepository>()
                         .AddScoped<ISettingRepository, DataEFCoreSQL.Repositories.SettingRepository>()
-                        .AddScoped<IProfessionInClientRepository, DataEFCoreSQL.Repositories.ProfessionInClientRepository>();
+                        .AddScoped<IProfessionInClientRepository, DataEFCoreSQL.Repositories.ProfessionInClientRepository>()
+                        .AddScoped<IHourTypeRepository, DataEFCoreSQL.Repositories.HourTypeRepository>();
                     break;
                 case "MySQL":
                     services
@@ -56,7 +57,8 @@
                         .AddScoped<ITypeClientRepository, DataEFCoreMySQL.Repositories.TypeClientRepository>()
                         .AddScoped<IDailySigningRepository, DataEFCoreMySQL.Repositories.DailySigningRepository>()
                         .AddScoped<ISettingRepository, DataEFCoreMySQL.Repositories.SettingRepository>()
-                        .AddScoped<IProfessionInClientRepository, DataEFCoreMySQL.Repositories.ProfessionInClientRepository>();
+                        .AddScoped<IProfessionInClientRepository, DataEFCoreMySQL.Repositories.ProfessionInClientRepository>()
+                        .AddScoped<IHourTypeRepository, DataEFCoreMySQL.Repositories.HourTypeRepository>();
                     break;
 
                 default:
@@ -73,7 +75,8 @@
                         .AddScoped<ITypeClientRepository, DataEFCoreMySQL.Repositories.TypeClientRepository>()
                         .AddScoped<IDailySigningRepository, DataEFCoreMySQL.Repositories.DailySigningRepository>()
                         .AddScoped<ISettingRepository, DataEFCoreMySQL.Repositories.SettingRepository>()
-                        .AddScoped<IProfessionInClientRepository, DataEFCoreMySQL.Repositories.ProfessionInClientRepository>();
+                        .AddScoped<IProfessionInClientRepository, DataEFCoreMySQL.Repositories.ProfessionInClientRepository>()
+                        .AddScoped<IHourTypeRepository, DataEFCoreMySQL.Repositories.HourTypeRepository>();
                     break;
             }
 

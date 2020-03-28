@@ -42,7 +42,6 @@
         {
             try
             {
-
                 var userAuthenticate = await _supervisor.Authenticate(login.username, login.password);
 
                 if (userAuthenticate == null)
