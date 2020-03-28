@@ -1,6 +1,6 @@
 ﻿namespace SGDE.Domain.Entities
 {
-    #region
+    #region Using
 
     using System.Collections.Generic;
 

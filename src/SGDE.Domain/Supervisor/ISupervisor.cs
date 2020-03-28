@@ -195,5 +195,15 @@ namespace SGDE.Domain.Supervisor
         bool DeleteProfessionInClient(int id);
 
         #endregion
+
+        #region HourType
+
+        List<HourTypeViewModel> GetAllHourType();
+        HourTypeViewModel GetHourTypeById(int id);
+        HourTypeViewModel AddHourType(HourTypeViewModel newHourTypeViewModel);
+        bool UpdateHourType(HourTypeViewModel hourTypeViewModel);
+        bool DeleteHourType(int id);
+
+        #endregion
     }
 }

@@ -13,5 +13,8 @@
 
         public int UserHiringId { get; set; }
         public virtual UserHiring UserHiring { get; set; }
+
+        public int? HourTypeId { get; set; }
+        public virtual HourType HourType { get; set; }
     }
 }

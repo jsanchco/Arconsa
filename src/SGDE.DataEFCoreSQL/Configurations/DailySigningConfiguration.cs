@@ -20,6 +20,9 @@
 
             entity.HasIndex(x => x.UserHiringId).HasName("IFK_UserHiring_DailySigning");
             entity.HasOne(u => u.UserHiring).WithMany(a => a.DailysSigning).HasForeignKey(a => a.UserHiringId).HasConstraintName("FK__DailySigning__UserHiringId");
+
+            entity.HasIndex(x => x.HourTypeId).HasName("IFK_HourType_DailySigning");
+            entity.HasOne(u => u.HourType).WithMany(a => a.DailySignings).HasForeignKey(a => a.HourTypeId).HasConstraintName("FK__DailySigning__HourTypeId");
         }
     }
 }

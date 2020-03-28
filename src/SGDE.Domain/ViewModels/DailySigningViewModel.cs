@@ -27,5 +27,7 @@
         public string endHour { get; set; }
         public int userHiringId { get; set; }
         public string userHiringName { get; set; }
+        public int? hourTypeId { get; set; }
+        public string hourTypeName { get; set; }
     }
 }

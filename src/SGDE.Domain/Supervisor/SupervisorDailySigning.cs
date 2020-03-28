@@ -47,7 +47,8 @@
                 ? null :
                 (DateTime?)DateTime.ParseExact(newDailySigningViewModel.endHour, "dd/MM/yyyy HH:mm", null),
 
-                UserHiringId = newDailySigningViewModel.userHiringId
+                UserHiringId = newDailySigningViewModel.userHiringId,
+                HourTypeId = newDailySigningViewModel.hourTypeId
             };
 
             if (!_dailySigningRepository.ValidateDalilySigning(dailySigning))
@@ -77,6 +78,7 @@
                 : (DateTime?)DateTime.ParseExact(dailySigningViewModel.endHour, "dd/MM/yyyy HH:mm", null);
 
             dailySigning.UserHiringId = dailySigningViewModel.userHiringId;
+            dailySigning.HourTypeId = dailySigningViewModel.hourTypeId;
 
             if (!_dailySigningRepository.ValidateDalilySigning(dailySigning))
                 throw new Exception("El fichaje está mal configurado");

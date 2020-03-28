@@ -31,6 +31,7 @@ namespace SGDE.DataEFCoreSQL
         public virtual DbSet<DailySigning> DailySigning { get; set; }
         public virtual DbSet<Setting> Setting { get; set; }
         public virtual DbSet<ProfessionInClient> ProfessionInClient { get; set; }
+        public virtual DbSet<HourType> HourType { get; set; }
 
         public static long InstanceCount;
 
@@ -54,6 +55,7 @@ namespace SGDE.DataEFCoreSQL
             new DailySigningConfiguration(modelBuilder.Entity<DailySigning>());
             new SettingConfiguration(modelBuilder.Entity<Setting>());
             new ProfessionInClientConfiguration(modelBuilder.Entity<ProfessionInClient>());
+            new HourTypeConfiguration(modelBuilder.Entity<HourType>());
         }
 
         //public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<EFContextSQL>
