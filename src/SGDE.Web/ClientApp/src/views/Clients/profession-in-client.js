@@ -29,7 +29,7 @@ class ProfessionInClient extends Component {
     url: `${config.URL_API}/${PROFESSIONS}`,
     headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }]
   });
-  
+
   professionIdRules = { required: true };
   numericParams = {
     params: {
@@ -43,10 +43,6 @@ class ProfessionInClient extends Component {
 
   constructor(props) {
     super(props);
-
-    this.state = {
-      roles: null
-    };
 
     this.toolbarOptions = ["Add", "Edit", "Delete", "Update", "Cancel"];
     this.editSettings = {
@@ -98,7 +94,10 @@ class ProfessionInClient extends Component {
     return (
       <Fragment>
         <div className="animated fadeIn">
-          <div className="card" style={{ marginRight: "60px", marginTop: "20px" }}>
+          <div
+            className="card"
+            style={{ marginRight: "60px", marginTop: "20px" }}
+          >
             <div className="card-header">
               <i className="icon-people"></i> {title}
             </div>
@@ -110,7 +109,6 @@ class ProfessionInClient extends Component {
                 allowPaging={true}
                 pageSettings={this.pageSettings}
                 toolbar={this.toolbarOptions}
-                toolbarClick={this.clickHandler}
                 editSettings={this.editSettings}
                 style={{
                   marginLeft: 30,
@@ -120,7 +118,6 @@ class ProfessionInClient extends Component {
                 }}
                 actionFailure={this.actionFailure}
                 actionComplete={this.actionComplete}
-                rowSelected={this.rowSelected}
                 ref={g => (this.grid = g)}
                 query={this.query}
               >
@@ -144,13 +141,70 @@ class ProfessionInClient extends Component {
                     dataSource={this.professions}
                   />
                   <ColumnDirective
-                    field="priceHourSale"
+                    headerText="Precio Coste"
+                    textAlign="Center"
+                    columns={[
+                      {
+                        field: "priceHourOrdinary",
+                        headerText: "Ordinario",
+                        width: "100",
+                        fotmat: "N1",
+                        textAlign: "left",
+                        editType: "numericedit",
+                        edit: this.numericParams
+                      },
+                      {
+                        field: "priceHourExtra",
+                        headerText: "Extra",
+                        width: "100",
+                        fotmat: "N1",
+                        textAlign: "left",
+                        editType: "numericedit",
+                        edit: this.numericParams
+                      },
+                      {
+                        field: "priceHourFestive",
+                        headerText: "Festivo",
+                        width: "100",
+                        fotmat: "N1",
+                        textAlign: "left",
+                        editType: "numericedit",
+                        edit: this.numericParams
+                      }
+                    ]}
+                  />
+                  <ColumnDirective
                     headerText="Precio Venta"
-                    width="100"
-                    fotmat="N1"
-                    textAlign="left"
-                    editType="numericedit"
-                    edit={this.numericParams}
+                    textAlign="Center"                  
+                    columns={[
+                      {
+                        field: "priceHourSaleOrdinary",
+                        headerText: "Ordinario",
+                        width: "100",
+                        fotmat: "N1",
+                        textAlign: "left",
+                        editType: "numericedit",
+                        edit: this.numericParams
+                      },
+                      {
+                        field: "priceHourSaleExtra",
+                        headerText: "Extra",
+                        width: "100",
+                        fotmat: "N1",
+                        textAlign: "left",
+                        editType: "numericedit",
+                        edit: this.numericParams
+                      },
+                      {
+                        field: "priceHourSaleFestive",
+                        headerText: "Festivo",
+                        width: "100",
+                        fotmat: "N1",
+                        textAlign: "left",
+                        editType: "numericedit",
+                        edit: this.numericParams
+                      }
+                    ]}
                   />
                   <ColumnDirective
                     field="clientId"

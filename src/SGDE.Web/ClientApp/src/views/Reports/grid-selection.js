@@ -217,6 +217,11 @@ class GridSelection extends Component {
             editType="numericedit"
           />
           <ColumnDirective
+            field="hourTypeName"
+            headerText="Tipo"
+            width="100"
+          />          
+          <ColumnDirective
             field="priceHour"
             headerText="Precio Coste"
             width="100"

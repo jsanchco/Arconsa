@@ -15,24 +15,24 @@
     [Authorize]
     [Route("api/[controller]")]
     [ApiController]
-    public class TypesClientController : ControllerBase
+    public class HourTypesController : ControllerBase
     {
         private readonly ISupervisor _supervisor;
-        private readonly ILogger<TypesClientController> _logger;
+        private readonly ILogger<HourTypesController> _logger;
 
-        public TypesClientController(ILogger<TypesClientController> logger, ISupervisor supervisor)
+        public HourTypesController(ILogger<HourTypesController> logger, ISupervisor supervisor)
         {
             _logger = logger;
             _supervisor = supervisor;
         }
 
-        // GET api/typedocument/5
+        // GET api/hourtype/5
         [HttpGet("{id}")]
         public object Get(int id)
         {
             try
             {
-                return _supervisor.GetTypeClientById(id);
+                return _supervisor.GetHourTypeById(id);
             }
             catch (Exception ex)
             {
@@ -46,7 +46,7 @@
         {
             try
             {
-                var data = _supervisor.GetAllTypeClient().ToList();
+                var data = _supervisor.GetAllHourType().ToList();
                 return new { Items = data, data.Count };
             }
             catch (Exception ex)
@@ -57,11 +57,11 @@
         }
 
         [HttpPost]
-        public object Post([FromBody]TypeClientViewModel typeClientViewModel)
+        public object Post([FromBody]HourTypeViewModel hourTypeViewModel)
         {
             try
             {
-                var result = _supervisor.AddTypeClient(typeClientViewModel);
+                var result = _supervisor.AddHourType(hourTypeViewModel);
                 return result;
             }
             catch (Exception ex)
@@ -72,13 +72,13 @@
         }
 
         [HttpPut]
-        public object Put([FromBody]TypeClientViewModel typeClientViewModel)
+        public object Put([FromBody]HourTypeViewModel hourTypeViewModel)
         {
             try
             {
-                if (_supervisor.UpdateTypeClient(typeClientViewModel) && typeClientViewModel.id != null)
+                if (_supervisor.UpdateHourType(hourTypeViewModel) && hourTypeViewModel.id != null)
                 {
-                    return _supervisor.GetTypeClientById((int)typeClientViewModel.id);
+                    return _supervisor.GetHourTypeById((int)hourTypeViewModel.id);
                 }
 
                 return null;
@@ -90,14 +90,14 @@
             }
         }
 
-        // DELETE: api/typesclient/5
+        // DELETE: api/hourtype/5
         [HttpDelete("{id:int}")]
-        //[Route("typesclient/{id:int}")]
+        //[Route("hourtype/{id:int}")]
         public object Delete(int id)
         {
             try
             {
-                return _supervisor.DeleteTypeClient(id);
+                return _supervisor.DeleteHourType(id);
             }
             catch (Exception ex)
             {

@@ -13,6 +13,8 @@
         public string userName { get; set; }
         public int? professionId { get; set; }
         public string professionName { get; set; }
+        public int? hourTypeId { get; set; }
+        public string hourTypeName { get; set; }
         public string dateHour { get; set; }
         public double hours { get; set; }
         public Decimal priceHour { get; set; }

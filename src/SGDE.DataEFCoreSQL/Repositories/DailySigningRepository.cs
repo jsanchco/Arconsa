@@ -144,11 +144,15 @@
             return _context.DailySigning
                 .Include(x => x.UserHiring)
                 .ThenInclude(x => x.Work)
+                .ThenInclude(x => x.Client)
+                .ThenInclude(x => x.ProfessionInClients)
                 .Include(x => x.UserHiring)
                 .ThenInclude(x => x.Work.Client)
                 .Include(x => x.UserHiring)
                 .ThenInclude(x => x.User)
+                .Include(x => x.UserHiring)
                 .ThenInclude(x => x.Profession)
+                .Include(x => x.HourType)
                 .Where(x => x.StartHour >= dtStart && x.EndHour <= dtEnd && x.UserHiring.UserId == userId)
                 .OrderBy(x => x.StartHour)
                 .ToList();
@@ -162,11 +166,15 @@
             return _context.DailySigning
                 .Include(x => x.UserHiring)
                 .ThenInclude(x => x.Work)
+                .ThenInclude(x => x.Client)
+                .ThenInclude(x => x.ProfessionInClients)
                 .Include(x => x.UserHiring)
                 .ThenInclude(x => x.Work.Client)
                 .Include(x => x.UserHiring)
                 .ThenInclude(x => x.User)
+                .Include(x => x.UserHiring)
                 .ThenInclude(x => x.Profession)
+                .Include(x => x.HourType)
                 .Where(x => x.StartHour >= dtStart && x.EndHour <= dtEnd && x.UserHiring.WorkId == workId)
                 .ToList();
 
@@ -180,11 +188,14 @@
             return _context.DailySigning
                 .Include(x => x.UserHiring)
                 .ThenInclude(x => x.Work)
+                .ThenInclude(x => x.Client)
+                .ThenInclude(x => x.ProfessionInClients)
                 .Include(x => x.UserHiring)
                 .ThenInclude(x => x.Work.Client)
                 .Include(x => x.UserHiring)
                 .ThenInclude(x => x.User)
                 .ThenInclude(x => x.Profession)
+                .Include(x => x.HourType)
                 .Where(x => x.StartHour >= dtStart && x.EndHour <= dtEnd && x.UserHiring.Work.ClientId == clientId)
                 .ToList();
         }

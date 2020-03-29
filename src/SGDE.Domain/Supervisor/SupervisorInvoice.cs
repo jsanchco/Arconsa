@@ -33,7 +33,7 @@
         public static readonly Font _STANDARFONT_14_BOLD_WHITE =
             FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 14, BaseColor.White);
 
-        public decimal Total = 0;
+        public double Total = 0;
 
         public InvoiceViewModel GetInvoice(InvoiceQueryViewModel invoiceQueryViewModel)
         {
@@ -83,7 +83,7 @@
                 pdf.AddCreator(_CREATOR);
                 pdf.Open();
 
-                pdf.Add(GetHeader(jsonCompanyData));                
+                pdf.Add(GetHeader(jsonCompanyData));
                 pdf.Add(GetTable_NInvoice(invoiceQueryViewModel, client));
                 pdf.Add(GetTableClient(client, work));
                 pdf.Add(new Paragraph(" ", _STANDARFONT_8));
@@ -102,7 +102,7 @@
                 pdf.Add(GetPayment(client));
                 pdf.Add(new Paragraph(" ", _STANDARFONT_14_BOLD));
                 pdf.Add(GetSignAndStamp());
-                
+
                 pdf.Close();
                 pdfWriter.Close();
 
@@ -345,37 +345,33 @@
 
             var work = _workRepository.GetById((int)invoiceQueryViewModel.workId);
 
-            var listGrouped = listReportResultViewModel.GroupBy(x => x.professionId)
+            var listGroupedByProfessionId = listReportResultViewModel.GroupBy(x => new { x.professionId, x.hourTypeId })
                 .Select(
                         x => new
                         {
                             Key = x.Key,
-                            ProfessionName = x.Select(y => y.professionName),
+                            ProfessionName = x.Select(y => y.professionName).First(),
+                            ProfessionId = x.Select(y => y.professionId).First(),
+                            HourTypeId = x.Select(y => y.hourTypeId).First(),
+                            HourTypeName = x.Select(y => y.hourTypeName).First(),
                             Hours = x.Sum(y => y.hours)
-                        });
+                        })
+                .OrderBy(x => x.HourTypeId)
+                .OrderBy(x => x.ProfessionId);
 
             var pdfPTable = new PdfPTable(4) { WidthPercentage = 100 };
             var widths = new[] { 40f, 20f, 20f, 20f };
             pdfPTable.SetWidths(widths);
 
             Total = 0;
-            foreach (var item in listGrouped)
+            foreach (var itemByProfession in listGroupedByProfessionId)
             {
-                decimal priceUnity = 0;
-                decimal priceTotal = 0;
-                var professionName = string.Empty;
-                
-                var professionInClient = work.Client.ProfessionInClients.FirstOrDefault(x => x.ProfessionId == item.Key);
-                if (professionInClient != null)
-                {
-                    priceUnity = professionInClient.PriceHourOrdinary;
-                    priceTotal = professionInClient.PriceHourOrdinary * (int)item.Hours;
-                    professionName = professionInClient.Profession.Name;
+                var priceUnity = GetPriceHourCost(work.Client, (int)itemByProfession.HourTypeId, (int)itemByProfession.ProfessionId);
+                double priceTotal = (double)priceUnity * (double)itemByProfession.Hours;
+                var professionName = itemByProfession.ProfessionName;
+                Total += priceTotal;
 
-                    Total += priceTotal;
-                }
-
-                var title = $"HORAS ORDINARIAS {professionName.ToUpper()}";
+                var title = $"{itemByProfession.HourTypeName.ToString().ToUpper()} {professionName}";
                 var pdfCell = new PdfPCell(new Phrase(title, _STANDARFONT_10))
                 {
                     HorizontalAlignment = Element.ALIGN_LEFT,
@@ -386,7 +382,7 @@
                 };
                 pdfPTable.AddCell(pdfCell);
 
-                pdfCell = new PdfPCell(new Phrase(item.Hours.ToString(), _STANDARFONT_10))
+                pdfCell = new PdfPCell(new Phrase(itemByProfession.Hours.ToString(), _STANDARFONT_10))
                 {
                     HorizontalAlignment = Element.ALIGN_RIGHT,
                     VerticalAlignment = Element.ALIGN_MIDDLE,
@@ -415,9 +411,10 @@
                     BorderWidth = 0
                 };
                 pdfPTable.AddCell(pdfCell);
+
             }
 
-            var countRows = listGrouped.Count();
+            var countRows = listGroupedByProfessionId.Count();
             if (countRows > 5)
             {
                 pdf.NewPage();
@@ -464,7 +461,7 @@
                     pdfPTable.AddCell(pdfCell);
                 }
             }
-                
+
             return pdfPTable;
         }
 
@@ -495,7 +492,7 @@
             pdfCell = new PdfPCell(new Phrase("I.V.A.", _STANDARFONT_10_BOLD_CUSTOMCOLOR)) { BorderWidth = 0 };
             pdfPTable.AddCell(pdfCell);
 
-            var iva = Math.Round(decimal.ToDouble(Total) * 0.21, 2);
+            var iva = Math.Round((double)Total * 0.21, 2);
             pdfCell = new PdfPCell(new Phrase($"{iva} €", _STANDARFONT_10)) { BorderWidth = 0 };
             pdfPTable.AddCell(pdfCell);
             pdfCell = new PdfPCell(new Phrase(" ", _STANDARFONT_10)) { BorderWidth = 0 };
@@ -505,7 +502,7 @@
             pdfCell = new PdfPCell(new Phrase("Total Factura", _STANDARFONT_10_BOLD_CUSTOMCOLOR)) { BorderWidth = 0 };
             pdfPTable.AddCell(pdfCell);
 
-            var totalPlusIva = Math.Round(iva + decimal.ToDouble(Total), 2);
+            var totalPlusIva = Math.Round(iva + (double)Total, 2);
             pdfCell = new PdfPCell(new Phrase($"{totalPlusIva} €", _STANDARFONT_10)) { BorderWidth = 0 };
             pdfPTable.AddCell(pdfCell);
             pdfCell = new PdfPCell(new Phrase(" ", _STANDARFONT_10)) { BorderWidth = 0 };
@@ -571,6 +568,52 @@
         {
             return new Chunk(
                 new iTextSharp.text.pdf.draw.LineSeparator(0f, 100f, BaseColor.LightGray, Element.ALIGN_LEFT, 1));
+        }
+
+        private decimal GetPriceHourCost(Client client, int? type, int? professionId)
+        {
+            if (type == null || professionId == null)
+                return 0;
+
+            var professionInClient = client.ProfessionInClients.FirstOrDefault(x => x.ProfessionId == professionId);
+            if (professionInClient == null)
+                return 0;
+
+            switch (type)
+            {
+                case 1:
+                    return professionInClient.PriceHourOrdinary;
+                case 2:
+                    return professionInClient.PriceHourExtra;
+                case 3:
+                    return professionInClient.PriceHourFestive;
+
+                default:
+                    return 0;
+            }
+        }
+
+        private decimal GetPriceHourSale(Client client, int? type, int? professionId)
+        {
+            if (type == null || professionId == null)
+                return 0;
+
+            var professionInClient = client.ProfessionInClients.FirstOrDefault(x => x.ProfessionId == professionId);
+            if (professionInClient == null)
+                return 0;
+
+            switch (type)
+            {
+                case 1:
+                    return professionInClient.PriceHourSaleOrdinary;
+                case 2:
+                    return professionInClient.PriceHourSaleExtra;
+                case 3:
+                    return professionInClient.PriceHourSaleFestive;
+
+                default:
+                    return 0;
+            }
         }
     }
 }

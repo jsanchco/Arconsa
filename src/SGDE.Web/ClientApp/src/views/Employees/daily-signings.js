@@ -12,7 +12,7 @@ import {
 import { DateTimePickerComponent } from "@syncfusion/ej2-react-calendars";
 import { getValue } from "@syncfusion/ej2-base";
 import { DataManager, WebApiAdaptor, Query } from "@syncfusion/ej2-data";
-import { config, DAILYSIGNINGS, USERSHIRING } from "../../constants";
+import { config, DAILYSIGNINGS, USERSHIRING, HOURTYPES } from "../../constants";
 import { loadCldr, L10n } from "@syncfusion/ej2-base";
 import data from "../../locales/locale.json";
 import { TOKEN_KEY } from "../../services";
@@ -39,7 +39,14 @@ class DailySignings extends Component {
     headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }]
   });
 
+  hourTypes = new DataManager({
+    adaptor: new WebApiAdaptor(),
+    url: `${config.URL_API}/${HOURTYPES}`,
+    headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }]
+  });  
+
   userHiringIdRules = { required: true };
+  hourTypeIdRules = { required: true };
   grid = null;
 
   constructor(props) {
@@ -103,8 +110,8 @@ class DailySignings extends Component {
     if (args.requestType === "add" || args.requestType === "beginEdit") {
       this.grid.columns[0].edit.params.query.params = [];
       this.grid.columns[0].edit.params.query
-        .addParams("userId", this.props.user.id)
-        .addParams("workId", this.props.user.workId);
+        .addParams("userId", this.props.user.id);
+        // .addParams("workId", this.props.user.workId);
     }
 
     if (args.requestType === "save") {
@@ -249,6 +256,18 @@ class DailySignings extends Component {
                     textAlign="Center"
                     //editTemplate={this.endHourTemplate}
                   />
+                  <ColumnDirective
+                    field="hourTypeId"
+                    headerText="Tipo de Hora"
+                    width="100"
+                    editType="dropdownedit"
+                    validationRules={this.hourTypeIdRules}
+                    textAlign="Center"
+                    dataSource={this.hourTypes}
+                    foreignKeyValue="name"
+                    foreignKeyField="id"
+                    defaultValue={1}
+                  />                  
                   <ColumnDirective
                     field="totalHours"
                     headerText="Horas Totales"
