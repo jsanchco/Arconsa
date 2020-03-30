@@ -37,7 +37,7 @@ class GridSelection extends Component {
       allowDeleting: true,
       newRowPosition: "Top"
     };
-    this.pageSettings = { pageCount: 10, pageSize: 10 };
+    //this.pageSettings = { pageCount: 10, pageSize: 10 };
     this.actionFailure = this.actionFailure.bind(this);
     this.actionComplete = this.actionComplete.bind(this);
     this.renderWorker = this.renderWorker.bind(this);
@@ -182,8 +182,8 @@ class GridSelection extends Component {
       <GridComponent
         dataSource={null}
         locale="es-US"
-        allowPaging={true}
-        pageSettings={this.pageSettings}
+        //allowPaging={true}
+        //pageSettings={this.pageSettings}
         toolbar={this.toolbarOptions}
         toolbarClick={this.clickHandler}
         editSettings={this.editSettings}
@@ -308,7 +308,7 @@ class GridSelection extends Component {
           </AggregateDirective>
         </AggregatesDirective>
 
-        <Inject services={[Group, Page, Toolbar, Edit, Aggregate]} />
+        <Inject services={[Group, Toolbar, Edit, Aggregate]} />
       </GridComponent>
     );
   }
