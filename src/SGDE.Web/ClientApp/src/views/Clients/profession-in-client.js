@@ -33,7 +33,7 @@ class ProfessionInClient extends Component {
   professionIdRules = { required: true };
   numericParams = {
     params: {
-      decimals: 1,
+      decimals: 2,
       format: "N",
       validateDecimalOnType: true
     }
