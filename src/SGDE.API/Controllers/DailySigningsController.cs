@@ -111,5 +111,19 @@
                 return StatusCode(500, ex);
             }
         }
+
+        [HttpPost("massivesigning")]
+        public object MassiveSigning([FromBody]MassiveSigningQueryViewModel massiveSigningQueryViewModel)
+        {
+            try
+            {
+                return _supervisor.MassiveSigning(massiveSigningQueryViewModel);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Exception: ");
+                return StatusCode(500, ex);
+            }
+        }
     }
 }

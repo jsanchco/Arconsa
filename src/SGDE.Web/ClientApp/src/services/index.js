@@ -13,7 +13,9 @@ import {
   INVOICES,
   COMPANY_DATA,
   SETTINGS,
-  RESTOREPASSWORD
+  RESTOREPASSWORD,
+  USERSHIRING,
+  MASSIVESIGNING
 } from "../constants";
 import store from "../store/store";
 import ACTION_AUTHENTICATION from "../actions/authenticationAction";
@@ -541,6 +543,79 @@ export const getWorks = () => {
       .then(data => data.json())
       .then(result => {
         resolve(result.Items);
+      })
+      .catch(error => {
+        console.log("error ->", error);
+        reject();
+      });
+  });
+};
+
+export const getWorksByUserId = userId => {
+  return new Promise((resolve, reject) => {
+    const url = `${config.URL_API}/${USERSHIRING}/?userId=${userId}`;
+    fetch(url, {
+      headers: {
+        Accept: "text/plain",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`
+      },
+      method: "GET"
+    })
+      .then(data => data.json())
+      .then(result => {
+        resolve(result.Items);
+      })
+      .catch(error => {
+        console.log("error ->", error);
+        reject();
+      });
+  });
+};
+
+export const sendMassiveSigning = data => {
+  return new Promise((resolve, reject) => {
+    const url = `${config.URL_API}/${MASSIVESIGNING}`;
+    fetch(url, {
+      headers: {
+        Accept: "text/plain",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`
+      },
+      method: "POST",
+      body: JSON.stringify(data)
+    })
+      .then(data => data.json())
+      .then(result => {
+        if (result === true) {
+          store.dispatch(
+            ACTION_APPLICATION.showMessage({
+              statusText: "Fichajes generados correctamente",
+              responseText: "Fichajes generados correctamente",
+              type: "success"
+            })
+          ); 
+          resolve(result);        
+        } else {
+          store.dispatch(
+            ACTION_APPLICATION.showMessage({
+              statusText: "Algunos de las fichajes no se han podido ejecutar",
+              responseText: "Algunos de las fichajes no se han podido ejecutar",
+              type: "danger"
+            })
+          );
+          resolve(result);
+        }
+        if (result.Message) {
+          store.dispatch(
+            ACTION_APPLICATION.showMessage({
+              statusText: result.Message,
+              responseText: result.Message,
+              type: "danger"
+            })
+          );
+          reject();
+        } 
       })
       .catch(error => {
         console.log("error ->", error);

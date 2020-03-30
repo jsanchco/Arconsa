@@ -16,6 +16,7 @@ import { config, DAILYSIGNINGS, USERSHIRING, HOURTYPES } from "../../constants";
 import { loadCldr, L10n } from "@syncfusion/ej2-base";
 import data from "../../locales/locale.json";
 import { TOKEN_KEY } from "../../services";
+import ModalMassiveSigning from "../Modals/modal-massive-signing";
 
 import * as numberingSystems from "cldr-data/supplemental/numberingSystems.json";
 import * as gregorian from "cldr-data/main/es-US/ca-gregorian.json";
@@ -43,7 +44,7 @@ class DailySignings extends Component {
     adaptor: new WebApiAdaptor(),
     url: `${config.URL_API}/${HOURTYPES}`,
     headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }]
-  });  
+  });
 
   userHiringIdRules = { required: true };
   hourTypeIdRules = { required: true };
@@ -55,10 +56,23 @@ class DailySignings extends Component {
     this.state = {
       dailySignings: null,
       userHirings: null,
-      rowSelected: null
+      rowSelected: null,
+      modal: false
     };
 
-    this.toolbarOptions = ["Add", "Edit", "Delete", "Update", "Cancel"];
+    this.toolbarOptions = [
+      "Add",
+      "Edit",
+      "Delete",
+      "Update",
+      "Cancel",
+      {
+        text: "Plantilla Automática",
+        tooltipText: "Plantilla para a generación de Fichajes Automática",
+        prefixIcon: "e-custom-icons e-details",
+        id: "Template"
+      }
+    ];
     this.editSettings = {
       showDeleteConfirmDialog: true,
       allowEditing: true,
@@ -73,6 +87,9 @@ class DailySignings extends Component {
     this.rowSelected = this.rowSelected.bind(this);
     this.startHourTemplate = this.startHourTemplate.bind(this);
     this.formatDate = this.formatDate.bind(this);
+    this.clickHandler = this.clickHandler.bind(this);
+    this.toggleModal = this.toggleModal.bind(this);
+    this.updateDailySignings = this.updateDailySignings.bind(this);
 
     this.template = this.gridTemplate;
     this.format = { type: "dateTime", format: "dd/MM/yyyy HH:mm" };
@@ -109,9 +126,11 @@ class DailySignings extends Component {
   actionBegin(args) {
     if (args.requestType === "add" || args.requestType === "beginEdit") {
       this.grid.columns[0].edit.params.query.params = [];
-      this.grid.columns[0].edit.params.query
-        .addParams("userId", this.props.user.id);
-        // .addParams("workId", this.props.user.workId);
+      this.grid.columns[0].edit.params.query.addParams(
+        "userId",
+        this.props.user.id
+      );
+      // .addParams("workId", this.props.user.workId);
     }
 
     if (args.requestType === "save") {
@@ -155,6 +174,18 @@ class DailySignings extends Component {
     }
   }
 
+  clickHandler(args) {
+    if (args.item.id === "Template") {
+      this.toggleModal();
+    }
+  }
+
+  toggleModal() {
+    this.setState({
+      modal: !this.state.modal
+    });
+  }
+
   startHourTemplate(args) {
     return (
       <DateTimePickerComponent
@@ -184,11 +215,26 @@ class DailySignings extends Component {
     this.setState({ rowSelected: selectedRecords[0] });
   }
 
+  updateDailySignings() {
+    this.grid.refresh();
+  }
+
   render() {
     return (
       <Fragment>
-        <div className="animated fadeIn">
-          <div className="card" style={{ marginRight: "60px", marginTop: "20px" }}>
+        <ModalMassiveSigning
+          isOpen={this.state.modal}
+          toggle={this.toggleModal}
+          userId={this.props.user.id}
+          showMessage={this.props.showMessage}
+          updateDailySignings={this.updateDailySignings}
+        />
+
+        <div className="animated fadeIn" id="target-daily-signing">
+          <div
+            className="card"
+            style={{ marginRight: "60px", marginTop: "20px" }}
+          >
             <div className="card-header">
               <i className="icon-layers"></i> Fichajes
             </div>
@@ -267,7 +313,7 @@ class DailySignings extends Component {
                     foreignKeyValue="name"
                     foreignKeyField="id"
                     defaultValue={1}
-                  />                  
+                  />
                   <ColumnDirective
                     field="totalHours"
                     headerText="Horas Totales"

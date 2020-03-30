@@ -152,6 +152,7 @@ namespace SGDE.Domain.Supervisor
         DailySigningViewModel AddDailySigning(DailySigningViewModel newDailySigningViewModel);
         bool UpdateDailySigning(DailySigningViewModel dailySigningViewModel);
         bool DeleteDailySigning(int id);
+        bool MassiveSigning(MassiveSigningQueryViewModel massiveSigningQueryViewModel);
 
         #endregion
 

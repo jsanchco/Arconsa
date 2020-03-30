@@ -90,5 +90,67 @@
         {
             return _dailySigningRepository.Delete(id);
         }
+
+        public bool MassiveSigning(MassiveSigningQueryViewModel massiveSigningQueryViewModel)
+        {
+            var result = true;
+
+            var actualDay = DateTime.ParseExact($"{massiveSigningQueryViewModel.startSigning}", "dd/MM/yyyy", null);
+            var endDay = DateTime.ParseExact($"{massiveSigningQueryViewModel.endSigning}", "dd/MM/yyyy", null);
+            while (actualDay <= endDay)
+            {
+                if ((actualDay.DayOfWeek == DayOfWeek.Saturday) || (actualDay.DayOfWeek == DayOfWeek.Sunday))
+                {
+                    actualDay = actualDay.AddDays(1);
+                    continue;
+                }
+
+                var dailySigning = new DailySigning
+                {
+                    AddedDate = DateTime.Now,
+                    ModifiedDate = null,
+                    IPAddress = null,
+
+                    StartHour = new DateTime(actualDay.Year, actualDay.Month, actualDay.Day, 8, 0, 0),
+                    EndHour = new DateTime(actualDay.Year, actualDay.Month, actualDay.Day, 14, 0, 0),
+
+                    UserHiringId = massiveSigningQueryViewModel.userHiringId,
+                    HourTypeId = 1
+                };
+                if (_dailySigningRepository.ValidateDalilySigning(dailySigning))
+                {
+                    _dailySigningRepository.Add(dailySigning);
+                }
+                else
+                {
+                    result = false;
+                }
+
+                dailySigning = new DailySigning
+                {
+                    AddedDate = DateTime.Now,
+                    ModifiedDate = null,
+                    IPAddress = null,
+
+                    StartHour = new DateTime(actualDay.Year, actualDay.Month, actualDay.Day, 15, 0, 0),
+                    EndHour = new DateTime(actualDay.Year, actualDay.Month, actualDay.Day, 18, 0, 0),
+
+                    UserHiringId = massiveSigningQueryViewModel.userHiringId,
+                    HourTypeId = 1
+                };
+                if (_dailySigningRepository.ValidateDalilySigning(dailySigning))
+                {
+                    _dailySigningRepository.Add(dailySigning);
+                }
+                else
+                {
+                    result = false;
+                }
+
+                actualDay = actualDay.AddDays(1);
+            }
+
+            return result;
+        }
     }
 }
