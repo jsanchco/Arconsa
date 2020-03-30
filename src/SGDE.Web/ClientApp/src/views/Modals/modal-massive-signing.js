@@ -112,7 +112,10 @@ class ModalMassiveSigning extends Component {
       return "";
     }
 
-    const day = args.getDate();
+    let day = args.getDate();
+    if (day < 10)
+      day = "0" + day;
+      
     const month = args.getMonth() + 1;
     const year = args.getFullYear();
 
