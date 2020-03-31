@@ -38,13 +38,6 @@ class GridSelection extends Component {
         id: "CollapseAll"
       }
     ];
-    this.editSettings = {
-      showDeleteConfirmDialog: true,
-      allowEditing: true,
-      allowAdding: true,
-      allowDeleting: true,
-      newRowPosition: "Top"
-    };
 
     this.actionFailure = this.actionFailure.bind(this);
     this.actionComplete = this.actionComplete.bind(this);
@@ -201,7 +194,6 @@ class GridSelection extends Component {
         locale="es-US"
         toolbar={this.toolbarOptions}
         toolbarClick={this.clickHandler}
-        editSettings={this.editSettings}
         style={{
           marginLeft: 30,
           marginRight: 30,
