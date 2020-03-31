@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from "react";
 import { Form, Col, FormGroup, Input, Label, Row, Button } from "reactstrap";
+import { AppSwitch } from "@coreui/react";
 import { DatePickerComponent } from "@syncfusion/ej2-react-calendars";
 import { updateWork } from "../../services";
 import {
@@ -21,6 +22,7 @@ class BasicDataWork extends Component {
       estimatedDuration: props.work.estimatedDuration,
       openDate: props.work.openDate,
       closeDate: props.work.closeDate,
+      passiveSubject: props.work.passiveSubject,
       open: props.work.open,
       clientId: props.work.clientId
     };
@@ -40,9 +42,15 @@ class BasicDataWork extends Component {
         [name]: this.formatDate(target.value)
       });
     } else {
-      this.setState({
-        [name]: target.value
-      });
+      if (name === "passiveSubject") {
+        this.setState({
+          [name]: target.checked
+        });
+      } else {
+        this.setState({
+          [name]: target.value
+        });
+      }
     }
   }
 
@@ -52,8 +60,7 @@ class BasicDataWork extends Component {
     }
 
     let day = args.getDate();
-    if (day < 10)
-      day = "0" + day;
+    if (day < 10) day = "0" + day;
 
     const month = args.getMonth() + 1;
     const year = args.getFullYear();
@@ -75,6 +82,7 @@ class BasicDataWork extends Component {
       estimatedDuration: this.state.estimatedDuration,
       openDate: this.state.openDate,
       closeDate: this.state.closeDate,
+      passiveSubject: this.state.passiveSubject,
       open: this.state.open,
       clientId: this.state.clientId
     };
@@ -126,7 +134,7 @@ class BasicDataWork extends Component {
               </Col>
               <Col xs="4">
                 <FormGroup>
-                  <Label htmlFor="address">Address</Label>
+                  <Label htmlFor="address">Dirección</Label>
                   <Input
                     type="text"
                     id="address"
@@ -155,14 +163,19 @@ class BasicDataWork extends Component {
             <Row>
               <Col xs="2">
                 <FormGroup>
-                  <Label htmlFor="numberPersonsRequested">Nº Personas</Label>
-                  <Input
-                    type="number"
-                    id="numberPersonsRequested"
-                    name="numberPersonsRequested"
-                    placeholder="número de personas"
-                    value={this.state.numberPersonsRequested}
+                  <Label htmlFor="passiveSubject" style={{verticalAlign: "bottom"}}>Sujeto Pasivo&nbsp;</Label>
+                  <AppSwitch
+                    className={"mx-1 mt-4"}
+                    variant={"pill"}
+                    color={"primary"}
+                    label
+                    checked={this.state.passiveSubject}
+                    id="passiveSubject"
+                    name="passiveSubject"
+                    placeholder="sujeto pasivo"
                     onChange={this.handleInputChange}
+                    dataOn="Si" 
+                    dataOff="No"
                   />
                 </FormGroup>
               </Col>
@@ -178,7 +191,7 @@ class BasicDataWork extends Component {
                     onChange={this.handleInputChange}
                   />
                 </FormGroup>
-              </Col>              
+              </Col>
               <Col xs="4">
                 <FormGroup>
                   <Label htmlFor="openDate">Fecha de Apertura de Obra</Label>

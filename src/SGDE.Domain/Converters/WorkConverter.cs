@@ -33,6 +33,8 @@
                 openDate = work.OpenDate.ToString("dd/MM/yyyy"),
                 closeDate = work.CloseDate?.ToString("dd/MM/yyyy"),
 
+                passiveSubject = work.PassiveSubject,
+
                 clientId = work.ClientId,
                 clientName = work.Client.Name
             };
@@ -60,6 +62,8 @@
 
                     openDate = work.OpenDate.ToString("dd/MM/yyyy"),
                     closeDate = work.CloseDate?.ToString("dd/MM/yyyy"),
+
+                    passiveSubject = work.PassiveSubject,
 
                     clientId = work.ClientId,
                     clientName = work.Client.Name

@@ -17,6 +17,7 @@
         public bool Open { get; set; }
         public DateTime OpenDate { get; set; }
         public DateTime? CloseDate { get; set; }
+        public bool PassiveSubject { get; set; }
 
         public int ClientId { get; set; }
         public virtual Client Client { get; set; }

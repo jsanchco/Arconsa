@@ -85,7 +85,8 @@
                     ? null :
                     (DateTime?)DateTime.Parse(newWorkViewModel.closeDate),
 
-                ClientId = newWorkViewModel.clientId
+                ClientId = newWorkViewModel.clientId,
+                PassiveSubject = newWorkViewModel.passiveSubject
             };
 
             _workRepository.Add(work);
@@ -122,6 +123,7 @@
             }
 
             work.ClientId = workViewModel.clientId;
+            work.PassiveSubject = workViewModel.passiveSubject;
 
             return _workRepository.Update(work);
         }

@@ -7,8 +7,8 @@ import {
   Edit,
   Inject,
   Toolbar,
-  Page,
   Group,
+  ExcelExport,
   Aggregate,
   AggregateColumnsDirective,
   AggregateColumnDirective,
@@ -19,7 +19,8 @@ import { DataManager, WebApiAdaptor, Query } from "@syncfusion/ej2-data";
 import { config, REPORTS } from "../../constants";
 import { L10n } from "@syncfusion/ej2-base";
 import data from "../../locales/locale.json";
-import { TOKEN_KEY } from "../../services";
+import { TOKEN_KEY, getSettings } from "../../services";
+import { COMPANY_DATA } from "../../constants";
 
 L10n.load(data);
 
@@ -29,8 +30,16 @@ class GridSelection extends Component {
   constructor(props) {
     super(props);
 
+    this.state = {
+      companyName: "",
+      cif: "",
+      address: "",
+      phoneNumber: ""
+    };
+
     this.toolbarOptions = [
       "Print",
+      "ExcelExport",
       {
         text: "Colapsar",
         tooltipText: "Colapsar todas las Filas",
@@ -39,12 +48,31 @@ class GridSelection extends Component {
       }
     ];
 
-    this.actionFailure = this.actionFailure.bind(this);
-    this.actionComplete = this.actionComplete.bind(this);
     this.renderWorker = this.renderWorker.bind(this);
     this.renderWork = this.renderWork.bind(this);
     this.renderClient = this.renderClient.bind(this);
     this.clickHandler = this.clickHandler.bind(this);
+    this.getExcelExportProperties = this.getExcelExportProperties.bind(this);
+  }
+
+  componentDidMount() {
+    getSettings(COMPANY_DATA)
+      .then(result => {
+        const data = JSON.parse(result.data);
+        this.setState({
+          companyName: data.companyName,
+          cif: data.cif,
+          address: data.address,
+          phoneNumber: data.phoneNumber
+        });
+      })
+      .catch(error => {
+        this.props.showMessage({
+          statusText: error,
+          responseText: error,
+          type: "danger"
+        });
+      });
   }
 
   componentDidUpdate(prevProps) {
@@ -105,37 +133,14 @@ class GridSelection extends Component {
     }
   }
 
-  actionFailure(args) {
-    const error = Array.isArray(args) ? args[0].error : args.error;
-    this.props.showMessage({
-      statusText: error.statusText,
-      responseText: error.responseText,
-      type: "danger"
-    });
-  }
-
-  actionComplete(args) {
-    if (args.requestType === "save") {
-      this.props.showMessage({
-        statusText: "200",
-        responseText: "Operación realizada con éxito",
-        type: "success"
-      });
-    }
-    if (args.requestType === "delete") {
-      this.props.showMessage({
-        statusText: "200",
-        responseText: "Operación realizada con éxito",
-        type: "success"
-      });
-    }
-  }
-
   clickHandler(args) {
     if (args.item.id === "CollapseAll") {
-      if (this.grid.groupSettings.columns.length > 0){
+      if (this.grid.groupSettings.columns.length > 0) {
         this.grid.groupModule.collapseAll();
-      }      
+      }
+    }
+    if (args.item.text === "Exportar a Excel") {
+      this.grid.excelExport(this.getExcelExportProperties());
     }
   }
 
@@ -187,137 +192,310 @@ class GridSelection extends Component {
     }
   }
 
+  formatDate(args) {
+    if (args === null || args === "") {
+      return "";
+    }
+
+    let day = args.getDate();
+    if (day < 10) day = "0" + day;
+
+    const month = args.getMonth() + 1;
+    const year = args.getFullYear();
+
+    if (month < 10) {
+      return `${day}/0${month}/${year}`;
+    } else {
+      return `${day}/${month}/${year}`;
+    }
+  }
+
+  getExcelExportProperties() {
+    let title = "INFORME por ";
+    const date = this.formatDate(new Date());
+    let type = "";
+    const { settings } = this.props;
+
+    console.log("settings ->", settings);
+
+    switch (settings.type) {
+      case "workers":
+        title = title + "TRABAJADOR";
+        type = "TRABAJADOR";
+        break;
+      case "works":
+        title = title + "OBRA";
+        type = "OBRA";
+        break;
+      case "clients":
+        title = title + "CLIENTE";
+        type = "CLIENTE";
+        break;
+
+      default:
+        break;
+    }
+
+    return {
+      header: {
+        headerRows: 7,
+        rows: [
+          {
+            index: 1,
+            cells: [
+              {
+                index: 1,
+                colSpan: 7,
+                value: title,
+                style: {
+                  fontColor: "#C25050",
+                  fontSize: 25,
+                  hAlign: "Center",
+                  bold: true
+                }
+              }
+            ]
+          },
+          {
+            index: 3,
+            cells: [
+              {
+                index: 1,
+                colSpan: 3,
+                value: this.state.companyName,
+                style: { fontColor: "#C67878", fontSize: 15, bold: true }
+              },
+              {
+                index: 5,
+                colSpan: 2,
+                value: type,
+                style: { fontColor: "#C67878", bold: true }
+              },
+              {
+                index: 7,
+                value: "FECHA",
+                style: { fontColor: "#C67878", bold: true },
+                width: 150
+              }
+            ]
+          },
+          {
+            index: 4,
+            cells: [
+              { index: 1, colSpan: 3, value: this.state.address },
+              { index: 5, colSpan: 2, value: settings.textSelection },
+              {
+                index: 7,
+                value: date,
+                width: 150
+              }
+            ]
+          },
+          {
+            index: 5,
+            cells: [
+              {
+                index: 1,
+                colSpan: 3,
+                value: this.state.phoneNumber
+              },
+              {
+                index: 5,
+                value: "Fecha Inicio",
+                style: { fontColor: "#C67878", bold: true }
+              },
+              {
+                index: 6,
+                value: "Fecha Fin",
+                width: 150,
+                style: { fontColor: "#C67878", bold: true }
+              }
+            ]
+          },
+          {
+            index: 6,
+            cells: [
+              { index: 5, value: settings.start },
+              { index: 6, value: settings.end, width: 150 }
+            ]
+          }
+        ]
+      },
+
+      footer: {
+        footerRows: 5,
+        rows: [
+          {
+            cells: [
+              {
+                colSpan: 6,
+                value: "Thank you for your business!",
+                style: { fontColor: "#C67878", hAlign: "Center", bold: true }
+              }
+            ]
+          },
+          {
+            cells: [
+              {
+                colSpan: 6,
+                value: "!Visit Again!",
+                style: { fontColor: "#C67878", hAlign: "Center", bold: true }
+              }
+            ]
+          }
+        ]
+      },
+      fileName: "exceldocument.xlsx"
+    };
+  }
+
   render() {
     return (
-      <GridComponent
-        dataSource={null}
-        locale="es-US"
-        toolbar={this.toolbarOptions}
-        toolbarClick={this.clickHandler}
-        style={{
-          marginLeft: 30,
-          marginRight: 30,
-          marginTop: 10,
-          marginBottom: 20
-        }}
-        actionFailure={this.actionFailure}
-        actionComplete={this.actionComplete}
-        allowGrouping={true}
-        rowSelected={this.rowSelected}
-        ref={g => (this.grid = g)}
-      >
-        <ColumnsDirective>
-          {this.renderClient()}
+      <div className="control-pane">
+        <div className="control-section">
+          <div>
+            <GridComponent
+              id="Grid"
+              //dataSource={null}
+              locale="es-US"
+              toolbar={this.toolbarOptions}
+              toolbarClick={this.clickHandler}
+              style={{
+                marginLeft: 30,
+                marginRight: 30,
+                marginTop: 10,
+                marginBottom: 20
+              }}
+              allowGrouping={true}
+              allowExcelExport={true}
+              rowSelected={this.rowSelected}
+              ref={g => (this.grid = g)}
+            >
+              <ColumnsDirective>
+                {this.renderClient()}
 
-          {this.renderWork()}
+                {this.renderWork()}
 
-          {this.renderWorker()}
+                {this.renderWorker()}
 
-          <ColumnDirective field="dateHour" headerText="Fecha" width="100" />
-          <ColumnDirective
-            field="hours"
-            headerText="Horas"
-            width="100"
-            fotmat="N1"
-            textAlign="right"
-            editType="numericedit"
-          />
-          <ColumnDirective field="hourTypeName" headerText="Tipo" width="100" />
-          <ColumnDirective
-            field="priceHour"
-            headerText="Precio Coste"
-            width="100"
-            fotmat="C1"
-            textAlign="right"
-            editType="numericedit"
-          />
-          <ColumnDirective
-            field="priceHourSale"
-            headerText="Precio Venta"
-            width="100"
-            fotmat="C1"
-            textAlign="right"
-            editType="numericedit"
-          />
-        </ColumnsDirective>
+                <ColumnDirective
+                  field="dateHour"
+                  headerText="Fecha"
+                  width="100"
+                />
+                <ColumnDirective
+                  field="hours"
+                  headerText="Horas"
+                  width="100"
+                  fotmat="N1"
+                  textAlign="right"
+                  editType="numericedit"
+                />
+                <ColumnDirective
+                  field="hourTypeName"
+                  headerText="Tipo"
+                  width="100"
+                />
+                <ColumnDirective
+                  field="priceHour"
+                  headerText="Precio Coste"
+                  width="100"
+                  fotmat="C1"
+                  textAlign="right"
+                  editType="numericedit"
+                />
+                <ColumnDirective
+                  field="priceHourSale"
+                  headerText="Precio Venta"
+                  width="100"
+                  fotmat="C1"
+                  textAlign="right"
+                  editType="numericedit"
+                />
+              </ColumnsDirective>
 
-        <AggregatesDirective>
-          <AggregateDirective>
-            <AggregateColumnsDirective>
-              <AggregateColumnDirective
-                field="hours"
-                type="Sum"
-                format="C2"
-                footerTemplate={this.footerSum}
-              >
-                {" "}
-              </AggregateColumnDirective>
+              <AggregatesDirective>
+                <AggregateDirective>
+                  <AggregateColumnsDirective>
+                    <AggregateColumnDirective
+                      field="hours"
+                      type="Sum"
+                      format="C2"
+                      footerTemplate={this.footerSum}
+                    >
+                      {" "}
+                    </AggregateColumnDirective>
 
-              <AggregateColumnDirective
-                field="priceHour"
-                type="Sum"
-                format="C2"
-                footerTemplate={this.footerSumEuros}
-              >
-                {" "}
-              </AggregateColumnDirective>
+                    <AggregateColumnDirective
+                      field="priceHour"
+                      type="Sum"
+                      format="C2"
+                      footerTemplate={this.footerSumEuros}
+                    >
+                      {" "}
+                    </AggregateColumnDirective>
 
-              <AggregateColumnDirective
-                field="priceHourSale"
-                type="Sum"
-                format="C2"
-                footerTemplate={this.footerSumEuros}
-              >
-                {" "}
-              </AggregateColumnDirective>
-            </AggregateColumnsDirective>
-          </AggregateDirective>
+                    <AggregateColumnDirective
+                      field="priceHourSale"
+                      type="Sum"
+                      format="C2"
+                      footerTemplate={this.footerSumEuros}
+                    >
+                      {" "}
+                    </AggregateColumnDirective>
+                  </AggregateColumnsDirective>
+                </AggregateDirective>
 
-          <AggregateDirective>
-            <AggregateColumnsDirective>
-              <AggregateColumnDirective
-                field="hours"
-                type="Sum"
-                groupCaptionTemplate={this.footerSum}
-              >
-                {" "}
-              </AggregateColumnDirective>
-            </AggregateColumnsDirective>
-          </AggregateDirective>
+                <AggregateDirective>
+                  <AggregateColumnsDirective>
+                    <AggregateColumnDirective
+                      field="hours"
+                      type="Sum"
+                      groupCaptionTemplate={this.footerSum}
+                    >
+                      {" "}
+                    </AggregateColumnDirective>
+                  </AggregateColumnsDirective>
+                </AggregateDirective>
 
-          <AggregateDirective>
-            <AggregateColumnsDirective>
-              <AggregateColumnDirective
-                field="priceHour"
-                type="Sum"
-                groupCaptionTemplate={this.footerSumEuros}
-              >
-                {" "}
-              </AggregateColumnDirective>
-            </AggregateColumnsDirective>
-          </AggregateDirective>
+                <AggregateDirective>
+                  <AggregateColumnsDirective>
+                    <AggregateColumnDirective
+                      field="priceHour"
+                      type="Sum"
+                      groupCaptionTemplate={this.footerSumEuros}
+                    >
+                      {" "}
+                    </AggregateColumnDirective>
+                  </AggregateColumnsDirective>
+                </AggregateDirective>
 
-          <AggregateDirective>
-            <AggregateColumnsDirective>
-              <AggregateColumnDirective
-                field="priceHourSale"
-                type="Sum"
-                groupCaptionTemplate={this.footerSumEuros}
-              >
-                {" "}
-              </AggregateColumnDirective>
-            </AggregateColumnsDirective>
-          </AggregateDirective>
-        </AggregatesDirective>
+                <AggregateDirective>
+                  <AggregateColumnsDirective>
+                    <AggregateColumnDirective
+                      field="priceHourSale"
+                      type="Sum"
+                      groupCaptionTemplate={this.footerSumEuros}
+                    >
+                      {" "}
+                    </AggregateColumnDirective>
+                  </AggregateColumnsDirective>
+                </AggregateDirective>
+              </AggregatesDirective>
 
-        <Inject services={[Group, Toolbar, Edit, Aggregate]} />
-      </GridComponent>
+              <Inject
+                services={[Group, ExcelExport, Toolbar, Edit, Aggregate]}
+              />
+            </GridComponent>
+          </div>
+        </div>
+      </div>
     );
   }
 }
 
 GridSelection.propTypes = {
-  settings: PropTypes.object.isRequired,
+  //settings: PropTypes.object.isRequired,
   showMessage: PropTypes.func.isRequired
 };
 

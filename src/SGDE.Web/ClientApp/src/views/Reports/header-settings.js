@@ -54,6 +54,7 @@ class HeaderSettings extends Component {
     const valueDtpStartDate = this.formatDate(this.dtpStartDate.value);
     const valueDtpEndDate = this.formatDate(this.dtpEndDate.value);
     const valueDdl = this.ddl.value;
+    const textDdl = this.ddl.text;
 
     if (
       valueDtpStartDate === null ||
@@ -79,7 +80,8 @@ class HeaderSettings extends Component {
           this.props.type,
           valueDtpStartDate,
           valueDtpEndDate,
-          valueDdl
+          valueDdl,
+          textDdl
         );
       }
     }

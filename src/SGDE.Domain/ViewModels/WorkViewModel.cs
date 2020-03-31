@@ -16,6 +16,7 @@
         public bool open { get; set; }
         public string openDate { get; set; }
         public string closeDate { get; set; }
+        public bool passiveSubject { get; set; }
 
         public int clientId { get; set; }
         public string clientName { get; set; }
