@@ -12,6 +12,7 @@
     using iTextSharp.text;
     using iTextSharp.text.pdf;
     using System.Linq;
+    using SGDE.Domain.Helpers;
 
     #endregion
 
@@ -366,7 +367,7 @@
             Total = 0;
             foreach (var itemByProfession in listGroupedByProfessionId)
             {
-                var priceUnity = GetPriceHourCost(work.Client, (int)itemByProfession.HourTypeId, (int)itemByProfession.ProfessionId);
+                var priceUnity = GetPriceHourSale(work.Client, (int)itemByProfession.HourTypeId, (int)itemByProfession.ProfessionId);
                 double priceTotal = (double)priceUnity * (double)itemByProfession.Hours;
                 var professionName = itemByProfession.ProfessionName;
                 Total += priceTotal;
@@ -382,7 +383,7 @@
                 };
                 pdfPTable.AddCell(pdfCell);
 
-                pdfCell = new PdfPCell(new Phrase(itemByProfession.Hours.ToString(), _STANDARFONT_10))
+                pdfCell = new PdfPCell(new Phrase($"{itemByProfession.Hours.ToFormatSpain()} horas", _STANDARFONT_10))
                 {
                     HorizontalAlignment = Element.ALIGN_RIGHT,
                     VerticalAlignment = Element.ALIGN_MIDDLE,
@@ -392,7 +393,7 @@
                 };
                 pdfPTable.AddCell(pdfCell);
 
-                pdfCell = new PdfPCell(new Phrase(priceUnity.ToString(), _STANDARFONT_10))
+                pdfCell = new PdfPCell(new Phrase($"{((double)priceUnity).ToFormatSpain()} €", _STANDARFONT_10))
                 {
                     HorizontalAlignment = Element.ALIGN_RIGHT,
                     VerticalAlignment = Element.ALIGN_MIDDLE,
@@ -402,7 +403,7 @@
                 };
                 pdfPTable.AddCell(pdfCell);
 
-                pdfCell = new PdfPCell(new Phrase(priceTotal.ToString(), _STANDARFONT_10))
+                pdfCell = new PdfPCell(new Phrase($"{priceTotal.ToFormatSpain()} €", _STANDARFONT_10))
                 {
                     HorizontalAlignment = Element.ALIGN_RIGHT,
                     VerticalAlignment = Element.ALIGN_MIDDLE,
@@ -483,7 +484,7 @@
             pdfPTable.AddCell(pdfCell);
             pdfCell = new PdfPCell(new Phrase("Base Imponible", _STANDARFONT_10_BOLD_CUSTOMCOLOR)) { BorderWidth = 0 };
             pdfPTable.AddCell(pdfCell);
-            pdfCell = new PdfPCell(new Phrase($"{Math.Round(Total, 2)} €", _STANDARFONT_10)) { BorderWidth = 0 };
+            pdfCell = new PdfPCell(new Phrase($"{Math.Round(Total, 2).ToFormatSpain()} €", _STANDARFONT_10)) { BorderWidth = 0 };
             pdfPTable.AddCell(pdfCell);
             pdfCell = new PdfPCell(new Phrase(" ", _STANDARFONT_10)) { BorderWidth = 0 };
             pdfPTable.AddCell(pdfCell);
@@ -493,7 +494,7 @@
             pdfPTable.AddCell(pdfCell);
 
             var iva = Math.Round((double)Total * 0.21, 2);
-            pdfCell = new PdfPCell(new Phrase($"{iva} €", _STANDARFONT_10)) { BorderWidth = 0 };
+            pdfCell = new PdfPCell(new Phrase($"{iva.ToFormatSpain()} €", _STANDARFONT_10)) { BorderWidth = 0 };
             pdfPTable.AddCell(pdfCell);
             pdfCell = new PdfPCell(new Phrase(" ", _STANDARFONT_10)) { BorderWidth = 0 };
             pdfPTable.AddCell(pdfCell);
@@ -502,7 +503,7 @@
             pdfCell = new PdfPCell(new Phrase("Total Factura", _STANDARFONT_10_BOLD_CUSTOMCOLOR)) { BorderWidth = 0 };
             pdfPTable.AddCell(pdfCell);
 
-            var totalPlusIva = Math.Round(iva + (double)Total, 2);
+            var totalPlusIva = Math.Round(iva + Total, 2).ToFormatSpain();
             pdfCell = new PdfPCell(new Phrase($"{totalPlusIva} €", _STANDARFONT_10)) { BorderWidth = 0 };
             pdfPTable.AddCell(pdfCell);
             pdfCell = new PdfPCell(new Phrase(" ", _STANDARFONT_10)) { BorderWidth = 0 };

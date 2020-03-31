@@ -73,7 +73,7 @@
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Exception: ");
-                return StatusCode(500, ex);
+                return StatusCode(500, ex.Message);
             }
         }
 
@@ -92,7 +92,7 @@
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Exception: ");
-                return StatusCode(500, ex);
+                return StatusCode(500, ex.Message);
             }
         }
 

@@ -192,7 +192,7 @@ class CostWorkers extends Component {
                     columns={[
                       {
                         field: "priceHourOrdinary",
-                        headerText: "Ordinario",
+                        headerText: "Ordinaria",
                         width: "100",
                         fotmat: "N2",
                         textAlign: "left",

@@ -140,7 +140,7 @@ class ProfessionInClient extends Component {
                     validationRules={this.professionIdRules}
                     dataSource={this.professions}
                   />
-                  <ColumnDirective
+                  {/* <ColumnDirective
                     headerText="Precio Coste"
                     textAlign="Center"
                     columns={[
@@ -172,14 +172,14 @@ class ProfessionInClient extends Component {
                         edit: this.numericParams
                       }
                     ]}
-                  />
+                  /> */}
                   <ColumnDirective
                     headerText="Precio Venta"
                     textAlign="Center"                  
                     columns={[
                       {
                         field: "priceHourSaleOrdinary",
-                        headerText: "Ordinario",
+                        headerText: "Ordinaria",
                         width: "100",
                         fotmat: "N1",
                         textAlign: "left",

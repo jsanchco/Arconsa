@@ -113,22 +113,22 @@
                 return false;
 
             if (_context.DailySigning.FirstOrDefault(x => 
-                x.StartHour <= dailySigning.StartHour && 
-                x.EndHour >= dailySigning.StartHour && 
+                x.StartHour < dailySigning.StartHour && 
+                x.EndHour > dailySigning.StartHour && 
                 x.Id != dailySigning.Id && 
                 x.UserHiringId == dailySigning.UserHiringId) != null)
                 return false;
 
             if (_context.DailySigning.FirstOrDefault(x => 
-                x.StartHour <= dailySigning.EndHour && 
-                x.EndHour >= dailySigning.StartHour && 
+                x.StartHour < dailySigning.EndHour && 
+                x.EndHour > dailySigning.StartHour && 
                 x.Id != dailySigning.Id &&
                 x.UserHiringId == dailySigning.UserHiringId) != null)
                 return false;
 
             if (_context.DailySigning.FirstOrDefault(x => 
-                x.StartHour <= dailySigning.StartHour && 
-                x.EndHour >= dailySigning.EndHour && 
+                x.StartHour < dailySigning.StartHour && 
+                x.EndHour > dailySigning.EndHour && 
                 x.Id != dailySigning.Id &&
                 x.UserHiringId == dailySigning.UserHiringId) != null)
                 return false;
@@ -150,6 +150,7 @@
                 .ThenInclude(x => x.Work.Client)
                 .Include(x => x.UserHiring)
                 .ThenInclude(x => x.User)
+                .ThenInclude(x => x.CostWorkers)
                 .Include(x => x.UserHiring)
                 .ThenInclude(x => x.Profession)
                 .Include(x => x.HourType)
@@ -172,6 +173,7 @@
                 .ThenInclude(x => x.Work.Client)
                 .Include(x => x.UserHiring)
                 .ThenInclude(x => x.User)
+                .ThenInclude(x => x.CostWorkers)
                 .Include(x => x.UserHiring)
                 .ThenInclude(x => x.Profession)
                 .Include(x => x.HourType)
@@ -194,6 +196,8 @@
                 .ThenInclude(x => x.Work.Client)
                 .Include(x => x.UserHiring)
                 .ThenInclude(x => x.User)
+                .ThenInclude(x => x.CostWorkers)
+                .Include(x => x.UserHiring)
                 .ThenInclude(x => x.Profession)
                 .Include(x => x.HourType)
                 .Where(x => x.StartHour >= dtStart && x.EndHour <= dtEnd && x.UserHiring.Work.ClientId == clientId)

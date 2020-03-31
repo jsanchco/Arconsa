@@ -29,7 +29,15 @@ class GridSelection extends Component {
   constructor(props) {
     super(props);
 
-    this.toolbarOptions = ["Print"];
+    this.toolbarOptions = [
+      "Print",
+      {
+        text: "Colapsar",
+        tooltipText: "Colapsar todas las Filas",
+        prefixIcon: "e-custom-icons e-file-upload",
+        id: "CollapseAll"
+      }
+    ];
     this.editSettings = {
       showDeleteConfirmDialog: true,
       allowEditing: true,
@@ -37,12 +45,13 @@ class GridSelection extends Component {
       allowDeleting: true,
       newRowPosition: "Top"
     };
-    //this.pageSettings = { pageCount: 10, pageSize: 10 };
+
     this.actionFailure = this.actionFailure.bind(this);
     this.actionComplete = this.actionComplete.bind(this);
     this.renderWorker = this.renderWorker.bind(this);
     this.renderWork = this.renderWork.bind(this);
     this.renderClient = this.renderClient.bind(this);
+    this.clickHandler = this.clickHandler.bind(this);
   }
 
   componentDidUpdate(prevProps) {
@@ -129,6 +138,14 @@ class GridSelection extends Component {
     }
   }
 
+  clickHandler(args) {
+    if (args.item.id === "CollapseAll") {
+      if (this.grid.groupSettings.columns.length > 0){
+        this.grid.groupModule.collapseAll();
+      }      
+    }
+  }
+
   footerSum(args) {
     return <span>Total: {args.Sum} horas</span>;
   }
@@ -182,8 +199,6 @@ class GridSelection extends Component {
       <GridComponent
         dataSource={null}
         locale="es-US"
-        //allowPaging={true}
-        //pageSettings={this.pageSettings}
         toolbar={this.toolbarOptions}
         toolbarClick={this.clickHandler}
         editSettings={this.editSettings}
@@ -198,7 +213,6 @@ class GridSelection extends Component {
         allowGrouping={true}
         rowSelected={this.rowSelected}
         ref={g => (this.grid = g)}
-        // query={null}
       >
         <ColumnsDirective>
           {this.renderClient()}
@@ -216,11 +230,7 @@ class GridSelection extends Component {
             textAlign="right"
             editType="numericedit"
           />
-          <ColumnDirective
-            field="hourTypeName"
-            headerText="Tipo"
-            width="100"
-          />          
+          <ColumnDirective field="hourTypeName" headerText="Tipo" width="100" />
           <ColumnDirective
             field="priceHour"
             headerText="Precio Coste"

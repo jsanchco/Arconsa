@@ -26,7 +26,7 @@
                 clientName = dailySigning.UserHiring.Work.Client.Name,
                 hours = ((DateTime)dailySigning.EndHour - dailySigning.StartHour).TotalHours,
                 dateHour = dailySigning.StartHour.ToString("dd/MM/yyyy"),
-                priceHour = (decimal)((DateTime)dailySigning.EndHour - dailySigning.StartHour).TotalHours * GetPriceHourCost(dailySigning.UserHiring.Work.Client, (int)dailySigning.HourTypeId, (int)dailySigning.UserHiring.ProfessionId),
+                priceHour = (decimal)((DateTime)dailySigning.EndHour - dailySigning.StartHour).TotalHours * GetPriceHourCost(dailySigning.UserHiring.User, dailySigning.StartHour, dailySigning.HourTypeId),
                 priceHourSale = (decimal)((DateTime)dailySigning.EndHour - dailySigning.StartHour).TotalHours * GetPriceHourSale(dailySigning.UserHiring.Work.Client, (int)dailySigning.HourTypeId, (int)dailySigning.UserHiring.ProfessionId)
             };
 
@@ -48,7 +48,7 @@
                     clientName = dailySigning.UserHiring.Work.Client.Name,
                     hours = ((DateTime)dailySigning.EndHour - dailySigning.StartHour).TotalHours,
                     dateHour = dailySigning.StartHour.ToString("dd/MM/yyyy"),
-                    priceHour = (decimal)((DateTime)dailySigning.EndHour - dailySigning.StartHour).TotalHours * GetPriceHourCost(dailySigning.UserHiring.Work.Client, dailySigning.HourTypeId, dailySigning.UserHiring.ProfessionId),
+                    priceHour = (decimal)((DateTime)dailySigning.EndHour - dailySigning.StartHour).TotalHours * GetPriceHourCost(dailySigning.UserHiring.User, dailySigning.StartHour, dailySigning.HourTypeId),
                     priceHourSale = (decimal)((DateTime)dailySigning.EndHour - dailySigning.StartHour).TotalHours * GetPriceHourSale(dailySigning.UserHiring.Work.Client, dailySigning.HourTypeId, dailySigning.UserHiring.ProfessionId)
                 };
                 return model;
@@ -56,23 +56,25 @@
                 .ToList();
         }
 
-        private static decimal GetPriceHourCost(Client client, int? type, int? professionId)
+        private static decimal GetPriceHourCost(User user, DateTime date, int? hourType)
         {
-            if (type == null || professionId == null)
+            if (hourType == null)
                 return 0;
 
-            var professionInClient = client.ProfessionInClients.FirstOrDefault(x => x.ProfessionId == professionId);
-            if (professionInClient == null)
+            var dateResetHour = new DateTime(date.Year, date.Month, date.Day);
+            var costWorker = user.CostWorkers.FirstOrDefault(x => (x.EndDate == null && x.StartDate <= dateResetHour) || 
+                                                                  (x.EndDate != null && x.StartDate <= dateResetHour && x.EndDate >= dateResetHour));
+            if (costWorker == null)
                 return 0;
 
-            switch (type)
+            switch (hourType)
             {
                 case 1:
-                    return professionInClient.PriceHourOrdinary;
+                    return costWorker.PriceHourOrdinary;
                 case 2:
-                    return professionInClient.PriceHourExtra;
+                    return costWorker.PriceHourExtra;
                 case 3:
-                    return professionInClient.PriceHourFestive;
+                    return costWorker.PriceHourFestive;
 
                 default:
                     return 0;
