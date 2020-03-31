@@ -206,5 +206,15 @@ namespace SGDE.Domain.Supervisor
         bool DeleteHourType(int id);
 
         #endregion
+
+        #region CostWorker
+
+        QueryResult<CostWorkerViewModel> GetAllCostWorker(int skip = 0, int take = 0, string filter = null, int userId = 0);
+        CostWorkerViewModel GetCostWorkerById(int id);
+        CostWorkerViewModel AddCostWorker(CostWorkerViewModel newCostWorkerViewModel);
+        bool UpdateCostWorker(CostWorkerViewModel costWorkerViewModel);
+        bool DeleteCostWorker(int id);
+
+        #endregion
     }
 }

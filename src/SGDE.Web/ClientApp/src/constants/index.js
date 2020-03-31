@@ -6,6 +6,7 @@ export const WORKS = "api/Works";
 export const UPDATEDATESWORK = "api/Works/updatedateswork";
 export const TYPES_DOCUMENT = "api/TypesDocument";
 export const TRAININGS = "api/Trainings";
+export const COSTWORKERS = "api/CostWorkers";
 export const DOCUMENTS = "api/UserDocuments";
 export const UPLOADBOX_SAVE = "api/UploadBox";
 export const WORKERSHIRING = "api/WorkersHiring";

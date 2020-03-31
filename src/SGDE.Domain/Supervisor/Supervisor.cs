@@ -26,6 +26,7 @@ namespace SGDE.Domain.Supervisor
         private readonly ISettingRepository _settingRepository;
         private readonly IProfessionInClientRepository _professionInClientRepository;
         private readonly IHourTypeRepository _hourTypeRepository;
+        private readonly ICostWorkerRepository _costWorkerRepository;
 
         public Supervisor()
         {
@@ -46,7 +47,8 @@ namespace SGDE.Domain.Supervisor
             IDailySigningRepository dailySigningRepository,
             ISettingRepository settingRepository,
             IProfessionInClientRepository professionInClientRepository,
-            IHourTypeRepository hourTypeRepository)
+            IHourTypeRepository hourTypeRepository,
+            ICostWorkerRepository costWorkerRepository)
         {
             _userRepository = userRepository;
             _professionRepository = professionRepository;
@@ -63,6 +65,7 @@ namespace SGDE.Domain.Supervisor
             _settingRepository = settingRepository;
             _professionInClientRepository = professionInClientRepository;
             _hourTypeRepository = hourTypeRepository;
+            _costWorkerRepository = costWorkerRepository;
         }
     }
 }

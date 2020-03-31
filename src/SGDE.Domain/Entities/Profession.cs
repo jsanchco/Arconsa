@@ -14,5 +14,6 @@
         public virtual ICollection<User> Users{ get; set; } = new HashSet<User>();
         public virtual ICollection<ProfessionInClient> ProfessionInClients { get; set; } = new HashSet<ProfessionInClient>();
         public virtual ICollection<UserHiring> UserHirings { get; set; } = new HashSet<UserHiring>();
+        public virtual ICollection<CostWorker> CostWorkers { get; set; } = new HashSet<CostWorker>();
     }
 }

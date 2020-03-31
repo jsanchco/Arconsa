@@ -10,27 +10,20 @@ import {
   Page
 } from "@syncfusion/ej2-react-grids";
 import { DataManager, WebApiAdaptor, Query } from "@syncfusion/ej2-data";
-import { config, PROFESSIONINCLIENTS, PROFESSIONS } from "../../constants";
+import { config, COSTWORKERS } from "../../constants";
 import { L10n } from "@syncfusion/ej2-base";
 import data from "../../locales/locale.json";
 import { TOKEN_KEY } from "../../services";
 
 L10n.load(data);
 
-class ProfessionInClient extends Component {
-  professionInClients = new DataManager({
+class CostWorkers extends Component {
+  trainings = new DataManager({
     adaptor: new WebApiAdaptor(),
-    url: `${config.URL_API}/${PROFESSIONINCLIENTS}`,
+    url: `${config.URL_API}/${COSTWORKERS}`,
     headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }]
   });
 
-  professions = new DataManager({
-    adaptor: new WebApiAdaptor(),
-    url: `${config.URL_API}/${PROFESSIONS}`,
-    headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }]
-  });
-
-  professionIdRules = { required: true };
   numericParams = {
     params: {
       decimals: 2,
@@ -44,6 +37,10 @@ class ProfessionInClient extends Component {
   constructor(props) {
     super(props);
 
+    this.state = {
+      trainings: null
+    };
+
     this.toolbarOptions = ["Add", "Edit", "Delete", "Update", "Cancel"];
     this.editSettings = {
       showDeleteConfirmDialog: true,
@@ -55,12 +52,19 @@ class ProfessionInClient extends Component {
     this.pageSettings = { pageCount: 10, pageSize: 10 };
     this.actionFailure = this.actionFailure.bind(this);
     this.actionComplete = this.actionComplete.bind(this);
+    this.actionBegin = this.actionBegin.bind(this);
 
-    this.query = new Query().addParams("clientId", props.client.id);
+    this.template = this.gridTemplate;
+
+    this.format = { type: "dateTime", format: "dd/MM/yyyy" };
+    this.query = new Query().addParams("userId", props.user.id);
   }
 
   actionFailure(args) {
-    const error = Array.isArray(args) ? args[0].error : args.error;
+    let error = Array.isArray(args) ? args[0].error : args.error;
+    if (Array.isArray(error)) {
+      error = error[0].error;
+    }
     this.props.showMessage({
       statusText: error.statusText,
       responseText: error.responseText,
@@ -68,7 +72,7 @@ class ProfessionInClient extends Component {
     });
   }
 
-  actionComplete(args) {
+  actionComplete(args) {    
     if (args.requestType === "save") {
       this.props.showMessage({
         statusText: "200",
@@ -85,12 +89,42 @@ class ProfessionInClient extends Component {
     }
   }
 
-  render() {
-    let title = "";
-    if (this.props.client !== null && this.props.client !== undefined) {
-      title = ` Precios por Profesión [${this.props.client.name}]`;
+  actionBegin(args) {
+    if (args.requestType === "save") {
+      let date = this.formatDate(args.data.startDate);
+      args.data.startDate = date;
+
+      if (
+        args.data.endDate !== null &&
+        args.data.endDate !== "" &&
+        args.data.endDate !== undefined
+      ) {
+        date = this.formatDate(args.data.endDate);
+        args.data.endDate = date;
+      }
+    }
+  }
+
+  formatDate(args) {
+    if (args === null || args === "") {
+      return "";
     }
 
+    let day = args.getDate();
+    if (day < 10)
+      day = "0" + day;
+    
+    const month = args.getMonth() + 1;
+    const year = args.getFullYear();
+
+    if (month < 10) {
+      return `${day}/0${month}/${year}`;
+    } else {
+      return `${day}/${month}/${year}`;
+    }
+  }
+
+  render() {
     return (
       <Fragment>
         <div className="animated fadeIn">
@@ -99,16 +133,17 @@ class ProfessionInClient extends Component {
             style={{ marginRight: "60px", marginTop: "20px" }}
           >
             <div className="card-header">
-              <i className="icon-people"></i> {title}
+              <i className="icon-layers"></i> Precios Coste
             </div>
             <div className="card-body"></div>
             <Row>
               <GridComponent
-                dataSource={this.professionInClients}
+                dataSource={this.trainings}
                 locale="es-US"
                 allowPaging={true}
                 pageSettings={this.pageSettings}
                 toolbar={this.toolbarOptions}
+                toolbarClick={this.clickHandler}
                 editSettings={this.editSettings}
                 style={{
                   marginLeft: 30,
@@ -118,6 +153,9 @@ class ProfessionInClient extends Component {
                 }}
                 actionFailure={this.actionFailure}
                 actionComplete={this.actionComplete}
+                actionBegin={this.actionBegin}
+                allowGrouping={false}
+                rowSelected={this.rowSelected}
                 ref={g => (this.grid = g)}
                 query={this.query}
               >
@@ -131,17 +169,25 @@ class ProfessionInClient extends Component {
                     visible={false}
                   />
                   <ColumnDirective
-                    field="professionId"
-                    headerText="Profesión"
+                    field="startDate"
+                    headerText="Fecha Inicio"
                     width="100"
-                    editType="dropdownedit"
-                    foreignKeyValue="name"
-                    foreignKeyField="id"
-                    validationRules={this.professionIdRules}
-                    dataSource={this.professions}
+                    editType="datepickeredit"
+                    type="date"
+                    format={this.format}
+                    textAlign="Center"
                   />
                   <ColumnDirective
-                    headerText="Precio Coste"
+                    field="endDate"
+                    headerText="Fecha Fin"
+                    width="100"
+                    editType="datepickeredit"
+                    type="date"
+                    format={this.format}
+                    textAlign="Center"
+                  />
+                  <ColumnDirective
+                    headerText="Precio"
                     textAlign="Center"
                     columns={[
                       {
@@ -174,41 +220,10 @@ class ProfessionInClient extends Component {
                     ]}
                   />
                   <ColumnDirective
-                    headerText="Precio Venta"
-                    textAlign="Center"                  
-                    columns={[
-                      {
-                        field: "priceHourSaleOrdinary",
-                        headerText: "Ordinario",
-                        width: "100",
-                        fotmat: "N1",
-                        textAlign: "left",
-                        editType: "numericedit",
-                        edit: this.numericParams
-                      },
-                      {
-                        field: "priceHourSaleExtra",
-                        headerText: "Extra",
-                        width: "100",
-                        fotmat: "N1",
-                        textAlign: "left",
-                        editType: "numericedit",
-                        edit: this.numericParams
-                      },
-                      {
-                        field: "priceHourSaleFestive",
-                        headerText: "Festivo",
-                        width: "100",
-                        fotmat: "N1",
-                        textAlign: "left",
-                        editType: "numericedit",
-                        edit: this.numericParams
-                      }
-                    ]}
-                  />
-                  <ColumnDirective
-                    field="clientId"
-                    defaultValue={this.props.client.id}
+                    field="userId"
+                    headerText="User"
+                    width="100"
+                    defaultValue={this.props.user.id}
                     visible={false}
                   />
                 </ColumnsDirective>
@@ -222,6 +237,6 @@ class ProfessionInClient extends Component {
   }
 }
 
-ProfessionInClient.propTypes = {};
+CostWorkers.propTypes = {};
 
-export default ProfessionInClient;
+export default CostWorkers;

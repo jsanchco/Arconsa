@@ -32,6 +32,7 @@ namespace SGDE.DataEFCoreSQL
         public virtual DbSet<Setting> Setting { get; set; }
         public virtual DbSet<ProfessionInClient> ProfessionInClient { get; set; }
         public virtual DbSet<HourType> HourType { get; set; }
+        public virtual DbSet<CostWorker> CostWorker { get; set; }
 
         public static long InstanceCount;
 
@@ -56,6 +57,7 @@ namespace SGDE.DataEFCoreSQL
             new SettingConfiguration(modelBuilder.Entity<Setting>());
             new ProfessionInClientConfiguration(modelBuilder.Entity<ProfessionInClient>());
             new HourTypeConfiguration(modelBuilder.Entity<HourType>());
+            new CostWorkerConfiguration(modelBuilder.Entity<CostWorker>());
         }
 
         //public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<EFContextSQL>

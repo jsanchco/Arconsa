@@ -11,6 +11,7 @@ import Trainings from "./trainings";
 import Documents from "./documents";
 import DailySignings from "./daily-signings";
 import ChangePassword from "./change-password";
+import CostWorkers from "./cost-workers";
 
 class DetailEmployee extends Component {
   constructor(props) {
@@ -18,21 +19,13 @@ class DetailEmployee extends Component {
 
     this.headerText = null;
 
-    if (this.props.history.location.state.user.roleId === 3) {
-      this.headerText = [
-        { text: "Datos Básicos" },
-        { text: "Documentos" },
-        { text: "Fichajes" },
-        { text: "Cambiar Contraseña" }
-      ];
-    } else {
-      this.headerText = [
-        { text: "Datos Básicos" },
-        { text: "Documentos" },
-        { text: "Cambiar Contraseña" }
-        //{ text: "Fichajes" }
-      ];
-    }
+    this.headerText = [
+      { text: "Datos Básicos" },
+      { text: "Documentos" },
+      { text: "Fichajes" },
+      { text: "Precios Coste" },
+      { text: "Cambiar Contraseña" }
+    ];
 
     this.contentTemplateBasicDate = this.contentTemplateBasicDate.bind(this);
     this.contentTemplateTrainings = this.contentTemplateTrainings.bind(this);
@@ -40,10 +33,13 @@ class DetailEmployee extends Component {
     this.contentTemplateDailySignings = this.contentTemplateDailySignings.bind(
       this
     );
-    this.contentTemplatChangePassword = this.contentTemplatChangePassword.bind(this);
+    this.contentTemplatChangePassword = this.contentTemplatChangePassword.bind(
+      this
+    );
     this.renderTemplateDailySignings = this.renderTemplateDailySignings.bind(
       this
     );
+    this.contentTemplatCostWorkers = this.contentTemplatCostWorkers.bind(this);
   }
 
   contentTemplateBasicDate() {
@@ -96,18 +92,33 @@ class DetailEmployee extends Component {
     );
   }
 
+  contentTemplatCostWorkers() {
+    return (
+      <CostWorkers
+        user={this.props.history.location.state.user}
+        history={this.props.history}
+        showMessage={this.props.showMessage}
+      />
+    );
+  }
+
   renderTemplateDailySignings() {
     if (this.props.history.location.state.user.roleId === 3) {
       return (
-        <TabItemDirective
-          header={this.headerText[2]}
-          content={this.contentTemplateDailySignings}
-        />
+        <Fragment>
+          <TabItemDirective
+            header={this.headerText[2]}
+            content={this.contentTemplateDailySignings}
+          />
+          <TabItemDirective
+            header={this.headerText[3]}
+            content={this.contentTemplatCostWorkers}
+          />
+        </Fragment>
       );
     } else {
       return null;
     }
-
   }
 
   render() {
@@ -144,11 +155,16 @@ class DetailEmployee extends Component {
                     header={this.headerText[1]}
                     content={this.contentTemplateDocuments}
                   />
-
-                  {this.renderTemplateDailySignings()}
-
                   <TabItemDirective
-                    header={this.headerText[this.headerText.length - 1]}
+                    header={this.headerText[2]}
+                    content={this.contentTemplateDailySignings}
+                  />
+                  <TabItemDirective
+                    header={this.headerText[3]}
+                    content={this.contentTemplatCostWorkers}
+                  />
+                  <TabItemDirective
+                    header={this.headerText[4]}
                     content={this.contentTemplatChangePassword}
                   />
                 </TabItemsDirective>

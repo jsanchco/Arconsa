@@ -125,7 +125,6 @@
             _context.ProfessionInClient.Remove(toRemove);
             _context.SaveChanges();
             return true;
-
         }
     }
 }
