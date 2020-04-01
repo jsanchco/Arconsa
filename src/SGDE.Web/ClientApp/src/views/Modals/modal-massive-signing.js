@@ -23,7 +23,6 @@ import {
   Inject,
   ForeignKey
 } from "@syncfusion/ej2-react-grids";
-import { MaskedTextBoxComponent } from "@syncfusion/ej2-react-inputs";
 import "./modal-select.css";
 import "./modal-worker.css";
 
@@ -32,9 +31,15 @@ class ModalMassiveSigning extends Component {
   ddl = null;
   grid = null;
 
+  hoursRules = {
+    regex: ["^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$", "Hora mal formateada"],
+    required: true
+  };
+  hourTypeIdRules = { required: false };
+
   baseHours = [
-    { startHour: "08:00", endHour: "14:00", hourTypeId: 1, total: 6 },
-    { startHour: "15:00", endHour: "17:00", hourTypeId: 1, total: 2 }
+    { id: 1, startHour: "08:00", endHour: "14:00", hourTypeId: 1, total: 6 },
+    { id: 2, startHour: "15:00", endHour: "17:00", hourTypeId: 1, total: 2 }
   ];
   hourTypes = [
     { id: 1, name: "Hora Ordinaria" },
@@ -80,7 +85,8 @@ class ModalMassiveSigning extends Component {
     this.sendMassiveSigning = this.sendMassiveSigning.bind(this);
     this.formatDate = this.formatDate.bind(this);
     this.actionComplete = this.actionComplete.bind(this);
-    this.checkFormats = this.checkFormats.bind(this);
+    this.sumHours = this.sumHours.bind(this);
+    this.getIndex = this.getIndex.bind(this);
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -131,7 +137,8 @@ class ModalMassiveSigning extends Component {
         sendMassiveSigning({
           userHiringId: valueDdl,
           startSigning: valueDtpStartDate,
-          endSigning: valueDtpEndDate
+          endSigning: valueDtpEndDate,
+          data: this.grid.getCurrentViewRecords()
         }).then(() => {
           this.props.updateDailySignings();
         });
@@ -157,28 +164,50 @@ class ModalMassiveSigning extends Component {
     }
   }
 
-  checkFormats(args) {
-    if (args.length !== 5) {
-      return false;
-    }
-  }
-
-  editTemplate(args) {
-    return (
-      <MaskedTextBoxComponent
-        mask={"00:00"}
-        id="startHour"
-        name="startHour"
-      />
-    );
-  }
-
   actionComplete(args) {
     if (args.requestType === "save") {
-      if (!this.checkFormats(args.data.startHour)) {
-        args.cancel = true;
-      }
+      const total = this.sumHours(args.data.startHour, args.data.endHour);
+      const index = this.getIndex();
+      args.data.id = index;
+      this.grid.setCellValue(index, "id", index);      
+      args.data.total = total;
+      this.grid.setCellValue(index, "total", total);
     }
+  }
+
+  getIndex() {
+    const data = this.grid.getCurrentViewRecords();
+    let index = 0;
+    data.forEach(row => {
+      const rowIndex = this.grid.getRowIndexByPrimaryKey(row.id);
+      if (rowIndex > index) {
+        index = rowIndex;
+      }
+    });
+
+    return index ++;
+  }
+
+  sumHours(startHour, endHour) {
+    const now = new Date();
+    const dateStart = new Date(
+      now.getFullYear(),
+      now.getMonth(),
+      now.getDate(),
+      startHour.substring(0, 2),
+      startHour.substring(3, 5)
+    );
+    const dateEnd = new Date(
+      now.getFullYear(),
+      now.getMonth(),
+      now.getDate(),
+      endHour.substring(0, 2),
+      endHour.substring(3, 5)
+    );
+
+    const milliseconds = Math.abs(dateEnd - dateStart);
+    const hours = milliseconds / 36e5;
+    return hours;
   }
 
   render() {
@@ -268,14 +297,24 @@ class ModalMassiveSigning extends Component {
                 >
                   <ColumnsDirective>
                     <ColumnDirective
+                      field="id"
+                      headerText="Id"
+                      width="40"
+                      isPrimaryKey={true}
+                      isIdentity={true}
+                      visible={false}
+                    />
+                    <ColumnDirective
                       field="startHour"
                       headerText="Hora Inicio"
                       width="100"
+                      validationRules={this.hoursRules}
                     />
                     <ColumnDirective
                       field="endHour"
                       headerText="Hora Fin"
                       width="100"
+                      validationRules={this.hoursRules}
                     />
                     <ColumnDirective
                       field="hourTypeId"
@@ -291,6 +330,7 @@ class ModalMassiveSigning extends Component {
                       field="total"
                       headerText="Total Horas"
                       width="100"
+                      allowEditing={false}
                     />
                   </ColumnsDirective>
                   <Inject services={[ForeignKey]} />

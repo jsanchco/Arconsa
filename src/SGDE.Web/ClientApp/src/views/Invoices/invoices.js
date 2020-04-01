@@ -33,7 +33,8 @@ class Invoices extends Component {
     });
 
     this.handleInputChange = this.handleInputChange.bind(this);
-    this.handleWorkChange = this.handleWorkChange.bind(this);
+    this.handleDropDown = this.handleDropDown.bind(this);
+    this.handleDate = this.handleDate.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.formatDate = this.formatDate.bind(this);
     this.getDataInvoice = this.getDataInvoice.bind(this);
@@ -55,22 +56,23 @@ class Invoices extends Component {
     const target = event.target;
     const name = target.name;
 
-    if (name === "startDate" || name === "endDate" || name === "issueDate") {
-      this.setState({
-        [name]: this.formatDate(target.value)
-      });
-    } else {
-      this.setState({
-        [name]: target.value
-      });
-    }
+    this.setState({
+      [name]: target.value
+    });
   }
 
-  handleWorkChange(event) {
+  handleDropDown(event) {
     this.setState({
       workId: event.value
     });
   }
+
+  handleDate(event) {
+    const name = event.element.name;
+    this.setState({
+      [name]: this.formatDate(event.value)
+    });
+  }  
 
   formatDate(args) {
     if (args === null || args === "") {
@@ -170,7 +172,7 @@ class Invoices extends Component {
                           dataSource={this.dataSource}
                           fields={this.fields}
                           placeholder="selecciona obra"
-                          change={this.handleWorkChange}
+                          change={this.handleDropDown}
                           ref={g => (this.ddl = g)}
                         />
                       </FormGroup>
@@ -184,7 +186,7 @@ class Invoices extends Component {
                           placeholder="fecha de inicio"
                           format="dd/MM/yyyy"
                           value={this.state.startDate}
-                          onChange={this.handleInputChange}
+                          change={this.handleDate}
                         />
                       </FormGroup>
                     </Col>
@@ -197,7 +199,7 @@ class Invoices extends Component {
                           placeholder="fecha final"
                           format="dd/MM/yyyy"
                           value={this.state.endDate}
-                          onChange={this.handleInputChange}
+                          change={this.handleDate}
                         />
                       </FormGroup>
                     </Col>
@@ -210,7 +212,7 @@ class Invoices extends Component {
                           placeholder="fecha de emisión"
                           format="dd/MM/yyyy"
                           value={this.state.issueDate}
-                          onChange={this.handleInputChange}
+                          change={this.handleDate}
                         />
                       </FormGroup>
                     </Col>

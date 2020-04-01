@@ -105,6 +105,11 @@
                     continue;
                 }
 
+                if (ValidateDataMassiveSigning(massiveSigningQueryViewModel.data))
+                {
+                    throw new Exception("Algunos periodos no están bien configurados");
+                }
+
                 var dailySigning = new DailySigning
                 {
                     AddedDate = DateTime.Now,
@@ -151,6 +156,30 @@
             }
 
             return result;
+        }
+
+        public bool ValidateDataMassiveSigning(List<PeriodByHoursViewModel> data)
+        {
+            foreach(var item in data)
+            {
+                foreach (var itemCompare in data)
+                {
+                    if (item == itemCompare)
+                        continue;
+
+                    var numItemStart = Convert.ToInt32(item.startHour.Replace(":", ""));
+                    var numItemEnd = Convert.ToInt32(item.endHour.Replace(":", ""));
+                    var numItemCompareStart = Convert.ToInt32(itemCompare.startHour.Replace(":", ""));
+                    var numItemCompareEnd = Convert.ToInt32(itemCompare.endHour.Replace(":", ""));
+
+                    if (numItemCompareStart > numItemStart && numItemCompareStart < numItemEnd)
+                        return false;
+                    if (numItemCompareEnd > numItemStart && numItemCompareEnd < numItemEnd)
+                        return false;
+                }
+            }
+
+            return true;
         }
     }
 }
