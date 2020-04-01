@@ -17,6 +17,8 @@ import { loadCldr, L10n } from "@syncfusion/ej2-base";
 import data from "../../locales/locale.json";
 import { TOKEN_KEY } from "../../services";
 import ModalMassiveSigning from "../Modals/modal-massive-signing";
+import { DialogComponent } from "@syncfusion/ej2-react-popups";
+import { removeAllDailySigning } from "../../services";
 
 import * as numberingSystems from "cldr-data/supplemental/numberingSystems.json";
 import * as gregorian from "cldr-data/main/es-US/ca-gregorian.json";
@@ -57,13 +59,14 @@ class DailySignings extends Component {
       dailySignings: null,
       userHirings: null,
       rowSelected: null,
-      modal: false
+      modal: false,
+      hideConfirmDialog: false
     };
 
     this.toolbarOptions = [
       "Add",
       "Edit",
-      "Delete",
+      // "Delete",
       "Update",
       "Cancel",
       {
@@ -71,6 +74,12 @@ class DailySignings extends Component {
         tooltipText: "Plantilla para a generación de Fichajes Automática",
         prefixIcon: "e-custom-icons e-details",
         id: "Template"
+      },
+      {
+        text: "Borrar Seleccionados",
+        tooltipText: "Borrar registros seleccionados",
+        prefixIcon: "e-custom-icons e-remove",
+        id: "RemoveAll"
       }
     ];
     this.editSettings = {
@@ -95,6 +104,34 @@ class DailySignings extends Component {
     this.format = { type: "dateTime", format: "dd/MM/yyyy HH:mm" };
 
     this.queryDailySignings = new Query().addParams("userId", props.user.id);
+
+    this.animationSettings = { effect: "None" };
+    this.confirmButton = [
+      {
+        click: () => {          
+          const selectedRecords = this.grid.getSelectedRecords();      
+          if (Array.isArray(selectedRecords) && selectedRecords.length > 0) {
+            let result = selectedRecords.map(a => a.id);
+            removeAllDailySigning(result)
+            .then(() => {
+              this.setState({ hideConfirmDialog: false });
+              this.updateDailySignings();
+            })
+            .catch(() => {
+              this.setState({ hideConfirmDialog: false });
+              this.updateDailySignings();
+            });
+          }
+        },
+        buttonModel: { content: "Si", isPrimary: true }
+      },
+      {
+        click: () => {
+          this.setState({ hideConfirmDialog: false });
+        },
+        buttonModel: { content: "No" }
+      }
+    ];
   }
 
   gridTemplate(args) {
@@ -111,6 +148,12 @@ class DailySignings extends Component {
         </div>
       );
     }
+  }
+
+  dialogClose() {
+    this.setState({
+      hideConfirmDialog: false
+    });
   }
 
   formatDate(args) {
@@ -130,7 +173,6 @@ class DailySignings extends Component {
         "userId",
         this.props.user.id
       );
-      // .addParams("workId", this.props.user.workId);
     }
 
     if (args.requestType === "save") {
@@ -181,6 +223,9 @@ class DailySignings extends Component {
     if (args.item.id === "Template") {
       this.toggleModal();
     }
+    if (args.item.id === "RemoveAll") {
+      this.setState({ hideConfirmDialog: true });
+    }
   }
 
   toggleModal() {
@@ -225,6 +270,20 @@ class DailySignings extends Component {
   render() {
     return (
       <Fragment>
+        <DialogComponent
+          id="confirmDialogRemoveAll"
+          header="Eliminar Todos"
+          visible={this.state.hideConfirmDialog}
+          showCloseIcon={true}
+          animationSettings={this.animationSettings}
+          width="500px"
+          content="¿Estás seguro de eliminar estos fichajes?"
+          ref={dialog => (this.confirmDialogInstance = dialog)}
+          target="#target-daily-signing"
+          buttons={this.confirmButton}
+          close={this.dialogClose.bind(this)}
+        ></DialogComponent>
+
         <ModalMassiveSigning
           isOpen={this.state.modal}
           toggle={this.toggleModal}
@@ -266,6 +325,7 @@ class DailySignings extends Component {
                 query={this.queryDailySignings}
               >
                 <ColumnsDirective>
+                  <ColumnDirective type="checkbox" width="50"></ColumnDirective>
                   <ColumnDirective
                     field="userHiringId"
                     headerText="Obra"

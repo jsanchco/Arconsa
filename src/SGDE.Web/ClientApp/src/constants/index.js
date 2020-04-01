@@ -22,6 +22,7 @@ export const HOURTYPES = "api/HourTypes";
 export const PROFESSIONINCLIENTS = "api/ProfessionInClients";
 export const RESTOREPASSWORD = "api/Users/restorepassword";
 export const MASSIVESIGNING = "api/dailysignings/massivesigning";
+export const REMOVEALLDAILYSIGNING = "api/dailysignings/removeall";
 export const COMPANY_DATA = "COMPANY_DATA";
 
 const dev = {

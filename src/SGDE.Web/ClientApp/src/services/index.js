@@ -15,7 +15,8 @@ import {
   SETTINGS,
   RESTOREPASSWORD,
   USERSHIRING,
-  MASSIVESIGNING
+  MASSIVESIGNING,
+  REMOVEALLDAILYSIGNING
 } from "../constants";
 import store from "../store/store";
 import ACTION_AUTHENTICATION from "../actions/authenticationAction";
@@ -587,25 +588,6 @@ export const sendMassiveSigning = data => {
     })
       .then(data => data.json())
       .then(result => {
-        if (result === true) {
-          store.dispatch(
-            ACTION_APPLICATION.showMessage({
-              statusText: "Fichajes generados correctamente",
-              responseText: "Fichajes generados correctamente",
-              type: "success"
-            })
-          ); 
-          resolve(result);        
-        } else {
-          store.dispatch(
-            ACTION_APPLICATION.showMessage({
-              statusText: "Algunos de las fichajes no se han podido ejecutar",
-              responseText: "Algunos de las fichajes no se han podido ejecutar",
-              type: "danger"
-            })
-          );
-          resolve(result);
-        }
         if (result.Message) {
           store.dispatch(
             ACTION_APPLICATION.showMessage({
@@ -615,7 +597,80 @@ export const sendMassiveSigning = data => {
             })
           );
           reject();
-        } 
+        } else {
+          if (result === true) {
+            store.dispatch(
+              ACTION_APPLICATION.showMessage({
+                statusText: "Fichajes generados correctamente",
+                responseText: "Fichajes generados correctamente",
+                type: "success"
+              })
+            );
+            resolve(result);
+          } else {
+            store.dispatch(
+              ACTION_APPLICATION.showMessage({
+                statusText: "Algunos de las fichajes no se han podido ejecutar",
+                responseText:
+                  "Algunos de las fichajes no se han podido ejecutar",
+                type: "danger"
+              })
+            );
+            resolve(result);
+          }
+        }
+      })
+      .catch(error => {
+        console.log("error ->", error);
+        reject();
+      });
+  });
+};
+
+export const removeAllDailySigning = data => {
+  return new Promise((resolve, reject) => {
+    const url = `${config.URL_API}/${REMOVEALLDAILYSIGNING}`;
+    fetch(url, {
+      headers: {
+        Accept: "text/plain",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`
+      },
+      method: "DELETE",
+      body: JSON.stringify(data)
+    })
+      .then(data => data.json())
+      .then(result => {
+        if (result.Message) {
+          store.dispatch(
+            ACTION_APPLICATION.showMessage({
+              statusText: result.Message,
+              responseText: result.Message,
+              type: "danger"
+            })
+          );
+          reject();
+        } else {
+          if (result === true) {
+            store.dispatch(
+              ACTION_APPLICATION.showMessage({
+                statusText: "Fichajes borrados correctamente",
+                responseText: "Fichajes borrados correctamente",
+                type: "success"
+              })
+            );
+            resolve(result);
+          } else {
+            store.dispatch(
+              ACTION_APPLICATION.showMessage({
+                statusText: "Ha habido algún error al borrar los fichajes",
+                responseText: "Ha habido algún error al borrar los fichajes",
+                type: "danger"
+              })
+            );
+            resolve(result);
+          }
+        }
       })
       .catch(error => {
         console.log("error ->", error);

@@ -9,6 +9,7 @@
     using System;
     using Domain.ViewModels;
     using System.Linq;
+    using System.Collections.Generic;
 
     #endregion
 
@@ -118,6 +119,28 @@
             try
             {
                 return _supervisor.MassiveSigning(massiveSigningQueryViewModel);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Exception: ");
+                return StatusCode(500, ex);
+            }
+        }
+
+        [HttpDelete("removeall")]
+        public object RemoveAll([FromBody]List<int> listRemove)
+        {
+            try
+            {
+                var result = true;
+                foreach(var item in listRemove)
+                {
+                    if (!_supervisor.DeleteDailySigning(item))
+                    {
+                        result = false;
+                    }
+                }
+                return result;
             }
             catch (Exception ex)
             {

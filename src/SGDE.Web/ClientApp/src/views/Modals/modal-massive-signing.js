@@ -239,7 +239,7 @@ class ModalMassiveSigning extends Component {
             <Row>
               <Form inline style={{ marginLeft: "20px", marginBottom: "20px" }}>
                 <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
-                  <Label for="startDate" className="mr-sm-2">
+                  <Label for="startDate">
                     Fecha Inicio
                   </Label>
                   <DatePickerComponent
@@ -252,7 +252,7 @@ class ModalMassiveSigning extends Component {
                   className="mb-2 mr-sm-2 mb-sm-0"
                   style={{ marginLeft: "20px" }}
                 >
-                  <Label for="endDate" className="mr-sm-2">
+                  <Label for="endDate">
                     Fecha Fin
                   </Label>
                   <DatePickerComponent
@@ -265,7 +265,7 @@ class ModalMassiveSigning extends Component {
                   className="mb-2 mr-sm-2 mb-sm-0"
                   style={{ marginLeft: "20px" }}
                 >
-                  <Label for="workId" className="mr-sm-2">
+                  <Label for="workId">
                     Obra
                   </Label>
                   <DropDownListComponent

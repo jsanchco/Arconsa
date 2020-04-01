@@ -227,7 +227,7 @@ class BasicData extends Component {
                         id="securitySocialNumber"
                         name="securitySocialNumber"
                         placeholder="número de la seguridad social"
-                        value={this.state.securitySocialNumber}
+                        value={this.state.securitySocialNumber || ""}
                         onChange={this.handleInputChange}
                       />
                     </FormGroup>
@@ -269,7 +269,7 @@ class BasicData extends Component {
                         name="username"
                         placeholder="código acceso"
                         required
-                        value={this.state.username}
+                        value={this.state.username || ""}
                         onChange={this.handleInputChange}
                       />
                     </FormGroup>
@@ -322,7 +322,7 @@ class BasicData extends Component {
                         placeholder="fecha de nacimiento"
                         required
                         format="dd/MM/yyyy"
-                        value={this.state.birthDate}
+                        value={this.state.birthDate || ""}
                         onChange={this.handleInputChange}
                       />
                     </FormGroup>
