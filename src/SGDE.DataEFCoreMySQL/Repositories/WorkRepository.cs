@@ -1,5 +1,5 @@
 ﻿namespace SGDE.DataEFCoreMySQL.Repositories
-{
+{    
     #region Using
 
     using System.Collections.Generic;
@@ -8,6 +8,7 @@
     using Domain.Repositories;
     using Microsoft.EntityFrameworkCore;
     using SGDE.Domain.Helpers;
+    using System;
 
     #endregion
 
@@ -92,9 +93,35 @@
             if (!WorkExists(work.Id))
                 return false;
 
-            _context.Work.Update(work);
-            _context.SaveChanges();
-            return true;
+            using (var transaction = _context.Database.BeginTransaction())
+            {
+                try
+                {
+                    var workOld = GetById(work.Id);
+                    if (workOld != null &&
+                        workOld.Open == true && work.Open == false)
+                    {
+                        foreach (var userHiring in workOld.UserHirings)
+                        {
+                            userHiring.EndDate = DateTime.Now;
+                            _context.UserHiring.Update(userHiring);
+                            _context.SaveChanges();
+                        }
+                    }
+
+                    _context.Work.Update(work);
+                    _context.SaveChanges();
+
+                    transaction.Commit();
+
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    throw ex;
+                }
+            }
         }
 
         public bool Delete(int id)
