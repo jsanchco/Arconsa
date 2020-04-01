@@ -103,9 +103,12 @@
                     {
                         foreach (var userHiring in workOld.UserHirings)
                         {
-                            userHiring.EndDate = DateTime.Now;
-                            _context.UserHiring.Update(userHiring);
-                            _context.SaveChanges();
+                            if (userHiring.EndDate == null)
+                            {
+                                userHiring.EndDate = DateTime.Now;
+                                _context.UserHiring.Update(userHiring);
+                                _context.SaveChanges();
+                            }
                         }
                     }
 
