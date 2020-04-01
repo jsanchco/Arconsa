@@ -211,25 +211,27 @@ class GridSelection extends Component {
   }
 
   getExcelExportProperties() {
-    let title = "INFORME por ";
-    const date = this.formatDate(new Date());
+    let title = "INFORME por ";    
     let type = "";
+    let fileName = "";
+    const date = this.formatDate(new Date());
     const { settings } = this.props;
-
-    console.log("settings ->", settings);
 
     switch (settings.type) {
       case "workers":
         title = title + "TRABAJADOR";
         type = "TRABAJADOR";
+        fileName = `Inf_tr_${settings.selection}.xlsx`;
         break;
       case "works":
         title = title + "OBRA";
         type = "OBRA";
+        fileName = `Inf_ob_${settings.selection}.xlsx`;
         break;
       case "clients":
         title = title + "CLIENTE";
         type = "CLIENTE";
+        fileName = `Inf_cl_${settings.selection}.xlsx`;
         break;
 
       default:
@@ -273,7 +275,7 @@ class GridSelection extends Component {
               },
               {
                 index: 7,
-                value: "FECHA",
+                value: "FECHA INFORME",
                 style: { fontColor: "#C67878", bold: true },
                 width: 150
               }
@@ -321,31 +323,30 @@ class GridSelection extends Component {
           }
         ]
       },
-
-      footer: {
-        footerRows: 5,
-        rows: [
-          {
-            cells: [
-              {
-                colSpan: 6,
-                value: "Thank you for your business!",
-                style: { fontColor: "#C67878", hAlign: "Center", bold: true }
-              }
-            ]
-          },
-          {
-            cells: [
-              {
-                colSpan: 6,
-                value: "!Visit Again!",
-                style: { fontColor: "#C67878", hAlign: "Center", bold: true }
-              }
-            ]
-          }
-        ]
-      },
-      fileName: "exceldocument.xlsx"
+      // footer: {
+      //   footerRows: 5,
+      //   rows: [
+      //     {
+      //       cells: [
+      //         {
+      //           colSpan: 6,
+      //           value: "Thank you for your business!",
+      //           style: { fontColor: "#C67878", hAlign: "Center", bold: true }
+      //         }
+      //       ]
+      //     },
+      //     {
+      //       cells: [
+      //         {
+      //           colSpan: 6,
+      //           value: "!Visit Again!",
+      //           style: { fontColor: "#C67878", hAlign: "Center", bold: true }
+      //         }
+      //       ]
+      //     }
+      //   ]
+      // },
+      fileName: fileName
     };
   }
 
