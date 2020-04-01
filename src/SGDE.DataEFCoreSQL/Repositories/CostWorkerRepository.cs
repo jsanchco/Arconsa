@@ -102,19 +102,22 @@
                 return false;
 
             if (_context.CostWorker.FirstOrDefault(x =>
-                x.Id != costWorker.Id &&                
+                x.Id != costWorker.Id &&
+                x.UserId == costWorker.UserId &&
                 x.EndDate == null &&
                 costWorker.EndDate == null) != null)
                 return false;
 
             if (_context.CostWorker.FirstOrDefault(x =>
                 x.Id != costWorker.Id &&
+                x.UserId == costWorker.UserId &&
                 x.EndDate == null &&                
                 (costWorker.EndDate >= x.StartDate || costWorker.EndDate >= x.StartDate)) != null)
                 return false;
 
             if (_context.CostWorker.FirstOrDefault(x =>
                 x.Id != costWorker.Id &&
+                x.UserId == costWorker.UserId &&
                 x.EndDate != null &&                
                 (costWorker.StartDate <= x.StartDate && costWorker.EndDate == null)) != null)
                 return false;
@@ -127,12 +130,14 @@
 
             if (_context.CostWorker.FirstOrDefault(x =>
                 x.Id != costWorker.Id &&
+                x.UserId == costWorker.UserId &&
                 x.EndDate != null &&                
                 (costWorker.EndDate >= x.StartDate && costWorker.EndDate <= x.EndDate)) != null)
                 return false;
 
             if (_context.CostWorker.FirstOrDefault(x =>
                 x.Id != costWorker.Id &&
+                x.UserId == costWorker.UserId &&
                 x.EndDate != null &&                
                 (costWorker.StartDate <= x.StartDate && costWorker.EndDate >= x.EndDate)) != null)
                 return false;
