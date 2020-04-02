@@ -19,8 +19,6 @@
         public string Password { get; set; }
         public string Address { get; set; }
         public string PhoneNumber { get; set; }
-        public Decimal PriceHour { get; set; }
-        public Decimal PriceHourSale { get; set; }
         public string Observations { get; set; }
         public string AccountNumber { get; set; }
         public byte[] Photo { get; set; }

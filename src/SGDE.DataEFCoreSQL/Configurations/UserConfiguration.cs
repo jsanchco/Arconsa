@@ -20,8 +20,6 @@
             entity.Property(x => x.AddedDate).IsRequired();
             entity.Property(x => x.Name).IsRequired();
             entity.Property(x => x.BirthDate).IsRequired(false);
-            entity.Property(x => x.PriceHour).HasColumnType("decimal(18,2)");
-            entity.Property(x => x.PriceHourSale).HasColumnType("decimal(18,2)");
             entity.Ignore(x => x.Token);
 
             entity.HasIndex(x => x.ProfessionId).HasName("IFK_Profession_User");

@@ -43,6 +43,7 @@ class Employees extends Component {
   professionIdRules = { required: false };
   roleIdRules = { required: true };
   grid = null;
+  wrapSettings = { wrapMode: "Content" };
 
   constructor(props) {
     super(props);
@@ -112,7 +113,10 @@ class Employees extends Component {
   }
 
   actionFailure(args) {
-    const error = Array.isArray(args) ? args[0].error : args.error;
+    let error = Array.isArray(args) ? args[0].error : args.error;
+    if (Array.isArray(error)) {
+      error = error[0].error;
+    }
     this.props.showMessage({
       statusText: error.statusText,
       responseText: error.responseText,
@@ -227,6 +231,8 @@ class Employees extends Component {
                 rowSelected={this.rowSelected}
                 ref={g => (this.grid = g)}
                 query={this.query}
+                allowTextWrap={true}
+                textWrapSettings={this.wrapSettings}
               >
                 <ColumnsDirective>
                   <ColumnDirective

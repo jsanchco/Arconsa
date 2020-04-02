@@ -50,6 +50,7 @@ class Works extends Component {
       validateDecimalOnType: true
     }
   };
+  wrapSettings = { wrapMode: "Content" };
 
   constructor(props) {
     super(props);
@@ -186,9 +187,8 @@ class Works extends Component {
     }
 
     let day = args.getDate();
-    if (day < 10)
-      day = "0" + day;
-      
+    if (day < 10) day = "0" + day;
+
     const month = args.getMonth() + 1;
     const year = args.getFullYear();
 
@@ -222,7 +222,7 @@ class Works extends Component {
     const workSelected = this.state.rowSelected;
     if (args.item.id === "openWork") {
       workSelected.open = true;
-      updateDatesWork(workSelected).then(() => {        
+      updateDatesWork(workSelected).then(() => {
         this.grid.setCellValue(workSelected.id, "closeDate", null);
         this.grid.setCellValue(
           workSelected.id,
@@ -234,7 +234,7 @@ class Works extends Component {
     }
     if (args.item.id === "closeWork") {
       workSelected.open = false;
-      updateDatesWork(workSelected).then(() => {        
+      updateDatesWork(workSelected).then(() => {
         this.grid.setCellValue(
           workSelected.id,
           "closeDate",
@@ -255,7 +255,10 @@ class Works extends Component {
   }
 
   actionFailure(args) {
-    const error = Array.isArray(args) ? args[0].error : args.error;
+    let error = Array.isArray(args) ? args[0].error : args.error;
+    if (Array.isArray(error)) {
+      error = error[0].error;
+    }
     this.props.showMessage({
       statusText: error.statusText,
       responseText: error.responseText,
@@ -340,6 +343,8 @@ class Works extends Component {
               contextMenuClick={this.contextMenuClick}
               selectionSettings={this.selectionSettings}
               headerCellInfo={this.headerCellInfo}
+              allowTextWrap={true}
+              textWrapSettings={this.wrapSettings}
             >
               <ColumnsDirective>
                 <ColumnDirective type="checkbox" width="50"></ColumnDirective>
@@ -371,10 +376,8 @@ class Works extends Component {
                   field="numberPersonsRequested"
                   headerText="Personas"
                   width="50"
-                  fotmat="N0"
                   textAlign="right"
-                  editType="numericedit"
-                  edit={this.numericParams}
+                  allowEditing={false}
                 />
                 <ColumnDirective
                   field="clientId"
@@ -393,6 +396,7 @@ class Works extends Component {
                   template={this.dateTemplate}
                   textAlign="Center"
                   allowEditing={false}
+                  defaultValue={true}
                 />
                 <ColumnDirective
                   field="open"

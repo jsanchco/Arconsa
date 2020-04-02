@@ -26,8 +26,6 @@ namespace SGDE.Domain.ViewModels
         public string newPassword { get; set; }
         public string address { get; set; }
         public string phoneNumber { get; set; }
-        public Decimal priceHour { get; set; }
-        public Decimal priceHourSale { get; set; }
         public string observations { get; set; }
         public string accountNumber { get; set; }
         public byte[] photo { get; set; }

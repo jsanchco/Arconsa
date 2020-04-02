@@ -39,12 +39,14 @@
             {
                 data = _context.Work
                         .Include(x => x.Client)
+                        .Include(x => x.UserHirings)
                         .ToList();
             }
             else
             {
                 data = _context.Work
                         .Include(x => x.Client)
+                        .Include(x => x.UserHirings)
                         .Where(x => x.ClientId == clientId)
                         .ToList();
             }
@@ -76,8 +78,9 @@
         public Work GetById(int id)
         {
             return _context.Work
-                .Include(x => x.Client)
+                .Include(x => x.Client)                
                 .ThenInclude(x => x.ProfessionInClients)
+                .Include(x => x.UserHirings)
                 .FirstOrDefault(x => x.Id == id);
         }
 

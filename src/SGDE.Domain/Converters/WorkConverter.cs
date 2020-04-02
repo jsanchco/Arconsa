@@ -27,7 +27,7 @@
                 address = work.Address,
                 estimatedDuration = work.EstimatedDuration,
                 worksToRealize = work.WorksToRealize,
-                numberPersonsRequested = work.NumberPersonsRequested,
+                numberPersonsRequested = work.UserHirings.Where(x => x.EndDate == null).Count(),
                 open = work.Open,
 
                 openDate = work.OpenDate.ToString("dd/MM/yyyy"),
@@ -57,7 +57,7 @@
                     address = work.Address,
                     estimatedDuration = work.EstimatedDuration,
                     worksToRealize = work.WorksToRealize,
-                    numberPersonsRequested = work.NumberPersonsRequested,
+                    numberPersonsRequested = work.UserHirings.Where(x => x.EndDate == null).Count(),
                     open = work.Open,
 
                     openDate = work.OpenDate.ToString("dd/MM/yyyy"),

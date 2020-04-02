@@ -124,8 +124,6 @@ namespace SGDE.Domain.Supervisor
                 Email = newUserViewModel.email,
                 Address = newUserViewModel.address,
                 PhoneNumber = newUserViewModel.phoneNumber,
-                PriceHour = newUserViewModel.priceHour,
-                PriceHourSale = newUserViewModel.priceHourSale,
                 Observations = newUserViewModel.observations,
                 AccountNumber = newUserViewModel.accountNumber,
                 Photo = newUserViewModel.photo,
@@ -164,8 +162,6 @@ namespace SGDE.Domain.Supervisor
             user.Email = userViewModel.email;
             user.Address = userViewModel.address;
             user.PhoneNumber = userViewModel.phoneNumber;
-            user.PriceHour = userViewModel.priceHour;
-            user.PriceHourSale = userViewModel.priceHourSale;
             user.Observations = userViewModel.observations;
             user.AccountNumber = userViewModel.accountNumber;
             user.Photo = userViewModel.photo;

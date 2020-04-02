@@ -551,41 +551,54 @@
                 PaddingBottom = 6f
             };
             pdfPTable.AddCell(pdfCell);
-            pdfCell = new PdfPCell(new Phrase("", _STANDARFONT_12_BOLD))
-            {
-                BorderWidthBottom = 0,
-                BorderWidthTop = 0
-            };
-            pdfPTable.AddCell(pdfCell);
-            pdfCell = new PdfPCell(new Phrase(" ", _STANDARFONT_12_BOLD))
-            {
-                BorderWidthBottom = 0,
-                BorderWidthTop = 0
-            };
-            pdfPTable.AddCell(pdfCell);
-            pdfCell = new PdfPCell(new Phrase(" ", _STANDARFONT_12_BOLD))
-            {
-                BorderWidthBottom = 0,
-                BorderWidthTop = 0
-            };
-            pdfPTable.AddCell(pdfCell);
-            pdfCell = new PdfPCell(new Phrase(" ", _STANDARFONT_12_BOLD))
-            {
-                BorderWidthBottom = 0,
-                BorderWidthTop = 0
-            };
-            pdfPTable.AddCell(pdfCell);
-            pdfCell = new PdfPCell(new Phrase(" ", _STANDARFONT_12_BOLD))
-            {
-                BorderWidthBottom = 0,
-                BorderWidthTop = 0
-            };
-            pdfPTable.AddCell(pdfCell);
-            pdfCell = new PdfPCell(new Phrase(" ", _STANDARFONT_12_BOLD))
+
+            var image = Image.GetInstance(Directory.GetCurrentDirectory() + "\\assets\\images\\FirmAndSign.png");
+            image.ScalePercent(50);
+            var pdfCellImage = new PdfPCell(image)
             {
                 BorderWidthTop = 0,
+                PaddingTop = 2,
+                PaddingBottom = 2,
+                PaddingRight = 2,
+                PaddingLeft = 30,
             };
-            pdfPTable.AddCell(pdfCell);
+            pdfPTable.AddCell(pdfCellImage);
+
+            //pdfCell = new PdfPCell(new Phrase("", _STANDARFONT_12_BOLD))
+            //{
+            //    BorderWidthBottom = 0,
+            //    BorderWidthTop = 0
+            //};
+            //pdfPTable.AddCell(pdfCell);
+            //pdfCell = new PdfPCell(new Phrase(" ", _STANDARFONT_12_BOLD))
+            //{
+            //    BorderWidthBottom = 0,
+            //    BorderWidthTop = 0
+            //};
+            //pdfPTable.AddCell(pdfCell);
+            //pdfCell = new PdfPCell(new Phrase(" ", _STANDARFONT_12_BOLD))
+            //{
+            //    BorderWidthBottom = 0,
+            //    BorderWidthTop = 0
+            //};
+            //pdfPTable.AddCell(pdfCell);
+            //pdfCell = new PdfPCell(new Phrase(" ", _STANDARFONT_12_BOLD))
+            //{
+            //    BorderWidthBottom = 0,
+            //    BorderWidthTop = 0
+            //};
+            //pdfPTable.AddCell(pdfCell);
+            //pdfCell = new PdfPCell(new Phrase(" ", _STANDARFONT_12_BOLD))
+            //{
+            //    BorderWidthBottom = 0,
+            //    BorderWidthTop = 0
+            //};
+            //pdfPTable.AddCell(pdfCell);
+            //pdfCell = new PdfPCell(new Phrase(" ", _STANDARFONT_12_BOLD))
+            //{
+            //    BorderWidthTop = 0,
+            //};
+            //pdfPTable.AddCell(pdfCell);
 
             return pdfPTable;
         }

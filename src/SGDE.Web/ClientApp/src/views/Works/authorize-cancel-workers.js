@@ -111,7 +111,10 @@ class AuthorizeCancelWorkers extends Component {
   }
 
   actionFailure(args) {
-    const error = Array.isArray(args) ? args[0].error : args.error;
+    let error = Array.isArray(args) ? args[0].error : args.error;
+    if (Array.isArray(error)) {
+      error = error[0].error;
+    } 
     this.props.showMessage({
       statusText: error.statusText,
       responseText: error.responseText,

@@ -77,7 +77,6 @@
                 Address = newWorkViewModel.address,
                 EstimatedDuration = newWorkViewModel.estimatedDuration,
                 WorksToRealize = newWorkViewModel.worksToRealize,
-                NumberPersonsRequested = newWorkViewModel.numberPersonsRequested,
                 Open = newWorkViewModel.open,
 
                 OpenDate = newWorkViewModel.openDate == null ? DateTime.Now : DateTime.Parse(newWorkViewModel.openDate),
@@ -109,7 +108,6 @@
             work.Address = workViewModel.address;
             work.EstimatedDuration = workViewModel.estimatedDuration;
             work.WorksToRealize = workViewModel.worksToRealize;
-            work.NumberPersonsRequested = workViewModel.numberPersonsRequested;
 
             work.OpenDate = DateTime.ParseExact(workViewModel.openDate, "dd/MM/yyyy", null);
             work.CloseDate = string.IsNullOrEmpty(workViewModel.closeDate)
@@ -144,7 +142,6 @@
             work.Address = workViewModel.address;
             work.EstimatedDuration = workViewModel.estimatedDuration;
             work.WorksToRealize = workViewModel.worksToRealize;
-            work.NumberPersonsRequested = workViewModel.numberPersonsRequested;
             work.Open = workViewModel.open;
 
             if (workViewModel.open)
