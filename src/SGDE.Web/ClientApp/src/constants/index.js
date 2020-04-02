@@ -2,6 +2,7 @@ export const PROFESSIONS = "api/Professions";
 export const ROLES = "api/Roles";
 export const USERS = "api/Users";
 export const CLIENTS = "api/Clients";
+export const CLIENTSWITHOUTFILTER = "api/Clients/getclientswithoutilter";
 export const WORKS = "api/Works";
 export const UPDATEDATESWORK = "api/Works/updatedateswork";
 export const TYPES_DOCUMENT = "api/TypesDocument";

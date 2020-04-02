@@ -118,7 +118,6 @@ class Invoices extends Component {
     showSpinner(element);
     getInvoice(this.getDataInvoice())
       .then(result => {
-        console.log("result ->", result);
         const fileArr = base64ToArrayBuffer(result.file);
         saveByteArray(result.fileName, fileArr, result.typeFile);
         hideSpinner(element);

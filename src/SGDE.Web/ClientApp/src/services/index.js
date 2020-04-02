@@ -88,7 +88,6 @@ export const getUsers = () => {
   })
     .then(data => data.json())
     .then(result => {
-      console.log("result ->", result);
       return result;
     })
     .catch(error => {
@@ -103,7 +102,6 @@ export const getProfessions = () => {
   })
     .then(data => data.json())
     .then(result => {
-      console.log("result ->", result);
       return result;
     })
     .catch(error => {

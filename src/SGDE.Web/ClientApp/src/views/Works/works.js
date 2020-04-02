@@ -13,7 +13,7 @@ import {
   Group
 } from "@syncfusion/ej2-react-grids";
 import { DataManager, WebApiAdaptor } from "@syncfusion/ej2-data";
-import { config, WORKS, CLIENTS } from "../../constants";
+import { config, WORKS, CLIENTSWITHOUTFILTER } from "../../constants";
 import { L10n } from "@syncfusion/ej2-base";
 import data from "../../locales/locale.json";
 import { connect } from "react-redux";
@@ -33,7 +33,7 @@ class Works extends Component {
 
   clients = new DataManager({
     adaptor: new WebApiAdaptor(),
-    url: `${config.URL_API}/${CLIENTS}`,
+    url: `${config.URL_API}/${CLIENTSWITHOUTFILTER}`,
     headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }]
   });
 

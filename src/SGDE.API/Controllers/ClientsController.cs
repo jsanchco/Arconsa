@@ -52,8 +52,23 @@ namespace SGDE.API.Controllers
                 var take = Convert.ToInt32(queryString["$top"]);
                 var filter = Util.Helper.getSearch(queryString["$filter"]);
 
-
                 var queryResult = _supervisor.GetAllClient(skip, take, filter);
+
+                return new { Items = queryResult.Data, Count = queryResult.Count };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Exception: ");
+                return StatusCode(500, ex);
+            }
+        }
+
+        [HttpGet("getclientswithoutilter")]
+        public object GetClientsWithoutFilter()
+        {
+            try
+            {
+                var queryResult = _supervisor.GetAllClient();
 
                 return new { Items = queryResult.Data, Count = queryResult.Count };
             }

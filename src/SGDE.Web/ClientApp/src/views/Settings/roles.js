@@ -6,8 +6,7 @@ import {
   GridComponent,
   Edit,
   Inject,
-  Toolbar,
-  Page
+  Toolbar
 } from "@syncfusion/ej2-react-grids";
 import { DataManager, WebApiAdaptor } from "@syncfusion/ej2-data";
 import { config, ROLES } from "../../constants";
@@ -43,7 +42,6 @@ class Roles extends Component {
       allowDeleting: true,
       newRowPosition: "Top"
     };
-    this.pageSettings = { pageCount: 10, pageSize: 10 };
     this.actionFailure = this.actionFailure.bind(this);
     this.actionComplete = this.actionComplete.bind(this);
   }
@@ -90,8 +88,6 @@ class Roles extends Component {
               <GridComponent
                 dataSource={this.roles}
                 locale="es-US"
-                allowPaging={true}
-                pageSettings={this.pageSettings}
                 toolbar={this.toolbarOptions}
                 toolbarClick={this.clickHandler}
                 editSettings={this.editSettings}
@@ -121,7 +117,7 @@ class Roles extends Component {
                     width="100"
                   />
                 </ColumnsDirective>
-                <Inject services={[Page, Toolbar, Edit]} />
+                <Inject services={[Toolbar, Edit]} />
               </GridComponent>
             </Row>
           </div>
