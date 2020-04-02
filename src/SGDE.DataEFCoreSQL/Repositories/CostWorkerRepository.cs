@@ -124,6 +124,7 @@
 
             if (_context.CostWorker.FirstOrDefault(x =>
                 x.Id != costWorker.Id &&
+                x.UserId == costWorker.UserId &&
                 x.EndDate != null &&                
                 (costWorker.StartDate >= x.StartDate && costWorker.StartDate <= x.EndDate)) != null)
                 return false;
