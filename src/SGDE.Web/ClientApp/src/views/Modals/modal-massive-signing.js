@@ -84,9 +84,8 @@ class ModalMassiveSigning extends Component {
     this.handleOnClickSave = this.handleOnClickSave.bind(this);
     this.sendMassiveSigning = this.sendMassiveSigning.bind(this);
     this.formatDate = this.formatDate.bind(this);
-    this.actionComplete = this.actionComplete.bind(this);
     this.sumHours = this.sumHours.bind(this);
-    this.getIndex = this.getIndex.bind(this);
+    this.templateSumHours = this.templateSumHours.bind(this);
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -164,28 +163,8 @@ class ModalMassiveSigning extends Component {
     }
   }
 
-  actionComplete(args) {
-    if (args.requestType === "save") {
-      const total = this.sumHours(args.data.startHour, args.data.endHour);
-      const index = this.getIndex();
-      args.data.id = index;
-      this.grid.setCellValue(index, "id", index);      
-      args.data.total = total;
-      this.grid.setCellValue(index, "total", total);
-    }
-  }
-
-  getIndex() {
-    const data = this.grid.getCurrentViewRecords();
-    let index = 0;
-    data.forEach(row => {
-      const rowIndex = this.grid.getRowIndexByPrimaryKey(row.id);
-      if (rowIndex > index) {
-        index = rowIndex;
-      }
-    });
-
-    return index ++;
+  templateSumHours(args) {
+    return <div>{this.sumHours(args.startHour, args.endHour)}</div>;
   }
 
   sumHours(startHour, endHour) {
@@ -239,9 +218,7 @@ class ModalMassiveSigning extends Component {
             <Row>
               <Form inline style={{ marginLeft: "20px", marginBottom: "20px" }}>
                 <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
-                  <Label for="startDate">
-                    Fecha Inicio
-                  </Label>
+                  <Label for="startDate">Fecha Inicio</Label>
                   <DatePickerComponent
                     id="startDate"
                     ref={g => (this.dtpStartDate = g)}
@@ -252,9 +229,7 @@ class ModalMassiveSigning extends Component {
                   className="mb-2 mr-sm-2 mb-sm-0"
                   style={{ marginLeft: "20px" }}
                 >
-                  <Label for="endDate">
-                    Fecha Fin
-                  </Label>
+                  <Label for="endDate">Fecha Fin</Label>
                   <DatePickerComponent
                     id="endDate"
                     ref={g => (this.dtpEndDate = g)}
@@ -265,9 +240,7 @@ class ModalMassiveSigning extends Component {
                   className="mb-2 mr-sm-2 mb-sm-0"
                   style={{ marginLeft: "20px" }}
                 >
-                  <Label for="workId">
-                    Obra
-                  </Label>
+                  <Label for="workId">Obra</Label>
                   <DropDownListComponent
                     id="workId"
                     dataSource={null}
@@ -283,7 +256,6 @@ class ModalMassiveSigning extends Component {
                 <GridComponent
                   dataSource={this.baseHours}
                   locale="es-US"
-                  actionFailure={this.actionFailure}
                   toolbar={this.toolbarOptions}
                   style={{
                     marginLeft: 30,
@@ -293,7 +265,6 @@ class ModalMassiveSigning extends Component {
                   }}
                   ref={g => (this.grid = g)}
                   editSettings={this.editSettings}
-                  actionComplete={this.actionComplete}
                 >
                   <ColumnsDirective>
                     <ColumnDirective
@@ -331,6 +302,7 @@ class ModalMassiveSigning extends Component {
                       headerText="Total Horas"
                       width="100"
                       allowEditing={false}
+                      template={this.templateSumHours}
                     />
                   </ColumnsDirective>
                   <Inject services={[ForeignKey]} />
