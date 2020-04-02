@@ -609,29 +609,6 @@
                 new iTextSharp.text.pdf.draw.LineSeparator(0f, 100f, BaseColor.LightGray, Element.ALIGN_LEFT, 1));
         }
 
-        private decimal GetPriceHourCost(Client client, int? type, int? professionId)
-        {
-            if (type == null || professionId == null)
-                return 0;
-
-            var professionInClient = client.ProfessionInClients.FirstOrDefault(x => x.ProfessionId == professionId);
-            if (professionInClient == null)
-                return 0;
-
-            switch (type)
-            {
-                case 1:
-                    return professionInClient.PriceHourOrdinary;
-                case 2:
-                    return professionInClient.PriceHourExtra;
-                case 3:
-                    return professionInClient.PriceHourFestive;
-
-                default:
-                    return 0;
-            }
-        }
-
         private decimal GetPriceHourSale(Client client, int? type, int? professionId)
         {
             if (type == null || professionId == null)

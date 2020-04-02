@@ -33,6 +33,7 @@ class CostWorkers extends Component {
   };
 
   grid = null;
+  wrapSettings = { wrapMode: "Content" };
 
   constructor(props) {
     super(props);
@@ -72,7 +73,7 @@ class CostWorkers extends Component {
     });
   }
 
-  actionComplete(args) {    
+  actionComplete(args) {
     if (args.requestType === "save") {
       this.props.showMessage({
         statusText: "200",
@@ -111,9 +112,8 @@ class CostWorkers extends Component {
     }
 
     let day = args.getDate();
-    if (day < 10)
-      day = "0" + day;
-    
+    if (day < 10) day = "0" + day;
+
     const month = args.getMonth() + 1;
     const year = args.getFullYear();
 
@@ -158,6 +158,8 @@ class CostWorkers extends Component {
                 rowSelected={this.rowSelected}
                 ref={g => (this.grid = g)}
                 query={this.query}
+                allowTextWrap={true}
+                textWrapSettings={this.wrapSettings}
               >
                 <ColumnsDirective>
                   <ColumnDirective
@@ -218,6 +220,11 @@ class CostWorkers extends Component {
                         edit: this.numericParams
                       }
                     ]}
+                  />
+                  <ColumnDirective
+                    field="observations"
+                    headerText="Observaciones"
+                    width="100"
                   />
                   <ColumnDirective
                     field="userId"

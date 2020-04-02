@@ -21,6 +21,7 @@
         public string startDate { get; set; }
         public string endDate { get; set; }
 
+        public string clientName { get; set; }
         public int workId { get; set; }
         public string workName { get; set; }
 

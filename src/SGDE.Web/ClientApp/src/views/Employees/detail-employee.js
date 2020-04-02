@@ -12,6 +12,7 @@ import Documents from "./documents";
 import DailySignings from "./daily-signings";
 import ChangePassword from "./change-password";
 import CostWorkers from "./cost-workers";
+import HistoryHirings from "./history-hirings";
 
 class DetailEmployee extends Component {
   constructor(props) {
@@ -24,6 +25,7 @@ class DetailEmployee extends Component {
       { text: "Documentos" },
       { text: "Fichajes" },
       { text: "Precios Coste" },
+      { text: "Historial de Contratación" },
       { text: "Cambiar Contraseña" }
     ];
 
@@ -40,6 +42,7 @@ class DetailEmployee extends Component {
       this
     );
     this.contentTemplatCostWorkers = this.contentTemplatCostWorkers.bind(this);
+    this.contentTemplatHistoryHirings = this.contentTemplatHistoryHirings.bind(this);
   }
 
   contentTemplateBasicDate() {
@@ -101,6 +104,16 @@ class DetailEmployee extends Component {
       />
     );
   }
+
+  contentTemplatHistoryHirings() {
+    return (
+      <HistoryHirings
+        user={this.props.history.location.state.user}
+        history={this.props.history}
+        showMessage={this.props.showMessage}
+      />
+    );
+  }  
 
   renderTemplateDailySignings() {
     if (this.props.history.location.state.user.roleId === 3) {
@@ -165,8 +178,12 @@ class DetailEmployee extends Component {
                   />
                   <TabItemDirective
                     header={this.headerText[4]}
+                    content={this.contentTemplatHistoryHirings}
+                  />                     
+                  <TabItemDirective
+                    header={this.headerText[5]}
                     content={this.contentTemplatChangePassword}
-                  />
+                  />              
                 </TabItemsDirective>
               </TabComponent>
             </div>

@@ -28,6 +28,7 @@
                 priceHourOrdinary = costWorker.PriceHourOrdinary,
                 priceHourExtra = costWorker.PriceHourExtra,
                 priceHourFestive = costWorker.PriceHourFestive,
+                observations = costWorker.Observations,
                 userId = costWorker.UserId,
                 userName = costWorker.User.Name
             };
@@ -51,6 +52,7 @@
                     priceHourOrdinary = costWorker.PriceHourOrdinary,
                     priceHourExtra = costWorker.PriceHourExtra,
                     priceHourFestive = costWorker.PriceHourFestive,
+                    observations = costWorker.Observations,
                     userId = costWorker.UserId,
                     userName = costWorker.User.Name
                 };

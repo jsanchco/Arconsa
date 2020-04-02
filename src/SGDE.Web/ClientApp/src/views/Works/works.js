@@ -390,7 +390,7 @@ class Works extends Component {
                   dataSource={this.clients}
                 />
                 <ColumnDirective
-                  field="open"
+                  field="closeDate"
                   headerText="Fechas"
                   width="100"
                   template={this.dateTemplate}
@@ -405,7 +405,6 @@ class Works extends Component {
                   template={this.openTemplate}
                   textAlign="Center"
                   allowEditing={false}
-                  defaultValue={true}
                 />
                 <ColumnDirective field="openDate" visible={false} />
                 <ColumnDirective field="closeDate" visible={false} />

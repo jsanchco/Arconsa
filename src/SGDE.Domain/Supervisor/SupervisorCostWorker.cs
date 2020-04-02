@@ -48,6 +48,8 @@
                 ? null :
                 (DateTime?)DateTime.ParseExact(newCostWorkerViewModel.endDate, "dd/MM/yyyy", null),
 
+                Observations = newCostWorkerViewModel.observations,
+
                 UserId = newCostWorkerViewModel.userId
             };
 
@@ -79,6 +81,8 @@
             costWorker.EndDate = string.IsNullOrEmpty(costWorkerViewModel.endDate)
                 ? null
                 : (DateTime?)DateTime.ParseExact(costWorkerViewModel.endDate, "dd/MM/yyyy", null);
+
+            costWorker.Observations = costWorkerViewModel.observations;
 
             costWorker.UserId = costWorkerViewModel.userId;
 

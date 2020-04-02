@@ -102,7 +102,7 @@
                 {
                     var workOld = GetById(work.Id);
                     if (workOld != null &&
-                        workOld.Open == true && work.Open == false)
+                        workOld.Open == false && work.Open == false)
                     {
                         foreach (var userHiring in workOld.UserHirings)
                         {

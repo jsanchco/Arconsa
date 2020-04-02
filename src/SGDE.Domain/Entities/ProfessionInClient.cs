@@ -8,9 +8,6 @@
 
     public class ProfessionInClient : BaseEntity
     {
-        public Decimal PriceHourOrdinary { get; set; }
-        public Decimal PriceHourExtra { get; set; }
-        public Decimal PriceHourFestive { get; set; }
         public Decimal PriceHourSaleOrdinary { get; set; }
         public Decimal PriceHourSaleExtra { get; set; }
         public Decimal PriceHourSaleFestive { get; set; }

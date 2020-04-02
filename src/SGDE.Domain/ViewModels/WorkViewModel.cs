@@ -12,7 +12,7 @@
         public string address { get; set; }
         public string estimatedDuration { get; set; }
         public string worksToRealize { get; set; }
-        public int numberPersonsRequested { get; set; }
+        public int? numberPersonsRequested { get; set; }
         public bool open { get; set; }
         public string openDate { get; set; }
         public string closeDate { get; set; }

@@ -8,9 +8,6 @@
 
     public class ProfessionInClientViewModel : BaseEntityViewModel
     {
-        public Decimal priceHourOrdinary { get; set; }
-        public Decimal priceHourExtra { get; set; }
-        public Decimal priceHourFestive { get; set; }
         public Decimal priceHourSaleOrdinary { get; set; }
         public Decimal priceHourSaleExtra { get; set; }
         public Decimal priceHourSaleFestive { get; set; }

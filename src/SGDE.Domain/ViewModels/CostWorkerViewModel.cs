@@ -13,6 +13,7 @@
         public Decimal priceHourFestive { get; set; }
         public string startDate { get; set; }
         public string endDate { get; set; }
+        public string observations { get; set; }
         public int userId { get; set; }
         public string userName { get; set; }
     }

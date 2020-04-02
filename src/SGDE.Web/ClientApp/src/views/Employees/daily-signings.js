@@ -168,8 +168,8 @@ class DailySignings extends Component {
 
   actionBegin(args) {
     if (args.requestType === "add" || args.requestType === "beginEdit") {
-      this.grid.columns[0].edit.params.query.params = [];
-      this.grid.columns[0].edit.params.query.addParams(
+      this.grid.columns[1].edit.params.query.params = [];
+      this.grid.columns[1].edit.params.query.addParams(
         "userId",
         this.props.user.id
       );

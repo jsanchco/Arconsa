@@ -36,6 +36,7 @@
             {
                 return _context.UserHiring
                     .Include(x => x.Work)
+                    .ThenInclude(x => x.Client)
                     .Include(x => x.User)
                     .Include(x => x.Profession)
                     .ToList();
@@ -45,6 +46,7 @@
             {
                 return _context.UserHiring
                     .Include(x => x.Work)
+                    .ThenInclude(x => x.Client)
                     .Include(x => x.User)
                     .Include(x => x.Profession)
                     .Where(x => x.UserId == userId)
@@ -55,6 +57,7 @@
             {
                 return _context.UserHiring
                     .Include(x => x.Work)
+                    .ThenInclude(x => x.Client)
                     .Include(x => x.User)
                     .Include(x => x.Profession)
                     .Where(x => x.WorkId == workId)
@@ -65,6 +68,7 @@
             {
                 return _context.UserHiring
                     .Include(x => x.Work)
+                    .ThenInclude(x => x.Client)
                     .Include(x => x.User)
                     .Include(x => x.Profession)
                     .Where(x => x.UserId == userId && x.WorkId == workId)
@@ -73,6 +77,7 @@
 
             return _context.UserHiring
                 .Include(x => x.Work)
+                .ThenInclude(x => x.Client)
                 .Include(x => x.User)
                 .Include(x => x.Profession)
                 .ToList();
@@ -82,6 +87,7 @@
         {
             return _context.UserHiring
                 .Include(x => x.Work)
+                .ThenInclude(x => x.Client)
                 .Include(x => x.User)
                 .Include(x => x.Profession)
                 .Where(x => x.EndDate == null)
@@ -92,6 +98,7 @@
         {
             return _context.UserHiring
                 .Include(x => x.Work)
+                .ThenInclude(x => x.Client)
                 .Include(x => x.User)
                 .Include(x => x.Profession)
                 .FirstOrDefault(x => x.Id == id);

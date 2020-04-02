@@ -23,9 +23,6 @@
                 modifiedDate = professionInClient.ModifiedDate,
                 iPAddress = professionInClient.IPAddress,
 
-                priceHourOrdinary = professionInClient.PriceHourOrdinary,
-                priceHourExtra = professionInClient.PriceHourExtra,
-                priceHourFestive = professionInClient.PriceHourFestive,
                 priceHourSaleOrdinary = professionInClient.PriceHourSaleOrdinary,
                 priceHourSaleExtra = professionInClient.PriceHourSaleExtra,
                 priceHourSaleFestive = professionInClient.PriceHourSaleFestive,
@@ -49,9 +46,6 @@
                     modifiedDate = professionInClient.ModifiedDate,
                     iPAddress = professionInClient.IPAddress,
 
-                    priceHourOrdinary = professionInClient.PriceHourOrdinary,
-                    priceHourExtra = professionInClient.PriceHourExtra,
-                    priceHourFestive = professionInClient.PriceHourFestive,
                     priceHourSaleOrdinary = professionInClient.PriceHourSaleOrdinary,
                     priceHourSaleExtra = professionInClient.PriceHourSaleExtra,
                     priceHourSaleFestive = professionInClient.PriceHourSaleFestive,
