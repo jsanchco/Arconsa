@@ -186,7 +186,7 @@ class Invoices extends Component {
                         />
                       </FormGroup>
                     </Col> */}
-                    <Col xs="4">
+                    <Col xs="4" style={{ marginLeft: "30px" }}>
                       <FormGroup>
                         <Label htmlFor="name">Obra</Label>
                         <DropDownListComponent
@@ -239,11 +239,13 @@ class Invoices extends Component {
                         />
                       </FormGroup>
                     </Col>
-                  </Row>
-                  <Row>
                     <Col
-                      xs="12"
-                      style={{ marginTop: "20px", textAlign: "right" }}
+                      xs="2"
+                      style={{
+                        marginTop: "20px",
+                        marginLeft: "-60px",
+                        textAlign: "right"
+                      }}
                     >
                       <div className="form-actions">
                         <Button color="primary" onClick={this.handleSubmit}>
