@@ -10,7 +10,7 @@ import {
   CLIENTS,
   UPDATEPASSWORD,
   UPDATEDATESWORK,
-  INVOICES,
+  INVOICERESPONSES,
   COMPANY_DATA,
   SETTINGS,
   RESTOREPASSWORD,
@@ -21,6 +21,7 @@ import {
 import store from "../store/store";
 import ACTION_AUTHENTICATION from "../actions/authenticationAction";
 import ACTION_APPLICATION from "../actions/applicationAction";
+import { INVOICES } from './../constants/index';
 
 export const TOKEN_KEY = "jwt";
 
@@ -699,9 +700,9 @@ export const getClients = () => {
   });
 };
 
-export const getInvoice = invoice => {
+export const getInvoiceResponse = invoice => {
   return new Promise((resolve, reject) => {
-    const url = `${config.URL_API}/${INVOICES}`;
+    const url = `${config.URL_API}/${INVOICERESPONSES}`;
     fetch(url, {
       headers: {
         Accept: "text/plain",
@@ -713,24 +714,35 @@ export const getInvoice = invoice => {
     })
       .then(data => data.json())
       .then(result => {
-        if (result.Message) {
+        if (result.title) {
           store.dispatch(
             ACTION_APPLICATION.showMessage({
-              statusText: result.Message,
-              responseText: result.Message,
+              statusText: result.title,
+              responseText: result.title,
               type: "danger"
             })
           );
           reject();
         } else {
-          store.dispatch(
-            ACTION_APPLICATION.showMessage({
-              statusText: "Facturada generada correctamente",
-              responseText: "Facturada generada correctamente",
-              type: "success"
-            })
-          );
-          resolve(result.Items);
+          if (result.Message) {
+            store.dispatch(
+              ACTION_APPLICATION.showMessage({
+                statusText: result.Message,
+                responseText: result.Message,
+                type: "danger"
+              })
+            );
+            reject();
+          } else {
+            store.dispatch(
+              ACTION_APPLICATION.showMessage({
+                statusText: "Facturada generada correctamente",
+                responseText: "Facturada generada correctamente",
+                type: "success"
+              })
+            );
+            resolve(result.Items);
+          }
         }
       })
       .catch(error => {
@@ -824,6 +836,47 @@ export const updateSettings = setting => {
             })
           );
           resolve();
+        }
+      })
+      .catch(error => {
+        console.log("error ->", error);
+        store.dispatch(
+          ACTION_APPLICATION.showMessage({
+            statusText: error,
+            responseText: error,
+            type: "danger"
+          })
+        );
+        reject();
+      });
+  });
+};
+
+export const updateInvoice = invoice => {
+  return new Promise((resolve, reject) => {
+    const url = `${config.URL_API}/${INVOICES}`;
+    fetch(url, {
+      headers: {
+        Accept: "text/plain",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`
+      },
+      method: "POST"
+    })
+      .then(data => data.json())
+      .then(result => {
+        if (result.Message) {
+          console.log("error ->", result.Message);
+          store.dispatch(
+            ACTION_APPLICATION.showMessage({
+              statusText: result.Message,
+              responseText: result.Message,
+              type: "danger"
+            })
+          );
+          reject();
+        } else {
+          resolve(result);
         }
       })
       .catch(error => {

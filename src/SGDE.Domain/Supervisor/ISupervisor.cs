@@ -170,9 +170,9 @@ namespace SGDE.Domain.Supervisor
 
         #endregion
 
-        #region Invoice
+        #region InvoiceResponse
 
-        InvoiceViewModel GetInvoice(InvoiceQueryViewModel invoiceQueryViewModel);
+        InvoiceResponseViewModel GetInvoice(InvoiceQueryViewModel invoiceQueryViewModel);
 
         #endregion
 
@@ -214,6 +214,16 @@ namespace SGDE.Domain.Supervisor
         CostWorkerViewModel AddCostWorker(CostWorkerViewModel newCostWorkerViewModel);
         bool UpdateCostWorker(CostWorkerViewModel costWorkerViewModel);
         bool DeleteCostWorker(int id);
+
+        #endregion
+
+        #region Invoice
+
+        QueryResult<InvoiceViewModel> GetAllInvoice(int skip = 0, int take = 0, string filter = null, int workId = 0, int clientId = 0);
+        InvoiceViewModel GetInvoiceById(int id);
+        InvoiceViewModel AddInvoice(InvoiceViewModel newInvoiceViewModel);
+        bool UpdateInvoice(InvoiceViewModel invoiceViewModel);
+        bool DeleteInvoice(int id);
 
         #endregion
     }

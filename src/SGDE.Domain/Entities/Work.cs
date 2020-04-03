@@ -24,5 +24,6 @@
         public virtual ICollection<User> WorkResponsibles { get; set; } = new HashSet<User>();
         public virtual ICollection<UserHiring> UserHirings { get; set; } = new HashSet<UserHiring>();
         public virtual ICollection<DailySigning> DailySignings { get; set; } = new HashSet<DailySigning>();
+        public virtual ICollection<Invoice> Invoices { get; set; } = new HashSet<Invoice>();
     }
 }

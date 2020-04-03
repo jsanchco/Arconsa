@@ -10,7 +10,12 @@ import {
   showSpinner,
   hideSpinner
 } from "@syncfusion/ej2-popups";
-import { getInvoice, base64ToArrayBuffer, saveByteArray } from "../../services";
+import {
+  getInvoiceResponse,
+  base64ToArrayBuffer,
+  saveByteArray
+} from "../../services";
+import GridInvoice from "../../components/grid-invoices";
 
 class Invoices extends Component {
   constructor(props) {
@@ -23,7 +28,8 @@ class Invoices extends Component {
       issueDate: null,
       typeInvoice: 1,
       clientId: null,
-      workId: null
+      workId: null,
+      updateGrid: null
     };
 
     this.ddl = null;
@@ -37,12 +43,24 @@ class Invoices extends Component {
     this.handleDate = this.handleDate.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.formatDate = this.formatDate.bind(this);
-    this.getDataInvoice = this.getDataInvoice.bind(this);
+    this.getDataInvoiceResponse = this.getDataInvoiceResponse.bind(this);
+  }
+
+  getDataInvoiceResponse() {
+    return {
+      invoiceNumber: this.state.invoiceNumber,
+      startDate: this.state.startDate,
+      endDate: this.state.endDate,
+      issueDate: this.state.issueDate,
+      typeInvoice: this.state.typeInvoice,
+      clientId: this.state.clientId,
+      workId: this.state.workId
+    };
   }
 
   getDataInvoice() {
     return {
-      invoiceNumber: this.state.invoiceNumber,
+      name: this.state.invoiceNumber,
       startDate: this.state.startDate,
       endDate: this.state.endDate,
       issueDate: this.state.issueDate,
@@ -72,14 +90,16 @@ class Invoices extends Component {
     this.setState({
       [name]: this.formatDate(event.value)
     });
-  }  
+  }
 
   formatDate(args) {
     if (args === null || args === "") {
       return "";
     }
 
-    const day = args.getDate();
+    let day = args.getDate();
+    if (day < 10) day = "0" + day;
+
     const month = args.getMonth() + 1;
     const year = args.getFullYear();
 
@@ -116,11 +136,15 @@ class Invoices extends Component {
       target: element
     });
     showSpinner(element);
-    getInvoice(this.getDataInvoice())
+
+    const data = this.getDataInvoiceResponse();
+    getInvoiceResponse(data)
       .then(result => {
         const fileArr = base64ToArrayBuffer(result.file);
         saveByteArray(result.fileName, fileArr, result.typeFile);
         hideSpinner(element);
+
+        this.setState({ updateGrid: Math.random() });
       })
       .catch(error => {
         hideSpinner(element);
@@ -148,7 +172,7 @@ class Invoices extends Component {
               <div className="card-body">
                 <Form>
                   <Row>
-                    <Col xs="3">
+                    {/* <Col xs="3">
                       <FormGroup>
                         <Label htmlFor="name">Nº Factura</Label>
                         <Input
@@ -161,8 +185,8 @@ class Invoices extends Component {
                           onChange={this.handleInputChange}
                         />
                       </FormGroup>
-                    </Col>
-                    <Col xs="3">
+                    </Col> */}
+                    <Col xs="4">
                       <FormGroup>
                         <Label htmlFor="name">Obra</Label>
                         <DropDownListComponent
@@ -226,6 +250,16 @@ class Invoices extends Component {
                           Generar Factura
                         </Button>
                       </div>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col xs="12" style={{ marginTop: "60px" }}>
+                      <GridInvoice
+                        clientId={null}
+                        workId={null}
+                        update={this.state.updateGrid}
+                        showMessage={this.props.showMessage}
+                      />
                     </Col>
                   </Row>
                 </Form>

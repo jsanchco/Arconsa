@@ -17,13 +17,14 @@ export const DAILYSIGNINGS = "api/dailysignings";
 export const REPORTS = "api/Reports";
 export const AUTHENTICATE = "api/Users/authenticate";
 export const UPDATEPASSWORD = "api/Users/updatepassword";
-export const INVOICES = "api/Invoices";
+export const INVOICERESPONSES = "api/InvoiceResponses";
 export const SETTINGS = "api/Settings";
 export const HOURTYPES = "api/HourTypes";
 export const PROFESSIONINCLIENTS = "api/ProfessionInClients";
 export const RESTOREPASSWORD = "api/Users/restorepassword";
 export const MASSIVESIGNING = "api/dailysignings/massivesigning";
 export const REMOVEALLDAILYSIGNING = "api/dailysignings/removeall";
+export const INVOICES = "api/Invoices";
 export const COMPANY_DATA = "COMPANY_DATA";
 
 const dev = {

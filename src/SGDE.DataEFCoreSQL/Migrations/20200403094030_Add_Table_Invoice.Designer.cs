@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SGDE.DataEFCoreSQL;
 
 namespace SGDE.DataEFCoreSQL.Migrations
 {
     [DbContext(typeof(EFContextSQL))]
-    partial class EFContextSQLModelSnapshot : ModelSnapshot
+    [Migration("20200403094030_Add_Table_Invoice")]
+    partial class Add_Table_Invoice
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -209,9 +211,6 @@ namespace SGDE.DataEFCoreSQL.Migrations
 
                     b.Property<string>("IPAddress")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("InvoiceNumber")
-                        .HasColumnType("int");
 
                     b.Property<decimal>("Iva")
                         .HasColumnType("decimal(18,2)");

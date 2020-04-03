@@ -95,7 +95,6 @@
             _context.Client.Remove(toRemove);
             _context.SaveChanges();
             return true;
-
         }
     }
 }
