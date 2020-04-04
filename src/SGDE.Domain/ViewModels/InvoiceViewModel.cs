@@ -12,9 +12,9 @@
         public string name { get; set; }
         public string startDate { get; set; }
         public string endDate { get; set; }
-        public Decimal taxBase { get; set; }
-        public Decimal iva { get; set; }
-        public Decimal total { get; set; }
+        public double taxBase { get; set; }
+        public double iva { get; set; }
+        public double total { get; set; }
         public Decimal retentions { get; set; }
 
         public int workId { get; set; }

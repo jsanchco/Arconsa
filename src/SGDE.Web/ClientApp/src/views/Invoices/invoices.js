@@ -171,7 +171,7 @@ class Invoices extends Component {
               </div>
               <div className="card-body">
                 <Form>
-                  <Row>
+                  <Row style={{marginLeft: "20px", marginRight: "20px"}}>
                     {/* <Col xs="3">
                       <FormGroup>
                         <Label htmlFor="name">Nº Factura</Label>
@@ -186,7 +186,7 @@ class Invoices extends Component {
                         />
                       </FormGroup>
                     </Col> */}
-                    <Col xs="4" style={{ marginLeft: "30px" }}>
+                    <Col xs="4">
                       <FormGroup>
                         <Label htmlFor="name">Obra</Label>
                         <DropDownListComponent
@@ -243,7 +243,6 @@ class Invoices extends Component {
                       xs="2"
                       style={{
                         marginTop: "20px",
-                        marginLeft: "-60px",
                         textAlign: "right"
                       }}
                     >

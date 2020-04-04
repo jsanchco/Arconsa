@@ -42,7 +42,8 @@
                         .AddScoped<IProfessionInClientRepository, DataEFCoreSQL.Repositories.ProfessionInClientRepository>()
                         .AddScoped<IHourTypeRepository, DataEFCoreSQL.Repositories.HourTypeRepository>()
                         .AddScoped<ICostWorkerRepository, DataEFCoreSQL.Repositories.CostWorkerRepository>()
-                        .AddScoped<IInvoiceRepository, DataEFCoreSQL.Repositories.InvoiceRepository>();
+                        .AddScoped<IInvoiceRepository, DataEFCoreSQL.Repositories.InvoiceRepository>()
+                        .AddScoped<IDetailInvoiceRepository, DataEFCoreSQL.Repositories.DetailInvoiceRepository>();
                     break;
                 case "MySQL":
                     services
@@ -62,7 +63,8 @@
                         .AddScoped<IProfessionInClientRepository, DataEFCoreMySQL.Repositories.ProfessionInClientRepository>()
                         .AddScoped<IHourTypeRepository, DataEFCoreMySQL.Repositories.HourTypeRepository>()
                         .AddScoped<ICostWorkerRepository, DataEFCoreMySQL.Repositories.CostWorkerRepository>()
-                        .AddScoped<IInvoiceRepository, DataEFCoreMySQL.Repositories.InvoiceRepository>();
+                        .AddScoped<IInvoiceRepository, DataEFCoreMySQL.Repositories.InvoiceRepository>()
+                        .AddScoped<IDetailInvoiceRepository, DataEFCoreMySQL.Repositories.DetailInvoiceRepository>();
                     break;
 
                 default:
@@ -82,7 +84,8 @@
                         .AddScoped<IProfessionInClientRepository, DataEFCoreMySQL.Repositories.ProfessionInClientRepository>()
                         .AddScoped<IHourTypeRepository, DataEFCoreMySQL.Repositories.HourTypeRepository>()
                         .AddScoped<ICostWorkerRepository, DataEFCoreMySQL.Repositories.CostWorkerRepository>()
-                        .AddScoped<IInvoiceRepository, DataEFCoreMySQL.Repositories.InvoiceRepository>();
+                        .AddScoped<IInvoiceRepository, DataEFCoreMySQL.Repositories.InvoiceRepository>()
+                        .AddScoped<IDetailInvoiceRepository, DataEFCoreMySQL.Repositories.DetailInvoiceRepository>();
                     break;
             }
 

@@ -6,6 +6,7 @@
     using System.Linq;
     using Entities;
     using ViewModels;
+    using System;
 
     #endregion
 
@@ -27,9 +28,9 @@
                 name = invoice.Name,
                 startDate = invoice.StartDate.ToString("dd/MM/yyyy"),
                 endDate = invoice.EndDate.ToString("dd/MM/yyyy"),
-                taxBase = invoice.TaxBase,
-                iva = invoice.Iva,
-                total = invoice.Total,
+                taxBase = System.Convert.ToDouble(invoice.TaxBase),
+                iva = System.Convert.ToDouble(invoice.Iva),
+                total = System.Convert.ToDouble(invoice.Total),
                 retentions = invoice.Retentions,
                 workId = invoice.WorkId,
                 workName = invoice.Work.Name,
@@ -55,9 +56,9 @@
                     name = invoice.Name,
                     startDate = invoice.StartDate.ToString("dd/MM/yyyy"),
                     endDate = invoice.EndDate.ToString("dd/MM/yyyy"),
-                    taxBase = invoice.TaxBase,
-                    iva = invoice.Iva,
-                    total = invoice.Total,
+                    taxBase = System.Convert.ToDouble(invoice.TaxBase),
+                    iva = System.Convert.ToDouble(invoice.Iva),
+                    total = System.Convert.ToDouble(invoice.Total),
                     retentions = invoice.Retentions,
                     workId = invoice.WorkId,
                     workName = invoice.Work.Name,

@@ -8,6 +8,7 @@ namespace SGDE.Domain.Supervisor
     using System.Threading.Tasks;
     using ViewModels;
     using Domain.Helpers;
+    using SGDE.Domain.Entities;
 
     #endregion
 
@@ -224,6 +225,26 @@ namespace SGDE.Domain.Supervisor
         InvoiceViewModel AddInvoice(InvoiceViewModel newInvoiceViewModel);
         bool UpdateInvoice(InvoiceViewModel invoiceViewModel);
         bool DeleteInvoice(int id);
+
+        #endregion
+
+        #region DetailInvoice
+
+        List<DetailInvoiceViewModel> GetAllDetailInvoice();
+        DetailInvoiceViewModel GetDetailInvoiceById(int id);
+        DetailInvoiceViewModel AddDetailInvoice(DetailInvoiceViewModel newDetailInvoiceViewModel);
+        bool UpdateDetailInvoice(DetailInvoiceViewModel detailInvoiceViewModel);
+        bool DeleteDetailInvoice(int id);
+
+        #endregion
+
+        #region Others
+
+        Client GetClient(int clientId);
+
+        Work GetWork(int workId);
+
+        User GetWorker(int userId);
 
         #endregion
     }

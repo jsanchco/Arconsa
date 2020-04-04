@@ -3,6 +3,7 @@
     #region Using
 
     using System;
+    using System.Collections.Generic;
 
     #endregion
 
@@ -19,5 +20,7 @@
 
         public int WorkId { get; set; }
         public virtual Work Work { get; set; }
+
+        public virtual ICollection<DetailInvoice> DetailsInvoice { get; set; } = new HashSet<DetailInvoice>();
     }
 }

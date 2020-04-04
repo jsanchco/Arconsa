@@ -165,7 +165,7 @@
                 BorderWidthBottom = 0
             };
             pdfPTable.AddCell(pdfCell);
-            pdfCell = new PdfPCell(new Phrase(invoiceQueryViewModel.invoiceNumber, _STANDARFONT_10_BOLD))
+            pdfCell = new PdfPCell(new Phrase("NUMERO_FACTURA", _STANDARFONT_10_BOLD)) // CAMBIAR!!!!!
             {
                 BackgroundColor = new BaseColor(204, 204, 255),
                 BorderWidthLeft = 0,
@@ -382,7 +382,7 @@
                 var priceUnity = GetPriceHourSale(work.Client, (int)itemByProfession.HourTypeId, (int)itemByProfession.ProfessionId);
                 double priceTotal = (double)priceUnity * (double)itemByProfession.Hours;
                 var professionName = itemByProfession.ProfessionName;
-                InvoiceViewModel.taxBase += Convert.ToDecimal(priceTotal);
+                InvoiceViewModel.taxBase += priceTotal;
 
                 var title = $"{itemByProfession.HourTypeName.ToString().ToUpper()} {professionName}";
                 var pdfCell = new PdfPCell(new Phrase(title, _STANDARFONT_10))
@@ -507,12 +507,12 @@
             pdfCell = new PdfPCell(new Phrase(" ", _STANDARFONT_10)) { BorderWidth = 0 };
             pdfPTable.AddCell(pdfCell);
 
-            InvoiceViewModel.iva = Convert.ToDecimal(Math.Round(Convert.ToDouble(InvoiceViewModel.taxBase) * 0.21, 2));
+            InvoiceViewModel.iva = Math.Round(InvoiceViewModel.taxBase * 0.21, 2);
             if (!work.passiveSubject)
             {
                 pdfCell = new PdfPCell(new Phrase("I.V.A.", _STANDARFONT_10_BOLD_CUSTOMCOLOR)) { BorderWidth = 0 };
                 pdfPTable.AddCell(pdfCell);
-                pdfCell = new PdfPCell(new Phrase($"{Convert.ToDouble(InvoiceViewModel.iva).ToFormatSpain()} €", _STANDARFONT_10)) { BorderWidth = 0, HorizontalAlignment = Element.ALIGN_RIGHT };
+                pdfCell = new PdfPCell(new Phrase($"{InvoiceViewModel.iva.ToFormatSpain()} €", _STANDARFONT_10)) { BorderWidth = 0, HorizontalAlignment = Element.ALIGN_RIGHT };
                 pdfPTable.AddCell(pdfCell);
                 pdfCell = new PdfPCell(new Phrase(" ", _STANDARFONT_10)) { BorderWidth = 0 };
                 pdfPTable.AddCell(pdfCell);
@@ -538,7 +538,7 @@
 
             pdfCell = new PdfPCell(new Phrase("Total Factura", _STANDARFONT_10_BOLD_CUSTOMCOLOR)) { BorderWidth = 0 };
             pdfPTable.AddCell(pdfCell);
-            InvoiceViewModel.total = Convert.ToDecimal(Math.Round(Convert.ToDouble(InvoiceViewModel.iva) + Convert.ToDouble(InvoiceViewModel.taxBase), 2).ToFormatSpain());
+            InvoiceViewModel.total = Math.Round(InvoiceViewModel.iva + InvoiceViewModel.taxBase, 2);
             pdfCell = new PdfPCell(new Phrase($"{InvoiceViewModel.total} €", _STANDARFONT_10)) { BorderWidth = 0, HorizontalAlignment = Element.ALIGN_RIGHT };
             pdfPTable.AddCell(pdfCell);
             pdfCell = new PdfPCell(new Phrase(" ", _STANDARFONT_10)) { BorderWidth = 0 };

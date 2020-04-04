@@ -42,9 +42,9 @@
                 Name = newInvoiceViewModel.name,
                 StartDate = DateTime.ParseExact(newInvoiceViewModel.startDate, "dd/MM/yyyy", null),
                 EndDate = DateTime.ParseExact(newInvoiceViewModel.endDate, "dd/MM/yyyy", null),
-                TaxBase = newInvoiceViewModel.taxBase,
-                Iva = newInvoiceViewModel.iva,
-                Total = newInvoiceViewModel.total,
+                TaxBase =  System.Convert.ToDecimal(newInvoiceViewModel.taxBase),
+                Iva = System.Convert.ToDecimal(newInvoiceViewModel.iva),
+                Total = System.Convert.ToDecimal(newInvoiceViewModel.total),
                 Retentions = newInvoiceViewModel.retentions,
                 WorkId = newInvoiceViewModel.workId
             };
@@ -85,9 +85,9 @@
             invoice.Name = invoiceViewModel.name;
             invoice.StartDate = DateTime.ParseExact(invoiceViewModel.startDate, "dd/MM/yyyy", null);
             invoice.EndDate = DateTime.ParseExact(invoiceViewModel.endDate, "dd/MM/yyyy", null);
-            invoice.TaxBase = invoiceViewModel.taxBase;
-            invoice.Iva = invoiceViewModel.iva;
-            invoice.Total = invoiceViewModel.total;
+            invoice.TaxBase = System.Convert.ToDecimal(invoiceViewModel.taxBase);
+            invoice.Iva = System.Convert.ToDecimal(invoiceViewModel.iva);
+            invoice.Total = System.Convert.ToDecimal(invoiceViewModel.total);
             invoice.Retentions = invoiceViewModel.retentions;
             invoice.WorkId = invoiceViewModel.workId;
 
