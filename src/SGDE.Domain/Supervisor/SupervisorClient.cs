@@ -32,7 +32,7 @@
 
         public ClientViewModel AddClient(ClientViewModel newClientViewModel)
         {
-            var builder = new Client
+            var client = new Client
             {
                 AddedDate = DateTime.Now,
                 ModifiedDate = null,
@@ -46,7 +46,7 @@
                 AccountNumber = newClientViewModel.accountNumber
             };
 
-            _clientRepository.Add(builder);
+            _clientRepository.Add(client);
             return newClientViewModel;
         }
 

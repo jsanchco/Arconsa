@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SGDE.DataEFCoreSQL;
 
 namespace SGDE.DataEFCoreSQL.Migrations
 {
     [DbContext(typeof(EFContextSQL))]
-    partial class EFContextSQLModelSnapshot : ModelSnapshot
+    [Migration("20200404114702_Modify_Tables_DetailInvoice_Invoice")]
+    partial class Modify_Tables_DetailInvoice_Invoice
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -188,9 +190,6 @@ namespace SGDE.DataEFCoreSQL.Migrations
                     b.Property<DateTime?>("ModifiedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("NameUnit")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<decimal>("PriceUnity")
                         .HasColumnType("decimal(18,2)");
 
@@ -258,8 +257,8 @@ namespace SGDE.DataEFCoreSQL.Migrations
                     b.Property<DateTime>("IssueDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("Iva")
-                        .HasColumnType("bit");
+                    b.Property<decimal>("Iva")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime?>("ModifiedDate")
                         .HasColumnType("datetime2");
@@ -275,6 +274,9 @@ namespace SGDE.DataEFCoreSQL.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<decimal>("TaxBase")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("Total")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<int?>("UserId")

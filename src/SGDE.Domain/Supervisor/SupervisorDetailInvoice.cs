@@ -37,7 +37,8 @@
                 InvoiceId = newDetailInvoiceViewModel.invoiceId,
                 ServicesPerformed = newDetailInvoiceViewModel.servicesPerformed,
                 Units = (decimal)newDetailInvoiceViewModel.units,
-                PriceUnity = (decimal)newDetailInvoiceViewModel.priceUnity
+                PriceUnity = (decimal)newDetailInvoiceViewModel.priceUnity,
+                NameUnit = newDetailInvoiceViewModel.nameUnit
             };
 
             _detailInvoiceRepository.Add(detailInvoice);
@@ -60,6 +61,7 @@
             detailInvoice.ServicesPerformed = detailInvoiceViewModel.servicesPerformed;
             detailInvoice.Units = (decimal)detailInvoiceViewModel.units;
             detailInvoice.PriceUnity = (decimal)detailInvoiceViewModel.priceUnity;
+            detailInvoice.NameUnit = detailInvoiceViewModel.nameUnit;
 
             return _detailInvoiceRepository.Update(detailInvoice);
         }

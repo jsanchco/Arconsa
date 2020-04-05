@@ -42,31 +42,52 @@
                 Name = newInvoiceViewModel.name,
                 StartDate = DateTime.ParseExact(newInvoiceViewModel.startDate, "dd/MM/yyyy", null),
                 EndDate = DateTime.ParseExact(newInvoiceViewModel.endDate, "dd/MM/yyyy", null),
-                TaxBase =  System.Convert.ToDecimal(newInvoiceViewModel.taxBase),
-                Iva = System.Convert.ToDecimal(newInvoiceViewModel.iva),
-                Total = System.Convert.ToDecimal(newInvoiceViewModel.total),
+                IssueDate = DateTime.ParseExact(newInvoiceViewModel.issueDate, "dd/MM/yyyy", null),
+                TaxBase = (decimal)newInvoiceViewModel.taxBase,
+                Iva = newInvoiceViewModel.iva,
                 Retentions = newInvoiceViewModel.retentions,
-                WorkId = newInvoiceViewModel.workId
+                WorkId = newInvoiceViewModel.workId,
+                ClientId = newInvoiceViewModel.clientId,
+                UserId = newInvoiceViewModel.userId
             };
 
-            var checkInvoice = _invoiceRepository.CheckInvoice(invoice);
-            if (checkInvoice == null)
-                _invoiceRepository.Add(invoice);
-
-            if (checkInvoice != null && checkInvoice != 0)
-            {
-                var updateInvoice =_invoiceRepository.GetById((int)checkInvoice);
-                updateInvoice.ModifiedDate = DateTime.Now;
-                updateInvoice.TaxBase = invoice.TaxBase;
-                updateInvoice.Iva = invoice.Iva;
-                updateInvoice.Total = invoice.Total;
-                updateInvoice.Retentions = invoice.Retentions;
-                updateInvoice.WorkId = invoice.WorkId;
-
-                _invoiceRepository.Update(updateInvoice);
-            }
-
+            _invoiceRepository.Add(invoice);
             return newInvoiceViewModel;
+        }
+
+        public Invoice AddInvoiceFromQuery(InvoiceQueryViewModel invoiceQueryViewModel)
+        {
+            var invoice = new Invoice
+            {
+                AddedDate = DateTime.Now,
+                ModifiedDate = null,
+
+                StartDate = DateTime.ParseExact(invoiceQueryViewModel.startDate, "dd/MM/yyyy", null),
+                EndDate = DateTime.ParseExact(invoiceQueryViewModel.endDate, "dd/MM/yyyy", null),
+                IssueDate = DateTime.ParseExact(invoiceQueryViewModel.issueDate, "dd/MM/yyyy", null),
+                WorkId = invoiceQueryViewModel.workId,
+                ClientId = invoiceQueryViewModel.clientId,
+                UserId = invoiceQueryViewModel.workerId
+            };
+
+            var taxBase = 0.0;
+            foreach(var detailInvoice in invoiceQueryViewModel.detailInvoice)
+            {
+                invoice.DetailsInvoice.Add(new DetailInvoice
+                {
+                    AddedDate = DateTime.Now,
+                    ModifiedDate = null,
+
+                    ServicesPerformed = detailInvoice.servicesPerformed,
+                    Units = (decimal)detailInvoice.units,
+                    PriceUnity = (decimal)detailInvoice.priceUnity,
+                    NameUnit = detailInvoice.nameUnit
+                });
+                taxBase += detailInvoice.units * detailInvoice.priceUnity;
+            }
+            invoice.TaxBase = (decimal)taxBase;
+
+            return _invoiceRepository.AddInvoiceFromQuery(invoice);
         }
 
         public bool UpdateInvoice(InvoiceViewModel invoiceViewModel)
@@ -85,11 +106,13 @@
             invoice.Name = invoiceViewModel.name;
             invoice.StartDate = DateTime.ParseExact(invoiceViewModel.startDate, "dd/MM/yyyy", null);
             invoice.EndDate = DateTime.ParseExact(invoiceViewModel.endDate, "dd/MM/yyyy", null);
-            invoice.TaxBase = System.Convert.ToDecimal(invoiceViewModel.taxBase);
-            invoice.Iva = System.Convert.ToDecimal(invoiceViewModel.iva);
-            invoice.Total = System.Convert.ToDecimal(invoiceViewModel.total);
+            invoice.IssueDate = DateTime.ParseExact(invoiceViewModel.issueDate, "dd/MM/yyyy", null);
+            invoice.TaxBase = (decimal)invoiceViewModel.taxBase;
+            invoice.Iva = invoiceViewModel.iva;
             invoice.Retentions = invoiceViewModel.retentions;
             invoice.WorkId = invoiceViewModel.workId;
+            invoice.ClientId = invoiceViewModel.clientId;
+            invoice.UserId = invoiceViewModel.userId;
 
             return _invoiceRepository.Update(invoice);
         }

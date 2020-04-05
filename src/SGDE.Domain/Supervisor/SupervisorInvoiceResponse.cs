@@ -38,36 +38,54 @@
 
         public InvoiceResponseViewModel GetInvoice(InvoiceQueryViewModel invoiceQueryViewModel)
         {
-            var invoiceResponseViewModel = new InvoiceResponseViewModel
-            {
-                typeFile = "application/pdf",
-                data = new InvoiceViewModel
-                {
-                    startDate = invoiceQueryViewModel.startDate,
-                    endDate = invoiceQueryViewModel.endDate
-                }
-            };
-            SetInvoiceName(invoiceResponseViewModel);
-            invoiceResponseViewModel.fileName = $"Fact_{invoiceResponseViewModel.data.name.Replace("/", "_")}.pdf";
-
+            GenerateInvoice generateInvoice;
             switch (invoiceQueryViewModel.typeInvoice)
             {
                 case 1:
-                    invoiceResponseViewModel.file = GetInvoiceType1(invoiceQueryViewModel);
+                    generateInvoice = new GenerateInvoiceByWork(this, invoiceQueryViewModel);
+                    break;
+                case 2:
+                    generateInvoice = new GenerateInvoiceCustom(this, invoiceQueryViewModel);
                     break;
 
                 default:
-                    invoiceResponseViewModel.file = GetInvoiceType1(invoiceQueryViewModel);
+                    generateInvoice = new GenerateInvoiceByWork(this, invoiceQueryViewModel);
                     break;
             }
-            invoiceResponseViewModel.data.taxBase = InvoiceViewModel.taxBase;
-            invoiceResponseViewModel.data.iva = InvoiceViewModel.iva;
-            invoiceResponseViewModel.data.total = InvoiceViewModel.total;
-            invoiceResponseViewModel.data.workId = (int)invoiceQueryViewModel.workId;
 
-            AddInvoice(invoiceResponseViewModel.data);
+            generateInvoice.Process();
+            return generateInvoice._invoiceResponseViewModel;
 
-            return invoiceResponseViewModel;
+            //var invoiceResponseViewModel = new InvoiceResponseViewModel
+            //{
+            //    typeFile = "application/pdf",
+            //    data = new InvoiceViewModel
+            //    {
+            //        startDate = invoiceQueryViewModel.startDate,
+            //        endDate = invoiceQueryViewModel.endDate
+            //    }
+            //};
+            //SetInvoiceName(invoiceResponseViewModel);
+            //invoiceResponseViewModel.fileName = $"Fact_{invoiceResponseViewModel.data.name.Replace("/", "_")}.pdf";
+
+            //switch (invoiceQueryViewModel.typeInvoice)
+            //{
+            //    case 1:
+            //        invoiceResponseViewModel.file = GetInvoiceType1(invoiceQueryViewModel);
+            //        break;
+
+            //    default:
+            //        invoiceResponseViewModel.file = GetInvoiceType1(invoiceQueryViewModel);
+            //        break;
+            //}
+            //invoiceResponseViewModel.data.taxBase = InvoiceViewModel.taxBase;
+            //invoiceResponseViewModel.data.iva = InvoiceViewModel.iva;
+            ////invoiceResponseViewModel.data.total = InvoiceViewModel.total;
+            //invoiceResponseViewModel.data.workId = (int)invoiceQueryViewModel.workId;
+
+            //AddInvoice(invoiceResponseViewModel.data);
+
+            //return invoiceResponseViewModel;
         }
 
         private byte[] GetInvoiceType1(InvoiceQueryViewModel invoiceQueryViewModel)
@@ -88,7 +106,6 @@
                 var jsonCompanyData = JObject.Parse(companyData.data);
 
                 var pdf = new Document(PageSize.Letter);
-                Directory.CreateDirectory(Directory.GetCurrentDirectory() + "\\assets\\pdf");
                 var memoryStream = new MemoryStream();
                 var pdfWriter = PdfWriter.GetInstance(pdf, memoryStream);
 
@@ -507,13 +524,13 @@
             pdfCell = new PdfPCell(new Phrase(" ", _STANDARFONT_10)) { BorderWidth = 0 };
             pdfPTable.AddCell(pdfCell);
 
-            InvoiceViewModel.iva = Math.Round(InvoiceViewModel.taxBase * 0.21, 2);
+            //InvoiceViewModel.iva = Math.Round(InvoiceViewModel.taxBase * 0.21, 2);
             if (!work.passiveSubject)
             {
                 pdfCell = new PdfPCell(new Phrase("I.V.A.", _STANDARFONT_10_BOLD_CUSTOMCOLOR)) { BorderWidth = 0 };
                 pdfPTable.AddCell(pdfCell);
-                pdfCell = new PdfPCell(new Phrase($"{InvoiceViewModel.iva.ToFormatSpain()} €", _STANDARFONT_10)) { BorderWidth = 0, HorizontalAlignment = Element.ALIGN_RIGHT };
-                pdfPTable.AddCell(pdfCell);
+                //pdfCell = new PdfPCell(new Phrase($"{InvoiceViewModel.iva.ToFormatSpain()} €", _STANDARFONT_10)) { BorderWidth = 0, HorizontalAlignment = Element.ALIGN_RIGHT };
+                //pdfPTable.AddCell(pdfCell);
                 pdfCell = new PdfPCell(new Phrase(" ", _STANDARFONT_10)) { BorderWidth = 0 };
                 pdfPTable.AddCell(pdfCell);
                 pdfCell = new PdfPCell(new Phrase(" ", _STANDARFONT_10)) { BorderWidth = 0 };
@@ -523,7 +540,7 @@
             }
             else
             {
-                InvoiceViewModel.iva = 0;
+                //InvoiceViewModel.iva = 0;
                 //pdfCell = new PdfPCell(new Phrase("", _STANDARFONT_10_BOLD_CUSTOMCOLOR)) { BorderWidth = 0 };
                 //pdfPTable.AddCell(pdfCell);
                 //pdfCell = new PdfPCell(new Phrase("", _STANDARFONT_10)) { BorderWidth = 0, HorizontalAlignment = Element.ALIGN_RIGHT };
@@ -538,7 +555,7 @@
 
             pdfCell = new PdfPCell(new Phrase("Total Factura", _STANDARFONT_10_BOLD_CUSTOMCOLOR)) { BorderWidth = 0 };
             pdfPTable.AddCell(pdfCell);
-            InvoiceViewModel.total = Math.Round(InvoiceViewModel.iva + InvoiceViewModel.taxBase, 2);
+            //InvoiceViewModel.total = Math.Round(InvoiceViewModel.iva + InvoiceViewModel.taxBase, 2);
             pdfCell = new PdfPCell(new Phrase($"{InvoiceViewModel.total} €", _STANDARFONT_10)) { BorderWidth = 0, HorizontalAlignment = Element.ALIGN_RIGHT };
             pdfPTable.AddCell(pdfCell);
             pdfCell = new PdfPCell(new Phrase(" ", _STANDARFONT_10)) { BorderWidth = 0 };

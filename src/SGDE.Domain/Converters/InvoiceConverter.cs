@@ -28,15 +28,27 @@
                 name = invoice.Name,
                 startDate = invoice.StartDate.ToString("dd/MM/yyyy"),
                 endDate = invoice.EndDate.ToString("dd/MM/yyyy"),
-                taxBase = System.Convert.ToDouble(invoice.TaxBase),
-                iva = System.Convert.ToDouble(invoice.Iva),
-                total = System.Convert.ToDouble(invoice.Total),
+                issueDate = invoice.IssueDate.ToString("dd/MM/yyyy"),
+                taxBase = (double)invoice.TaxBase,
+                iva = invoice.Iva,
                 retentions = invoice.Retentions,
                 workId = invoice.WorkId,
                 workName = invoice.Work.Name,
-                clientId = invoice.Work.ClientId,
-                clientName = invoice.Work.Client.Name
+                clientId = invoice.ClientId == null ? invoice.Work.ClientId : invoice.Client.Id,
+                clientName = invoice.ClientId == null ? invoice.Work.Client.Name : invoice.Client.Name,
+                userId = invoice.UserId,
+                userName = invoice.UserId == null ? null : $"{invoice.User.Name} {invoice.User.Surname}"
             };
+            if (invoice.Iva == true)
+            {
+                invoiceViewModel.ivaTaxBase = Math.Round(invoiceViewModel.taxBase * 0.21, 2);
+                invoiceViewModel.total = Math.Round(invoiceViewModel.taxBase + invoiceViewModel.ivaTaxBase);
+            }
+            else
+            {
+                invoiceViewModel.ivaTaxBase = 0;
+                invoiceViewModel.total = Math.Round(invoiceViewModel.taxBase);
+            }
 
             return invoiceViewModel;
         }
@@ -56,15 +68,28 @@
                     name = invoice.Name,
                     startDate = invoice.StartDate.ToString("dd/MM/yyyy"),
                     endDate = invoice.EndDate.ToString("dd/MM/yyyy"),
-                    taxBase = System.Convert.ToDouble(invoice.TaxBase),
-                    iva = System.Convert.ToDouble(invoice.Iva),
-                    total = System.Convert.ToDouble(invoice.Total),
+                    issueDate = invoice.IssueDate.ToString("dd/MM/yyyy"),
+                    taxBase = (double)invoice.TaxBase,
+                    iva = invoice.Iva,
                     retentions = invoice.Retentions,
                     workId = invoice.WorkId,
                     workName = invoice.Work.Name,
-                    clientId = invoice.Work.ClientId,
-                    clientName = invoice.Work.Client.Name
+                    clientId = invoice.ClientId == null ? invoice.Work.ClientId : invoice.Client.Id,
+                    clientName = invoice.ClientId == null ? invoice.Work.Client.Name : invoice.Client.Name,
+                    userId = invoice.UserId,
+                    userName = invoice.UserId == null ? null : $"{invoice.User.Name} {invoice.User.Surname}"
                 };
+                if (invoice.Iva == true)
+                {
+                    model.ivaTaxBase = Math.Round(model.taxBase * 0.21, 2);
+                    model.total = Math.Round(model.taxBase + model.ivaTaxBase, 2);
+                }
+                else
+                {
+                    model.ivaTaxBase = 0;
+                    model.total = Math.Round(model.taxBase, 2);
+                }
+
                 return model;
             })
                 .ToList();

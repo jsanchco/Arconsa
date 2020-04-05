@@ -223,6 +223,7 @@ namespace SGDE.Domain.Supervisor
         QueryResult<InvoiceViewModel> GetAllInvoice(int skip = 0, int take = 0, string filter = null, int workId = 0, int clientId = 0);
         InvoiceViewModel GetInvoiceById(int id);
         InvoiceViewModel AddInvoice(InvoiceViewModel newInvoiceViewModel);
+        Invoice AddInvoiceFromQuery(InvoiceQueryViewModel invoiceQueryViewModel);
         bool UpdateInvoice(InvoiceViewModel invoiceViewModel);
         bool DeleteInvoice(int id);
 

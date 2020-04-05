@@ -172,6 +172,12 @@ class GridInvoice extends Component {
             allowEditing={false}
           />
           <ColumnDirective
+            field="issueDate"
+            headerText="F. Emisión"
+            width="100"
+            allowEditing={false}
+          />          
+          <ColumnDirective
             field="clientName"
             headerText="Cliente"
             width="100"
@@ -188,7 +194,7 @@ class GridInvoice extends Component {
             headerText="B. Imponible"
             width="100"
           />
-          <ColumnDirective field="iva" headerText="IVA" width="100" />
+          <ColumnDirective field="ivaTaxBase" headerText="IVA" width="100" />
           <ColumnDirective field="total" headerText="Total" width="100" />
           <ColumnDirective
             field="retentions"
@@ -210,7 +216,7 @@ class GridInvoice extends Component {
               </AggregateColumnDirective>
 
               <AggregateColumnDirective
-                field="iva"
+                field="ivaTaxBase"
                 type="Sum"
                 format="N2"
                 footerTemplate={this.footerSumEuros}
@@ -226,6 +232,15 @@ class GridInvoice extends Component {
               >
                 {" "}
               </AggregateColumnDirective>
+
+              <AggregateColumnDirective
+                field="retentions"
+                type="Sum"
+                format="N2"
+                footerTemplate={this.footerSumEuros}
+              >
+                {" "}
+              </AggregateColumnDirective>              
             </AggregateColumnsDirective>
           </AggregateDirective>
         </AggregatesDirective>

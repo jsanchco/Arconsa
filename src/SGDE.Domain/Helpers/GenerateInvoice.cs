@@ -35,11 +35,13 @@
             FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 14, BaseColor.White);
 
         public InvoiceViewModel _invoiceViewModel = new InvoiceViewModel();
-        public InvoiceResponseViewModel _invoiceResponseViewModel = new InvoiceResponseViewModel();
-        protected Document _pdf = new Document(PageSize.Letter);
+        Document _pdf = new Document(PageSize.Letter);
+        public InvoiceResponseViewModel _invoiceResponseViewModel;
+
         protected Client _client;
         protected Work _work;
         protected User _worker;
+        protected Invoice _invoice;
 
         protected InvoiceQueryViewModel _invoiceQueryViewModel;
         protected ISupervisor _supervisor;
@@ -48,14 +50,32 @@
         {
             _supervisor = supervisor;
             _invoiceQueryViewModel = invoiceQueryViewModel;
+
+            _invoiceResponseViewModel = new InvoiceResponseViewModel
+            {
+                typeFile = "application/pdf",
+                data = new InvoiceViewModel
+                {
+                    startDate = invoiceQueryViewModel.startDate,
+                    endDate = invoiceQueryViewModel.endDate
+                },
+                typeInvoiceId = invoiceQueryViewModel.typeInvoice
+            };
         }
+
+        protected abstract bool Validate();
+        protected abstract PdfPTable GetAllRowsDetailInvoice(Document pdf);
+        protected abstract PdfPTable GetTableNumberInvoice();
 
         public void Process()
         {
             if (!Validate())
                 throw new Exception("No se puede validar la Factura");
 
+            _invoice = AddInvoice();
 
+            var memoryStream = new MemoryStream();
+            var pdfWriter = PdfWriter.GetInstance(_pdf, memoryStream);
 
             _pdf.AddTitle("Factura Cliente");
             _pdf.AddCreator(_CREATOR);
@@ -63,9 +83,32 @@
 
             _pdf.Add(GetHeader());
             _pdf.Add(GetTableNumberInvoice());
-        }
+            _pdf.Add(GetTableClient());
+            _pdf.Add(new Paragraph(" ", _STANDARFONT_8));
+            _pdf.Add(GetLineSeparator());
+            _pdf.Add(new Paragraph(" ", _STANDARFONT_14_BOLD));
+            _pdf.Add(GetTableTitle());
+            _pdf.Add(new Paragraph(" ", _STANDARFONT_14_BOLD));
+            _pdf.Add(GetTableTitleInvoice());
+            _pdf.Add(new Paragraph(" ", _STANDARFONT_14_BOLD));
+            _pdf.Add(GetAllRowsDetailInvoice(_pdf));
+            _pdf.Add(new Paragraph(" ", _STANDARFONT_8));
+            _pdf.Add(GetLineSeparator());
+            _pdf.Add(new Paragraph(" ", _STANDARFONT_14_BOLD));
+            _pdf.Add(GetTableTitle1("FORMA DE PAGO"));
+            _pdf.Add(new Paragraph(" ", _STANDARFONT_14_BOLD));
+            _pdf.Add(GetPayment());
+            _pdf.Add(new Paragraph(" ", _STANDARFONT_14_BOLD));
+            _pdf.Add(GetSignAndStamp());
 
-        protected abstract bool Validate();
+            _pdf.Close();
+            pdfWriter.Close();
+
+            _invoiceResponseViewModel.file = memoryStream.ToArray();
+            _invoiceResponseViewModel.fileName = $"Fact_{_invoice.Name.Replace("/", "_")}.pdf";
+
+            FillDataResponse();
+        }
 
         private PdfPTable GetHeader()
         {
@@ -99,9 +142,7 @@
             return pdfPTable;
         }
 
-        protected abstract PdfPTable GetTableNumberInvoice();
-
-        protected PdfPTable GetTableClient()
+        protected virtual PdfPTable GetTableClient()
         {
             if (_client == null)
                 throw new Exception("No existen datos para este Cliente");
@@ -157,7 +198,258 @@
 
         protected Invoice AddInvoice()
         {
-            return null;
+            var invoice = _supervisor.AddInvoiceFromQuery(_invoiceQueryViewModel);
+            return invoice;
+        }
+
+        private PdfPTable GetTableTitle()
+        {
+            var pdfPTable = new PdfPTable(4) { WidthPercentage = 100 };
+            var widths = new[] { 40f, 20f, 20f, 20f };
+            pdfPTable.SetWidths(widths);
+
+            var pdfCell = new PdfPCell(new Phrase("SERVICIOS REALIZADOS", _STANDARFONT_12_BOLD_WHITE))
+            {
+                BackgroundColor = new BaseColor(20, 66, 92),
+                HorizontalAlignment = Element.ALIGN_CENTER,
+                VerticalAlignment = Element.ALIGN_MIDDLE,
+                PaddingTop = 2f,
+                PaddingBottom = 6f,
+                BorderWidth = 0
+            };
+            pdfPTable.AddCell(pdfCell);
+            pdfCell = new PdfPCell(new Phrase("UNIDAD", _STANDARFONT_12_BOLD_WHITE))
+            {
+                BackgroundColor = new BaseColor(20, 66, 92),
+                HorizontalAlignment = Element.ALIGN_CENTER,
+                VerticalAlignment = Element.ALIGN_MIDDLE,
+                PaddingTop = 2f,
+                PaddingBottom = 6f,
+                BorderWidth = 0
+            };
+            pdfPTable.AddCell(pdfCell);
+            pdfCell = new PdfPCell(new Phrase("PRECIO UNIDAD", _STANDARFONT_12_BOLD_WHITE))
+            {
+                BackgroundColor = new BaseColor(20, 66, 92),
+                HorizontalAlignment = Element.ALIGN_CENTER,
+                VerticalAlignment = Element.ALIGN_MIDDLE,
+                PaddingTop = 2f,
+                PaddingBottom = 6f,
+                BorderWidth = 0
+            };
+            pdfPTable.AddCell(pdfCell);
+            pdfCell = new PdfPCell(new Phrase("IMPORTE", _STANDARFONT_12_BOLD_WHITE))
+            {
+                BackgroundColor = new BaseColor(20, 66, 92),
+                HorizontalAlignment = Element.ALIGN_CENTER,
+                VerticalAlignment = Element.ALIGN_MIDDLE,
+                PaddingTop = 2f,
+                PaddingBottom = 6f,
+                BorderWidth = 0
+            };
+            pdfPTable.AddCell(pdfCell);
+
+            return pdfPTable;
+        }
+
+        protected Chunk GetLineSeparator()
+        {
+            return new Chunk(
+                new iTextSharp.text.pdf.draw.LineSeparator(0f, 100f, BaseColor.LightGray, Element.ALIGN_LEFT, 1));
+        }
+
+        private PdfPTable GetTableTitleInvoice()
+        {
+            var listMonths = new[] { "ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO", "JULIO", "AGOSTO", "SEPTIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE" };
+            var monthIni = DateTime.ParseExact(_invoiceQueryViewModel.startDate, "d/MM/yyyy", null).Month;
+            var monthEnd = DateTime.ParseExact(_invoiceQueryViewModel.endDate, "d/MM/yyyy", null).Month;
+            var yearIni = DateTime.ParseExact(_invoiceQueryViewModel.startDate, "d/MM/yyyy", null).Year;
+            var yearEnd = DateTime.ParseExact(_invoiceQueryViewModel.endDate, "d/MM/yyyy", null).Year;
+
+            string title;
+            if (monthIni == monthEnd && yearIni == yearEnd)
+            {
+                title = $"HORAS POR ADMINISTRACION SEGÚN SERVICIOS PRESTADOS EN LA OBRA DE REFERENCIA CORRESPONIENTES AL MES DE {listMonths[monthIni - 1]} {yearIni}";
+            }
+            else
+            {
+                title = $"HORAS POR ADMINISTRACION SEGÚN SERVICIOS PRESTADOS EN LA OBRA DE REFERENCIA CORRESPONIENTES ENTRE LOS MESES DE {listMonths[monthIni - 1]} {yearIni} Y {listMonths[monthEnd - 1]} {yearEnd}";
+            }
+
+            var pdfPTable = new PdfPTable(4) { WidthPercentage = 100 };
+            var widths = new[] { 40f, 20f, 20f, 20f };
+            pdfPTable.SetWidths(widths);
+
+            var pdfCell = new PdfPCell(new Phrase(title, _STANDARFONT_10))
+            {
+                HorizontalAlignment = Element.ALIGN_LEFT,
+                VerticalAlignment = Element.ALIGN_MIDDLE,
+                PaddingTop = 2f,
+                PaddingBottom = 6f,
+                BorderWidth = 0
+            };
+            pdfPTable.AddCell(pdfCell);
+            pdfCell = new PdfPCell(new Phrase(" ", _STANDARFONT_10))
+            {
+                HorizontalAlignment = Element.ALIGN_LEFT,
+                VerticalAlignment = Element.ALIGN_MIDDLE,
+                PaddingTop = 2f,
+                PaddingBottom = 6f,
+                BorderWidth = 0
+            };
+            pdfPTable.AddCell(pdfCell);
+            pdfCell = new PdfPCell(new Phrase(" ", _STANDARFONT_10))
+            {
+                HorizontalAlignment = Element.ALIGN_LEFT,
+                VerticalAlignment = Element.ALIGN_MIDDLE,
+                PaddingTop = 2f,
+                PaddingBottom = 6f,
+                BorderWidth = 0
+            };
+            pdfPTable.AddCell(pdfCell);
+            pdfCell = new PdfPCell(new Phrase(" ", _STANDARFONT_10))
+            {
+                HorizontalAlignment = Element.ALIGN_LEFT,
+                VerticalAlignment = Element.ALIGN_MIDDLE,
+                PaddingTop = 2f,
+                PaddingBottom = 6f,
+                BorderWidth = 0
+            };
+            pdfPTable.AddCell(pdfCell);
+
+            return pdfPTable;
+        }
+
+        private PdfPTable GetTableTitle1(string title)
+        {
+            var pdfPTable = new PdfPTable(1) { WidthPercentage = 100 };
+            var pdfCell = new PdfPCell(new Phrase(title, _STANDARFONT_14_BOLD_WHITE))
+            {
+                BackgroundColor = new BaseColor(20, 66, 92),
+                HorizontalAlignment = Element.ALIGN_CENTER,
+                VerticalAlignment = Element.ALIGN_MIDDLE,
+                PaddingTop = 2f,
+                PaddingBottom = 6f
+            };
+            pdfPTable.AddCell(pdfCell);
+
+            return pdfPTable;
+        }
+
+        private PdfPTable GetPayment()
+        {
+            var pdfPTable = new PdfPTable(5) { WidthPercentage = 100 };
+            var widths = new[] { 20f, 20f, 10f, 20f, 30f };
+            pdfPTable.SetWidths(widths);
+
+            var pdfCell = new PdfPCell(new Phrase("Método de Pago", _STANDARFONT_10_BOLD_CUSTOMCOLOR)) { BorderWidth = 0 };
+            pdfPTable.AddCell(pdfCell);
+            pdfCell = new PdfPCell(new Phrase(_client.WayToPay, _STANDARFONT_10))
+            { BorderWidth = 0 };
+            pdfPTable.AddCell(pdfCell);
+            pdfCell = new PdfPCell(new Phrase(" ", _STANDARFONT_10)) { BorderWidth = 0 };
+            pdfPTable.AddCell(pdfCell);
+            pdfCell = new PdfPCell(new Phrase("Nº de Cuenta", _STANDARFONT_10_BOLD_CUSTOMCOLOR)) { BorderWidth = 0 };
+            pdfPTable.AddCell(pdfCell);
+            pdfCell = new PdfPCell(new Phrase(_client.AccountNumber, _STANDARFONT_10))
+            { BorderWidth = 0 };
+            pdfPTable.AddCell(pdfCell);
+            pdfCell = new PdfPCell(new Phrase("Base Imponible", _STANDARFONT_10_BOLD_CUSTOMCOLOR)) { BorderWidth = 0 };
+            pdfPTable.AddCell(pdfCell);
+            pdfCell = new PdfPCell(new Phrase($"{Math.Round((double)_invoice.TaxBase, 2).ToFormatSpain()} €", _STANDARFONT_10)) { BorderWidth = 0, HorizontalAlignment = Element.ALIGN_RIGHT };
+            pdfPTable.AddCell(pdfCell);
+            pdfCell = new PdfPCell(new Phrase(" ", _STANDARFONT_10)) { BorderWidth = 0 };
+            pdfPTable.AddCell(pdfCell);
+            pdfCell = new PdfPCell(new Phrase(" ", _STANDARFONT_10)) { BorderWidth = 0 };
+            pdfPTable.AddCell(pdfCell);
+            pdfCell = new PdfPCell(new Phrase(" ", _STANDARFONT_10)) { BorderWidth = 0 };
+            pdfPTable.AddCell(pdfCell);
+
+            if (!_work.PassiveSubject)
+            {
+                pdfCell = new PdfPCell(new Phrase("I.V.A.", _STANDARFONT_10_BOLD_CUSTOMCOLOR)) { BorderWidth = 0 };
+                pdfPTable.AddCell(pdfCell);
+                pdfCell = new PdfPCell(new Phrase($"{_invoice.IvaTaxBase.ToFormatSpain()} €", _STANDARFONT_10)) { BorderWidth = 0, HorizontalAlignment = Element.ALIGN_RIGHT };
+                pdfPTable.AddCell(pdfCell);
+                pdfCell = new PdfPCell(new Phrase(" ", _STANDARFONT_10)) { BorderWidth = 0 };
+                pdfPTable.AddCell(pdfCell);
+                pdfCell = new PdfPCell(new Phrase(" ", _STANDARFONT_10)) { BorderWidth = 0 };
+                pdfPTable.AddCell(pdfCell);
+                pdfCell = new PdfPCell(new Phrase(" ", _STANDARFONT_10)) { BorderWidth = 0 };
+                pdfPTable.AddCell(pdfCell);
+            }
+            else
+            {
+                //InvoiceViewModel.iva = 0;
+                //pdfCell = new PdfPCell(new Phrase("", _STANDARFONT_10_BOLD_CUSTOMCOLOR)) { BorderWidth = 0 };
+                //pdfPTable.AddCell(pdfCell);
+                //pdfCell = new PdfPCell(new Phrase("", _STANDARFONT_10)) { BorderWidth = 0, HorizontalAlignment = Element.ALIGN_RIGHT };
+                //pdfPTable.AddCell(pdfCell);
+                //pdfCell = new PdfPCell(new Phrase(" ", _STANDARFONT_10)) { BorderWidth = 0 };
+                //pdfPTable.AddCell(pdfCell);
+                //pdfCell = new PdfPCell(new Phrase(" ", _STANDARFONT_10)) { BorderWidth = 0 };
+                //pdfPTable.AddCell(pdfCell);
+                //pdfCell = new PdfPCell(new Phrase(" ", _STANDARFONT_10)) { BorderWidth = 0 };
+                //pdfPTable.AddCell(pdfCell);
+            }
+
+            pdfCell = new PdfPCell(new Phrase("Total Factura", _STANDARFONT_10_BOLD_CUSTOMCOLOR)) { BorderWidth = 0 };
+            pdfPTable.AddCell(pdfCell);
+            pdfCell = new PdfPCell(new Phrase($"{_invoice.Total.ToFormatSpain()} €", _STANDARFONT_10)) { BorderWidth = 0, HorizontalAlignment = Element.ALIGN_RIGHT };
+            pdfPTable.AddCell(pdfCell);
+            pdfCell = new PdfPCell(new Phrase(" ", _STANDARFONT_10)) { BorderWidth = 0 };
+            pdfPTable.AddCell(pdfCell);
+            pdfCell = new PdfPCell(new Phrase(" ", _STANDARFONT_10)) { BorderWidth = 0 };
+            pdfPTable.AddCell(pdfCell);
+            pdfCell = new PdfPCell(new Phrase(" ", _STANDARFONT_10)) { BorderWidth = 0 };
+            pdfPTable.AddCell(pdfCell);
+
+            return pdfPTable;
+        }
+
+        private PdfPTable GetSignAndStamp()
+        {
+            var pdfPTable = new PdfPTable(1) { WidthPercentage = 40, HorizontalAlignment = 2 };
+
+            var pdfCell = new PdfPCell(new Phrase("Firma y Sello", _STANDARFONT_12_BOLD))
+            {
+                HorizontalAlignment = Element.ALIGN_CENTER,
+                VerticalAlignment = Element.ALIGN_MIDDLE,
+                PaddingTop = 2f,
+                PaddingBottom = 6f
+            };
+            pdfPTable.AddCell(pdfCell);
+
+            var image = Image.GetInstance(Directory.GetCurrentDirectory() + "\\assets\\images\\FirmAndSign.png");
+            image.ScalePercent(50);
+            var pdfCellImage = new PdfPCell(image)
+            {
+                BorderWidthTop = 0,
+                PaddingTop = 2,
+                PaddingBottom = 2,
+                PaddingRight = 2,
+                PaddingLeft = 30,
+            };
+            pdfPTable.AddCell(pdfCellImage);
+
+            return pdfPTable;
+        }
+
+        private void FillDataResponse()
+        {
+            _invoiceResponseViewModel.data.name = _invoice.Name;
+            _invoiceResponseViewModel.data.invoiceNumber = _invoice.InvoiceNumber;
+            _invoiceResponseViewModel.data.taxBase = (double)_invoice.TaxBase;
+            _invoiceResponseViewModel.data.ivaTaxBase = _invoice.IvaTaxBase;
+            _invoiceResponseViewModel.data.retentions = _invoice.Retentions;
+            _invoiceResponseViewModel.data.startDate = _invoice.StartDate.ToString("dd/MM/yyyy");
+            _invoiceResponseViewModel.data.endDate = _invoice.EndDate.ToString("dd/MM/yyyy");
+            _invoiceResponseViewModel.data.issueDate = _invoice.IssueDate.ToString("dd/MM/yyyy");
+            _invoiceResponseViewModel.data.iva = _invoice.Iva;
+            _invoiceResponseViewModel.data.total = _invoice.Total;
+            _invoiceResponseViewModel.data.workId = _invoice.WorkId;
+            _invoiceResponseViewModel.data.clientId = _invoice.ClientId;
+            _invoiceResponseViewModel.data.userId = _invoice.UserId;
         }
     }
 }

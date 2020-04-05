@@ -13,9 +13,9 @@
         {
             var result = value.ToString("N", CultureInfo.CreateSpecificCulture("es-ES"));
 
-            var find = result.IndexOf(",00");
-            if (find > 0)
-                result = result.Substring(0, find);
+            //var find = result.IndexOf(",00");
+            //if (find > 0)
+            //    result = result.Substring(0, find);
 
             return result;
         }

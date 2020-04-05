@@ -26,7 +26,8 @@
                 invoiceId = detailInvoice.InvoiceId,
                 servicesPerformed = detailInvoice.ServicesPerformed,
                 units = (double)detailInvoice.Units,
-                priceUnity = (double)detailInvoice.PriceUnity                
+                priceUnity = (double)detailInvoice.PriceUnity,
+                nameUnit = detailInvoice.NameUnit
             };
 
             return detailInvoiceViewModel;
@@ -46,7 +47,8 @@
                     invoiceId = detailInvoice.InvoiceId,
                     servicesPerformed = detailInvoice.ServicesPerformed,
                     units = (double)detailInvoice.Units,
-                    priceUnity = (double)detailInvoice.PriceUnity
+                    priceUnity = (double)detailInvoice.PriceUnity,
+                    nameUnit = detailInvoice.NameUnit
                 };
                 return model;
             })

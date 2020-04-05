@@ -12,6 +12,7 @@
         QueryResult<Invoice> GetAll(int skip = 0, int take = 0, string filter = null, int workId = 0, int clientId = 0);
         Invoice GetById(int id);
         Invoice Add(Invoice newInvoice);
+        Invoice AddInvoiceFromQuery(Invoice invoice);
         bool Update(Invoice invoice);
         bool Delete(int id);
 
