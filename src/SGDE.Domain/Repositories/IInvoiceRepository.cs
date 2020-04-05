@@ -15,6 +15,7 @@
         Invoice AddInvoiceFromQuery(Invoice invoice);
         bool Update(Invoice invoice);
         bool Delete(int id);
+        int CountInvoices();
 
         int? CheckInvoice(Invoice newInvoice);
     }

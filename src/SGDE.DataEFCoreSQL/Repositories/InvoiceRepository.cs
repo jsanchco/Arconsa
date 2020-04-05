@@ -92,11 +92,23 @@
 
         public Invoice GetById(int id)
         {
-            return _context.Invoice
+            var invoice = _context.Invoice
                     .Include(x => x.Work)
+                    .ThenInclude(x => x.Client)
+                    .Include(x => x.InvoiceToCancel)
+                    .ThenInclude(x => x.DetailsInvoice)
                     .Include(x => x.InvoiceToCancel)
                     .ThenInclude(x => x.Client)
+                    .Include(x => x.DetailsInvoice)
                 .FirstOrDefault(x => x.Id == id);
+
+            if (invoice == null)
+                return null;
+
+            invoice.IvaTaxBase = invoice.Iva == true ? Math.Round((double)invoice.TaxBase * 0.21, 2) : 0;
+            invoice.Total = invoice.IvaTaxBase + (double)invoice.TaxBase;
+
+            return invoice;
         }
 
         public Invoice Add(Invoice newInvoice)
@@ -180,7 +192,7 @@
                         if (findInvoice == null)
                             throw new Exception("Factura no encontrada");
 
-                        findInvoice.ModifiedDate = DateTime.Now;                        
+                        findInvoice.ModifiedDate = DateTime.Now;
                         findInvoice.IssueDate = invoice.IssueDate;
 
                         findInvoice.TaxBase = invoice.TaxBase;
@@ -313,6 +325,11 @@
             _context.Invoice.Remove(toRemove);
             _context.SaveChanges();
             return true;
+        }
+
+        public int CountInvoices()
+        {
+            return _context.Invoice.Count();
         }
     }
 }

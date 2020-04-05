@@ -16,12 +16,13 @@ import {
   RESTOREPASSWORD,
   USERSHIRING,
   MASSIVESIGNING,
-  REMOVEALLDAILYSIGNING
+  REMOVEALLDAILYSIGNING,
+  PRINTINVOICE,
+  BILLPAYMENT
 } from "../constants";
 import store from "../store/store";
 import ACTION_AUTHENTICATION from "../actions/authenticationAction";
 import ACTION_APPLICATION from "../actions/applicationAction";
-import { INVOICES } from './../constants/index';
 
 export const TOKEN_KEY = "jwt";
 
@@ -852,16 +853,16 @@ export const updateSettings = setting => {
   });
 };
 
-export const updateInvoice = invoice => {
+export const printInvoice = invoiceId => {
   return new Promise((resolve, reject) => {
-    const url = `${config.URL_API}/${INVOICES}`;
+    const url = `${config.URL_API}/${PRINTINVOICE}/${invoiceId}`;
     fetch(url, {
       headers: {
         Accept: "text/plain",
         "Content-Type": "application/json",
         Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`
       },
-      method: "POST"
+      method: "GET"
     })
       .then(data => data.json())
       .then(result => {
@@ -876,7 +877,48 @@ export const updateInvoice = invoice => {
           );
           reject();
         } else {
-          resolve(result);
+          resolve(result.items);
+        }
+      })
+      .catch(error => {
+        console.log("error ->", error);
+        store.dispatch(
+          ACTION_APPLICATION.showMessage({
+            statusText: error,
+            responseText: error,
+            type: "danger"
+          })
+        );
+        reject();
+      });
+  });
+};
+
+export const billPayment = invoiceId => {
+  return new Promise((resolve, reject) => {
+    const url = `${config.URL_API}/${BILLPAYMENT}/${invoiceId}`;
+    fetch(url, {
+      headers: {
+        Accept: "text/plain",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`
+      },
+      method: "GET"
+    })
+      .then(data => data.json())
+      .then(result => {
+        if (result.Message) {
+          console.log("error ->", result.Message);
+          store.dispatch(
+            ACTION_APPLICATION.showMessage({
+              statusText: result.Message,
+              responseText: result.Message,
+              type: "danger"
+            })
+          );
+          reject();
+        } else {
+          resolve(result.items);
         }
       })
       .catch(error => {

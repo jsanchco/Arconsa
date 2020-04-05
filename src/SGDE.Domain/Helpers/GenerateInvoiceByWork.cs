@@ -101,6 +101,8 @@
                 return false;
 
             _client = _work.Client;
+            if (_client == null)
+                return false;
 
             _invoiceQueryViewModel.detailInvoice = GetDetailInvoice();
 

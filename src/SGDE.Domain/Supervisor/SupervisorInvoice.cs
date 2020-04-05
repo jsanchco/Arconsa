@@ -56,6 +56,15 @@
             return newInvoiceViewModel;
         }
 
+        public Invoice GetInvoice(int invoiceId)
+        {
+            var invoice = _invoiceRepository.GetById(invoiceId);
+            if (invoice.InvoiceToCancelId != null)
+                invoice.DetailsInvoice = invoice.InvoiceToCancel.DetailsInvoice;
+
+            return invoice;
+        }
+
         public Invoice AddInvoiceFromQuery(InvoiceQueryViewModel invoiceQueryViewModel)
         {
             var invoice = new Invoice
@@ -72,7 +81,7 @@
             };
 
             var taxBase = 0.0;
-            foreach(var detailInvoice in invoiceQueryViewModel.detailInvoice)
+            foreach (var detailInvoice in invoiceQueryViewModel.detailInvoice)
             {
                 invoice.DetailsInvoice.Add(new DetailInvoice
                 {
@@ -122,6 +131,46 @@
         public bool DeleteInvoice(int id)
         {
             return _invoiceRepository.Delete(id);
+        }
+
+        public InvoiceResponseViewModel PrintInvoice(int invoiceId)
+        {
+            var generateInvoice = new PrintInvoice(this, invoiceId);
+            generateInvoice.Print();
+            return generateInvoice._invoiceResponseViewModel;
+        }
+
+        public InvoiceViewModel BillPayment(int invoiceId)
+        {
+            var invoiceParent = _invoiceRepository.GetById(invoiceId);
+            if (invoiceParent == null)
+                throw new Exception("Factura no encontrada");
+
+            if (invoiceParent.InvoiceToCancelId != null)
+                throw new Exception("No de puede anular una Factura ya Anulada");
+
+            var countInvoice = _invoiceRepository.CountInvoices();
+            var invoiceNumber = countInvoice == 0 ? 1063 : (1063 + countInvoice);
+            invoiceNumber++;
+
+            var newInvoice = new Invoice
+            {
+                Name = $"AB_{invoiceParent.Name}",
+                InvoiceNumber = invoiceNumber,
+                InvoiceToCancelId = invoiceId,
+                IssueDate = DateTime.Now,
+                TaxBase = -invoiceParent.TaxBase,
+                WorkId = invoiceParent.WorkId,
+                ClientId = invoiceParent.ClientId,
+                UserId = invoiceParent.UserId,
+                StartDate = invoiceParent.StartDate,
+                EndDate = invoiceParent.EndDate,
+                Retentions = invoiceParent.Retentions,
+                AddedDate = DateTime.Now,
+                Iva = invoiceParent.Iva
+            };
+
+            return InvoiceConverter.Convert(_invoiceRepository.Add(newInvoice));
         }
     }
 }

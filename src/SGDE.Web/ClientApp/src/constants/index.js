@@ -25,6 +25,8 @@ export const RESTOREPASSWORD = "api/Users/restorepassword";
 export const MASSIVESIGNING = "api/dailysignings/massivesigning";
 export const REMOVEALLDAILYSIGNING = "api/dailysignings/removeall";
 export const INVOICES = "api/Invoices";
+export const PRINTINVOICE = "api/Invoices/print";
+export const BILLPAYMENT = "api/Invoices/billpayment";
 export const COMPANY_DATA = "COMPANY_DATA";
 
 const dev = {

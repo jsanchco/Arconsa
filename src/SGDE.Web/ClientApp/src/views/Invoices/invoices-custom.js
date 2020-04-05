@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react";
-import { Form, Col, FormGroup, Input, Label, Row, Button } from "reactstrap";
+import { Form, Col, FormGroup, Label, Row, Button } from "reactstrap";
 import { DatePickerComponent } from "@syncfusion/ej2-react-calendars";
 import { DropDownListComponent } from "@syncfusion/ej2-react-dropdowns";
 import { getWorks } from "../../services";
@@ -273,7 +273,7 @@ class Invoices extends Component {
                           marginBottom: 20
                         }}
                         ref={g => (this.gridDetailInvoice = g)}
-                        editSettings={this.editSettings}
+                        editSettings={this.editSettings}                        
                       >
                         <ColumnsDirective>
                           <ColumnDirective

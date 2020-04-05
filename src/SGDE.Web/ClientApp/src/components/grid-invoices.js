@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
 import {
   ColumnDirective,
@@ -14,11 +14,23 @@ import {
   AggregateDirective,
   AggregatesDirective
 } from "@syncfusion/ej2-react-grids";
-import { DataManager, WebApiAdaptor, Query } from "@syncfusion/ej2-data";
+import {
+  createSpinner,
+  showSpinner,
+  hideSpinner
+} from "@syncfusion/ej2-popups";
+import { DataManager, WebApiAdaptor } from "@syncfusion/ej2-data";
+import { DialogComponent } from "@syncfusion/ej2-react-popups";
 import { config, INVOICES } from "../constants";
 import { L10n } from "@syncfusion/ej2-base";
 import data from "../locales/locale.json";
 import { TOKEN_KEY } from "../services";
+import {
+  base64ToArrayBuffer,
+  saveByteArray,
+  printInvoice,
+  billPayment
+} from "../services";
 
 L10n.load(data);
 
@@ -36,7 +48,28 @@ class GridInvoice extends Component {
   constructor(props) {
     super(props);
 
-    this.toolbarOptions = ["Edit", "Delete", "Update", "Cancel"];
+    this.state = {
+      hideConfirmDialog: false
+    };
+
+    this.toolbarOptions = [
+      "Edit",
+      "Delete",
+      "Update",
+      "Cancel",
+      {
+        text: "Imprimir Factura",
+        tooltipText: "Imprimir Factura",
+        prefixIcon: "e-custom-icons e-file-download",
+        id: "PrintInvoice"
+      },
+      {
+        text: "Anular Factura",
+        tooltipText: "Anular Factura",
+        prefixIcon: "e-custom-icons e-file-workers",
+        id: "CancelInvoice"
+      }
+    ];
     this.editSettings = {
       showDeleteConfirmDialog: true,
       allowEditing: true,
@@ -47,6 +80,24 @@ class GridInvoice extends Component {
     this.actionFailure = this.actionFailure.bind(this);
     this.actionComplete = this.actionComplete.bind(this);
     this.clickHandler = this.clickHandler.bind(this);
+    this.billPayment = this.billPayment.bind(this);
+
+    this.confirmButton = [
+      {
+        click: () => {
+          this.setState({ hideConfirmDialog: false });
+          this.billPayment();
+        },
+        buttonModel: { content: "Si", isPrimary: true }
+      },
+      {
+        click: () => {
+          this.setState({ hideConfirmDialog: false });
+        },
+        buttonModel: { content: "No" }
+      }
+    ];
+    this.animationSettings = { effect: "None" };
   }
 
   componentDidUpdate(prevProps) {
@@ -55,8 +106,14 @@ class GridInvoice extends Component {
     }
   }
 
+  dialogClose() {
+    this.setState({
+      hideConfirmDialog: false
+    });
+  }
+
   actionFailure(args) {
-    let error = Array.isArray(args) ? args[0].error : args.error.error;
+    let error = Array.isArray(args) ? args[0].error : args.error;
     if (Array.isArray(error)) {
       error = error[0].error;
     }
@@ -85,23 +142,73 @@ class GridInvoice extends Component {
   }
 
   clickHandler(args) {
-    if (args.item.id === "Details") {
-      const { rowSelected } = this.state;
-      if (rowSelected !== null) {
-        this.props.history.push({
-          pathname: "/employees/detailemployee",
-          state: {
-            user: rowSelected
-          }
-        });
-      } else {
+    const selectedRecords = this.grid.getSelectedRecords();
+    if (args.item.id === "PrintInvoice") {
+      if (selectedRecords.length === 0) {
         this.props.showMessage({
-          statusText: "Debes seleccionar un usuario",
-          responseText: "Debes seleccionar un usuario",
+          statusText: "Debes seleccionar una factura",
+          responseText: "Debes seleccionar una factura",
           type: "danger"
         });
+      } else {
+        const element = document.getElementById("gridInvoices");
+
+        createSpinner({
+          target: element
+        });
+        showSpinner(element);
+
+        printInvoice(selectedRecords[0].id)
+          .then(result => {
+            const fileArr = base64ToArrayBuffer(result.file);
+            saveByteArray(result.fileName, fileArr, result.typeFile);
+            hideSpinner(element);
+          })
+          .catch(error => {
+            hideSpinner(element);
+          });
       }
     }
+
+    if (args.item.id === "CancelInvoice") {
+      if (selectedRecords.length === 0) {
+        this.props.showMessage({
+          statusText: "Debes seleccionar una factura",
+          responseText: "Debes seleccionar una factura",
+          type: "danger"
+        });
+      } else {
+        this.setState({ hideConfirmDialog: true });        
+      }
+    }
+  }
+
+  billPayment() {
+    const element = document.getElementById("gridInvoices");
+
+    createSpinner({
+      target: element
+    });
+    showSpinner(element);
+
+    billPayment(this.grid.getSelectedRecords()[0].id)
+      .then(() => {
+        this.props.showMessage({
+          statusText: "200",
+          responseText: "Operación realizada con éxito",
+          type: "success"
+        });
+        this.grid.refresh();
+        hideSpinner(element);
+      })
+      .catch(error => {
+        this.props.showMessage({
+          statusText: "Ha ocurrido un error en la operación",
+          responseText: "Ha ocurrido un error en la operación",
+          type: "danger"
+        });
+        hideSpinner(element);
+      });    
   }
 
   footerSumEuros(args) {
@@ -120,133 +227,154 @@ class GridInvoice extends Component {
 
   render() {
     return (
-      <GridComponent
-        dataSource={this.invoices}
-        locale="es-US"
-        allowPaging={true}
-        pageSettings={this.pageSettings}
-        toolbar={this.toolbarOptions}
-        toolbarClick={this.clickHandler}
-        editSettings={this.editSettings}
-        style={{
-          marginLeft: 30,
-          marginRight: 30,
-          marginTop: -20,
-          marginBottom: 20
-        }}
-        actionFailure={this.actionFailure}
-        actionComplete={this.actionComplete}
-        allowGrouping={false}
-        rowSelected={this.rowSelected}
-        ref={g => (this.grid = g)}
-        query={this.query}
-        allowTextWrap={true}
-        textWrapSettings={this.wrapSettings}
-      >
-        <ColumnsDirective>
-          <ColumnDirective
-            field="id"
-            headerText="Id"
-            width="40"
-            isPrimaryKey={true}
-            isIdentity={true}
-            visible={false}
-          />
-          <ColumnDirective field="invoiceNumber" width="100" visible={false} />
-          <ColumnDirective
-            field="name"
-            headerText="Nº Factura"
-            width="100"
-            allowEditing={false}
-          />
-          <ColumnDirective
-            field="startDate"
-            headerText="F. Inicio"
-            width="100"
-            allowEditing={false}
-          />
-          <ColumnDirective
-            field="endDate"
-            headerText="F. Fin"
-            width="100"
-            allowEditing={false}
-          />
-          <ColumnDirective
-            field="issueDate"
-            headerText="F. Emisión"
-            width="100"
-            allowEditing={false}
-          />          
-          <ColumnDirective
-            field="clientName"
-            headerText="Cliente"
-            width="100"
-            allowEditing={false}
-          />
-          <ColumnDirective
-            field="workName"
-            headerText="Obra"
-            width="100"
-            allowEditing={false}
-          />
-          <ColumnDirective
-            field="taxBase"
-            headerText="B. Imponible"
-            width="100"
-          />
-          <ColumnDirective field="ivaTaxBase" headerText="IVA" width="100" />
-          <ColumnDirective field="total" headerText="Total" width="100" />
-          <ColumnDirective
-            field="retentions"
-            headerText="Retenciones"
-            width="100"
-          />
-        </ColumnsDirective>
+      <Fragment>
+        <DialogComponent
+          id="confirmDialog"
+          header="Abonar Factura"
+          visible={this.state.hideConfirmDialog}
+          showCloseIcon={true}
+          animationSettings={this.animationSettings}
+          width="500px"
+          content="¿Estás seguro de querer Abonar esta factura?"
+          ref={dialog => (this.confirmDialogInstance = dialog)}
+          target="#gridInvoices"
+          buttons={this.confirmButton}
+          close={this.dialogClose.bind(this)}
+        ></DialogComponent>
 
-        <AggregatesDirective>
-          <AggregateDirective>
-            <AggregateColumnsDirective>
-              <AggregateColumnDirective
-                field="taxBase"
-                type="Sum"
-                format="N2"
-                footerTemplate={this.footerSumEuros}
-              >
-                {" "}
-              </AggregateColumnDirective>
+        <GridComponent
+          dataSource={this.invoices}
+          locale="es-US"
+          allowPaging={true}
+          pageSettings={this.pageSettings}
+          toolbar={this.toolbarOptions}
+          toolbarClick={this.clickHandler}
+          editSettings={this.editSettings}
+          style={{
+            marginLeft: 30,
+            marginRight: 30,
+            marginTop: -20,
+            marginBottom: 20
+          }}
+          actionFailure={this.actionFailure}
+          actionComplete={this.actionComplete}
+          allowGrouping={false}
+          rowSelected={this.rowSelected}
+          ref={g => (this.grid = g)}
+          query={this.query}
+          allowTextWrap={true}
+          textWrapSettings={this.wrapSettings}
+          id="gridInvoices"
+        >
+          <ColumnsDirective>
+            <ColumnDirective
+              field="id"
+              headerText="Id"
+              width="40"
+              isPrimaryKey={true}
+              isIdentity={true}
+              visible={false}
+            />
+            <ColumnDirective
+              field="invoiceNumber"
+              width="100"
+              visible={false}
+            />
+            <ColumnDirective
+              field="name"
+              headerText="Nº Factura"
+              width="100"
+              allowEditing={false}
+            />
+            <ColumnDirective
+              field="startDate"
+              headerText="F. Inicio"
+              width="100"
+              allowEditing={false}
+            />
+            <ColumnDirective
+              field="endDate"
+              headerText="F. Fin"
+              width="100"
+              allowEditing={false}
+            />
+            <ColumnDirective
+              field="issueDate"
+              headerText="F. Emisión"
+              width="100"
+              allowEditing={false}
+            />
+            <ColumnDirective
+              field="clientName"
+              headerText="Cliente"
+              width="100"
+              allowEditing={false}
+            />
+            <ColumnDirective
+              field="workName"
+              headerText="Obra"
+              width="100"
+              allowEditing={false}
+            />
+            <ColumnDirective
+              field="taxBase"
+              headerText="B. Imponible"
+              width="100"
+            />
+            <ColumnDirective field="ivaTaxBase" headerText="IVA" width="100" />
+            <ColumnDirective field="total" headerText="Total" width="100" />
+            <ColumnDirective
+              field="retentions"
+              headerText="Retenciones"
+              width="100"
+            />
+          </ColumnsDirective>
 
-              <AggregateColumnDirective
-                field="ivaTaxBase"
-                type="Sum"
-                format="N2"
-                footerTemplate={this.footerSumEuros}
-              >
-                {" "}
-              </AggregateColumnDirective>
+          <AggregatesDirective>
+            <AggregateDirective>
+              <AggregateColumnsDirective>
+                <AggregateColumnDirective
+                  field="taxBase"
+                  type="Sum"
+                  format="N2"
+                  footerTemplate={this.footerSumEuros}
+                >
+                  {" "}
+                </AggregateColumnDirective>
 
-              <AggregateColumnDirective
-                field="total"
-                type="Sum"
-                format="N2"
-                footerTemplate={this.footerSumEuros}
-              >
-                {" "}
-              </AggregateColumnDirective>
+                <AggregateColumnDirective
+                  field="ivaTaxBase"
+                  type="Sum"
+                  format="N2"
+                  footerTemplate={this.footerSumEuros}
+                >
+                  {" "}
+                </AggregateColumnDirective>
 
-              <AggregateColumnDirective
-                field="retentions"
-                type="Sum"
-                format="N2"
-                footerTemplate={this.footerSumEuros}
-              >
-                {" "}
-              </AggregateColumnDirective>              
-            </AggregateColumnsDirective>
-          </AggregateDirective>
-        </AggregatesDirective>
+                <AggregateColumnDirective
+                  field="total"
+                  type="Sum"
+                  format="N2"
+                  footerTemplate={this.footerSumEuros}
+                >
+                  {" "}
+                </AggregateColumnDirective>
 
-        <Inject services={[Page, Toolbar, Edit, Aggregate]} />
-      </GridComponent>
+                <AggregateColumnDirective
+                  field="retentions"
+                  type="Sum"
+                  format="N2"
+                  footerTemplate={this.footerSumEuros}
+                >
+                  {" "}
+                </AggregateColumnDirective>
+              </AggregateColumnsDirective>
+            </AggregateDirective>
+          </AggregatesDirective>
+
+          <Inject services={[Page, Toolbar, Edit, Aggregate]} />
+        </GridComponent>
+      </Fragment>
     );
   }
 }

@@ -113,5 +113,35 @@
                 return StatusCode(500, ex);
             }
         }
+        
+        [HttpGet("print/{invoiceId:int}")]
+        public object Print(int invoiceId)
+        {
+            try
+            {
+                var queryResult = _supervisor.PrintInvoice(invoiceId);
+
+                return new { items = queryResult, Count = 1 };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Exception: ");
+                return StatusCode(500, ex);
+            }
+        }
+
+        [HttpGet("billpayment/{invoiceId:int}")]
+        public object BillPayment(int invoiceId)
+        {
+            try
+            {
+                return _supervisor.BillPayment(invoiceId);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Exception: ");
+                return StatusCode(500, ex);
+            }
+        }
     }
 }

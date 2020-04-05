@@ -34,8 +34,8 @@
         public static readonly Font _STANDARFONT_14_BOLD_WHITE =
             FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 14, BaseColor.White);
 
-        public InvoiceViewModel _invoiceViewModel = new InvoiceViewModel();
-        Document _pdf = new Document(PageSize.Letter);
+        public InvoiceViewModel _invoiceViewModel;
+        protected Document _pdf;
         public InvoiceResponseViewModel _invoiceResponseViewModel;
 
         protected Client _client;
@@ -45,6 +45,7 @@
 
         protected InvoiceQueryViewModel _invoiceQueryViewModel;
         protected ISupervisor _supervisor;
+        protected int _invoiceId;
         
         public GenerateInvoice(ISupervisor supervisor, InvoiceQueryViewModel invoiceQueryViewModel)
         {
@@ -63,6 +64,17 @@
             };
         }
 
+        public GenerateInvoice(ISupervisor supervisor, int invoiceId)
+        {
+            _supervisor = supervisor;
+            _invoiceId = invoiceId;
+
+            _invoiceResponseViewModel = new InvoiceResponseViewModel
+            {
+                typeFile = "application/pdf"
+            };
+        }
+
         protected abstract bool Validate();
         protected abstract PdfPTable GetAllRowsDetailInvoice(Document pdf);
         protected abstract PdfPTable GetTableNumberInvoice();
@@ -73,6 +85,8 @@
                 throw new Exception("No se puede validar la Factura");
 
             _invoice = AddInvoice();
+
+            _pdf = new Document(PageSize.Letter);
 
             var memoryStream = new MemoryStream();
             var pdfWriter = PdfWriter.GetInstance(_pdf, memoryStream);
@@ -110,7 +124,7 @@
             FillDataResponse();
         }
 
-        private PdfPTable GetHeader()
+        protected PdfPTable GetHeader()
         {
             var companyData = _supervisor.GetSettingByName("COMPANY_DATA");
             if (companyData == null)
@@ -202,7 +216,7 @@
             return invoice;
         }
 
-        private PdfPTable GetTableTitle()
+        protected PdfPTable GetTableTitle()
         {
             var pdfPTable = new PdfPTable(4) { WidthPercentage = 100 };
             var widths = new[] { 40f, 20f, 20f, 20f };
@@ -258,22 +272,30 @@
                 new iTextSharp.text.pdf.draw.LineSeparator(0f, 100f, BaseColor.LightGray, Element.ALIGN_LEFT, 1));
         }
 
-        private PdfPTable GetTableTitleInvoice()
+        protected PdfPTable GetTableTitleInvoice()
         {
             var listMonths = new[] { "ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO", "JULIO", "AGOSTO", "SEPTIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE" };
-            var monthIni = DateTime.ParseExact(_invoiceQueryViewModel.startDate, "d/MM/yyyy", null).Month;
-            var monthEnd = DateTime.ParseExact(_invoiceQueryViewModel.endDate, "d/MM/yyyy", null).Month;
-            var yearIni = DateTime.ParseExact(_invoiceQueryViewModel.startDate, "d/MM/yyyy", null).Year;
-            var yearEnd = DateTime.ParseExact(_invoiceQueryViewModel.endDate, "d/MM/yyyy", null).Year;
+            var monthIni = _invoice.StartDate.Month;
+            var monthEnd = _invoice.EndDate.Month;
+            var yearIni = _invoice.StartDate.Year;
+            var yearEnd = _invoice.EndDate.Year;
 
             string title;
-            if (monthIni == monthEnd && yearIni == yearEnd)
+            if (_invoice.InvoiceToCancelId == null)
             {
-                title = $"HORAS POR ADMINISTRACION SEGÚN SERVICIOS PRESTADOS EN LA OBRA DE REFERENCIA CORRESPONIENTES AL MES DE {listMonths[monthIni - 1]} {yearIni}";
+                if (monthIni == monthEnd && yearIni == yearEnd)
+                {
+                    title = $"HORAS POR ADMINISTRACION SEGÚN SERVICIOS PRESTADOS EN LA OBRA DE REFERENCIA CORRESPONIENTES AL MES DE {listMonths[monthIni - 1]} {yearIni}";
+                }
+                else
+                {
+                    title = $"HORAS POR ADMINISTRACION SEGÚN SERVICIOS PRESTADOS EN LA OBRA DE REFERENCIA CORRESPONIENTES ENTRE LOS MESES DE {listMonths[monthIni - 1]} {yearIni} Y {listMonths[monthEnd - 1]} {yearEnd}";
+                }
             }
             else
             {
-                title = $"HORAS POR ADMINISTRACION SEGÚN SERVICIOS PRESTADOS EN LA OBRA DE REFERENCIA CORRESPONIENTES ENTRE LOS MESES DE {listMonths[monthIni - 1]} {yearIni} Y {listMonths[monthEnd - 1]} {yearEnd}";
+                var invoiceParent = _supervisor.GetInvoice((int)_invoice.InvoiceToCancelId);
+                title = $"FACTURA ABONO CORRESPONDIENTE A LA FACTURA Nº {invoiceParent.Name}";
             }
 
             var pdfPTable = new PdfPTable(4) { WidthPercentage = 100 };
@@ -320,7 +342,7 @@
             return pdfPTable;
         }
 
-        private PdfPTable GetTableTitle1(string title)
+        protected PdfPTable GetTableTitle1(string title)
         {
             var pdfPTable = new PdfPTable(1) { WidthPercentage = 100 };
             var pdfCell = new PdfPCell(new Phrase(title, _STANDARFONT_14_BOLD_WHITE))
@@ -336,7 +358,7 @@
             return pdfPTable;
         }
 
-        private PdfPTable GetPayment()
+        protected PdfPTable GetPayment()
         {
             var pdfPTable = new PdfPTable(5) { WidthPercentage = 100 };
             var widths = new[] { 20f, 20f, 10f, 20f, 30f };
@@ -407,7 +429,7 @@
             return pdfPTable;
         }
 
-        private PdfPTable GetSignAndStamp()
+        protected PdfPTable GetSignAndStamp()
         {
             var pdfPTable = new PdfPTable(1) { WidthPercentage = 40, HorizontalAlignment = 2 };
 

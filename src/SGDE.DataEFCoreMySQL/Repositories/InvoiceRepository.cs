@@ -94,8 +94,12 @@
         {
             return _context.Invoice
                     .Include(x => x.Work)
+                    .ThenInclude(x => x.Client)
+                    .Include(x => x.InvoiceToCancel)
+                    .ThenInclude(x => x.DetailsInvoice)
                     .Include(x => x.InvoiceToCancel)
                     .ThenInclude(x => x.Client)
+                    .Include(x => x.DetailsInvoice)
                 .FirstOrDefault(x => x.Id == id);
         }
 
@@ -316,6 +320,11 @@
             }
 
             return invoice.Id;
+        }
+
+        public int CountInvoices()
+        {
+            return _context.Invoice.Count();
         }
     }
 }
