@@ -11,6 +11,13 @@ import {
   hideSpinner
 } from "@syncfusion/ej2-popups";
 import {
+  ColumnDirective,
+  ColumnsDirective,
+  GridComponent,
+  Inject,
+  ForeignKey
+} from "@syncfusion/ej2-react-grids";
+import {
   getInvoiceResponse,
   base64ToArrayBuffer,
   saveByteArray
@@ -18,6 +25,18 @@ import {
 import GridInvoice from "../../components/grid-invoices";
 
 class Invoices extends Component {
+  gridDetailInvoice = null;
+
+  detailInvoice = [];
+
+  numericParams = {
+    params: {
+      decimals: 2,
+      format: "N",
+      validateDecimalOnType: true
+    }
+  };
+
   constructor(props) {
     super(props);
 
@@ -26,7 +45,7 @@ class Invoices extends Component {
       startDate: null,
       endDate: null,
       issueDate: null,
-      typeInvoice: 1,
+      typeInvoice: 2,
       clientId: null,
       workId: null,
       updateGrid: null
@@ -37,6 +56,15 @@ class Invoices extends Component {
     this.dataSource = getWorks().then(items => {
       this.ddl.dataSource = items;
     });
+
+    this.toolbarOptions = ["Add", "Edit", "Delete", "Update", "Cancel"];
+    this.editSettings = {
+      showDeleteConfirmDialog: true,
+      allowEditing: true,
+      allowAdding: true,
+      allowDeleting: true,
+      newRowPosition: "Top"
+    };
 
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleDropDown = this.handleDropDown.bind(this);
@@ -54,7 +82,8 @@ class Invoices extends Component {
       issueDate: this.state.issueDate,
       typeInvoice: this.state.typeInvoice,
       clientId: this.state.clientId,
-      workId: this.state.workId
+      workId: this.state.workId,
+      detailInvoice: this.gridDetailInvoice.getCurrentViewRecords()
     };
   }
 
@@ -151,6 +180,11 @@ class Invoices extends Component {
       });
   }
 
+  templateTotal(args) {
+    const sum = args.units * args.priceUnity;
+    return <div>{sum}</div>;
+  }
+
   render() {
     return (
       <div
@@ -171,22 +205,8 @@ class Invoices extends Component {
               </div>
               <div className="card-body">
                 <Form>
-                  <Row style={{marginLeft: "20px", marginRight: "20px"}}>
-                    {/* <Col xs="3">
-                      <FormGroup>
-                        <Label htmlFor="name">Nº Factura</Label>
-                        <Input
-                          type="text"
-                          id="invoiceNumber"
-                          name="invoiceNumber"
-                          placeholder="número de factura"
-                          required
-                          value={this.state.name}
-                          onChange={this.handleInputChange}
-                        />
-                      </FormGroup>
-                    </Col> */}
-                    <Col xs="4">
+                  <Row style={{ marginLeft: "20px", marginRight: "20px" }}>
+                    <Col xs="6">
                       <FormGroup>
                         <Label htmlFor="name">Obra</Label>
                         <DropDownListComponent
@@ -239,8 +259,74 @@ class Invoices extends Component {
                         />
                       </FormGroup>
                     </Col>
+                  </Row>
+                  <Row>
+                    <Col xs="12">
+                      <GridComponent
+                        dataSource={this.detailInvoice}
+                        locale="es-US"
+                        toolbar={this.toolbarOptions}
+                        style={{
+                          marginLeft: 30,
+                          marginRight: 30,
+                          marginTop: 20,
+                          marginBottom: 20
+                        }}
+                        ref={g => (this.gridDetailInvoice = g)}
+                        editSettings={this.editSettings}
+                      >
+                        <ColumnsDirective>
+                          <ColumnDirective
+                            field="id"
+                            headerText="Id"
+                            width="40"
+                            isPrimaryKey={true}
+                            isIdentity={true}
+                            visible={false}
+                          />
+                          <ColumnDirective
+                            field="servicesPerformed"
+                            headerText="Servicios Prestados"
+                            width="100"
+                          />
+                          <ColumnDirective
+                            field="units"
+                            headerText="Unidades"
+                            width="100"
+                            fotmat="N2"
+                            textAlign="left"
+                            editType="numericedit"
+                            edit={this.numericParams}
+                          />
+                          <ColumnDirective
+                            field="nameUnit"
+                            headerText="Nombre Unidades"
+                            width="100"
+                          />
+                          <ColumnDirective
+                            field="priceUnity"
+                            headerText="Precio Unidad"
+                            width="100"
+                            fotmat="N2"
+                            textAlign="left"
+                            editType="numericedit"
+                            edit={this.numericParams}
+                          />
+                          <ColumnDirective
+                            field="total"
+                            headerText="Total"
+                            width="100"
+                            allowEditing={false}
+                            template={this.templateTotal}
+                          />
+                        </ColumnsDirective>
+                        <Inject services={[ForeignKey]} />
+                      </GridComponent>
+                    </Col>
+                  </Row>
+                  <Row style={{ marginLeft: "20px", marginRight: "20px" }}>
                     <Col
-                      xs="2"
+                      xs="12"
                       style={{
                         marginTop: "20px",
                         textAlign: "right"
@@ -255,11 +341,11 @@ class Invoices extends Component {
                   </Row>
                   <Row>
                     <Col xs="12" style={{}}>
-                      <div style={{ textAlign: "center", marginTop: "40px" }}>
+                      <div style={{ textAlign: "center" }}>
                         <h1>Listado de Facturas</h1>
                       </div>
                     </Col>
-                  </Row>                  
+                  </Row>
                   <Row>
                     <Col xs="12" style={{ marginTop: "40px" }}>
                       <GridInvoice

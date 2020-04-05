@@ -19,11 +19,14 @@
         public bool iva { get; set; }
         public Decimal retentions { get; set; }
 
+
         public int? workId { get; set; }
         public string workName { get; set; }
         public int? clientId { get; set; }
         public string clientName { get; set; }
         public int? userId { get; set; }
         public string userName { get; set; }
+        public int? invoiceToCancelId { get; set; }
+        public string invoiceToCancelName { get; set; }
     }
 }

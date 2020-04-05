@@ -48,7 +48,8 @@
                 Retentions = newInvoiceViewModel.retentions,
                 WorkId = newInvoiceViewModel.workId,
                 ClientId = newInvoiceViewModel.clientId,
-                UserId = newInvoiceViewModel.userId
+                UserId = newInvoiceViewModel.userId,
+                InvoiceToCancelId = newInvoiceViewModel.invoiceToCancelId
             };
 
             _invoiceRepository.Add(invoice);
@@ -113,6 +114,7 @@
             invoice.WorkId = invoiceViewModel.workId;
             invoice.ClientId = invoiceViewModel.clientId;
             invoice.UserId = invoiceViewModel.userId;
+            invoice.InvoiceToCancelId = invoiceViewModel.invoiceToCancelId;
 
             return _invoiceRepository.Update(invoice);
         }

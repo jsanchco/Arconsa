@@ -68,6 +68,8 @@
             if (_work == null)
                 return false;
 
+            _client = _work.Client;
+
             return true;
         }
 

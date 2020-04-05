@@ -60,6 +60,7 @@ const ReportHoursWork = React.lazy(() => import('./views/Reports/report-hours-wo
 const ReportHoursClient = React.lazy(() => import('./views/Reports/report-hours-client'));
 
 const Invoices = React.lazy(() => import('./views/Invoices/invoices'));
+const InvoicesCustom = React.lazy(() => import('./views/Invoices/invoices-custom'));
 
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
 const routes = [
@@ -122,7 +123,8 @@ const routes = [
   { path: '/reports/reporthoursuser', exact: true, name: 'Informe Horas Trabajador', component: ReportHoursUser },
   { path: '/reports/reporthourswork', exact: true, name: 'Informe Horas Obra', component: ReportHoursWork },
   { path: '/reports/reporthoursclient', exact: true, name: 'Informe Horas Cliente', component: ReportHoursClient },
-  { path: '/invoices/invoices', exact: true, name: 'Facturas', component: Invoices }
+  { path: '/invoices/invoices', exact: true, name: 'Facturas', component: Invoices },
+  { path: '/invoices/invoicescustom', exact: true, name: 'Facturas Personalizadas', component: InvoicesCustom }
 ];
 
 export default routes;

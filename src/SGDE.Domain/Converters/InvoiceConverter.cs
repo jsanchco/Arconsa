@@ -37,7 +37,9 @@
                 clientId = invoice.ClientId == null ? invoice.Work.ClientId : invoice.Client.Id,
                 clientName = invoice.ClientId == null ? invoice.Work.Client.Name : invoice.Client.Name,
                 userId = invoice.UserId,
-                userName = invoice.UserId == null ? null : $"{invoice.User.Name} {invoice.User.Surname}"
+                userName = invoice.UserId == null ? null : $"{invoice.User.Name} {invoice.User.Surname}",
+                invoiceToCancelId = invoice.InvoiceToCancelId,
+                invoiceToCancelName = invoice.InvoiceToCancel?.Name
             };
             if (invoice.Iva == true)
             {
@@ -77,7 +79,9 @@
                     clientId = invoice.ClientId == null ? invoice.Work.ClientId : invoice.Client.Id,
                     clientName = invoice.ClientId == null ? invoice.Work.Client.Name : invoice.Client.Name,
                     userId = invoice.UserId,
-                    userName = invoice.UserId == null ? null : $"{invoice.User.Name} {invoice.User.Surname}"
+                    userName = invoice.UserId == null ? null : $"{invoice.User.Name} {invoice.User.Surname}",
+                    invoiceToCancelId = invoice.InvoiceToCancelId,
+                    invoiceToCancelName = invoice.InvoiceToCancel?.Name
                 };
                 if (invoice.Iva == true)
                 {
