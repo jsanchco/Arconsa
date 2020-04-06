@@ -19,6 +19,7 @@ import {
   showSpinner,
   hideSpinner
 } from "@syncfusion/ej2-popups";
+import { setValue } from "@syncfusion/ej2-base";
 import { DataManager, WebApiAdaptor } from "@syncfusion/ej2-data";
 import { DialogComponent } from "@syncfusion/ej2-react-popups";
 import { config, INVOICES } from "../constants";
@@ -52,6 +53,7 @@ class GridInvoice extends Component {
       hideConfirmDialog: false
     };
 
+    this.selectedRow = null;
     this.toolbarOptions = [
       "Edit",
       "Delete",
@@ -76,11 +78,19 @@ class GridInvoice extends Component {
       allowAdding: false,
       allowDeleting: true
     };
+    this.numericParams = {
+      params: {
+        decimals: 2,
+        format: "N",
+        validateDecimalOnType: true
+      }
+    };
     this.pageSettings = { pageCount: 10, pageSize: 10 };
     this.actionFailure = this.actionFailure.bind(this);
     this.actionComplete = this.actionComplete.bind(this);
     this.clickHandler = this.clickHandler.bind(this);
     this.billPayment = this.billPayment.bind(this);
+    this.rowSelected = this.rowSelected.bind(this);
 
     this.confirmButton = [
       {
@@ -126,6 +136,9 @@ class GridInvoice extends Component {
 
   actionComplete(args) {
     if (args.requestType === "save") {
+      setValue("retentions", args.data.retentions, this.selectedRow);
+      this.grid.aggregateModule.refresh(this.selectedRow);
+
       this.props.showMessage({
         statusText: "200",
         responseText: "Operación realizada con éxito",
@@ -178,7 +191,7 @@ class GridInvoice extends Component {
           type: "danger"
         });
       } else {
-        this.setState({ hideConfirmDialog: true });        
+        this.setState({ hideConfirmDialog: true });
       }
     }
   }
@@ -208,7 +221,7 @@ class GridInvoice extends Component {
           type: "danger"
         });
         hideSpinner(element);
-      });    
+      });
   }
 
   footerSumEuros(args) {
@@ -223,6 +236,19 @@ class GridInvoice extends Component {
     }
 
     return <span>Total: {title}€</span>;
+  }
+
+  changeRetentions(args) {
+    setValue("retentions", args.value, this.selectedRow);
+    if (this.grid) {
+      this.grid.aggregateModule.refresh(this.selectedRow);
+    }
+  }
+
+  rowSelected() {
+    if (this.grid) {
+      this.selectedRow = this.grid.getSelectedRecords()[0];
+    }
   }
 
   render() {
@@ -320,14 +346,29 @@ class GridInvoice extends Component {
               field="taxBase"
               headerText="B. Imponible"
               width="100"
+              allowEditing={false}
             />
-            <ColumnDirective field="ivaTaxBase" headerText="IVA" width="100" />
-            <ColumnDirective field="total" headerText="Total" width="100" />
+            <ColumnDirective
+              field="ivaTaxBase"
+              headerText="IVA"
+              width="100"
+              allowEditing={false}
+            />
+            <ColumnDirective
+              field="total"
+              headerText="Total"
+              width="100"
+              allowEditing={false}
+            />
             <ColumnDirective
               field="retentions"
               headerText="Retenciones"
               width="100"
+              fotmat="N2"
+              editType="numericedit"
+              edit={this.numericParams}
             />
+            <ColumnDirective field="typeInvoice" visible={false} />
           </ColumnsDirective>
 
           <AggregatesDirective>

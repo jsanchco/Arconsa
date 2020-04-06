@@ -280,16 +280,19 @@
             var yearIni = _invoice.StartDate.Year;
             var yearEnd = _invoice.EndDate.Year;
 
-            string title;
+            var title = string.Empty;
             if (_invoice.InvoiceToCancelId == null)
             {
-                if (monthIni == monthEnd && yearIni == yearEnd)
+                if (_invoice.TypeInvoice == 1)
                 {
-                    title = $"HORAS POR ADMINISTRACION SEGÚN SERVICIOS PRESTADOS EN LA OBRA DE REFERENCIA CORRESPONIENTES AL MES DE {listMonths[monthIni - 1]} {yearIni}";
-                }
-                else
-                {
-                    title = $"HORAS POR ADMINISTRACION SEGÚN SERVICIOS PRESTADOS EN LA OBRA DE REFERENCIA CORRESPONIENTES ENTRE LOS MESES DE {listMonths[monthIni - 1]} {yearIni} Y {listMonths[monthEnd - 1]} {yearEnd}";
+                    if (monthIni == monthEnd && yearIni == yearEnd)
+                    {
+                        title = $"HORAS POR ADMINISTRACION SEGÚN SERVICIOS PRESTADOS EN LA OBRA DE REFERENCIA CORRESPONIENTES AL MES DE {listMonths[monthIni - 1]} {yearIni}";
+                    }
+                    else
+                    {
+                        title = $"HORAS POR ADMINISTRACION SEGÚN SERVICIOS PRESTADOS EN LA OBRA DE REFERENCIA CORRESPONIENTES ENTRE LOS MESES DE {listMonths[monthIni - 1]} {yearIni} Y {listMonths[monthEnd - 1]} {yearEnd}";
+                    }
                 }
             }
             else

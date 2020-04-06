@@ -17,6 +17,7 @@
         public double ivaTaxBase { get; set; }
         public double total { get; set; }
         public bool iva { get; set; }
+        public int typeInvoice { get; set; }  // 1 = por horas, 2 = custom
         public Decimal retentions { get; set; }
 
 

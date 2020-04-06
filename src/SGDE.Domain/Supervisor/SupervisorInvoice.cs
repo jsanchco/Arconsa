@@ -45,6 +45,7 @@
                 IssueDate = DateTime.ParseExact(newInvoiceViewModel.issueDate, "dd/MM/yyyy", null),
                 TaxBase = (decimal)newInvoiceViewModel.taxBase,
                 Iva = newInvoiceViewModel.iva,
+                TypeInvoice = newInvoiceViewModel.typeInvoice,
                 Retentions = newInvoiceViewModel.retentions,
                 WorkId = newInvoiceViewModel.workId,
                 ClientId = newInvoiceViewModel.clientId,
@@ -77,7 +78,8 @@
                 IssueDate = DateTime.ParseExact(invoiceQueryViewModel.issueDate, "dd/MM/yyyy", null),
                 WorkId = invoiceQueryViewModel.workId,
                 ClientId = invoiceQueryViewModel.clientId,
-                UserId = invoiceQueryViewModel.workerId
+                UserId = invoiceQueryViewModel.workerId,
+                TypeInvoice = invoiceQueryViewModel.typeInvoice
             };
 
             var taxBase = 0.0;
@@ -119,6 +121,7 @@
             invoice.IssueDate = DateTime.ParseExact(invoiceViewModel.issueDate, "dd/MM/yyyy", null);
             invoice.TaxBase = (decimal)invoiceViewModel.taxBase;
             invoice.Iva = invoiceViewModel.iva;
+            invoice.TypeInvoice = invoiceViewModel.typeInvoice;
             invoice.Retentions = invoiceViewModel.retentions;
             invoice.WorkId = invoiceViewModel.workId;
             invoice.ClientId = invoiceViewModel.clientId;
@@ -167,7 +170,8 @@
                 EndDate = invoiceParent.EndDate,
                 Retentions = invoiceParent.Retentions,
                 AddedDate = DateTime.Now,
-                Iva = invoiceParent.Iva
+                Iva = invoiceParent.Iva,
+                TypeInvoice = invoiceParent.TypeInvoice
             };
 
             return InvoiceConverter.Convert(_invoiceRepository.Add(newInvoice));
