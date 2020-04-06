@@ -158,7 +158,7 @@
 
             var newInvoice = new Invoice
             {
-                Name = $"AB_{invoiceParent.Name}",
+                Name = $"AB_{invoiceNumber}/{DateTime.Now.Year.ToString().Substring(2, 2)}",
                 InvoiceNumber = invoiceNumber,
                 InvoiceToCancelId = invoiceId,
                 IssueDate = DateTime.Now,

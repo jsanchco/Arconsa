@@ -47,7 +47,12 @@
             { BackgroundColor = new BaseColor(204, 204, 255), BorderWidthRight = 0, BorderWidthTop = 0 };
             pdfPTable.AddCell(pdfCell);
 
-            pdfCell = new PdfPCell(new Phrase(_client.Id.ToString(), _STANDARFONT_10_BOLD))
+            var clientNameCustom = _client.Cif;
+            clientNameCustom = string.IsNullOrEmpty(clientNameCustom)
+                ? _client.Id.ToString()
+                : clientNameCustom.Substring(clientNameCustom.Length - 5, 5);
+
+            pdfCell = new PdfPCell(new Phrase(clientNameCustom, _STANDARFONT_10_BOLD))
             { BackgroundColor = new BaseColor(204, 204, 255), BorderWidthLeft = 0, BorderWidthTop = 0 };
             pdfPTable.AddCell(pdfCell);
 
@@ -80,6 +85,9 @@
             var pdfPTable = new PdfPTable(4) { WidthPercentage = 100 };
             var widths = new[] { 40f, 20f, 20f, 20f };
             pdfPTable.SetWidths(widths);
+
+            if (_invoice.InvoiceToCancelId != null)
+                return pdfPTable;
 
             foreach (var detailInvoice in _invoice.DetailsInvoice)
             {
