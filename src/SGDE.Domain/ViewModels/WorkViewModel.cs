@@ -17,6 +17,9 @@
         public string openDate { get; set; }
         public string closeDate { get; set; }
         public bool passiveSubject { get; set; }
+        public bool invoiceToOrigin { get; set; }
+        public double totalContract { get; set; }
+        public double percentageRetention { get; set; }
 
         public int clientId { get; set; }
         public string clientName { get; set; }

@@ -17,6 +17,9 @@
         public DateTime OpenDate { get; set; }
         public DateTime? CloseDate { get; set; }
         public bool PassiveSubject { get; set; }
+        public bool InvoiceToOrigin { get; set; }
+        public Decimal TotalContract { get; set; }
+        public Decimal PercentageRetention { get; set; }
 
         public int ClientId { get; set; }
         public virtual Client Client { get; set; }

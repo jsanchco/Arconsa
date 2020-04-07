@@ -78,6 +78,9 @@
                 EstimatedDuration = newWorkViewModel.estimatedDuration,
                 WorksToRealize = newWorkViewModel.worksToRealize,
                 Open = newWorkViewModel.open,
+                InvoiceToOrigin = newWorkViewModel.invoiceToOrigin,
+                TotalContract = (decimal)newWorkViewModel.totalContract,
+                PercentageRetention = (decimal)newWorkViewModel.percentageRetention,
 
                 OpenDate = newWorkViewModel.openDate == null ? DateTime.Now : DateTime.Parse(newWorkViewModel.openDate),
                 CloseDate = string.IsNullOrEmpty(newWorkViewModel.closeDate)
@@ -108,6 +111,9 @@
             work.Address = workViewModel.address;
             work.EstimatedDuration = workViewModel.estimatedDuration;
             work.WorksToRealize = workViewModel.worksToRealize;
+            work.InvoiceToOrigin = workViewModel.invoiceToOrigin;
+            work.TotalContract = (decimal)workViewModel.totalContract;
+            work.PercentageRetention = (decimal)workViewModel.percentageRetention;
 
             work.OpenDate = DateTime.ParseExact(workViewModel.openDate, "dd/MM/yyyy", null);
             work.CloseDate = string.IsNullOrEmpty(workViewModel.closeDate)

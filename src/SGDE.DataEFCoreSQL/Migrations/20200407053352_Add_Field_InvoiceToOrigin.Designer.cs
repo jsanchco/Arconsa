@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SGDE.DataEFCoreSQL;
 
 namespace SGDE.DataEFCoreSQL.Migrations
 {
     [DbContext(typeof(EFContextSQL))]
-    partial class EFContextSQLModelSnapshot : ModelSnapshot
+    [Migration("20200407053352_Add_Field_InvoiceToOrigin")]
+    partial class Add_Field_InvoiceToOrigin
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -796,8 +798,8 @@ namespace SGDE.DataEFCoreSQL.Migrations
                     b.Property<decimal>("PercentageRetention")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal>("TotalContract")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<bool>("TotalContract")
+                        .HasColumnType("bit");
 
                     b.Property<int?>("TypeClientId")
                         .HasColumnType("int");

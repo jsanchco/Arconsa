@@ -2,6 +2,7 @@ import React, { Component, Fragment } from "react";
 import { Form, Col, FormGroup, Input, Label, Row, Button } from "reactstrap";
 import { AppSwitch } from "@coreui/react";
 import { DatePickerComponent } from "@syncfusion/ej2-react-calendars";
+import { NumericTextBoxComponent } from "@syncfusion/ej2-react-inputs";
 import { updateWork } from "../../services";
 import {
   createSpinner,
@@ -23,6 +24,9 @@ class BasicDataWork extends Component {
       openDate: props.work.openDate,
       closeDate: props.work.closeDate,
       passiveSubject: props.work.passiveSubject,
+      invoiceToOrigin: props.work.invoiceToOrigin,
+      totalContract: props.work.totalContract,
+      percentageRetention: props.work.percentageRetention,
       open: props.work.open,
       clientId: props.work.clientId
     };
@@ -31,6 +35,10 @@ class BasicDataWork extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.getWork = this.getWork.bind(this);
     this.formatDate = this.formatDate.bind(this);
+    this.handleChangeTotalContract = this.handleChangeTotalContract.bind(this);
+    this.handleChangePercentageRetention = this.handleChangePercentageRetention.bind(
+      this
+    );
   }
 
   handleInputChange(event) {
@@ -51,7 +59,25 @@ class BasicDataWork extends Component {
           [name]: target.value
         });
       }
+
+      if (name === "invoiceToOrigin") {
+        this.setState({
+          [name]: target.checked
+        });
+      } else {
+        this.setState({
+          [name]: target.value
+        });
+      }
     }
+  }
+
+  handleChangeTotalContract(args) {
+    this.setState({ totalContract: args.value });
+  }
+
+  handleChangePercentageRetention(args) {
+    this.setState({ percentageRetention: args.value });
   }
 
   formatDate(args) {
@@ -83,6 +109,9 @@ class BasicDataWork extends Component {
       openDate: this.state.openDate,
       closeDate: this.state.closeDate,
       passiveSubject: this.state.passiveSubject,
+      invoiceToOrigin: this.state.invoiceToOrigin,
+      totalContract: this.state.totalContract,
+      percentageRetention: this.state.percentageRetention,
       open: this.state.open,
       clientId: this.state.clientId
     };
@@ -163,7 +192,12 @@ class BasicDataWork extends Component {
             <Row>
               <Col xs="2">
                 <FormGroup>
-                  <Label htmlFor="passiveSubject" style={{verticalAlign: "bottom"}}>Sujeto Pasivo&nbsp;</Label>
+                  <Label
+                    htmlFor="passiveSubject"
+                    style={{ verticalAlign: "bottom" }}
+                  >
+                    Sujeto Pasivo&nbsp;
+                  </Label>
                   <AppSwitch
                     className={"mx-1 mt-4"}
                     variant={"pill"}
@@ -174,7 +208,7 @@ class BasicDataWork extends Component {
                     name="passiveSubject"
                     placeholder="sujeto pasivo"
                     onChange={this.handleInputChange}
-                    dataOn="Si" 
+                    dataOn="Si"
                     dataOff="No"
                   />
                 </FormGroup>
@@ -220,22 +254,60 @@ class BasicDataWork extends Component {
                 </FormGroup>
               </Col>
             </Row>
-            {/* <Row>
-              <Col xs="12">
+            <Row>
+              <Col xs="4">
                 <FormGroup>
-                  <Label htmlFor="name">Trabajos a Realizar</Label>
-                  <Input
-                    type="text"
-                    id="worksToRealize"
-                    name="worksToRealize"
-                    placeholder="trabajos a realizar"
-                    required
-                    value={this.state.worksToRealize}
+                  <Label
+                    htmlFor="invoiceToOrigin"
+                    style={{ verticalAlign: "bottom" }}
+                  >
+                    Factura a Origen&nbsp;
+                  </Label>
+                  <AppSwitch
+                    className={"mx-1 mt-4"}
+                    variant={"pill"}
+                    color={"primary"}
+                    label
+                    checked={this.state.invoiceToOrigin}
+                    id="invoiceToOrigin"
+                    name="invoiceToOrigin"
+                    placeholder="factura a origen"
                     onChange={this.handleInputChange}
+                    dataOn="Si"
+                    dataOff="No"
                   />
                 </FormGroup>
               </Col>
-            </Row> */}
+              <Col xs="4">
+                <FormGroup>
+                  <Label htmlFor="totalContract">Total Contrato</Label>
+                  <NumericTextBoxComponent
+                    format="N2"
+                    id="totalContract"
+                    name="totalContract"
+                    value={this.state.totalContract}
+                    placeholder="total contrato"
+                    change={this.handleChangeNumeric}
+                  />
+                </FormGroup>
+              </Col>
+              <Col xs="4">
+                <FormGroup>
+                  <Label htmlFor="percentageRetention">Retención</Label>
+                  <NumericTextBoxComponent
+                    format="p2"
+                    id="percentageRetention"
+                    name="percentageRetention"
+                    value={this.state.percentageRetention}
+                    min={0}
+                    max={1}
+                    step={0.01}
+                    placeholder="porcentaje retención"
+                    change={this.handleChangeNumeric}
+                  />
+                </FormGroup>
+              </Col>
+            </Row>
             <Row>
               <Col xs="12" style={{ marginTop: "20px", textAlign: "right" }}>
                 <div className="form-actions">
