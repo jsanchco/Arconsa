@@ -4,10 +4,11 @@ import ACTION_APPLICATION from "../../actions/applicationAction";
 import {
   TabComponent,
   TabItemDirective,
-  TabItemsDirective
+  TabItemsDirective,
 } from "@syncfusion/ej2-react-navigations";
 import AuthorizeCancelWorkers from "./authorize-cancel-workers";
 import BasicDataWork from "./basic-data-work";
+import InvoicesWork from "./invoices-work";
 
 class DetailWork extends Component {
   constructor(props) {
@@ -15,13 +16,17 @@ class DetailWork extends Component {
 
     this.headerText = [
       { text: "Datos Básicos" },
-      { text: "Altas/Bajas de Trabajadores" }
+      { text: "Altas/Bajas de Trabajadores" },
+      { text: "Facturas" }
     ];
 
     this.contentTemplateAuthorizeCancelWorkers = this.contentTemplateAuthorizeCancelWorkers.bind(
       this
     );
     this.contentTemplateBasicDataWork = this.contentTemplateBasicDataWork.bind(
+      this
+    );
+    this.contentTemplateInvoicesWork = this.contentTemplateInvoicesWork.bind(
       this
     );
   }
@@ -39,6 +44,16 @@ class DetailWork extends Component {
   contentTemplateAuthorizeCancelWorkers() {
     return (
       <AuthorizeCancelWorkers
+        work={this.props.history.location.state.work}
+        history={this.props.history}
+        showMessage={this.props.showMessage}
+      />
+    );
+  }
+
+  contentTemplateInvoicesWork() {
+    return (
+      <InvoicesWork
         work={this.props.history.location.state.work}
         history={this.props.history}
         showMessage={this.props.showMessage}
@@ -69,7 +84,7 @@ class DetailWork extends Component {
                   marginLeft: 30,
                   marginRight: 30,
                   marginTop: 0,
-                  marginBottom: 20
+                  marginBottom: 20,
                 }}
               >
                 <TabItemsDirective>
@@ -81,6 +96,10 @@ class DetailWork extends Component {
                     header={this.headerText[1]}
                     content={this.contentTemplateAuthorizeCancelWorkers}
                   />
+                  <TabItemDirective
+                    header={this.headerText[2]}
+                    content={this.contentTemplateInvoicesWork}
+                  />                  
                 </TabItemsDirective>
               </TabComponent>
             </div>
@@ -93,14 +112,14 @@ class DetailWork extends Component {
 
 DetailWork.propTypes = {};
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
-    errorApplication: state.applicationReducer.error
+    errorApplication: state.applicationReducer.error,
   };
 };
 
-const mapDispatchToProps = dispatch => ({
-  showMessage: message => dispatch(ACTION_APPLICATION.showMessage(message))
+const mapDispatchToProps = (dispatch) => ({
+  showMessage: (message) => dispatch(ACTION_APPLICATION.showMessage(message)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DetailWork);

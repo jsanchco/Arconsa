@@ -6,6 +6,11 @@ import { DropDownListComponent } from "@syncfusion/ej2-react-dropdowns";
 import { L10n, loadCldr } from "@syncfusion/ej2-base";
 import data from "../../locales/locale.json";
 import { getWorkers, getWorks, getClients } from "../../services";
+import {
+  createSpinner,
+  showSpinner,
+  hideSpinner,
+} from "@syncfusion/ej2-popups";
 
 import * as gregorian from "cldr-data/main/es-US/ca-gregorian.json";
 import * as numbers from "cldr-data/main/es-US/numbers.json";
@@ -32,21 +37,57 @@ class HeaderSettings extends Component {
 
   componentDidMount() {
     if (this.props.type === "workers") {
-      getWorkers().then(items => {
-        this.ddl.dataSource = items;
+      const element = document.getElementById("selection-report");
+
+      createSpinner({
+        target: element,
       });
+      showSpinner(element);
+
+      getWorkers()
+        .then((items) => {
+          this.ddl.dataSource = items;
+          hideSpinner(element);
+        })
+        .catch((error) => {
+          hideSpinner(element);
+        });
     }
 
     if (this.props.type === "works") {
-      getWorks().then(items => {
-        this.ddl.dataSource = items;
+      const element = document.getElementById("selection-report");
+
+      createSpinner({
+        target: element,
       });
+      showSpinner(element);
+
+      getWorks()
+        .then((items) => {
+          this.ddl.dataSource = items;
+          hideSpinner(element);
+        })
+        .catch((error) => {
+          hideSpinner(element);
+        });
     }
 
     if (this.props.type === "clients") {
-      getClients().then(items => {
-        this.ddl.dataSource = items;
+      const element = document.getElementById("selection-report");
+
+      createSpinner({
+        target: element,
       });
+      showSpinner(element);
+
+      getClients()
+        .then((items) => {
+          this.ddl.dataSource = items;
+          hideSpinner(element);
+        })
+        .catch((error) => {
+          hideSpinner(element);
+        });
     }
   }
 
@@ -66,14 +107,14 @@ class HeaderSettings extends Component {
       this.props.showMessage({
         statusText: "Consulta mal configurada",
         responseText: "Consulta mal configurada",
-        type: "danger"
+        type: "danger",
       });
     } else {
       if (this.dtpStartDate.value > this.dtpEndDate.value) {
         this.props.showMessage({
           statusText: "Consulta mal configurada",
           responseText: "Consulta mal configurada",
-          type: "danger"
+          type: "danger",
         });
       } else {
         this.props.updateReport(
@@ -93,9 +134,8 @@ class HeaderSettings extends Component {
     }
 
     let day = args.getDate();
-    if (day < 10)
-      day = "0" + day;
-      
+    if (day < 10) day = "0" + day;
+
     const month = args.getMonth() + 1;
     const year = args.getFullYear();
 
@@ -127,14 +167,14 @@ class HeaderSettings extends Component {
     }
 
     return (
-      <Form inline style={{ marginLeft: "20px" }}>
+      <Form inline style={{ marginLeft: "20px" }} id="selection-report">
         <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
           <Label for="startDate" className="mr-sm-2">
             Fecha Inicio
           </Label>
           <DatePickerComponent
             id="startDate"
-            ref={g => (this.dtpStartDate = g)}
+            ref={(g) => (this.dtpStartDate = g)}
             format="dd/MM/yyyy"
           />
         </FormGroup>
@@ -147,7 +187,7 @@ class HeaderSettings extends Component {
           </Label>
           <DatePickerComponent
             id="endDate"
-            ref={g => (this.dtpEndDate = g)}
+            ref={(g) => (this.dtpEndDate = g)}
             format="dd/MM/yyyy"
           />
         </FormGroup>
@@ -163,7 +203,7 @@ class HeaderSettings extends Component {
             dataSource={null}
             placeholder={`Selecciona ${title}`}
             fields={this.fields}
-            ref={g => (this.ddl = g)}
+            ref={(g) => (this.ddl = g)}
           />
         </FormGroup>
         <Button
@@ -181,7 +221,7 @@ class HeaderSettings extends Component {
 HeaderSettings.propTypes = {
   type: PropTypes.string.isRequired,
   showMessage: PropTypes.func.isRequired,
-  updateReport: PropTypes.func.isRequired
+  updateReport: PropTypes.func.isRequired,
 };
 
 export default HeaderSettings;

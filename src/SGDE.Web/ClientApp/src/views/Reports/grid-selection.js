@@ -13,7 +13,7 @@ import {
   AggregateColumnsDirective,
   AggregateColumnDirective,
   AggregateDirective,
-  AggregatesDirective
+  AggregatesDirective,
 } from "@syncfusion/ej2-react-grids";
 import { DataManager, WebApiAdaptor, Query } from "@syncfusion/ej2-data";
 import { config, REPORTS } from "../../constants";
@@ -34,7 +34,7 @@ class GridSelection extends Component {
       companyName: "",
       cif: "",
       address: "",
-      phoneNumber: ""
+      phoneNumber: "",
     };
 
     this.toolbarOptions = [
@@ -44,8 +44,8 @@ class GridSelection extends Component {
         text: "Colapsar",
         tooltipText: "Colapsar todas las Filas",
         prefixIcon: "e-custom-icons e-file-upload",
-        id: "CollapseAll"
-      }
+        id: "CollapseAll",
+      },
     ];
 
     this.renderWorker = this.renderWorker.bind(this);
@@ -57,20 +57,20 @@ class GridSelection extends Component {
 
   componentDidMount() {
     getSettings(COMPANY_DATA)
-      .then(result => {
+      .then((result) => {
         const data = JSON.parse(result.data);
         this.setState({
           companyName: data.companyName,
           cif: data.cif,
           address: data.address,
-          phoneNumber: data.phoneNumber
+          phoneNumber: data.phoneNumber,
         });
       })
-      .catch(error => {
+      .catch((error) => {
         this.props.showMessage({
           statusText: error,
           responseText: error,
-          type: "danger"
+          type: "danger",
         });
       });
   }
@@ -84,8 +84,8 @@ class GridSelection extends Component {
             adaptor: new WebApiAdaptor(),
             url: `${config.URL_API}/${REPORTS}`,
             headers: [
-              { Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }
-            ]
+              { Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) },
+            ],
           });
           this.grid.query = new Query()
             .addParams("workerId", settings.selection)
@@ -100,8 +100,8 @@ class GridSelection extends Component {
             adaptor: new WebApiAdaptor(),
             url: `${config.URL_API}/${REPORTS}`,
             headers: [
-              { Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }
-            ]
+              { Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) },
+            ],
           });
           this.grid.query = new Query()
             .addParams("workId", settings.selection)
@@ -116,8 +116,8 @@ class GridSelection extends Component {
             adaptor: new WebApiAdaptor(),
             url: `${config.URL_API}/${REPORTS}`,
             headers: [
-              { Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }
-            ]
+              { Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) },
+            ],
           });
           this.grid.query = new Query()
             .addParams("clientId", settings.selection)
@@ -211,7 +211,7 @@ class GridSelection extends Component {
   }
 
   getExcelExportProperties() {
-    let title = "INFORME por ";    
+    let title = "INFORME por ";
     let type = "";
     let fileName = "";
     const date = this.formatDate(new Date());
@@ -253,10 +253,10 @@ class GridSelection extends Component {
                   fontColor: "#C25050",
                   fontSize: 25,
                   hAlign: "Center",
-                  bold: true
-                }
-              }
-            ]
+                  bold: true,
+                },
+              },
+            ],
           },
           {
             index: 3,
@@ -265,21 +265,21 @@ class GridSelection extends Component {
                 index: 1,
                 colSpan: 3,
                 value: this.state.companyName,
-                style: { fontColor: "#C67878", fontSize: 15, bold: true }
+                style: { fontColor: "#C67878", fontSize: 15, bold: true },
               },
               {
                 index: 5,
                 colSpan: 2,
                 value: type,
-                style: { fontColor: "#C67878", bold: true }
+                style: { fontColor: "#C67878", bold: true },
               },
               {
                 index: 7,
                 value: "FECHA INFORME",
                 style: { fontColor: "#C67878", bold: true },
-                width: 150
-              }
-            ]
+                width: 150,
+              },
+            ],
           },
           {
             index: 4,
@@ -289,9 +289,9 @@ class GridSelection extends Component {
               {
                 index: 7,
                 value: date,
-                width: 150
-              }
-            ]
+                width: 150,
+              },
+            ],
           },
           {
             index: 5,
@@ -299,29 +299,29 @@ class GridSelection extends Component {
               {
                 index: 1,
                 colSpan: 3,
-                value: this.state.phoneNumber
+                value: this.state.phoneNumber,
               },
               {
                 index: 5,
                 value: "Fecha Inicio",
-                style: { fontColor: "#C67878", bold: true }
+                style: { fontColor: "#C67878", bold: true },
               },
               {
                 index: 6,
                 value: "Fecha Fin",
                 width: 150,
-                style: { fontColor: "#C67878", bold: true }
-              }
-            ]
+                style: { fontColor: "#C67878", bold: true },
+              },
+            ],
           },
           {
             index: 6,
             cells: [
               { index: 5, value: settings.start },
-              { index: 6, value: settings.end, width: 150 }
-            ]
-          }
-        ]
+              { index: 6, value: settings.end, width: 150 },
+            ],
+          },
+        ],
       },
       // footer: {
       //   footerRows: 5,
@@ -346,7 +346,7 @@ class GridSelection extends Component {
       //     }
       //   ]
       // },
-      fileName: fileName
+      fileName: fileName,
     };
   }
 
@@ -365,12 +365,12 @@ class GridSelection extends Component {
                 marginLeft: 30,
                 marginRight: 30,
                 marginTop: 10,
-                marginBottom: 20
+                marginBottom: 20,
               }}
               allowGrouping={true}
               allowExcelExport={true}
               rowSelected={this.rowSelected}
-              ref={g => (this.grid = g)}
+              ref={(g) => (this.grid = g)}
             >
               <ColumnsDirective>
                 {this.renderClient()}
@@ -380,6 +380,12 @@ class GridSelection extends Component {
                 {this.renderWorker()}
 
                 <ColumnDirective
+                  field="professionName"
+                  headerText="Preofesión"
+                  width="100"
+                />
+
+                <ColumnDirective
                   field="dateHour"
                   headerText="Fecha"
                   width="100"
@@ -387,7 +393,7 @@ class GridSelection extends Component {
                 <ColumnDirective
                   field="hours"
                   headerText="Horas"
-                  width="100"
+                  width="70"
                   fotmat="N1"
                   textAlign="right"
                   editType="numericedit"
@@ -400,7 +406,7 @@ class GridSelection extends Component {
                 <ColumnDirective
                   field="priceHour"
                   headerText="Precio Coste"
-                  width="100"
+                  width="70"
                   fotmat="C1"
                   textAlign="right"
                   editType="numericedit"
@@ -408,7 +414,7 @@ class GridSelection extends Component {
                 <ColumnDirective
                   field="priceHourSale"
                   headerText="Precio Venta"
-                  width="100"
+                  width="70"
                   fotmat="C1"
                   textAlign="right"
                   editType="numericedit"
@@ -497,7 +503,7 @@ class GridSelection extends Component {
 
 GridSelection.propTypes = {
   //settings: PropTypes.object.isRequired,
-  showMessage: PropTypes.func.isRequired
+  showMessage: PropTypes.func.isRequired,
 };
 
 export default GridSelection;

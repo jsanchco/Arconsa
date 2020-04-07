@@ -20,7 +20,7 @@ import {
   hideSpinner
 } from "@syncfusion/ej2-popups";
 import { setValue } from "@syncfusion/ej2-base";
-import { DataManager, WebApiAdaptor } from "@syncfusion/ej2-data";
+import { DataManager, WebApiAdaptor, Query } from "@syncfusion/ej2-data";
 import { DialogComponent } from "@syncfusion/ej2-react-popups";
 import { config, INVOICES } from "../constants";
 import { L10n } from "@syncfusion/ej2-base";
@@ -108,6 +108,12 @@ class GridInvoice extends Component {
       }
     ];
     this.animationSettings = { effect: "None" };
+    if (props.workId) {
+      this.query = new Query().addParams("workId", props.workId);
+    }   
+    if (props.clientId) {
+      this.query = new Query().addParams("clientId", props.clientId);
+    }      
   }
 
   componentDidUpdate(prevProps) {
@@ -291,6 +297,7 @@ class GridInvoice extends Component {
           allowTextWrap={true}
           textWrapSettings={this.wrapSettings}
           id="gridInvoices"
+          query={this.query}
         >
           <ColumnsDirective>
             <ColumnDirective
@@ -423,7 +430,7 @@ class GridInvoice extends Component {
 GridInvoice.propTypes = {
   workId: PropTypes.number,
   clientId: PropTypes.number,
-  update: PropTypes.bool,
+  update: PropTypes.number,
   showMessage: PropTypes.func.isRequired
 };
 

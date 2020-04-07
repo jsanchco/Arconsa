@@ -134,7 +134,7 @@
                         invoice.Total = invoice.IvaTaxBase + (double)invoice.TaxBase;
 
                         var countInvoice = _context.Invoice.Count();
-                        var invoiceNumber = countInvoice == 0 ? 1063 : (1063 + countInvoice);
+                        var invoiceNumber = countInvoice == 0 ? 1060 : (1060 + countInvoice);
                         invoiceNumber++;
 
                         invoice.InvoiceNumber = invoiceNumber;

@@ -4,11 +4,12 @@ import ACTION_APPLICATION from "../../actions/applicationAction";
 import {
   TabComponent,
   TabItemDirective,
-  TabItemsDirective
+  TabItemsDirective,
 } from "@syncfusion/ej2-react-navigations";
 import BasicDataClient from "./basic-data-client";
 import WorksByClient from "./works-by-client";
 import ProfessionInClient from "./profession-in-client";
+import InvoicesClient from "./invoices-client";
 
 class DetailClient extends Component {
   constructor(props) {
@@ -17,7 +18,8 @@ class DetailClient extends Component {
     this.headerText = [
       { text: "Datos Básicos" },
       { text: "Obras" },
-      { text: "Precios por Profesión" }
+      { text: "Precios por Profesión" },
+      { text: "Facturas" },
     ];
 
     this.contentTemplateWorks = this.contentTemplateWorks.bind(this);
@@ -25,6 +27,9 @@ class DetailClient extends Component {
       this
     );
     this.contentTemplateProfessionInClient = this.contentTemplateProfessionInClient.bind(
+      this
+    );
+    this.contentTemplateInvoicesInClient = this.contentTemplateInvoicesInClient.bind(
       this
     );
   }
@@ -59,6 +64,16 @@ class DetailClient extends Component {
     );
   }
 
+  contentTemplateInvoicesInClient() {
+    return (
+      <InvoicesClient
+        client={this.props.history.location.state.client}
+        history={this.props.history}
+        showMessage={this.props.showMessage}
+      />
+    );
+  }
+
   render() {
     let title = "";
     if (
@@ -82,7 +97,7 @@ class DetailClient extends Component {
                   marginLeft: 30,
                   marginRight: 30,
                   marginTop: 0,
-                  marginBottom: 20
+                  marginBottom: 20,
                 }}
               >
                 <TabItemsDirective>
@@ -100,6 +115,11 @@ class DetailClient extends Component {
                     header={this.headerText[2]}
                     content={this.contentTemplateProfessionInClient}
                   />
+
+                  <TabItemDirective
+                    header={this.headerText[3]}
+                    content={this.contentTemplateInvoicesInClient}
+                  />
                 </TabItemsDirective>
               </TabComponent>
             </div>
@@ -112,14 +132,14 @@ class DetailClient extends Component {
 
 DetailClient.propTypes = {};
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
-    errorApplication: state.applicationReducer.error
+    errorApplication: state.applicationReducer.error,
   };
 };
 
-const mapDispatchToProps = dispatch => ({
-  showMessage: message => dispatch(ACTION_APPLICATION.showMessage(message))
+const mapDispatchToProps = (dispatch) => ({
+  showMessage: (message) => dispatch(ACTION_APPLICATION.showMessage(message)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DetailClient);
