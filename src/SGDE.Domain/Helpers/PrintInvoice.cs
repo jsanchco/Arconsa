@@ -72,53 +72,53 @@
 
             }
 
-            var countRows = _invoice.DetailsInvoice.Count();
-            if (countRows > 5)
-            {
-                pdf.NewPage();
-            }
-            else
-            {
-                for (var i = 0; i < (4 - countRows); i++)
-                {
-                    var pdfCell = new PdfPCell(new Phrase(" ", _STANDARFONT_10))
-                    {
-                        HorizontalAlignment = Element.ALIGN_RIGHT,
-                        VerticalAlignment = Element.ALIGN_MIDDLE,
-                        PaddingTop = 2f,
-                        PaddingBottom = 6f,
-                        BorderWidth = 0
-                    };
-                    pdfPTable.AddCell(pdfCell);
-                    pdfCell = new PdfPCell(new Phrase(" ", _STANDARFONT_10))
-                    {
-                        HorizontalAlignment = Element.ALIGN_RIGHT,
-                        VerticalAlignment = Element.ALIGN_MIDDLE,
-                        PaddingTop = 2f,
-                        PaddingBottom = 6f,
-                        BorderWidth = 0
-                    };
-                    pdfPTable.AddCell(pdfCell);
-                    pdfCell = new PdfPCell(new Phrase(" ", _STANDARFONT_10))
-                    {
-                        HorizontalAlignment = Element.ALIGN_RIGHT,
-                        VerticalAlignment = Element.ALIGN_MIDDLE,
-                        PaddingTop = 2f,
-                        PaddingBottom = 6f,
-                        BorderWidth = 0
-                    };
-                    pdfPTable.AddCell(pdfCell);
-                    pdfCell = new PdfPCell(new Phrase(" ", _STANDARFONT_10))
-                    {
-                        HorizontalAlignment = Element.ALIGN_RIGHT,
-                        VerticalAlignment = Element.ALIGN_MIDDLE,
-                        PaddingTop = 2f,
-                        PaddingBottom = 6f,
-                        BorderWidth = 0
-                    };
-                    pdfPTable.AddCell(pdfCell);
-                }
-            }
+            //var countRows = _invoice.DetailsInvoice.Count();
+            //if (countRows > 5)
+            //{
+            //    pdf.NewPage();
+            //}
+            //else
+            //{
+            //    for (var i = 0; i < (4 - countRows); i++)
+            //    {
+            //        var pdfCell = new PdfPCell(new Phrase(" ", _STANDARFONT_10))
+            //        {
+            //            HorizontalAlignment = Element.ALIGN_RIGHT,
+            //            VerticalAlignment = Element.ALIGN_MIDDLE,
+            //            PaddingTop = 2f,
+            //            PaddingBottom = 6f,
+            //            BorderWidth = 0
+            //        };
+            //        pdfPTable.AddCell(pdfCell);
+            //        pdfCell = new PdfPCell(new Phrase(" ", _STANDARFONT_10))
+            //        {
+            //            HorizontalAlignment = Element.ALIGN_RIGHT,
+            //            VerticalAlignment = Element.ALIGN_MIDDLE,
+            //            PaddingTop = 2f,
+            //            PaddingBottom = 6f,
+            //            BorderWidth = 0
+            //        };
+            //        pdfPTable.AddCell(pdfCell);
+            //        pdfCell = new PdfPCell(new Phrase(" ", _STANDARFONT_10))
+            //        {
+            //            HorizontalAlignment = Element.ALIGN_RIGHT,
+            //            VerticalAlignment = Element.ALIGN_MIDDLE,
+            //            PaddingTop = 2f,
+            //            PaddingBottom = 6f,
+            //            BorderWidth = 0
+            //        };
+            //        pdfPTable.AddCell(pdfCell);
+            //        pdfCell = new PdfPCell(new Phrase(" ", _STANDARFONT_10))
+            //        {
+            //            HorizontalAlignment = Element.ALIGN_RIGHT,
+            //            VerticalAlignment = Element.ALIGN_MIDDLE,
+            //            PaddingTop = 2f,
+            //            PaddingBottom = 6f,
+            //            BorderWidth = 0
+            //        };
+            //        pdfPTable.AddCell(pdfCell);
+            //    }
+            //}
 
             return pdfPTable;
         }

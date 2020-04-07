@@ -7,7 +7,7 @@ import { updateWork } from "../../services";
 import {
   createSpinner,
   showSpinner,
-  hideSpinner
+  hideSpinner,
 } from "@syncfusion/ej2-popups";
 
 class BasicDataWork extends Component {
@@ -28,7 +28,7 @@ class BasicDataWork extends Component {
       totalContract: props.work.totalContract,
       percentageRetention: props.work.percentageRetention,
       open: props.work.open,
-      clientId: props.work.clientId
+      clientId: props.work.clientId,
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -39,6 +39,30 @@ class BasicDataWork extends Component {
     this.handleChangePercentageRetention = this.handleChangePercentageRetention.bind(
       this
     );
+    this.updateFromInvoiceToOrigin = this.updateFromInvoiceToOrigin.bind(this);
+
+    this.ntbTotalContract = null;
+    this.ntbPercentageRetention = null;
+  }
+
+  componentDidMount() {
+    this.updateFromInvoiceToOrigin();
+  }
+
+  componentDidUpdate(prevState) {
+    if (this.state.invoiceToOrigin !== prevState.invoiceToOrigin) {
+      this.updateFromInvoiceToOrigin();
+    }
+  }
+
+  updateFromInvoiceToOrigin() {
+    if (this.state.invoiceToOrigin) {
+      this.ntbPercentageRetention.enabled = true;
+      this.ntbTotalContract.enabled = true;
+    } else {
+      this.ntbPercentageRetention.enabled = false;
+      this.ntbTotalContract.enabled = false;
+    }
   }
 
   handleInputChange(event) {
@@ -47,26 +71,16 @@ class BasicDataWork extends Component {
 
     if (name === "openDate" || name === "closeDate") {
       this.setState({
-        [name]: this.formatDate(target.value)
+        [name]: this.formatDate(target.value),
       });
     } else {
-      if (name === "passiveSubject") {
+      if (name === "passiveSubject" || name === "invoiceToOrigin") {
         this.setState({
-          [name]: target.checked
+          [name]: target.checked,
         });
       } else {
         this.setState({
-          [name]: target.value
-        });
-      }
-
-      if (name === "invoiceToOrigin") {
-        this.setState({
-          [name]: target.checked
-        });
-      } else {
-        this.setState({
-          [name]: target.value
+          [name]: target.value,
         });
       }
     }
@@ -113,7 +127,7 @@ class BasicDataWork extends Component {
       totalContract: this.state.totalContract,
       percentageRetention: this.state.percentageRetention,
       open: this.state.open,
-      clientId: this.state.clientId
+      clientId: this.state.clientId,
     };
   }
 
@@ -121,7 +135,7 @@ class BasicDataWork extends Component {
     const element = document.getElementById("container");
 
     createSpinner({
-      target: element
+      target: element,
     });
     showSpinner(element);
     updateWork(this.getWork())
@@ -140,7 +154,7 @@ class BasicDataWork extends Component {
           marginLeft: 10,
           marginRight: 60,
           marginTop: 20,
-          marginBottom: 20
+          marginBottom: 20,
         }}
         id="container"
       >
@@ -287,7 +301,8 @@ class BasicDataWork extends Component {
                     name="totalContract"
                     value={this.state.totalContract}
                     placeholder="total contrato"
-                    change={this.handleChangeNumeric}
+                    change={this.handleChangeTotalContract}
+                    ref={(g) => (this.ntbTotalContract = g)}
                   />
                 </FormGroup>
               </Col>
@@ -303,7 +318,8 @@ class BasicDataWork extends Component {
                     max={1}
                     step={0.01}
                     placeholder="porcentaje retención"
-                    change={this.handleChangeNumeric}
+                    change={this.handleChangePercentageRetention}
+                    ref={(g) => (this.ntbPercentageRetention = g)}
                   />
                 </FormGroup>
               </Col>

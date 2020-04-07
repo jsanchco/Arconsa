@@ -321,6 +321,9 @@
             if (!InvoiceExists(id))
                 return false;
 
+            if (_context.Invoice.FirstOrDefault(x => x.InvoiceToCancelId == id) != null)
+                throw new Exception("No se puede eliminar una Factura que está anulada");
+
             var toRemove = _context.Invoice.Find(id);
             _context.Invoice.Remove(toRemove);
             _context.SaveChanges();
