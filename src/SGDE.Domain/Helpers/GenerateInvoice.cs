@@ -486,9 +486,12 @@
                 pdfPTable.AddCell(pdfCell);
             }
 
+            var sumInvoices = _work.Invoices.Where(x => x.Id != _invoice.Id).Select(x => x.TaxBase).Sum();
+            var result = sumInvoices + _invoice.TaxBase;
+
             pdfCell = new PdfPCell(new Phrase("Certificación a Origen", _STANDARFONT_10_BOLD_CUSTOMCOLOR)) { BorderWidth = 0 };
             pdfPTable.AddCell(pdfCell);
-            pdfCell = new PdfPCell(new Phrase($"{Math.Round((double)_invoice.TaxBase, 2).ToFormatSpain()} €", _STANDARFONT_10)) { BorderWidth = 0, HorizontalAlignment = Element.ALIGN_RIGHT };
+            pdfCell = new PdfPCell(new Phrase($"{Math.Round((double)result, 2).ToFormatSpain()} €", _STANDARFONT_10)) { BorderWidth = 0, HorizontalAlignment = Element.ALIGN_RIGHT };
             pdfPTable.AddCell(pdfCell);
             pdfCell = new PdfPCell(new Phrase(" ", _STANDARFONT_10)) { BorderWidth = 0 };
             pdfPTable.AddCell(pdfCell);
@@ -497,7 +500,6 @@
             pdfCell = new PdfPCell(new Phrase(" ", _STANDARFONT_10)) { BorderWidth = 0 };
             pdfPTable.AddCell(pdfCell);
 
-            var sumInvoices = _work.Invoices.Where(x => x.Id != _invoice.Id).Select(x => x.TaxBase).Sum();
             pdfCell = new PdfPCell(new Phrase("Certificación Anterior", _STANDARFONT_10_BOLD_CUSTOMCOLOR)) { BorderWidth = 0 };
             pdfPTable.AddCell(pdfCell);
             pdfCell = new PdfPCell(new Phrase($"{Math.Round((double)sumInvoices, 2).ToFormatSpain()} €", _STANDARFONT_10)) { BorderWidth = 0, HorizontalAlignment = Element.ALIGN_RIGHT };

@@ -167,7 +167,7 @@ class HeaderSettings extends Component {
     }
 
     return (
-      <Form inline style={{ marginLeft: "20px" }} id="selection-report">
+      <Form inline style={{ marginLeft: "20px" }} >
         <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
           <Label for="startDate" className="mr-sm-2">
             Fecha Inicio

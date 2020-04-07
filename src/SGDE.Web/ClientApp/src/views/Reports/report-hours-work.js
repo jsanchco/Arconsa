@@ -23,7 +23,7 @@ class ReportHoursWork extends Component {
   render() {
     return (
       <Fragment>
-        <div className="animated fadeIn">
+        <div className="animated fadeIn" id="selection-report">
           <div className="card">
             <div className="card-header">
               <i className="icon-list"></i> Informe de Horas por Obra
