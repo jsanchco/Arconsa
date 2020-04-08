@@ -32,61 +32,44 @@ class HeaderSettings extends Component {
   constructor(props) {
     super(props);
 
+    this.element = null;
+
     this._handleOnClick = this._handleOnClick.bind(this);
   }
 
   componentDidMount() {
+    this.element = document.getElementById("selection-report");
+
     if (this.props.type === "workers") {
-      const element = document.getElementById("selection-report");
-
-      createSpinner({
-        target: element,
-      });
-      showSpinner(element);
-
       getWorkers()
         .then((items) => {
           this.ddl.dataSource = items;
-          hideSpinner(element);
+          hideSpinner(this.element);
         })
         .catch((error) => {
-          hideSpinner(element);
+          hideSpinner(this.element);
         });
     }
 
     if (this.props.type === "works") {
-      const element = document.getElementById("selection-report");
-
-      createSpinner({
-        target: element,
-      });
-      showSpinner(element);
-
       getWorks()
         .then((items) => {
           this.ddl.dataSource = items;
-          hideSpinner(element);
+          hideSpinner(this.element);
         })
         .catch((error) => {
-          hideSpinner(element);
+          hideSpinner(this.element);
         });
     }
 
     if (this.props.type === "clients") {
-      const element = document.getElementById("selection-report");
-
-      createSpinner({
-        target: element,
-      });
-      showSpinner(element);
-
       getClients()
         .then((items) => {
           this.ddl.dataSource = items;
-          hideSpinner(element);
+          hideSpinner(this.element);
         })
         .catch((error) => {
-          hideSpinner(element);
+          hideSpinner(this.element);
         });
     }
   }
@@ -117,6 +100,11 @@ class HeaderSettings extends Component {
           type: "danger",
         });
       } else {
+        createSpinner({
+          target: this.element,
+        });
+        showSpinner(this.element);
+
         this.props.updateReport(
           this.props.type,
           valueDtpStartDate,
@@ -167,7 +155,7 @@ class HeaderSettings extends Component {
     }
 
     return (
-      <Form inline style={{ marginLeft: "20px" }} >
+      <Form inline style={{ marginLeft: "20px" }}>
         <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
           <Label for="startDate" className="mr-sm-2">
             Fecha Inicio

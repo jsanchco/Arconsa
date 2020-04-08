@@ -55,7 +55,6 @@ class GridInvoice extends Component {
 
     this.selectedRow = null;
     this.toolbarOptions = [
-      "Edit",
       "Delete",
       "Update",
       "Cancel",
@@ -74,7 +73,6 @@ class GridInvoice extends Component {
     ];
     this.editSettings = {
       showDeleteConfirmDialog: true,
-      allowEditing: true,
       allowAdding: false,
       allowDeleting: true
     };
@@ -297,7 +295,6 @@ class GridInvoice extends Component {
           allowTextWrap={true}
           textWrapSettings={this.wrapSettings}
           id="gridInvoices"
-          query={this.query}
         >
           <ColumnsDirective>
             <ColumnDirective
