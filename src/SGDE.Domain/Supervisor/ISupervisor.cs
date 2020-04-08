@@ -174,6 +174,7 @@ namespace SGDE.Domain.Supervisor
         #region InvoiceResponse
 
         InvoiceResponseViewModel GetInvoice(InvoiceQueryViewModel invoiceQueryViewModel);
+        List<DetailInvoiceViewModel> GetDetailInvoiceByHoursWorker(InvoiceQueryViewModel invoiceQueryViewModel);
 
         #endregion
 

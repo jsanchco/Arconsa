@@ -18,6 +18,7 @@ export const REPORTS = "api/Reports";
 export const AUTHENTICATE = "api/Users/authenticate";
 export const UPDATEPASSWORD = "api/Users/updatepassword";
 export const INVOICERESPONSES = "api/InvoiceResponses";
+export const DETAILINVOICEBYHOURSWORKER = "api/InvoiceResponses/getdetailinvoicebyhoursworker";
 export const SETTINGS = "api/Settings";
 export const HOURTYPES = "api/HourTypes";
 export const PROFESSIONINCLIENTS = "api/ProfessionInClients";
@@ -28,6 +29,7 @@ export const INVOICES = "api/Invoices";
 export const PRINTINVOICE = "api/Invoices/print";
 export const BILLPAYMENT = "api/Invoices/billpayment";
 export const COMPANY_DATA = "COMPANY_DATA";
+
 
 const dev = {
   URL_API: "http://localhost:51667"

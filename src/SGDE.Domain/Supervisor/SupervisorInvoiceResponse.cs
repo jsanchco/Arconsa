@@ -4,6 +4,8 @@
 
     using ViewModels;
     using SGDE.Domain.Helpers;
+    using System;
+    using System.Collections.Generic;
 
     #endregion
 
@@ -28,6 +30,15 @@
 
             generateInvoice.Process();
             return generateInvoice._invoiceResponseViewModel;
+        }
+
+        public List<DetailInvoiceViewModel> GetDetailInvoiceByHoursWorker(InvoiceQueryViewModel invoiceQueryViewModel)
+        {
+            var generateInvoice = new GenerateInvoiceByWork(this, invoiceQueryViewModel);
+            if (!generateInvoice.Validate())
+                throw new Exception("No se puede validar la Factura");
+
+            return generateInvoice._invoiceQueryViewModel.detailInvoice;
         }
     }
 }

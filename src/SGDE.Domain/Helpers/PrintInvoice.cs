@@ -163,7 +163,7 @@
             return pdfPTable;
         }
 
-        protected override bool Validate()
+        public override bool Validate()
         {
             _invoice = _supervisor.GetInvoice(_invoiceId);
             if (_invoice == null)

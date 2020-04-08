@@ -43,7 +43,7 @@
         protected User _worker;
         protected Invoice _invoice;
 
-        protected InvoiceQueryViewModel _invoiceQueryViewModel;
+        public InvoiceQueryViewModel _invoiceQueryViewModel;
         protected ISupervisor _supervisor;
         protected int _invoiceId;
         
@@ -75,7 +75,7 @@
             };
         }
 
-        protected abstract bool Validate();
+        public abstract bool Validate();
         protected abstract PdfPTable GetAllRowsDetailInvoice(Document pdf);
         protected abstract PdfPTable GetTableNumberInvoice();
 

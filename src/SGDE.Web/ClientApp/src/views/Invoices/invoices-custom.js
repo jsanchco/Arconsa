@@ -2,7 +2,11 @@ import React, { Component, Fragment } from "react";
 import { Form, Col, FormGroup, Label, Row, Button } from "reactstrap";
 import { DatePickerComponent } from "@syncfusion/ej2-react-calendars";
 import { DropDownListComponent } from "@syncfusion/ej2-react-dropdowns";
-import { getWorks, getInvoice } from "../../services";
+import {
+  getWorks,
+  getInvoice,
+  getDetailInvoiceByHoursWoker,
+} from "../../services";
 import { connect } from "react-redux";
 import ACTION_APPLICATION from "../../actions/applicationAction";
 import {
@@ -58,7 +62,20 @@ class Invoices extends Component {
       this.ddl.dataSource = items;
     });
 
-    this.toolbarOptions = ["Add", "Edit", "Delete", "Update", "Cancel"];
+    this.toolbarOptions = [
+      "Add",
+      "Edit",
+      "Delete",
+      "Update",
+      "Cancel",
+      {
+        text: "Detalle por Horas",
+        tooltipText: "detalle por horas",
+        prefixIcon: "e-custom-icons e-details",
+        id: "DetailByHours",
+      },
+    ];
+
     this.editSettings = {
       showDeleteConfirmDialog: true,
       allowEditing: true,
@@ -75,6 +92,7 @@ class Invoices extends Component {
     this.getDataInvoiceResponse = this.getDataInvoiceResponse.bind(this);
     this.actionComplete = this.actionComplete.bind(this);
     this.updateForm = this.updateForm.bind(this);
+    this.clickHandler = this.clickHandler.bind(this);
   }
 
   getDataInvoiceResponse() {
@@ -207,6 +225,15 @@ class Invoices extends Component {
     });
   }
 
+  clickHandler(args) {
+    if (args.item.id === "DetailByHours") {
+      const data = this.getDataInvoice();
+      getDetailInvoiceByHoursWoker(data).then((result) => {
+        this.gridDetailInvoice.dataSource = result;
+      });
+    }
+  }
+
   render() {
     return (
       <div
@@ -288,6 +315,7 @@ class Invoices extends Component {
                         dataSource={this.detailInvoice}
                         locale="es-US"
                         toolbar={this.toolbarOptions}
+                        toolbarClick={this.clickHandler}
                         style={{
                           marginLeft: 30,
                           marginRight: 30,

@@ -40,5 +40,21 @@
                 return StatusCode(500, ex);
             }
         }
+
+        [HttpPost("getdetailinvoicebyhoursworker")]
+        public object GetDetailInvoiceByHoursWorker([FromBody]InvoiceQueryViewModel invoiceQueryViewModel)
+        {
+            try
+            {
+                var queryResult = _supervisor.GetDetailInvoiceByHoursWorker(invoiceQueryViewModel);
+
+                return new { Items = queryResult, Count = 1 };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Exception: ");
+                return StatusCode(500, ex);
+            }
+        }
     }
 }

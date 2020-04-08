@@ -19,7 +19,7 @@
     {
         public GenerateInvoiceByWork(Supervisor supervisor, InvoiceQueryViewModel invoiceQueryViewModel) : base(supervisor, invoiceQueryViewModel) { }
 
-        protected List<DetailInvoiceViewModel> GetDetailInvoice()
+        public List<DetailInvoiceViewModel> GetDetailInvoice()
         {
             var listReportResultViewModel = _supervisor.GetHoursByWork(new ReportQueryViewModel
             {
@@ -96,7 +96,7 @@
             return pdfPTable;
         }
 
-        protected override bool Validate()
+        public override bool Validate()
         {
             if (_invoiceQueryViewModel.workId == null)
                 return false;

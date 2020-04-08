@@ -64,7 +64,7 @@
             return base.GetTableClient();
         }
 
-        protected override bool Validate()
+        public override bool Validate()
         {
             if (_invoiceQueryViewModel.workId == null)
                 return false;

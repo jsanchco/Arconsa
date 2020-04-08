@@ -18,7 +18,8 @@ import {
   MASSIVESIGNING,
   REMOVEALLDAILYSIGNING,
   PRINTINVOICE,
-  BILLPAYMENT
+  BILLPAYMENT,
+  DETAILINVOICEBYHOURSWORKER  
 } from "../constants";
 import store from "../store/store";
 import ACTION_AUTHENTICATION from "../actions/authenticationAction";
@@ -969,6 +970,64 @@ export const getInvoice = invoiceId => {
           ACTION_APPLICATION.showMessage({
             statusText: error,
             responseText: error,
+            type: "danger"
+          })
+        );
+        reject();
+      });
+  });
+};
+
+export const getDetailInvoiceByHoursWoker = invoiceQuery => {
+  return new Promise((resolve, reject) => {
+    const url = `${config.URL_API}/${DETAILINVOICEBYHOURSWORKER}`;
+    fetch(url, {
+      headers: {
+        Accept: "text/plain",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`
+      },
+      method: "POST",
+      body: JSON.stringify(invoiceQuery)
+    })
+      .then(data => data.json())
+      .then(result => {
+        if (result.title) {
+          store.dispatch(
+            ACTION_APPLICATION.showMessage({
+              statusText: result.title,
+              responseText: result.title,
+              type: "danger"
+            })
+          );
+          reject();
+        } else {
+          if (result.Message) {
+            store.dispatch(
+              ACTION_APPLICATION.showMessage({
+                statusText: result.Message,
+                responseText: result.Message,
+                type: "danger"
+              })
+            );
+            reject();
+          } else {
+            store.dispatch(
+              ACTION_APPLICATION.showMessage({
+                statusText: "Facturada generada correctamente",
+                responseText: "Facturada generada correctamente",
+                type: "success"
+              })
+            );
+            resolve(result.Items);
+          }
+        }
+      })
+      .catch(error => {
+        store.dispatch(
+          ACTION_APPLICATION.showMessage({
+            statusText: error.message,
+            responseText: error.message,
             type: "danger"
           })
         );
