@@ -23,6 +23,7 @@ import {
 import store from "../store/store";
 import ACTION_AUTHENTICATION from "../actions/authenticationAction";
 import ACTION_APPLICATION from "../actions/applicationAction";
+import { INVOICES } from './../constants/index';
 
 export const TOKEN_KEY = "jwt";
 
@@ -919,6 +920,47 @@ export const billPayment = invoiceId => {
           reject();
         } else {
           resolve(result.items);
+        }
+      })
+      .catch(error => {
+        console.log("error ->", error);
+        store.dispatch(
+          ACTION_APPLICATION.showMessage({
+            statusText: error,
+            responseText: error,
+            type: "danger"
+          })
+        );
+        reject();
+      });
+  });
+};
+
+export const getInvoice = invoiceId => {
+  return new Promise((resolve, reject) => {
+    const url = `${config.URL_API}/${INVOICES}/${invoiceId}`;
+    fetch(url, {
+      headers: {
+        Accept: "text/plain",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`
+      },
+      method: "GET"
+    })
+      .then(data => data.json())
+      .then(result => {
+        if (result.Message) {
+          console.log("error ->", result.Message);
+          store.dispatch(
+            ACTION_APPLICATION.showMessage({
+              statusText: result.Message,
+              responseText: result.Message,
+              type: "danger"
+            })
+          );
+          reject();
+        } else {
+          resolve(result);
         }
       })
       .catch(error => {

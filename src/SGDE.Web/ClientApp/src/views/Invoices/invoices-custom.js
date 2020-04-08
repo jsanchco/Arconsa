@@ -2,25 +2,25 @@ import React, { Component, Fragment } from "react";
 import { Form, Col, FormGroup, Label, Row, Button } from "reactstrap";
 import { DatePickerComponent } from "@syncfusion/ej2-react-calendars";
 import { DropDownListComponent } from "@syncfusion/ej2-react-dropdowns";
-import { getWorks } from "../../services";
+import { getWorks, getInvoice } from "../../services";
 import { connect } from "react-redux";
 import ACTION_APPLICATION from "../../actions/applicationAction";
 import {
   createSpinner,
   showSpinner,
-  hideSpinner
+  hideSpinner,
 } from "@syncfusion/ej2-popups";
 import {
   ColumnDirective,
   ColumnsDirective,
   GridComponent,
   Inject,
-  ForeignKey
+  ForeignKey,
 } from "@syncfusion/ej2-react-grids";
 import {
   getInvoiceResponse,
   base64ToArrayBuffer,
-  saveByteArray
+  saveByteArray,
 } from "../../services";
 import GridInvoice from "../../components/grid-invoices";
 
@@ -33,8 +33,8 @@ class Invoices extends Component {
     params: {
       decimals: 2,
       format: "N",
-      validateDecimalOnType: true
-    }
+      validateDecimalOnType: true,
+    },
   };
 
   constructor(props) {
@@ -48,12 +48,13 @@ class Invoices extends Component {
       typeInvoice: 2,
       clientId: null,
       workId: null,
-      updateGrid: null
+      updateGrid: null,
     };
 
     this.ddl = null;
+
     this.fields = { text: "name", value: "id" };
-    this.dataSource = getWorks().then(items => {
+    this.dataSource = getWorks().then((items) => {
       this.ddl.dataSource = items;
     });
 
@@ -63,7 +64,7 @@ class Invoices extends Component {
       allowEditing: true,
       allowAdding: true,
       allowDeleting: true,
-      newRowPosition: "Top"
+      newRowPosition: "Bottom",
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -72,6 +73,8 @@ class Invoices extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.formatDate = this.formatDate.bind(this);
     this.getDataInvoiceResponse = this.getDataInvoiceResponse.bind(this);
+    this.actionComplete = this.actionComplete.bind(this);
+    this.updateForm = this.updateForm.bind(this);
   }
 
   getDataInvoiceResponse() {
@@ -83,7 +86,7 @@ class Invoices extends Component {
       typeInvoice: this.state.typeInvoice,
       clientId: this.state.clientId,
       workId: this.state.workId,
-      detailInvoice: this.gridDetailInvoice.getCurrentViewRecords()
+      detailInvoice: this.gridDetailInvoice.getCurrentViewRecords(),
     };
   }
 
@@ -95,7 +98,7 @@ class Invoices extends Component {
       issueDate: this.state.issueDate,
       typeInvoice: this.state.typeInvoice,
       clientId: this.state.clientId,
-      workId: this.state.workId
+      workId: this.state.workId,
     };
   }
 
@@ -104,20 +107,20 @@ class Invoices extends Component {
     const name = target.name;
 
     this.setState({
-      [name]: target.value
+      [name]: target.value,
     });
   }
 
   handleDropDown(event) {
     this.setState({
-      workId: event.value
+      workId: event.value,
     });
   }
 
   handleDate(event) {
     const name = event.element.name;
     this.setState({
-      [name]: this.formatDate(event.value)
+      [name]: this.formatDate(event.value),
     });
   }
 
@@ -155,27 +158,27 @@ class Invoices extends Component {
       this.props.showMessage({
         statusText: "Fechas mal configuradas",
         responseText: "Fechas mal configuradas",
-        type: "danger"
+        type: "danger",
       });
     }
 
     const element = document.getElementById("container");
 
     createSpinner({
-      target: element
+      target: element,
     });
     showSpinner(element);
 
     const data = this.getDataInvoiceResponse();
     getInvoiceResponse(data)
-      .then(result => {
+      .then((result) => {
         const fileArr = base64ToArrayBuffer(result.file);
         saveByteArray(result.fileName, fileArr, result.typeFile);
         hideSpinner(element);
 
         this.setState({ updateGrid: Math.random() });
       })
-      .catch(error => {
+      .catch((error) => {
         hideSpinner(element);
       });
   }
@@ -185,6 +188,25 @@ class Invoices extends Component {
     return <div>{sum}</div>;
   }
 
+  actionComplete(args) {
+    if (args.requestType === "save") {
+      args.data.id = Math.floor(Math.random() * 1000000) + 1;
+    }
+  }
+
+  updateForm(args) {
+    getInvoice(args).then((result) => {
+      this.gridDetailInvoice.dataSource = result.detailInvoice;
+      this.setState({
+        startDate: result.startDate,
+        endDate: result.endDate,
+        issueDate: result.issueDate,
+        workId: result.workId,
+      });
+      this.ddl.value = result.workId;
+    });
+  }
+
   render() {
     return (
       <div
@@ -192,7 +214,7 @@ class Invoices extends Component {
           marginLeft: 10,
           marginRight: 60,
           marginTop: 20,
-          marginBottom: 20
+          marginBottom: 20,
         }}
         id="container"
       >
@@ -216,7 +238,7 @@ class Invoices extends Component {
                           fields={this.fields}
                           placeholder="selecciona obra"
                           change={this.handleDropDown}
-                          ref={g => (this.ddl = g)}
+                          ref={(g) => (this.ddl = g)}
                         />
                       </FormGroup>
                     </Col>
@@ -270,10 +292,11 @@ class Invoices extends Component {
                           marginLeft: 30,
                           marginRight: 30,
                           marginTop: 20,
-                          marginBottom: 20
+                          marginBottom: 20,
                         }}
-                        ref={g => (this.gridDetailInvoice = g)}
-                        editSettings={this.editSettings}                        
+                        ref={(g) => (this.gridDetailInvoice = g)}
+                        editSettings={this.editSettings}
+                        actionComplete={this.actionComplete}
                       >
                         <ColumnsDirective>
                           <ColumnDirective
@@ -329,7 +352,7 @@ class Invoices extends Component {
                       xs="12"
                       style={{
                         marginTop: "20px",
-                        textAlign: "right"
+                        textAlign: "right",
                       }}
                     >
                       <div className="form-actions">
@@ -353,6 +376,8 @@ class Invoices extends Component {
                         workId={null}
                         update={this.state.updateGrid}
                         showMessage={this.props.showMessage}
+                        updateForm={this.updateForm}
+                        showViewInvoice={true}
                       />
                     </Col>
                   </Row>
@@ -368,14 +393,14 @@ class Invoices extends Component {
 
 Invoices.propTypes = {};
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
-    errorApplication: state.applicationReducer.error
+    errorApplication: state.applicationReducer.error,
   };
 };
 
-const mapDispatchToProps = dispatch => ({
-  showMessage: message => dispatch(ACTION_APPLICATION.showMessage(message))
+const mapDispatchToProps = (dispatch) => ({
+  showMessage: (message) => dispatch(ACTION_APPLICATION.showMessage(message)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Invoices);

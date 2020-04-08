@@ -3,6 +3,7 @@
     #region Using
 
     using System;
+    using System.Collections.Generic;
 
     #endregion
 
@@ -29,5 +30,7 @@
         public string userName { get; set; }
         public int? invoiceToCancelId { get; set; }
         public string invoiceToCancelName { get; set; }
+
+        public List<DetailInvoiceViewModel> detailInvoice { get; set; }
     }
 }

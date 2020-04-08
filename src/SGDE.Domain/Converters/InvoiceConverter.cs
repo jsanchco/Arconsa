@@ -40,7 +40,8 @@
                 userId = invoice.UserId,
                 userName = invoice.UserId == null ? null : $"{invoice.User.Name} {invoice.User.Surname}",
                 invoiceToCancelId = invoice.InvoiceToCancelId,
-                invoiceToCancelName = invoice.InvoiceToCancel?.Name
+                invoiceToCancelName = invoice.InvoiceToCancel?.Name,
+                detailInvoice = DetailInvoiceConverter.ConvertList(invoice.DetailsInvoice)
             };
             if (invoice.Iva == true)
             {

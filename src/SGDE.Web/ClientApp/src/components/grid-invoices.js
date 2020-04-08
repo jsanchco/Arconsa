@@ -12,12 +12,12 @@ import {
   AggregateColumnsDirective,
   AggregateColumnDirective,
   AggregateDirective,
-  AggregatesDirective
+  AggregatesDirective,
 } from "@syncfusion/ej2-react-grids";
 import {
   createSpinner,
   showSpinner,
-  hideSpinner
+  hideSpinner,
 } from "@syncfusion/ej2-popups";
 import { setValue } from "@syncfusion/ej2-base";
 import { DataManager, WebApiAdaptor, Query } from "@syncfusion/ej2-data";
@@ -30,7 +30,7 @@ import {
   base64ToArrayBuffer,
   saveByteArray,
   printInvoice,
-  billPayment
+  billPayment,
 } from "../services";
 
 L10n.load(data);
@@ -39,7 +39,7 @@ class GridInvoice extends Component {
   invoices = new DataManager({
     adaptor: new WebApiAdaptor(),
     url: `${config.URL_API}/${INVOICES}`,
-    headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }]
+    headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }],
   });
 
   wrapSettings = { wrapMode: "Content" };
@@ -50,7 +50,7 @@ class GridInvoice extends Component {
     super(props);
 
     this.state = {
-      hideConfirmDialog: false
+      hideConfirmDialog: false,
     };
 
     this.selectedRow = null;
@@ -62,26 +62,35 @@ class GridInvoice extends Component {
         text: "Imprimir Factura",
         tooltipText: "Imprimir Factura",
         prefixIcon: "e-custom-icons e-file-download",
-        id: "PrintInvoice"
+        id: "PrintInvoice",
       },
       {
         text: "Anular Factura",
         tooltipText: "Anular Factura",
         prefixIcon: "e-custom-icons e-file-workers",
-        id: "CancelInvoice"
-      }
+        id: "CancelInvoice",
+      },
     ];
+    if (props.showViewInvoice === true) {
+      this.toolbarOptions.push({
+        text: "Ver Factura",
+        tooltipText: "Ver Factura",
+        prefixIcon: "e-custom-icons e-file-upload",
+        id: "ViewInvoice",
+      });
+    }
+
     this.editSettings = {
       showDeleteConfirmDialog: true,
       allowAdding: false,
-      allowDeleting: true
+      allowDeleting: true,
     };
     this.numericParams = {
       params: {
         decimals: 2,
         format: "N",
-        validateDecimalOnType: true
-      }
+        validateDecimalOnType: true,
+      },
     };
     this.pageSettings = { pageCount: 10, pageSize: 10 };
     this.actionFailure = this.actionFailure.bind(this);
@@ -96,22 +105,22 @@ class GridInvoice extends Component {
           this.setState({ hideConfirmDialog: false });
           this.billPayment();
         },
-        buttonModel: { content: "Si", isPrimary: true }
+        buttonModel: { content: "Si", isPrimary: true },
       },
       {
         click: () => {
           this.setState({ hideConfirmDialog: false });
         },
-        buttonModel: { content: "No" }
-      }
+        buttonModel: { content: "No" },
+      },
     ];
     this.animationSettings = { effect: "None" };
     if (props.workId) {
       this.query = new Query().addParams("workId", props.workId);
-    }   
+    }
     if (props.clientId) {
       this.query = new Query().addParams("clientId", props.clientId);
-    }      
+    }
   }
 
   componentDidUpdate(prevProps) {
@@ -122,7 +131,7 @@ class GridInvoice extends Component {
 
   dialogClose() {
     this.setState({
-      hideConfirmDialog: false
+      hideConfirmDialog: false,
     });
   }
 
@@ -134,7 +143,7 @@ class GridInvoice extends Component {
     this.props.showMessage({
       statusText: error.statusText,
       responseText: error.responseText,
-      type: "danger"
+      type: "danger",
     });
   }
 
@@ -146,14 +155,14 @@ class GridInvoice extends Component {
       this.props.showMessage({
         statusText: "200",
         responseText: "Operación realizada con éxito",
-        type: "success"
+        type: "success",
       });
     }
     if (args.requestType === "delete") {
       this.props.showMessage({
         statusText: "200",
         responseText: "Operación realizada con éxito",
-        type: "success"
+        type: "success",
       });
     }
   }
@@ -165,23 +174,23 @@ class GridInvoice extends Component {
         this.props.showMessage({
           statusText: "Debes seleccionar una factura",
           responseText: "Debes seleccionar una factura",
-          type: "danger"
+          type: "danger",
         });
       } else {
         const element = document.getElementById("gridInvoices");
 
         createSpinner({
-          target: element
+          target: element,
         });
         showSpinner(element);
 
         printInvoice(selectedRecords[0].id)
-          .then(result => {
+          .then((result) => {
             const fileArr = base64ToArrayBuffer(result.file);
             saveByteArray(result.fileName, fileArr, result.typeFile);
             hideSpinner(element);
           })
-          .catch(error => {
+          .catch((error) => {
             hideSpinner(element);
           });
       }
@@ -192,10 +201,22 @@ class GridInvoice extends Component {
         this.props.showMessage({
           statusText: "Debes seleccionar una factura",
           responseText: "Debes seleccionar una factura",
-          type: "danger"
+          type: "danger",
         });
       } else {
         this.setState({ hideConfirmDialog: true });
+      }
+    }
+
+    if (args.item.id === "ViewInvoice") {
+      if (selectedRecords.length === 0) {
+        this.props.showMessage({
+          statusText: "Debes seleccionar una factura",
+          responseText: "Debes seleccionar una factura",
+          type: "danger",
+        });
+      } else {
+        this.props.updateForm(selectedRecords[0].id);
       }
     }
   }
@@ -204,7 +225,7 @@ class GridInvoice extends Component {
     const element = document.getElementById("gridInvoices");
 
     createSpinner({
-      target: element
+      target: element,
     });
     showSpinner(element);
 
@@ -213,16 +234,16 @@ class GridInvoice extends Component {
         this.props.showMessage({
           statusText: "200",
           responseText: "Operación realizada con éxito",
-          type: "success"
+          type: "success",
         });
         this.grid.refresh();
         hideSpinner(element);
       })
-      .catch(error => {
+      .catch((error) => {
         this.props.showMessage({
           statusText: "Ha ocurrido un error en la operación",
           responseText: "Ha ocurrido un error en la operación",
-          type: "danger"
+          type: "danger",
         });
         hideSpinner(element);
       });
@@ -266,7 +287,7 @@ class GridInvoice extends Component {
           animationSettings={this.animationSettings}
           width="500px"
           content="¿Estás seguro de querer Abonar esta factura?"
-          ref={dialog => (this.confirmDialogInstance = dialog)}
+          ref={(dialog) => (this.confirmDialogInstance = dialog)}
           target="#gridInvoices"
           buttons={this.confirmButton}
           close={this.dialogClose.bind(this)}
@@ -284,13 +305,13 @@ class GridInvoice extends Component {
             marginLeft: 30,
             marginRight: 30,
             marginTop: -20,
-            marginBottom: 20
+            marginBottom: 20,
           }}
           actionFailure={this.actionFailure}
           actionComplete={this.actionComplete}
           allowGrouping={false}
           rowSelected={this.rowSelected}
-          ref={g => (this.grid = g)}
+          ref={(g) => (this.grid = g)}
           query={this.query}
           allowTextWrap={true}
           textWrapSettings={this.wrapSettings}
@@ -428,7 +449,9 @@ GridInvoice.propTypes = {
   workId: PropTypes.number,
   clientId: PropTypes.number,
   update: PropTypes.number,
-  showMessage: PropTypes.func.isRequired
+  showMessage: PropTypes.func.isRequired,
+  updateForm: PropTypes.func,
+  showViewInvoice: PropTypes.bool.isRequired
 };
 
 export default GridInvoice;

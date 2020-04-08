@@ -267,6 +267,7 @@ class Invoices extends Component {
                         workId={null}
                         update={this.state.updateGrid}
                         showMessage={this.props.showMessage}
+                        showViewInvoice={false}
                       />
                     </Col>
                   </Row>
