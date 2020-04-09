@@ -323,16 +323,15 @@ class Invoices extends Component {
                   </div>
 
                   <Row style={{ marginLeft: "20px", marginRight: "20px" }}>
-                    <Col xs="12">
+                    <Col xs="1">
                       <div
                         style={{
                           textAlign: "left",
-                          marginTop: "-35px",
-                          cursor: "pointer",
+                          cursor: "pointer"
                         }}
                         onClick={this.handleOnClickHide}
                       >
-                        <i id="toggle-selection" class={classSelection}></i>
+                        <i id="toggle-selection" className={classSelection}></i>
                       </div>
                     </Col>
                   </Row>

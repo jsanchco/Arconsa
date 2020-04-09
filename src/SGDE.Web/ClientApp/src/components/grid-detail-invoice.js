@@ -14,7 +14,6 @@ import {
   AggregateDirective,
   AggregatesDirective,
 } from "@syncfusion/ej2-react-grids";
-import { setValue } from "@syncfusion/ej2-base";
 
 class GridDetailInvoice extends Component {
   gridDetailInvoice = null;
@@ -48,6 +47,12 @@ class GridDetailInvoice extends Component {
         prefixIcon: "e-custom-icons e-details",
         id: "DetailByHours",
       },
+      {
+        text: "Limpiar",
+        tooltipText: "limpiar",
+        prefixIcon: "e-custom-icons e-empty",
+        id: "EmptyDetail",
+      },
     ];
 
     this.editSettings = {
@@ -58,8 +63,13 @@ class GridDetailInvoice extends Component {
       newRowPosition: "Bottom",
     };
 
+    this.selectedRow = null;
+
     this.actionComplete = this.actionComplete.bind(this);
     this.clickHandler = this.clickHandler.bind(this);
+    this.footerSumEuros = this.footerSumEuros.bind(this);
+    this.templateTotal = this.templateTotal.bind(this);
+    this.rowSelected = this.rowSelected.bind(this);
   }
 
   componentDidUpdate(prevProps) {
@@ -75,8 +85,6 @@ class GridDetailInvoice extends Component {
 
   templateTotal(args) {
     const sum = (args.units * args.priceUnity).toFixed(2);
-    // setValue("total", sum, args.id);    
-    
     return <div>{sum}</div>;
   }
 
@@ -89,6 +97,9 @@ class GridDetailInvoice extends Component {
         });
         args.data.id = Math.max(...listId) + 1;
       }
+
+      const sum = (args.data.units * args.data.priceUnity).toFixed(2);
+      this.gridDetailInvoice.setCellValue(args.data.id, "total", Number(sum));
 
       this.gridDetailInvoice.sortColumn("id", "Ascending");
       this.props.updateDataSourceDetailInvoce(dataSource);
@@ -112,11 +123,17 @@ class GridDetailInvoice extends Component {
             units: result[cont - 1].units,
             nameUnit: result[cont - 1].nameUnit,
             priceUnity: result[cont - 1].priceUnity,
+            total: Number((result[cont - 1].units * result[cont - 1].priceUnity).toFixed(2))
           });
         }
         this.gridDetailInvoice.dataSource = dataSource;
         this.props.updateDataSourceDetailInvoce(dataSource);
       });
+    }
+
+    if (args.item.id === "EmptyDetail") {
+      this.detailInvoice = [];
+      this.gridDetailInvoice.dataSource = [];
     }
   }
 
@@ -132,6 +149,12 @@ class GridDetailInvoice extends Component {
     const dataSource = this.gridDetailInvoice.dataSource;
     this.gridDetailInvoice.sortColumn("id", "Ascending");
     this.props.updateDataSourceDetailInvoce(dataSource);
+  }
+
+  rowSelected() {
+    if (this.grid) {
+      this.selectedRow = this.grid.getSelectedRecords()[0];
+    }
   }
 
   render() {
@@ -154,6 +177,7 @@ class GridDetailInvoice extends Component {
           dataBound={this.dataBound}
           sortSettings={this.sortingOptions}
           allowSorting={true}
+          rowSelected={this.rowSelected}
         >
           <ColumnsDirective>
             <ColumnDirective
@@ -210,11 +234,7 @@ class GridDetailInvoice extends Component {
           <AggregatesDirective>
             <AggregateDirective>
               <AggregateColumnsDirective>
-                <AggregateColumnDirective
-                  field="units"
-                  type="Sum"
-                  format="N2"
-                >
+                <AggregateColumnDirective field="units" type="Sum" format="N2">
                   {" "}
                 </AggregateColumnDirective>
 
@@ -226,7 +246,6 @@ class GridDetailInvoice extends Component {
                 >
                   {" "}
                 </AggregateColumnDirective>
-
               </AggregateColumnsDirective>
             </AggregateDirective>
           </AggregatesDirective>

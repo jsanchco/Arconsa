@@ -84,7 +84,6 @@
             };
 
             var taxBase = 0.0;
-            //invoiceQueryViewModel.detailInvoice = invoiceQueryViewModel.detailInvoice.OrderBy(x => x.id).ToList();
             foreach (var detailInvoice in invoiceQueryViewModel.detailInvoice.OrderBy(x => x.id))
             {
                 invoice.DetailsInvoice.Add(new DetailInvoice
