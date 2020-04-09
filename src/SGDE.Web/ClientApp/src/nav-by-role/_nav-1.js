@@ -79,20 +79,8 @@ export default {
     },
     {
       name: "Facturas",
-      url: "/invoices",
-      icon: "cui-file",
-      children: [
-        {
-          name: "Facturas",
-          url: "/invoices/Invoices",
-          icon: "icon-list"
-        },
-        {
-          name: "Personalizadas",
-          url: "/invoices/InvoicesCustom",
-          icon: "icon-list"
-        }
-      ]
+      url: "/invoices/InvoicesCustom",
+      icon: "cui-file"
     }
   ]
 };

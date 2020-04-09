@@ -1,12 +1,7 @@
 import React, { Component, Fragment } from "react";
-import { Form, Col, FormGroup, Label, Row, Button } from "reactstrap";
+import { Form, Col, FormGroup, Label, Row, Button, Tooltip } from "reactstrap";
 import { DatePickerComponent } from "@syncfusion/ej2-react-calendars";
 import { DropDownListComponent } from "@syncfusion/ej2-react-dropdowns";
-import {
-  getWorks,
-  getInvoice,
-  getDetailInvoiceByHoursWoker,
-} from "../../services";
 import { connect } from "react-redux";
 import ACTION_APPLICATION from "../../actions/applicationAction";
 import {
@@ -15,32 +10,16 @@ import {
   hideSpinner,
 } from "@syncfusion/ej2-popups";
 import {
-  ColumnDirective,
-  ColumnsDirective,
-  GridComponent,
-  Inject,
-  ForeignKey,
-} from "@syncfusion/ej2-react-grids";
-import {
+  getWorks,
+  getInvoice,
   getInvoiceResponse,
   base64ToArrayBuffer,
   saveByteArray,
 } from "../../services";
 import GridInvoice from "../../components/grid-invoices";
+import GridDetailInvoice from "../../components/grid-detail-invoice";
 
 class Invoices extends Component {
-  gridDetailInvoice = null;
-
-  detailInvoice = [];
-
-  numericParams = {
-    params: {
-      decimals: 2,
-      format: "N",
-      validateDecimalOnType: true,
-    },
-  };
-
   constructor(props) {
     super(props);
 
@@ -53,7 +32,12 @@ class Invoices extends Component {
       clientId: null,
       workId: null,
       updateGrid: null,
+      dataSourceDetailInvoce: null,
+      tooltipOpen: false,
+      selectionHide: true,
     };
+
+    this.toggle = this.toggle.bind(this);
 
     this.ddl = null;
 
@@ -62,37 +46,16 @@ class Invoices extends Component {
       this.ddl.dataSource = items;
     });
 
-    this.toolbarOptions = [
-      "Add",
-      "Edit",
-      "Delete",
-      "Update",
-      "Cancel",
-      {
-        text: "Detalle por Horas",
-        tooltipText: "detalle por horas",
-        prefixIcon: "e-custom-icons e-details",
-        id: "DetailByHours",
-      },
-    ];
-
-    this.editSettings = {
-      showDeleteConfirmDialog: true,
-      allowEditing: true,
-      allowAdding: true,
-      allowDeleting: true,
-      newRowPosition: "Bottom",
-    };
-
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleDropDown = this.handleDropDown.bind(this);
     this.handleDate = this.handleDate.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.formatDate = this.formatDate.bind(this);
-    this.getDataInvoiceResponse = this.getDataInvoiceResponse.bind(this);
-    this.actionComplete = this.actionComplete.bind(this);
     this.updateForm = this.updateForm.bind(this);
-    this.clickHandler = this.clickHandler.bind(this);
+    this.updateDataSourceDetailInvoce = this.updateDataSourceDetailInvoce.bind(
+      this
+    );
+    this.handleOnClickHide = this.handleOnClickHide.bind(this);
   }
 
   getDataInvoiceResponse() {
@@ -104,7 +67,7 @@ class Invoices extends Component {
       typeInvoice: this.state.typeInvoice,
       clientId: this.state.clientId,
       workId: this.state.workId,
-      detailInvoice: this.gridDetailInvoice.getCurrentViewRecords(),
+      detailInvoice: this.state.dataSourceDetailInvoce,
     };
   }
 
@@ -201,40 +164,49 @@ class Invoices extends Component {
       });
   }
 
-  templateTotal(args) {
-    const sum = args.units * args.priceUnity;
-    return <div>{sum}</div>;
-  }
-
-  actionComplete(args) {
-    if (args.requestType === "save") {
-      args.data.id = Math.floor(Math.random() * 1000000) + 1;
-    }
-  }
-
   updateForm(args) {
     getInvoice(args).then((result) => {
-      this.gridDetailInvoice.dataSource = result.detailInvoice;
       this.setState({
         startDate: result.startDate,
         endDate: result.endDate,
         issueDate: result.issueDate,
         workId: result.workId,
+        dataSourceDetailInvoce: result.detailInvoice,
       });
       this.ddl.value = result.workId;
     });
   }
 
-  clickHandler(args) {
-    if (args.item.id === "DetailByHours") {
-      const data = this.getDataInvoice();
-      getDetailInvoiceByHoursWoker(data).then((result) => {
-        this.gridDetailInvoice.dataSource = result;
-      });
-    }
+  updateDataSourceDetailInvoce(args) {
+    this.setState({ dataSourceDetailInvoce: args });
   }
 
+  handleOnClickHide() {
+    this.setState({
+      selectionHide: !this.state.selectionHide,
+    });
+  }
+
+  toggle() {
+    this.setState({
+      tooltipOpen: !this.state.tooltipOpen,
+    });
+  }
+
+  renderFormSelection() {}
+
   render() {
+    const invoiceQuery = this.getDataInvoice();
+    const titleToolTip =
+      this.state.selectionHide === true
+        ? "Ver Generador de Consultas"
+        : "Ocultar Generador de Consultas";
+    const classSelection =
+      this.state.selectionHide === true
+        ? "fa fa-eye fa-lg mt-4"
+        : "fa fa-eye-slash fa-lg mt-4";
+    const classDivSelection = this.state.selectionHide === true ? "hidden" : "";
+
     return (
       <div
         style={{
@@ -246,6 +218,15 @@ class Invoices extends Component {
         id="container"
       >
         <Fragment>
+          <Tooltip
+            placement="bottom"
+            isOpen={this.state.tooltipOpen}
+            target="toggle-selection"
+            toggle={this.toggle}
+          >
+            {titleToolTip}
+          </Tooltip>
+
           <div className="animated fadeIn">
             <div className="card">
               <div className="card-header">
@@ -254,142 +235,108 @@ class Invoices extends Component {
               </div>
               <div className="card-body">
                 <Form>
-                  <Row style={{ marginLeft: "20px", marginRight: "20px" }}>
-                    <Col xs="6">
-                      <FormGroup>
-                        <Label htmlFor="name">Obra</Label>
-                        <DropDownListComponent
-                          id="workId"
-                          name="workId"
-                          dataSource={this.dataSource}
-                          fields={this.fields}
-                          placeholder="selecciona obra"
-                          change={this.handleDropDown}
-                          ref={(g) => (this.ddl = g)}
+                  <div id="selection" className={classDivSelection}>
+                    <Row style={{ marginLeft: "20px", marginRight: "20px" }}>
+                      <Col xs="6">
+                        <FormGroup>
+                          <Label htmlFor="name">Obra</Label>
+                          <DropDownListComponent
+                            id="workId"
+                            name="workId"
+                            dataSource={this.dataSource}
+                            fields={this.fields}
+                            placeholder="selecciona obra"
+                            change={this.handleDropDown}
+                            ref={(g) => (this.ddl = g)}
+                          />
+                        </FormGroup>
+                      </Col>
+                      <Col xs="2">
+                        <FormGroup>
+                          <Label htmlFor="startDate">Fecha de Inicio</Label>
+                          <DatePickerComponent
+                            id="startDate"
+                            name="startDate"
+                            placeholder="fecha de inicio"
+                            format="dd/MM/yyyy"
+                            value={this.state.startDate}
+                            change={this.handleDate}
+                          />
+                        </FormGroup>
+                      </Col>
+                      <Col xs="2">
+                        <FormGroup>
+                          <Label htmlFor="endDate">Fecha Final</Label>
+                          <DatePickerComponent
+                            id="endDate"
+                            name="endDate"
+                            placeholder="fecha final"
+                            format="dd/MM/yyyy"
+                            value={this.state.endDate}
+                            change={this.handleDate}
+                          />
+                        </FormGroup>
+                      </Col>
+                      <Col xs="2">
+                        <FormGroup>
+                          <Label htmlFor="issueDate">Fecha de Emisión</Label>
+                          <DatePickerComponent
+                            id="issueDate"
+                            name="issueDate"
+                            placeholder="fecha de emisión"
+                            format="dd/MM/yyyy"
+                            value={this.state.issueDate}
+                            change={this.handleDate}
+                          />
+                        </FormGroup>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col xs="12">
+                        <GridDetailInvoice
+                          invoiceQuery={invoiceQuery}
+                          showMessage={this.props.showMessage}
+                          updateDataSourceDetailInvoce={
+                            this.updateDataSourceDetailInvoce
+                          }
+                          dataSourceDetailInvoce={
+                            this.state.dataSourceDetailInvoce
+                          }
                         />
-                      </FormGroup>
-                    </Col>
-                    <Col xs="2">
-                      <FormGroup>
-                        <Label htmlFor="startDate">Fecha de Inicio</Label>
-                        <DatePickerComponent
-                          id="startDate"
-                          name="startDate"
-                          placeholder="fecha de inicio"
-                          format="dd/MM/yyyy"
-                          value={this.state.startDate}
-                          change={this.handleDate}
-                        />
-                      </FormGroup>
-                    </Col>
-                    <Col xs="2">
-                      <FormGroup>
-                        <Label htmlFor="endDate">Fecha Final</Label>
-                        <DatePickerComponent
-                          id="endDate"
-                          name="endDate"
-                          placeholder="fecha final"
-                          format="dd/MM/yyyy"
-                          value={this.state.endDate}
-                          change={this.handleDate}
-                        />
-                      </FormGroup>
-                    </Col>
-                    <Col xs="2">
-                      <FormGroup>
-                        <Label htmlFor="issueDate">Fecha de Emisión</Label>
-                        <DatePickerComponent
-                          id="issueDate"
-                          name="issueDate"
-                          placeholder="fecha de emisión"
-                          format="dd/MM/yyyy"
-                          value={this.state.issueDate}
-                          change={this.handleDate}
-                        />
-                      </FormGroup>
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col xs="12">
-                      <GridComponent
-                        dataSource={this.detailInvoice}
-                        locale="es-US"
-                        toolbar={this.toolbarOptions}
-                        toolbarClick={this.clickHandler}
+                      </Col>
+                    </Row>
+                    <Row style={{ marginLeft: "20px", marginRight: "20px" }}>
+                      <Col
+                        xs="12"
                         style={{
-                          marginLeft: 30,
-                          marginRight: 30,
-                          marginTop: 20,
-                          marginBottom: 20,
+                          marginTop: "20px",
+                          textAlign: "right",
                         }}
-                        ref={(g) => (this.gridDetailInvoice = g)}
-                        editSettings={this.editSettings}
-                        actionComplete={this.actionComplete}
                       >
-                        <ColumnsDirective>
-                          <ColumnDirective
-                            field="id"
-                            headerText="Id"
-                            width="40"
-                            isPrimaryKey={true}
-                            isIdentity={true}
-                            visible={false}
-                          />
-                          <ColumnDirective
-                            field="servicesPerformed"
-                            headerText="Servicios Prestados"
-                            width="100"
-                          />
-                          <ColumnDirective
-                            field="units"
-                            headerText="Unidades"
-                            width="100"
-                            fotmat="N2"
-                            textAlign="left"
-                            editType="numericedit"
-                            edit={this.numericParams}
-                          />
-                          <ColumnDirective
-                            field="nameUnit"
-                            headerText="Nombre Unidades"
-                            width="100"
-                          />
-                          <ColumnDirective
-                            field="priceUnity"
-                            headerText="Precio Unidad"
-                            width="100"
-                            fotmat="N2"
-                            textAlign="left"
-                            editType="numericedit"
-                            edit={this.numericParams}
-                          />
-                          <ColumnDirective
-                            field="total"
-                            headerText="Total"
-                            width="100"
-                            allowEditing={false}
-                            template={this.templateTotal}
-                          />
-                        </ColumnsDirective>
-                        <Inject services={[ForeignKey]} />
-                      </GridComponent>
-                    </Col>
-                  </Row>
+                        <div className="form-actions">
+                          <Button color="primary" onClick={this.handleSubmit}>
+                            Generar Factura
+                          </Button>
+                        </div>
+                      </Col>
+                    </Row>
+                  </div>
+
                   <Row style={{ marginLeft: "20px", marginRight: "20px" }}>
-                    <Col
-                      xs="12"
-                      style={{
-                        marginTop: "20px",
-                        textAlign: "right",
-                      }}
-                    >
-                      <div className="form-actions">
-                        <Button color="primary" onClick={this.handleSubmit}>
-                          Generar Factura
-                        </Button>
+                    <Col xs="12">
+                      <div
+                        style={{
+                          textAlign: "left",
+                          marginTop: "-35px",
+                          cursor: "pointer",
+                        }}
+                        onClick={this.handleOnClickHide}
+                      >
+                        <i id="toggle-selection" class={classSelection}></i>
                       </div>
                     </Col>
                   </Row>
+
                   <Row>
                     <Col xs="12" style={{}}>
                       <div style={{ textAlign: "center" }}>

@@ -1012,13 +1012,13 @@ export const getDetailInvoiceByHoursWoker = invoiceQuery => {
             );
             reject();
           } else {
-            store.dispatch(
-              ACTION_APPLICATION.showMessage({
-                statusText: "Facturada generada correctamente",
-                responseText: "Facturada generada correctamente",
-                type: "success"
-              })
-            );
+            // store.dispatch(
+            //   ACTION_APPLICATION.showMessage({
+            //     statusText: "Facturada generada correctamente",
+            //     responseText: "Facturada generada correctamente",
+            //     type: "success"
+            //   })
+            // );
             resolve(result.Items);
           }
         }

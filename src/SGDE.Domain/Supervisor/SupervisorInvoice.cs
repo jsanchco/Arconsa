@@ -8,6 +8,7 @@
     using Entities;
     using ViewModels;
     using Domain.Helpers;
+    using System.Linq;
 
     #endregion
 
@@ -83,7 +84,8 @@
             };
 
             var taxBase = 0.0;
-            foreach (var detailInvoice in invoiceQueryViewModel.detailInvoice)
+            //invoiceQueryViewModel.detailInvoice = invoiceQueryViewModel.detailInvoice.OrderBy(x => x.id).ToList();
+            foreach (var detailInvoice in invoiceQueryViewModel.detailInvoice.OrderBy(x => x.id))
             {
                 invoice.DetailsInvoice.Add(new DetailInvoice
                 {
