@@ -95,7 +95,7 @@
             return true;
         }
 
-        public QueryResult<User> GetAll(int skip = 0, int take = 0, string filter = null, List<int> roles = null)
+        public QueryResult<User> GetAll(int skip = 0, int take = 0, string orderBy = null, string filter = null, List<int> roles = null)
         {
             List<User> data;
 
@@ -137,6 +137,32 @@
                         Searcher.RemoveAccentsWithNormalization(x.Work?.Name.ToLower()).Contains(filter) ||
                         Searcher.RemoveAccentsWithNormalization(x.Client?.Name.ToLower()).Contains(filter))
                     .ToList();
+            }
+
+            if (!string.IsNullOrEmpty(orderBy))
+            {
+                var orderBySplit = orderBy.Split(" ");
+                var ascending = orderBySplit.Length > 1 ? false : true;
+                orderBy = orderBySplit[0];
+
+                switch (orderBy)
+                {
+                    case "workName":
+                        data = ascending ? data.OrderBy(x => x.Work?.Name).ToList() : data.OrderByDescending(x => x.Work?.Name).ToList();
+                        break;
+                    case "name":
+                        data = ascending ? data.OrderBy(x => x.Name).ToList() : data.OrderByDescending(x => x.Name).ToList();
+                        break;
+                    case "surname":
+                        data = ascending ? data.OrderBy(x => x.Surname).ToList() : data.OrderByDescending(x => x.Surname).ToList();
+                        break;
+                    case "birthDate":
+                        data = ascending ? data.OrderBy(x => x.BirthDate).ToList() : data.OrderByDescending(x => x.BirthDate).ToList();
+                        break;
+                    case "professionName":
+                        data = ascending ? data.OrderBy(x => x.Profession?.Name).ToList() : data.OrderByDescending(x => x.Profession?.Name).ToList();
+                        break;
+                }
             }
 
             var count = data.Count;

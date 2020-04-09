@@ -23,7 +23,7 @@ namespace SGDE.Domain.Supervisor
         Task<bool> UpdateUserAsync(UserViewModel userViewModel, CancellationToken ct = default(CancellationToken));
         Task<bool> DeleteUserAsync(int id, CancellationToken ct = default(CancellationToken));
 
-        QueryResult<UserViewModel> GetAllUsers(int skip = 0, int take = 0, string filter = null, List<int> roles = null);
+        QueryResult<UserViewModel> GetAllUsers(int skip = 0, int take = 0, string orderBy= null, string filter = null, List<int> roles = null);
         UserViewModel GetUserById(int id);
         UserViewModel AddUser(UserViewModel newUserViewModel);
         bool UpdateUser(UserViewModel userViewModel);
@@ -230,6 +230,7 @@ namespace SGDE.Domain.Supervisor
         bool DeleteInvoice(int id);
         InvoiceResponseViewModel PrintInvoice(int invoiceId);
         InvoiceViewModel BillPayment(int invoiceId);
+        InvoiceViewModel GetPreviousInvoice(InvoiceViewModel invoiceViewModel);
 
         #endregion
 

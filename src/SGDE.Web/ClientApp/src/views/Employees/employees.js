@@ -9,7 +9,8 @@ import {
   Toolbar,
   Page,
   ForeignKey,
-  Group
+  Group,
+  Sort,
 } from "@syncfusion/ej2-react-grids";
 import { DataManager, WebApiAdaptor, Query } from "@syncfusion/ej2-data";
 import { config, USERS, PROFESSIONS, ROLES } from "../../constants";
@@ -25,19 +26,19 @@ class Employees extends Component {
   users = new DataManager({
     adaptor: new WebApiAdaptor(),
     url: `${config.URL_API}/${USERS}`,
-    headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }]
+    headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }],
   });
 
   professions = new DataManager({
     adaptor: new WebApiAdaptor(),
     url: `${config.URL_API}/${PROFESSIONS}`,
-    headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }]
+    headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }],
   });
 
   roles = new DataManager({
     adaptor: new WebApiAdaptor(),
     url: `${config.URL_API}/${ROLES}`,
-    headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }]
+    headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }],
   });
 
   professionIdRules = { required: false };
@@ -52,7 +53,7 @@ class Employees extends Component {
       users: null,
       professions: null,
       roles: null,
-      rowSelected: null
+      rowSelected: null,
     };
 
     this.toolbarOptions = [
@@ -65,16 +66,16 @@ class Employees extends Component {
         text: "Detalles",
         tooltipText: "Detalles",
         prefixIcon: "e-custom-icons e-details",
-        id: "Details"
+        id: "Details",
       },
-      "Search"
+      "Search",
     ];
     this.editSettings = {
       showDeleteConfirmDialog: true,
       allowEditing: true,
       allowAdding: true,
       allowDeleting: true,
-      newRowPosition: "Top"
+      newRowPosition: "Top",
     };
     this.pageSettings = { pageCount: 10, pageSize: 10 };
     this.actionFailure = this.actionFailure.bind(this);
@@ -120,7 +121,7 @@ class Employees extends Component {
     this.props.showMessage({
       statusText: error.statusText,
       responseText: error.responseText,
-      type: "danger"
+      type: "danger",
     });
   }
 
@@ -129,7 +130,7 @@ class Employees extends Component {
       this.props.showMessage({
         statusText: "200",
         responseText: "Operación realizada con éxito",
-        type: "success"
+        type: "success",
       });
       this.setState({ rowSelected: null });
     }
@@ -137,7 +138,7 @@ class Employees extends Component {
       this.props.showMessage({
         statusText: "200",
         responseText: "Operación realizada con éxito",
-        type: "success"
+        type: "success",
       });
       this.setState({ rowSelected: null });
     }
@@ -163,14 +164,14 @@ class Employees extends Component {
         this.props.history.push({
           pathname: "/employees/detailemployee",
           state: {
-            user: rowSelected
-          }
+            user: rowSelected,
+          },
         });
       } else {
         this.props.showMessage({
           statusText: "Debes seleccionar un usuario",
           responseText: "Debes seleccionar un usuario",
-          type: "danger"
+          type: "danger",
         });
       }
     }
@@ -182,9 +183,8 @@ class Employees extends Component {
     }
 
     let day = args.getDate();
-    if (day < 10)
-      day = "0" + day;
-    
+    if (day < 10) day = "0" + day;
+
     const month = args.getMonth() + 1;
     const year = args.getFullYear();
 
@@ -222,17 +222,18 @@ class Employees extends Component {
                   marginLeft: 30,
                   marginRight: 30,
                   marginTop: -20,
-                  marginBottom: 20
+                  marginBottom: 20,
                 }}
                 actionFailure={this.actionFailure}
                 actionComplete={this.actionComplete}
                 actionBegin={this.actionBegin}
                 allowGrouping={true}
                 rowSelected={this.rowSelected}
-                ref={g => (this.grid = g)}
+                ref={(g) => (this.grid = g)}
                 query={this.query}
                 allowTextWrap={true}
                 textWrapSettings={this.wrapSettings}
+                allowSorting={true}
               >
                 <ColumnsDirective>
                   <ColumnDirective
@@ -258,6 +259,11 @@ class Employees extends Component {
                   <ColumnDirective
                     field="surname"
                     headerText="Apellidos"
+                    width="70"
+                  />
+                  <ColumnDirective
+                    field="workName"
+                    headerText="Obra"
                     width="70"
                   />
                   <ColumnDirective
@@ -297,7 +303,9 @@ class Employees extends Component {
                     defaultValue={3}
                   />
                 </ColumnsDirective>
-                <Inject services={[ForeignKey, Group, Page, Toolbar, Edit]} />
+                <Inject
+                  services={[ForeignKey, Group, Page, Toolbar, Edit, Sort]}
+                />
               </GridComponent>
             </Row>
           </div>
@@ -309,14 +317,14 @@ class Employees extends Component {
 
 Employees.propTypes = {};
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
-    errorApplication: state.applicationReducer.error
+    errorApplication: state.applicationReducer.error,
   };
 };
 
-const mapDispatchToProps = dispatch => ({
-  showMessage: message => dispatch(ACTION_APPLICATION.showMessage(message))
+const mapDispatchToProps = (dispatch) => ({
+  showMessage: (message) => dispatch(ACTION_APPLICATION.showMessage(message)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Employees);

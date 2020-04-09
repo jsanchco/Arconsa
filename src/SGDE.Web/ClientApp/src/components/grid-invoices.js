@@ -61,13 +61,13 @@ class GridInvoice extends Component {
       {
         text: "Imprimir Factura",
         tooltipText: "Imprimir Factura",
-        prefixIcon: "e-custom-icons e-file-download",
+        prefixIcon: "e-custom-icons e-print",
         id: "PrintInvoice",
       },
       {
         text: "Anular Factura",
         tooltipText: "Anular Factura",
-        prefixIcon: "e-custom-icons e-file-workers",
+        prefixIcon: "e-custom-icons e-empty",
         id: "CancelInvoice",
       },
     ];
@@ -217,6 +217,7 @@ class GridInvoice extends Component {
         });
       } else {
         this.props.updateForm(selectedRecords[0].id);
+        this.props.toggleForm();
       }
     }
   }
@@ -451,7 +452,8 @@ GridInvoice.propTypes = {
   update: PropTypes.number,
   showMessage: PropTypes.func.isRequired,
   updateForm: PropTypes.func,
-  showViewInvoice: PropTypes.bool.isRequired
+  showViewInvoice: PropTypes.bool.isRequired,
+  toggleForm: PropTypes.func.isRequired
 };
 
 export default GridInvoice;

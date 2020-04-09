@@ -10,6 +10,7 @@
     {
         public string ServicesPerformed { get; set; }
         public Decimal Units { get; set; }
+        public Decimal UnitsAccumulated { get; set; }
         public Decimal PriceUnity { get; set; }
         public string NameUnit { get; set; }
         public double Total => (double)Units * (double)PriceUnity;

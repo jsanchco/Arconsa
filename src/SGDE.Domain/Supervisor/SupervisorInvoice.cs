@@ -177,5 +177,29 @@
 
             return InvoiceConverter.Convert(_invoiceRepository.Add(newInvoice));
         }
+
+        public InvoiceViewModel GetPreviousInvoice(InvoiceViewModel invoiceViewModel)
+        {
+            var invoices = GetAllInvoice(0, 0, null, (int)invoiceViewModel.workId, 0);
+            var invoice = invoices.Data
+                .Where(x => DateTime.ParseExact(x.endDate, "dd/MM/yyyy", null) < DateTime.ParseExact(invoiceViewModel.startDate, "dd/MM/yyyy", null))
+                .OrderByDescending(x => x.startDate)
+                .FirstOrDefault();
+
+            if (invoice == null)
+                throw new Exception("Esta factura no tiene facturas anteriores");
+
+            var result = GetInvoiceById((int)invoice.id);
+            if (result.detailInvoice != null)
+            {
+                foreach (var detailInvoce in result.detailInvoice)
+                {
+                    detailInvoce.unitsAccumulated = detailInvoce.units;
+                    detailInvoce.units = 0;
+                }
+            }
+
+            return result;
+        }
     }
 }

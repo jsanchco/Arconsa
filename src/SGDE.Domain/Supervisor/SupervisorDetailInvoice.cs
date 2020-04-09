@@ -37,6 +37,7 @@
                 InvoiceId = newDetailInvoiceViewModel.invoiceId,
                 ServicesPerformed = newDetailInvoiceViewModel.servicesPerformed,
                 Units = (decimal)newDetailInvoiceViewModel.units,
+                UnitsAccumulated = (decimal)newDetailInvoiceViewModel.unitsAccumulated,
                 PriceUnity = (decimal)newDetailInvoiceViewModel.priceUnity,
                 NameUnit = newDetailInvoiceViewModel.nameUnit
             };
@@ -60,6 +61,7 @@
             detailInvoice.InvoiceId = detailInvoiceViewModel.invoiceId;
             detailInvoice.ServicesPerformed = detailInvoiceViewModel.servicesPerformed;
             detailInvoice.Units = (decimal)detailInvoiceViewModel.units;
+            detailInvoice.UnitsAccumulated = (decimal)detailInvoiceViewModel.unitsAccumulated;
             detailInvoice.PriceUnity = (decimal)detailInvoiceViewModel.priceUnity;
             detailInvoice.NameUnit = detailInvoiceViewModel.nameUnit;
 

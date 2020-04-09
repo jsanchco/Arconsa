@@ -86,10 +86,11 @@
                 var queryString = Request.Query;
                 var skip = Convert.ToInt32(queryString["$skip"]);
                 var take = Convert.ToInt32(queryString["$top"]);
-                var filter = Util.Helper.getSearch(queryString["$filter"]);
+                var orderBy = Convert.ToString(queryString["$orderby"]);
+                var filter = Util.Helper.getSearch(queryString["$filter"]);               
                 var roles = string.IsNullOrEmpty(queryString["roles"].ToString()) ? null : queryString["roles"].ToString().Split(',').Select(int.Parse).ToList();
 
-                var queryResult = _supervisor.GetAllUsers(skip, take, filter, roles);
+                var queryResult = _supervisor.GetAllUsers(skip, take, orderBy, filter, roles);
 
                 return new { Items = queryResult.Data, Count = queryResult.Count };
             }

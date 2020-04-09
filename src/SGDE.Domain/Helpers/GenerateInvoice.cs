@@ -379,6 +379,9 @@
             pdfCell = new PdfPCell(new Phrase(_client.AccountNumber, _STANDARFONT_10))
             { BorderWidth = 0 };
             pdfPTable.AddCell(pdfCell);
+
+            GetInvoceToOrigen(pdfPTable);
+
             pdfCell = new PdfPCell(new Phrase("Base Imponible", _STANDARFONT_10_BOLD_CUSTOMCOLOR)) { BorderWidth = 0 };
             pdfPTable.AddCell(pdfCell);
             pdfCell = new PdfPCell(new Phrase($"{Math.Round((double)_invoice.TaxBase, 2).ToFormatSpain()} €", _STANDARFONT_10)) { BorderWidth = 0, HorizontalAlignment = Element.ALIGN_RIGHT };
@@ -404,8 +407,20 @@
                 pdfPTable.AddCell(pdfCell);
             }
 
-            var total = GetInvoceToOrigen(pdfPTable);
-            total = _invoice.Total - total;
+            var percentageTaxBase = ((double)_invoice.TaxBase) * ((double)_work.PercentageRetention);
+            var titlePercentageTaxBase = percentageTaxBase == 0 ? "-" : percentageTaxBase.ToFormatSpain();
+            var total = _invoice.Total - percentageTaxBase;
+
+            pdfCell = new PdfPCell(new Phrase($"{Math.Round((double)_work.PercentageRetention * 100)}% de Retención", _STANDARFONT_10_BOLD_CUSTOMCOLOR)) { BorderWidth = 0 };
+            pdfPTable.AddCell(pdfCell);
+            pdfCell = new PdfPCell(new Phrase($"{titlePercentageTaxBase} €", _STANDARFONT_10)) { BorderWidth = 0, HorizontalAlignment = Element.ALIGN_RIGHT };
+            pdfPTable.AddCell(pdfCell);
+            pdfCell = new PdfPCell(new Phrase(" ", _STANDARFONT_10)) { BorderWidth = 0 };
+            pdfPTable.AddCell(pdfCell);
+            pdfCell = new PdfPCell(new Phrase(" ", _STANDARFONT_10)) { BorderWidth = 0 };
+            pdfPTable.AddCell(pdfCell);
+            pdfCell = new PdfPCell(new Phrase(" ", _STANDARFONT_10)) { BorderWidth = 0 };
+            pdfPTable.AddCell(pdfCell);
 
             pdfCell = new PdfPCell(new Phrase("Total Factura", _STANDARFONT_10_BOLD_CUSTOMCOLOR)) { BorderWidth = 0 };
             pdfPTable.AddCell(pdfCell);
@@ -466,10 +481,13 @@
             _invoiceResponseViewModel.data.userId = _invoice.UserId;
         }
 
-        private double GetInvoceToOrigen(PdfPTable pdfPTable)
+        private void GetInvoceToOrigen(PdfPTable pdfPTable)
         {
             if (!_work.InvoiceToOrigin)
-                return 0;
+                return;
+
+            var sumInvoices = _work.Invoices.Where(x => x.Id != _invoice.Id && x.EndDate < _invoice.StartDate).Select(x => x.TaxBase).Sum();
+            var result = sumInvoices + _invoice.TaxBase;
 
             PdfPCell pdfCell;
             if (_work.TotalContract != 0)
@@ -484,10 +502,19 @@
                 pdfPTable.AddCell(pdfCell);
                 pdfCell = new PdfPCell(new Phrase(" ", _STANDARFONT_10)) { BorderWidth = 0 };
                 pdfPTable.AddCell(pdfCell);
-            }
 
-            var sumInvoices = _work.Invoices.Where(x => x.Id != _invoice.Id).Select(x => x.TaxBase).Sum();
-            var result = sumInvoices + _invoice.TaxBase;
+                var pendingContract = _work.TotalContract - result;
+                pdfCell = new PdfPCell(new Phrase("Pendiente Contrato", _STANDARFONT_10_BOLD_CUSTOMCOLOR)) { BorderWidth = 0 };
+                pdfPTable.AddCell(pdfCell);
+                pdfCell = new PdfPCell(new Phrase($"{Math.Round((double)pendingContract, 2).ToFormatSpain()} €", _STANDARFONT_10)) { BorderWidth = 0, HorizontalAlignment = Element.ALIGN_RIGHT };
+                pdfPTable.AddCell(pdfCell);
+                pdfCell = new PdfPCell(new Phrase(" ", _STANDARFONT_10)) { BorderWidth = 0 };
+                pdfPTable.AddCell(pdfCell);
+                pdfCell = new PdfPCell(new Phrase(" ", _STANDARFONT_10)) { BorderWidth = 0 };
+                pdfPTable.AddCell(pdfCell);
+                pdfCell = new PdfPCell(new Phrase(" ", _STANDARFONT_10)) { BorderWidth = 0 };
+                pdfPTable.AddCell(pdfCell);
+            }
 
             pdfCell = new PdfPCell(new Phrase("Certificación a Origen", _STANDARFONT_10_BOLD_CUSTOMCOLOR)) { BorderWidth = 0 };
             pdfPTable.AddCell(pdfCell);
@@ -500,9 +527,14 @@
             pdfCell = new PdfPCell(new Phrase(" ", _STANDARFONT_10)) { BorderWidth = 0 };
             pdfPTable.AddCell(pdfCell);
 
+            var certBefore = _work.Invoices.Where(x => x.Id != _invoice.Id && x.EndDate < _invoice.StartDate).OrderByDescending(x => x.StartDate).FirstOrDefault();
+            var taxBaseCertBefore = 0.0;
+            if (certBefore != null)
+                taxBaseCertBefore = Math.Round((double)certBefore.TaxBase, 2);
+
             pdfCell = new PdfPCell(new Phrase("Certificación Anterior", _STANDARFONT_10_BOLD_CUSTOMCOLOR)) { BorderWidth = 0 };
             pdfPTable.AddCell(pdfCell);
-            pdfCell = new PdfPCell(new Phrase($"{Math.Round((double)sumInvoices, 2).ToFormatSpain()} €", _STANDARFONT_10)) { BorderWidth = 0, HorizontalAlignment = Element.ALIGN_RIGHT };
+            pdfCell = new PdfPCell(new Phrase($"{taxBaseCertBefore.ToFormatSpain()} €", _STANDARFONT_10)) { BorderWidth = 0, HorizontalAlignment = Element.ALIGN_RIGHT };
             pdfPTable.AddCell(pdfCell);
             pdfCell = new PdfPCell(new Phrase(" ", _STANDARFONT_10)) { BorderWidth = 0 };
             pdfPTable.AddCell(pdfCell);
@@ -510,22 +542,6 @@
             pdfPTable.AddCell(pdfCell);
             pdfCell = new PdfPCell(new Phrase(" ", _STANDARFONT_10)) { BorderWidth = 0 };
             pdfPTable.AddCell(pdfCell);
-
-            var percentageTaxBase = ((double)_invoice.TaxBase) * ((double)_work.PercentageRetention);
-            var titlePercentageTaxBase = percentageTaxBase == 0 ? "-" : percentageTaxBase.ToFormatSpain();
-
-            pdfCell = new PdfPCell(new Phrase($"{Math.Round((double)_work.PercentageRetention * 100)}% de Retención", _STANDARFONT_10_BOLD_CUSTOMCOLOR)) { BorderWidth = 0 };
-            pdfPTable.AddCell(pdfCell);
-            pdfCell = new PdfPCell(new Phrase($"{titlePercentageTaxBase} €", _STANDARFONT_10)) { BorderWidth = 0, HorizontalAlignment = Element.ALIGN_RIGHT };
-            pdfPTable.AddCell(pdfCell);
-            pdfCell = new PdfPCell(new Phrase(" ", _STANDARFONT_10)) { BorderWidth = 0 };
-            pdfPTable.AddCell(pdfCell);
-            pdfCell = new PdfPCell(new Phrase(" ", _STANDARFONT_10)) { BorderWidth = 0 };
-            pdfPTable.AddCell(pdfCell);
-            pdfCell = new PdfPCell(new Phrase(" ", _STANDARFONT_10)) { BorderWidth = 0 };
-            pdfPTable.AddCell(pdfCell);
-
-            return percentageTaxBase;
         }
     }
 }

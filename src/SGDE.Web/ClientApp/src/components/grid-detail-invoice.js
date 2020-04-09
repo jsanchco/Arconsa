@@ -1,6 +1,9 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { getDetailInvoiceByHoursWoker } from "../services";
+import {
+  getDetailInvoiceByHoursWoker,
+  importPreviousInvoice,
+} from "../services";
 import {
   ColumnDirective,
   ColumnsDirective,
@@ -53,6 +56,18 @@ class GridDetailInvoice extends Component {
         prefixIcon: "e-custom-icons e-empty",
         id: "EmptyDetail",
       },
+      {
+        text: "Importar Factura Anterior",
+        tooltipText: "importar factura anterior",
+        prefixIcon: "e-custom-icons e-file-workers",
+        id: "PreviousInvoice",
+      },
+      {
+        text: "Importar Datos desde Excel",
+        tooltipText: "importar datos desde excel",
+        prefixIcon: "e-custom-icons e-import-from-excel",
+        id: "ImportFromExcel",
+      },
     ];
 
     this.editSettings = {
@@ -84,7 +99,7 @@ class GridDetailInvoice extends Component {
   }
 
   templateTotal(args) {
-    const sum = (args.units * args.priceUnity).toFixed(2);
+    const sum = (args.unitsTotal * args.priceUnity).toFixed(2);
     return <div>{sum}</div>;
   }
 
@@ -98,8 +113,22 @@ class GridDetailInvoice extends Component {
         args.data.id = Math.max(...listId) + 1;
       }
 
-      const sum = (args.data.units * args.data.priceUnity).toFixed(2);
-      this.gridDetailInvoice.setCellValue(args.data.id, "total", Number(sum));
+      const sumUnits = Number(
+        (args.data.units + args.data.unitsAccumulated).toFixed(2)
+      );
+      this.gridDetailInvoice.dataSource.find(
+        (x) => x.id === args.data.id
+      ).unitsTotal = sumUnits;
+
+      const total = Number(
+        (
+          (args.data.units + args.data.unitsAccumulated) *
+          args.data.priceUnity
+        ).toFixed(2)
+      );
+      this.gridDetailInvoice.dataSource.find(
+        (x) => x.id === args.data.id
+      ).total = total;
 
       this.gridDetailInvoice.sortColumn("id", "Ascending");
       this.props.updateDataSourceDetailInvoce(dataSource);
@@ -121,9 +150,13 @@ class GridDetailInvoice extends Component {
             id: cont,
             servicesPerformed: result[cont - 1].servicesPerformed,
             units: result[cont - 1].units,
+            unitsAccumulated: 0,
+            unitsTotal: result[cont - 1].units,
             nameUnit: result[cont - 1].nameUnit,
             priceUnity: result[cont - 1].priceUnity,
-            total: Number((result[cont - 1].units * result[cont - 1].priceUnity).toFixed(2))
+            total: Number(
+              (result[cont - 1].units * result[cont - 1].priceUnity).toFixed(2)
+            ),
           });
         }
         this.gridDetailInvoice.dataSource = dataSource;
@@ -135,10 +168,54 @@ class GridDetailInvoice extends Component {
       this.detailInvoice = [];
       this.gridDetailInvoice.dataSource = [];
     }
+
+    if (args.item.id === "PreviousInvoice") {
+      importPreviousInvoice({
+        workId: this.props.workId,
+        startDate: this.props.startDate,
+      }).then((result) => {
+        this.gridDetailInvoice.dataSource = result.detailInvoice;
+        this.props.updateDataSourceDetailInvoce(result.detailInvoice);
+      });
+    }
+
+    if (args.item.id === "ImportFromExcel") {
+      navigator.clipboard.readText().then((text) => {
+        let lines = text.split("\n");
+        let dataSource = [];
+        for (let i = 0; i < lines.length; i++) {
+          let fields = lines[i].split("\t");
+          if (fields.length !== 6) {
+            continue;
+          }
+
+          dataSource.push({
+            id: i + 1,
+            servicesPerformed: fields[0],
+            units: fields[1],
+            unitsAccumulated: fields[2],
+            unitsTotal: fields[3],
+            nameUnit: fields[4],
+            priceUnity: fields[5],
+            total: Number((fields[1] * fields[5]).toFixed(2)),
+          });
+        }
+        this.detailInvoice = dataSource;
+        this.gridDetailInvoice.dataSource = dataSource;
+      });
+    }
+  }
+
+  footerSumUnits(args) {
+    return <span>Total: {args.Sum.toFixed(2)}</span>;
   }
 
   footerSumEuros(args) {
-    return <span>Total: {args.Sum}€</span>;
+    return <span>Total: {args.Sum.toFixed(2)}€</span>;
+  }
+
+  footerTaxBase(args) {
+    return <span>B. Imponible: {args.Custom}€</span>;
   }
 
   dataBound() {
@@ -155,6 +232,15 @@ class GridDetailInvoice extends Component {
     if (this.grid) {
       this.selectedRow = this.grid.getSelectedRecords()[0];
     }
+  }
+
+  customAggregateFn(args) {
+    let total = 0;
+    for (let cont = 0; cont < args.result.length; cont++) {
+      total += Number((args.result[cont].units * args.result[cont].priceUnity));
+    }
+
+    return total.toFixed(2);
   }
 
   render() {
@@ -178,6 +264,8 @@ class GridDetailInvoice extends Component {
           sortSettings={this.sortingOptions}
           allowSorting={true}
           rowSelected={this.rowSelected}
+          allowTextWrap={true}
+          textWrapSettings={this.wrapSettings}
         >
           <ColumnsDirective>
             <ColumnDirective
@@ -195,13 +283,40 @@ class GridDetailInvoice extends Component {
               textAlign="left"
             />
             <ColumnDirective
-              field="units"
               headerText="Unidades"
-              width="100"
-              fotmat="N2"
-              textAlign="right"
-              editType="numericedit"
-              edit={this.numericParams}
+              textAlign="Center"
+              columns={[
+                {
+                  field: "unitsAccumulated",
+                  headerText: "Acumuladas",
+                  width: "100",
+                  fotmat: "N2",
+                  textAlign: "left",
+                  editType: "numericedit",
+                  edit: this.numericParams,
+                  allowEditing: false,
+                  defaultValue: 0,
+                },
+                {
+                  field: "units",
+                  headerText: "Añadidas",
+                  width: "100",
+                  fotmat: "N2",
+                  textAlign: "left",
+                  editType: "numericedit",
+                  edit: this.numericParams,
+                },
+                {
+                  field: "unitsTotal",
+                  headerText: "Total uds.",
+                  width: "100",
+                  fotmat: "N2",
+                  textAlign: "left",
+                  editType: "numericedit",
+                  edit: this.numericParams,
+                  allowEditing: false,
+                },
+              ]}
             />
             <ColumnDirective
               field="nameUnit"
@@ -234,7 +349,30 @@ class GridDetailInvoice extends Component {
           <AggregatesDirective>
             <AggregateDirective>
               <AggregateColumnsDirective>
-                <AggregateColumnDirective field="units" type="Sum" format="N2">
+                <AggregateColumnDirective
+                  field="units"
+                  type="Sum"
+                  format="N2"
+                  footerTemplate={this.footerSumUnits}
+                >
+                  {" "}
+                </AggregateColumnDirective>
+
+                <AggregateColumnDirective
+                  field="unitsAccumulated"
+                  type="Sum"
+                  format="N2"
+                  footerTemplate={this.footerSumUnits}
+                >
+                  {" "}
+                </AggregateColumnDirective>
+
+                <AggregateColumnDirective
+                  field="unitsTotal"
+                  type="Sum"
+                  format="N2"
+                  footerTemplate={this.footerSumUnits}
+                >
                   {" "}
                 </AggregateColumnDirective>
 
@@ -246,6 +384,17 @@ class GridDetailInvoice extends Component {
                 >
                   {" "}
                 </AggregateColumnDirective>
+              </AggregateColumnsDirective>
+            </AggregateDirective>
+
+            <AggregateDirective>
+              <AggregateColumnsDirective>
+                <AggregateColumnDirective
+                  field="total"
+                  footerTemplate={this.footerTaxBase}
+                  type="Custom"
+                  customAggregate={this.customAggregateFn}
+                />
               </AggregateColumnsDirective>
             </AggregateDirective>
           </AggregatesDirective>
@@ -262,6 +411,8 @@ GridDetailInvoice.propTypes = {
   showMessage: PropTypes.func.isRequired,
   updateDataSourceDetailInvoce: PropTypes.func.isRequired,
   dataSourceDetailInvoce: PropTypes.array,
+  workId: PropTypes.number,
+  startDate: PropTypes.string,
 };
 
 export default GridDetailInvoice;

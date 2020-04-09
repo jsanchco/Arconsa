@@ -143,5 +143,20 @@
                 return StatusCode(500, ex);
             }
         }
+
+        [HttpPost("importpreviousinvoice")]
+        public object ImportPreviousInvoice([FromBody]InvoiceViewModel invoiceViewModel)
+        {
+            try
+            {
+                var result = _supervisor.GetPreviousInvoice(invoiceViewModel);
+                return result;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Exception: ");
+                return StatusCode(500, ex);
+            }
+        }
     }
 }

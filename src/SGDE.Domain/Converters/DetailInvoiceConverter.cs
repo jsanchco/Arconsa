@@ -26,6 +26,7 @@
                 invoiceId = detailInvoice.InvoiceId,
                 servicesPerformed = detailInvoice.ServicesPerformed,
                 units = (double)detailInvoice.Units,
+                unitsAccumulated = (double)detailInvoice.UnitsAccumulated,
                 priceUnity = (double)detailInvoice.PriceUnity,
                 nameUnit = detailInvoice.NameUnit
             };
@@ -47,6 +48,7 @@
                     invoiceId = detailInvoice.InvoiceId,
                     servicesPerformed = detailInvoice.ServicesPerformed,
                     units = (double)detailInvoice.Units,
+                    unitsAccumulated = (double)detailInvoice.UnitsAccumulated,
                     priceUnity = (double)detailInvoice.PriceUnity,
                     nameUnit = detailInvoice.NameUnit
                 };

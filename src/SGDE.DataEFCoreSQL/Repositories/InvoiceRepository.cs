@@ -95,6 +95,8 @@
             var invoice = _context.Invoice
                     .Include(x => x.Work)
                     .ThenInclude(x => x.Client)
+                    .Include(x => x.Work)
+                    .ThenInclude(x => x.Invoices)
                     .Include(x => x.InvoiceToCancel)
                     .ThenInclude(x => x.DetailsInvoice)
                     .Include(x => x.InvoiceToCancel)
