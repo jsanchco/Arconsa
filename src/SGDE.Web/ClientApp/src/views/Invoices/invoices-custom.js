@@ -56,6 +56,7 @@ class Invoices extends Component {
       this
     );
     this.handleOnClickHide = this.handleOnClickHide.bind(this);
+    this.openForm = this.openForm.bind(this);
   }
 
   getDataInvoiceResponse() {
@@ -187,13 +188,17 @@ class Invoices extends Component {
     });
   }
 
+  openForm() {
+    this.setState({
+      selectionHide: false,
+    });
+  }
+
   toggle() {
     this.setState({
       tooltipOpen: !this.state.tooltipOpen,
     });
   }
-
-  renderFormSelection() {}
 
   render() {
     const invoiceQuery = this.getDataInvoice();
@@ -301,7 +306,7 @@ class Invoices extends Component {
                           }
                           dataSourceDetailInvoce={
                             this.state.dataSourceDetailInvoce
-                          }
+                          }                          
                         />
                       </Col>
                     </Row>
@@ -351,7 +356,8 @@ class Invoices extends Component {
                         update={this.state.updateGrid}
                         showMessage={this.props.showMessage}
                         updateForm={this.updateForm}
-                        showViewInvoice={true}
+                        showViewInvoice={true}   
+                        toggleForm={this.openForm}                     
                       />
                     </Col>
                   </Row>
