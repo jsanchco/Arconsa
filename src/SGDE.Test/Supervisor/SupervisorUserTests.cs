@@ -8,6 +8,7 @@ namespace SGDE.Tests
     using SGDE.Domain.Repositories;
     using SGDE.Domain.Supervisor;
     using SGDE.Domain.ViewModels;
+    using System.Threading;
     using System.Threading.Tasks;
 
     #endregion
@@ -15,11 +16,15 @@ namespace SGDE.Tests
     [TestClass]
     public class SupervisorUserTests
     {
+        private Supervisor _supervisor;
+
         [TestInitialize]
         public void TestInitialize()
         {
-            //coffeeCupRepositoryMock.Setup(x => x.GetCoffeeCupsInStockCountAsync()).ReturnsAsync(_numberOfCupsInStock);
             var userRepositoryMock = new Mock<IUserRepository>();
+            userRepositoryMock.Setup(x => x.AddAsync(It.IsAny<User>(), It.IsAny<CancellationToken>())).ReturnsAsync((User x) => x);
+            userRepositoryMock.Setup(x => x.Add(It.IsAny<User>())).Returns((User x) => x);
+
             var professionRepositoryMock = new Mock<IProfessionRepository>();
             var clientRepositoryMock = new Mock<IClientRepository>();
             var roleRepositoryMock = new Mock<IRoleRepository>();
@@ -38,7 +43,7 @@ namespace SGDE.Tests
             var invoiceRepositoryMock = new Mock<IInvoiceRepository>();
             var detailInvoiceRepositoryMock = new Mock<IDetailInvoiceRepository>();
 
-            var supervisorUser = new Supervisor(
+            _supervisor = new Supervisor(
                 userRepositoryMock.Object,
                 professionRepositoryMock.Object,
                 clientRepositoryMock.Object,
@@ -62,18 +67,14 @@ namespace SGDE.Tests
         [TestMethod]
         public async Task AddUserAsync_InputUserViewModel_ReturnUserViewModel()
         {
-            //var userRepositoryMock = new Mock<IUserRepository>();
-            //userRepositoryMock.Setup(x => x.AddAsync(It.IsAny<User>())).ReturnsAsync((User x) => x);
-            //var supervisorUser = new Supervisor(userRepositoryMock.Object, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+            var userViewModel = new UserViewModel
+            {
+                name = "Jesús",
+                surname = "Sánchez Corzo"
+            };
+            var newUserViewModel = await _supervisor.AddUserAsync(userViewModel);
 
-            //var user = new User 
-            //{
-            //    Name = "Jesús",
-            //    Surname = "Sánchez Corzo"
-            //};
-            //var newUserViewModel = await supervisorUser.AddUserAsync(user);
-
-            //Assert.AreNotEqual(user.roleId, 0);
+            Assert.AreNotEqual(newUserViewModel.roleId, 0);
         }
     }
 }

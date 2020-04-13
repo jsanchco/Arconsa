@@ -113,22 +113,15 @@ class GridDetailInvoice extends Component {
         args.data.id = Math.max(...listId) + 1;
       }
 
-      const sumUnits = Number(
-        (args.data.units + args.data.unitsAccumulated).toFixed(2)
-      );
+      const sumUnits = Math.round(((args.data.units + args.data.unitsAccumulated) + Number.EPSILON) * 100) / 100;
       this.gridDetailInvoice.dataSource.find(
         (x) => x.id === args.data.id
       ).unitsTotal = sumUnits;
 
-      const total = Number(
-        (
-          (args.data.units + args.data.unitsAccumulated) *
-          args.data.priceUnity
-        ).toFixed(2)
-      );
+      const total = Math.round((((args.data.units + args.data.unitsAccumulated) * args.data.priceUnity) + Number.EPSILON) * 100) / 100; 
       this.gridDetailInvoice.dataSource.find(
         (x) => x.id === args.data.id
-      ).total = total;
+      ).amountTotal = total;
 
       this.gridDetailInvoice.sortColumn("id", "Ascending");
       this.props.updateDataSourceDetailInvoce(dataSource);
@@ -154,8 +147,18 @@ class GridDetailInvoice extends Component {
             unitsTotal: result[cont - 1].units,
             nameUnit: result[cont - 1].nameUnit,
             priceUnity: result[cont - 1].priceUnity,
-            total: Number(
+            amountUnits: Number(
               (result[cont - 1].units * result[cont - 1].priceUnity).toFixed(2)
+            ),
+            amountAccumulated: Number(
+              (
+                result[cont - 1].unitsAccumulated * result[cont - 1].priceUnity
+              ).toFixed(2)
+            ),
+            amountTotal: Number(
+              (
+                result[cont - 1].unitsTotal * result[cont - 1].priceUnity
+              ).toFixed(2)
             ),
           });
         }
@@ -185,23 +188,66 @@ class GridDetailInvoice extends Component {
         let dataSource = [];
         for (let i = 0; i < lines.length; i++) {
           let fields = lines[i].split("\t");
-          if (fields.length !== 6) {
+          if (fields.length < 7) {
             continue;
           }
+
+          let amount = fields[2]
+            .replace("€", "")
+            .trim()
+            .replace("€", "")
+            .replace(".", "")
+            .replace(",", ".");
+          amount = Number(amount);
+          amount = Math.round((amount + Number.EPSILON) * 100) / 100;
+          const units = amount === 0 ? 0 : amount;
+
+          amount = fields[3]
+            .replace("€", "")
+            .trim()
+            .replace("€", "")
+            .replace(".", "")
+            .replace(",", ".");
+          amount = Number(amount);
+          amount = Math.round((amount + Number.EPSILON) * 100) / 100;
+          const unitsAccumulated = amount === 0 ? 0 : amount;
+
+          amount = fields[6]
+            .replace("€", "")
+            .trim()
+            .replace("€", "")
+            .replace(".", "")
+            .replace(",", ".");
+          amount = Number(amount);
+          amount = Math.round((amount + Number.EPSILON) * 100) / 100;
+          const priceUnity = amount === 0 ? 0 : amount;
+
+          const unitsTotal =
+            Math.round((units + unitsAccumulated + Number.EPSILON) * 100) / 100;
+          const amountUnits =
+            Math.round((units * priceUnity + Number.EPSILON) * 100) / 100;
+          const amountAccumulated =
+            Math.round((unitsAccumulated * priceUnity + Number.EPSILON) * 100) /
+            100;
+          const amountTotal =
+            Math.round((unitsTotal * priceUnity + Number.EPSILON) * 100) / 100;
 
           dataSource.push({
             id: i + 1,
             servicesPerformed: fields[0],
-            units: fields[1],
-            unitsAccumulated: fields[2],
-            unitsTotal: fields[3],
-            nameUnit: fields[4],
-            priceUnity: fields[5],
-            total: Number((fields[1] * fields[5]).toFixed(2)),
+            nameUnit: fields[1],
+            units: units,
+            unitsAccumulated: unitsAccumulated,
+            unitsTotal: unitsTotal,
+            priceUnity: priceUnity,
+            amountUnits: amountUnits,
+            amountAccumulated: amountAccumulated,
+            amountTotal: amountTotal,
           });
         }
         this.detailInvoice = dataSource;
         this.gridDetailInvoice.dataSource = dataSource;
+        this.props.updateDataSourceDetailInvoce(dataSource);
       });
     }
   }
@@ -213,6 +259,18 @@ class GridDetailInvoice extends Component {
   footerSumEuros(args) {
     return <span>Total: {args.Sum.toFixed(2)}€</span>;
   }
+
+  footerSumAmountUnits(args) {
+    return <span>B. Imponible: {args.Sum.toFixed(2)}€</span>;
+  }
+
+  footerSumAmountAccumulated(args) {
+    return <span>Cert. Anterior: {args.Sum.toFixed(2)}€</span>;
+  }
+
+  footerSumAmountTotal(args) {
+    return <span>Cert. Origen: {args.Sum.toFixed(2)}€</span>;
+  }  
 
   footerTaxBase(args) {
     return <span>B. Imponible: {args.Custom}€</span>;
@@ -237,7 +295,7 @@ class GridDetailInvoice extends Component {
   customAggregateFn(args) {
     let total = 0;
     for (let cont = 0; cont < args.result.length; cont++) {
-      total += Number((args.result[cont].units * args.result[cont].priceUnity));
+      total += Number(args.result[cont].units * args.result[cont].priceUnity);
     }
 
     return total.toFixed(2);
@@ -283,66 +341,93 @@ class GridDetailInvoice extends Component {
               textAlign="left"
             />
             <ColumnDirective
-              headerText="Unidades"
+              headerText="UNIDADES"
               textAlign="Center"
               columns={[
                 {
-                  field: "unitsAccumulated",
-                  headerText: "Acumuladas",
+                  field: "nameUnit",
+                  headerText: "Medición",
+                  width: "100",
+                  textAlign: "center",
+                },
+                {
+                  field: "units",
+                  headerText: "Trámite",
                   width: "100",
                   fotmat: "N2",
-                  textAlign: "left",
+                  textAlign: "right",
+                  editType: "numericedit",
+                  edit: this.numericParams,
+                },
+                {
+                  field: "unitsAccumulated",
+                  headerText: "Anteriores",
+                  width: "100",
+                  fotmat: "N2",
+                  textAlign: "right",
                   editType: "numericedit",
                   edit: this.numericParams,
                   allowEditing: false,
                   defaultValue: 0,
                 },
                 {
-                  field: "units",
-                  headerText: "Añadidas",
-                  width: "100",
-                  fotmat: "N2",
-                  textAlign: "left",
-                  editType: "numericedit",
-                  edit: this.numericParams,
-                },
-                {
                   field: "unitsTotal",
-                  headerText: "Total uds.",
+                  headerText: "Origen",
                   width: "100",
                   fotmat: "N2",
-                  textAlign: "left",
+                  textAlign: "right",
                   editType: "numericedit",
                   edit: this.numericParams,
                   allowEditing: false,
                 },
               ]}
             />
+
             <ColumnDirective
-              field="nameUnit"
-              headerText="Nombre Unidades"
-              width="100"
-              textAlign="center"
-            />
-            <ColumnDirective
-              field="priceUnity"
-              headerText="Precio Unidad"
-              width="100"
-              fotmat="N2"
-              textAlign="right"
-              editType="numericedit"
-              edit={this.numericParams}
-            />
-            <ColumnDirective
-              field="total"
-              headerText="Total"
-              width="100"
-              fotmat="N2"
-              allowEditing={false}
-              editType="numericedit"
-              edit={this.numericParams}
-              template={this.templateTotal}
-              textAlign="right"
+              headerText="IMPORTES"
+              textAlign="Center"
+              columns={[
+                {
+                  field: "priceUnity",
+                  headerText: "Precio Unidad",
+                  width: "100",
+                  fotmat: "N2",
+                  textAlign: "right",
+                  editType: "numericedit",
+                  edit: this.numericParams,
+                },
+                {
+                  field: "amountUnits",
+                  headerText: "Trámite",
+                  width: "100",
+                  fotmat: "N2",
+                  textAlign: "right",
+                  editType: "numericedit",
+                  edit: this.numericParams,
+                  allowEditing: false,
+                },
+                {
+                  field: "amountAccumulated",
+                  headerText: "Anteriores",
+                  width: "100",
+                  fotmat: "N2",
+                  textAlign: "right",
+                  editType: "numericedit",
+                  edit: this.numericParams,
+                  allowEditing: false,
+                  defaultValue: 0,
+                },
+                {
+                  field: "amountTotal",
+                  headerText: "Origen",
+                  width: "100",
+                  fotmat: "N2",
+                  textAlign: "right",
+                  editType: "numericedit",
+                  edit: this.numericParams,
+                  allowEditing: false,
+                },
+              ]}
             />
           </ColumnsDirective>
 
@@ -377,24 +462,29 @@ class GridDetailInvoice extends Component {
                 </AggregateColumnDirective>
 
                 <AggregateColumnDirective
-                  field="total"
+                  field="amountUnits"
                   type="Sum"
                   format="N2"
-                  footerTemplate={this.footerSumEuros}
+                  footerTemplate={this.footerSumAmountUnits}
                 >
                   {" "}
                 </AggregateColumnDirective>
-              </AggregateColumnsDirective>
-            </AggregateDirective>
-
-            <AggregateDirective>
-              <AggregateColumnsDirective>
                 <AggregateColumnDirective
-                  field="total"
-                  footerTemplate={this.footerTaxBase}
-                  type="Custom"
-                  customAggregate={this.customAggregateFn}
-                />
+                  field="amountAccumulated"
+                  type="Sum"
+                  format="N2"
+                  footerTemplate={this.footerSumAmountAccumulated}
+                >
+                  {" "}
+                </AggregateColumnDirective>
+                <AggregateColumnDirective
+                  field="amountTotal"
+                  type="Sum"
+                  format="N2"
+                  footerTemplate={this.footerSumAmountTotal}
+                >
+                  {" "}
+                </AggregateColumnDirective>
               </AggregateColumnsDirective>
             </AggregateDirective>
           </AggregatesDirective>

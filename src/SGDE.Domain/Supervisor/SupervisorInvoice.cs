@@ -93,6 +93,7 @@
 
                     ServicesPerformed = detailInvoice.servicesPerformed,
                     Units = (decimal)detailInvoice.units,
+                    UnitsAccumulated = (decimal)detailInvoice.unitsAccumulated,
                     PriceUnity = (decimal)detailInvoice.priceUnity,
                     NameUnit = detailInvoice.nameUnit
                 });
