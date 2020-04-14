@@ -65,6 +65,19 @@ namespace SGDE.Tests
         }
 
         [TestMethod]
+        public void AddUser_InputUserViewModel_ReturnUserViewModel()
+        {
+            var userViewModel = new UserViewModel
+            {
+                name = "Jesús",
+                surname = "Sánchez Corzo"
+            };
+            var newUserViewModel = _supervisor.AddUser(userViewModel);
+
+            Assert.AreNotEqual(newUserViewModel.roleId, 0);
+        }
+
+        [TestMethod]
         public async Task AddUserAsync_InputUserViewModel_ReturnUserViewModel()
         {
             var userViewModel = new UserViewModel

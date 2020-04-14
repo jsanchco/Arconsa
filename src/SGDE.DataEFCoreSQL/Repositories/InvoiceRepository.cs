@@ -143,8 +143,7 @@
                         invoice.IvaTaxBase = invoice.Iva == true ? Math.Round((double)invoice.TaxBase * 0.21, 2) : 0;
                         invoice.Total = invoice.IvaTaxBase + (double)invoice.TaxBase;
 
-                        var countInvoice = _context.Invoice.Count();
-                        var invoiceNumber = countInvoice == 0 ? 1060 : (1060 + countInvoice);
+                        var invoiceNumber = _context.Invoice.Count() == 0 ? 1060 : _context.Invoice.Select(x => x.InvoiceNumber).Max();
                         invoiceNumber++;
 
                         invoice.InvoiceNumber = invoiceNumber;

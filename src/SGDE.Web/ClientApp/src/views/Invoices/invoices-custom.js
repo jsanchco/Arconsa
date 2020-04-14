@@ -20,7 +20,6 @@ import GridInvoice from "../../components/grid-invoices";
 import GridDetailInvoice from "../../components/grid-detail-invoice";
 
 class Invoices extends Component {
-
   wrapSettings = { wrapMode: "Content" };
 
   constructor(props) {
@@ -216,15 +215,7 @@ class Invoices extends Component {
     const classDivSelection = this.state.selectionHide === true ? "hidden" : "";
 
     return (
-      <div
-        style={{
-          marginLeft: 10,
-          marginRight: 60,
-          marginTop: 20,
-          marginBottom: 20,
-        }}
-        id="container"
-      >
+      <div id="container">
         <Fragment>
           <Tooltip
             placement="bottom"
@@ -310,8 +301,8 @@ class Invoices extends Component {
                           dataSourceDetailInvoce={
                             this.state.dataSourceDetailInvoce
                           }
-                          workId={this.state.workId}   
-                          startDate={this.state.startDate}                   
+                          workId={this.state.workId}
+                          startDate={this.state.startDate}
                         />
                       </Col>
                     </Row>
@@ -337,7 +328,7 @@ class Invoices extends Component {
                       <div
                         style={{
                           textAlign: "left",
-                          cursor: "pointer"
+                          cursor: "pointer",
                         }}
                         onClick={this.handleOnClickHide}
                       >
@@ -361,8 +352,8 @@ class Invoices extends Component {
                         update={this.state.updateGrid}
                         showMessage={this.props.showMessage}
                         updateForm={this.updateForm}
-                        showViewInvoice={true}   
-                        toggleForm={this.openForm}                     
+                        showViewInvoice={true}
+                        toggleForm={this.openForm}
                       />
                     </Col>
                   </Row>
