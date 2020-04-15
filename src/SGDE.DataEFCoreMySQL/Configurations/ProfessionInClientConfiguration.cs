@@ -18,6 +18,9 @@
             entity.Property(x => x.Id).ValueGeneratedOnAdd();
             entity.Property(x => x.ProfessionId).IsRequired();
             entity.Property(x => x.ClientId).IsRequired();
+            entity.Property(x => x.PriceHourSaleExtra).HasColumnType("decimal(18,2)");
+            entity.Property(x => x.PriceHourSaleFestive).HasColumnType("decimal(18,2)");
+            entity.Property(x => x.PriceHourSaleOrdinary).HasColumnType("decimal(18,2)");
 
             entity.HasIndex(x => x.ClientId).HasName("IFK_Client_ProfessionInClient");
             entity.HasOne(u => u.Client).WithMany(a => a.ProfessionInClients).HasForeignKey(a => a.ClientId).HasConstraintName("FK__ProfessionInClient__ClientId");

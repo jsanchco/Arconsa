@@ -20,7 +20,9 @@
             entity.Ignore(x => x.State);
             entity.Ignore(x => x.IvaTaxBase);
             entity.Ignore(x => x.Total);
-            
+            entity.Property(x => x.Retentions).HasColumnType("decimal(18,2)");
+            entity.Property(x => x.TaxBase).HasColumnType("decimal(18,2)");
+
             entity.HasIndex(x => x.WorkId).HasName("IFK_Work_Invoice");
             entity.HasOne(u => u.Work).WithMany(a => a.Invoices).HasForeignKey(a => a.WorkId).HasConstraintName("FK__Invoice__WorkId");
 

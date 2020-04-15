@@ -22,7 +22,21 @@ namespace SGDE.Tests
         public void TestInitialize()
         {
             var userRepositoryMock = new Mock<IUserRepository>();
-            userRepositoryMock.Setup(x => x.AddAsync(It.IsAny<User>(), It.IsAny<CancellationToken>())).ReturnsAsync((User x) => x);
+
+            userRepositoryMock
+                .Setup(
+                    x => x.AddAsync(
+                                    It.IsAny<User>(),
+                                    It.IsAny<CancellationToken>()))
+                .Callback((
+                     User a,
+                     CancellationToken b) =>
+                {
+                    var t = a;
+                    var t1 = b;
+                })
+                .ReturnsAsync((User x) => x);
+
             userRepositoryMock.Setup(x => x.Add(It.IsAny<User>())).Returns((User x) => x);
 
             var professionRepositoryMock = new Mock<IProfessionRepository>();

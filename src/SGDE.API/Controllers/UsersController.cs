@@ -17,6 +17,7 @@
     using System.Text;
     using Microsoft.Extensions.Options;
     using SGDE.Domain.Helpers;
+    using System.Threading;
 
     #endregion
 
@@ -232,5 +233,26 @@
                 return StatusCode(500, ex);
             }
         }
+
+
+        //[AllowAnonymous]
+        //[HttpGet("testcancelationtoken")]
+        //public async Task<IActionResult> TestCancelationToken(CancellationToken cancellationToken)
+        //{
+        //    //_logger.LogInformation("Starting to do slow work");
+
+        //    //// slow async action, e.g. call external api
+        //    //await Task.Delay(10000, cancellationToken);
+
+        //    //var message = "Finished slow delay of 10 seconds.";
+
+        //    //_logger.LogError(message);
+
+        //    //return message;
+        //    var users = await _supervisor.GetAllUserAsync(cancellationToken);
+        //    _logger.LogError($"There are {users.Count()} users");
+
+        //    return new ObjectResult(users);
+        //}
     }
 }
