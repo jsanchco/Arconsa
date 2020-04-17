@@ -253,7 +253,7 @@ namespace SGDE.Domain.Supervisor
                 userViewModel.stateDescription += "número de cuenta, ";
 
             var documentsPendings = _userRepository.GetPendingDocuments((int)userViewModel.id);
-            userViewModel.stateDescription += string.Join(", ", documentsPendings.Select(x => x.TypeDocument.Name));
+            userViewModel.stateDescription += string.Join(", ", documentsPendings.Select(x => x.Name));
 
             if (userViewModel.stateDescription.EndsWith(", "))
                 userViewModel.stateDescription = userViewModel.stateDescription.Substring(0, userViewModel.stateDescription.Length - 2);

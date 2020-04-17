@@ -228,12 +228,18 @@
             return _context.User.Count();
         }
 
-        public List<UserDocument> GetPendingDocuments(int userId)
+        public List<TypeDocument> GetPendingDocuments(int userId)
         {
-            return _context.UserDocument
+            var userDocuments = _context.UserDocument
                 .Include(x => x.TypeDocument)
-                .Where(x => x.UserId == userId && x.TypeDocument.IsRequired == true)
-                .ToList();
+                .Where(x => x.UserId == userId && x.File != null && x.TypeDocument.IsRequired == true)
+                .Select(x => x.TypeDocument.Id);
+
+            var documentsRequired = _context.TypeDocument.Where(x => x.IsRequired == true).Select(x => x.Id);
+
+            var result = documentsRequired.Except(userDocuments);
+
+            return _context.TypeDocument.Where(x => result.Contains(x.Id)).ToList();
         }
     }
 }
