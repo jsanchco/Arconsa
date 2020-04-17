@@ -11,6 +11,7 @@ namespace SGDE.Domain.Supervisor
     using Entities;
     using ViewModels;
     using Domain.Helpers;
+    using System.Linq;
 
     #endregion
 
@@ -92,9 +93,15 @@ namespace SGDE.Domain.Supervisor
         public QueryResult<UserViewModel> GetAllUsers(int skip = 0, int take = 0, string orderBy = null, string filter = null, List<int> roles = null)
         {
             var queryResult = _userRepository.GetAll(skip, take, orderBy, filter, roles);
+            var data = UserConverter.ConvertList(queryResult.Data);
+            foreach(var item in data)
+            {
+                UpdateStateUser(item);
+            }
+
             return new QueryResult<UserViewModel>
             {
-                Data = UserConverter.ConvertList(queryResult.Data),
+                Data = data,
                 Count = queryResult.Count
             };
         }
@@ -102,6 +109,8 @@ namespace SGDE.Domain.Supervisor
         public UserViewModel GetUserById(int id)
         {
             var userViewModel = UserConverter.Convert(_userRepository.GetById(id));
+            UpdateStateUser(userViewModel);
+
             return userViewModel;
         }
 
@@ -219,6 +228,45 @@ namespace SGDE.Domain.Supervisor
         public bool DeleteUser(int id)
         {
             return _userRepository.Delete(id);
+        }
+
+        private void UpdateStateUser(UserViewModel userViewModel)
+        {
+            var initText = "A este usuario le faltan los siguientes datos/documentos: ";
+            userViewModel.stateDescription = initText;
+
+            if (string.IsNullOrEmpty(userViewModel.name))
+                userViewModel.stateDescription += "nombre, ";
+            if (string.IsNullOrEmpty(userViewModel.surname))
+                userViewModel.stateDescription += "apellidos, ";
+            if (string.IsNullOrEmpty(userViewModel.dni))
+                userViewModel.stateDescription += "DNI, ";
+            if (string.IsNullOrEmpty(userViewModel.securitySocialNumber))
+                userViewModel.stateDescription += "número de la seguridad social, ";
+            if (string.IsNullOrEmpty(userViewModel.birthDate))
+                userViewModel.stateDescription += "fecha de nacimineto, ";
+            if (string.IsNullOrEmpty(userViewModel.address))
+                userViewModel.stateDescription += "dirección, ";
+            if (string.IsNullOrEmpty(userViewModel.phoneNumber))
+                userViewModel.stateDescription += "teléfono de contacto, ";
+            if (string.IsNullOrEmpty(userViewModel.accountNumber))
+                userViewModel.stateDescription += "número de cuenta, ";
+
+            var documentsPendings = _userRepository.GetPendingDocuments((int)userViewModel.id);
+            userViewModel.stateDescription += string.Join(", ", documentsPendings.Select(x => x.TypeDocument.Name));
+
+            if (userViewModel.stateDescription.EndsWith(", "))
+                userViewModel.stateDescription = userViewModel.stateDescription.Substring(0, userViewModel.stateDescription.Length - 2);
+
+            if (userViewModel.stateDescription == initText)
+            {
+                userViewModel.stateDescription = "Trabajador con documentación correcta";
+                userViewModel.state = 0;
+            }
+            else
+            {
+                userViewModel.state = 1;
+            }
         }
     }
 }

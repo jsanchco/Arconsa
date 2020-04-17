@@ -39,8 +39,6 @@ class Invoices extends Component {
       selectionHide: true,
     };
 
-    this.toggle = this.toggle.bind(this);
-
     this.ddl = null;
 
     this.fields = { text: "name", value: "id" };
@@ -59,6 +57,7 @@ class Invoices extends Component {
     );
     this.handleOnClickHide = this.handleOnClickHide.bind(this);
     this.openForm = this.openForm.bind(this);
+    this.toggle = this.toggle.bind(this);
   }
 
   getDataInvoiceResponse() {

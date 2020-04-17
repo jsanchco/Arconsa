@@ -7,7 +7,7 @@ import {
   Edit,
   Inject,
   Toolbar,
-  Page
+  Page,
 } from "@syncfusion/ej2-react-grids";
 import { DataManager, WebApiAdaptor } from "@syncfusion/ej2-data";
 import { config, TYPES_DOCUMENT } from "../../constants";
@@ -23,7 +23,7 @@ class TypesDocument extends Component {
   typesDocument = new DataManager({
     adaptor: new WebApiAdaptor(),
     url: `${config.URL_API}/${TYPES_DOCUMENT}`,
-    headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }]
+    headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }],
   });
 
   grid = null;
@@ -32,7 +32,7 @@ class TypesDocument extends Component {
     super(props);
 
     this.state = {
-      typesDocument: null
+      typesDocument: null,
     };
 
     this.toolbarOptions = ["Add", "Edit", "Delete", "Update", "Cancel"];
@@ -41,7 +41,7 @@ class TypesDocument extends Component {
       allowEditing: true,
       allowAdding: true,
       allowDeleting: true,
-      newRowPosition: "Top"
+      newRowPosition: "Top",
     };
     this.pageSettings = { pageCount: 10, pageSize: 10 };
     this.actionFailure = this.actionFailure.bind(this);
@@ -56,7 +56,7 @@ class TypesDocument extends Component {
     this.props.showMessage({
       statusText: error.statusText,
       responseText: error.responseText,
-      type: "danger"
+      type: "danger",
     });
   }
 
@@ -65,14 +65,14 @@ class TypesDocument extends Component {
       this.props.showMessage({
         statusText: "200",
         responseText: "Operación realizada con éxito",
-        type: "success"
+        type: "success",
       });
     }
     if (args.requestType === "delete") {
       this.props.showMessage({
         statusText: "200",
         responseText: "Operación realizada con éxito",
-        type: "success"
+        type: "success",
       });
     }
   }
@@ -99,12 +99,12 @@ class TypesDocument extends Component {
                   marginLeft: 30,
                   marginRight: 30,
                   marginTop: -20,
-                  marginBottom: 20
+                  marginBottom: 20,
                 }}
                 actionFailure={this.actionFailure}
                 actionComplete={this.actionComplete}
                 rowSelected={this.rowSelected}
-                ref={g => (this.grid = g)}
+                ref={(g) => (this.grid = g)}
               >
                 <ColumnsDirective>
                   <ColumnDirective
@@ -121,9 +121,17 @@ class TypesDocument extends Component {
                     width="100"
                   />
                   <ColumnDirective
+                    field="isRequired"
+                    headerText="Obligatorio"
+                    width="100"
+                    displayAsCheckBox={true}
+                    editType="booleanedit"
+                    textAlign="Center"
+                  />
+                  <ColumnDirective
                     field="description"
                     headerText="Descripción"
-                    width="100"
+                    width="200"
                   />
                 </ColumnsDirective>
                 <Inject services={[Page, Toolbar, Edit]} />
@@ -138,14 +146,14 @@ class TypesDocument extends Component {
 
 TypesDocument.propTypes = {};
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
-    errorApplication: state.applicationReducer.error
+    errorApplication: state.applicationReducer.error,
   };
 };
 
-const mapDispatchToProps = dispatch => ({
-  showMessage: message => dispatch(ACTION_APPLICATION.showMessage(message))
+const mapDispatchToProps = (dispatch) => ({
+  showMessage: (message) => dispatch(ACTION_APPLICATION.showMessage(message)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(TypesDocument);

@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from "react";
 import { Row } from "reactstrap";
+import { getValue } from "@syncfusion/ej2-base";
 import {
   ColumnDirective,
   ColumnsDirective,
@@ -12,6 +13,7 @@ import {
   Group,
   Sort,
 } from "@syncfusion/ej2-react-grids";
+import { Tooltip } from "@syncfusion/ej2-popups";
 import { DataManager, WebApiAdaptor, Query } from "@syncfusion/ej2-data";
 import { config, USERS, PROFESSIONS, ROLES } from "../../constants";
 import { L10n } from "@syncfusion/ej2-base";
@@ -78,30 +80,48 @@ class Employees extends Component {
       newRowPosition: "Top",
     };
     this.pageSettings = { pageCount: 10, pageSize: 10 };
+
     this.actionFailure = this.actionFailure.bind(this);
     this.actionComplete = this.actionComplete.bind(this);
     this.actionBegin = this.actionBegin.bind(this);
     this.clickHandler = this.clickHandler.bind(this);
     this.rowSelected = this.rowSelected.bind(this);
     this.formatDate = this.formatDate.bind(this);
+    this.template = this.gridTemplate.bind(this);
+    this.tooltip = this.tooltip.bind(this);
 
-    this.template = this.gridTemplate;
     this.format = { type: "dateTime", format: "dd/MM/yyyy" };
 
     this.query = new Query().addParams("roles", [3]);
   }
 
   gridTemplate(args) {
+    let color = "";
+    switch (args.state) {
+      case 0:
+        color = "dot-small-green";
+        break;
+      case 1:
+        color = "dot-small-red";
+        break;
+
+      default:
+        color = "dot-small-green";
+        break;
+    }
+
     if (args.photo !== null && args.photo !== "") {
       const src = "data:image/png;base64," + args.photo;
       return (
         <div className="image">
+          <span id={"user-" + args.id} className={color}></span>
           <img src={src} alt={args.name} width="100px" height="100px" />
         </div>
       );
     } else {
       return (
         <div className="image">
+          <span id={"user-" + args.id} className={color}></span>
           <img
             src={"assets/img/avatars/user_no_photo.png"}
             alt={args.name}
@@ -200,6 +220,15 @@ class Employees extends Component {
     this.setState({ rowSelected: selectedRecords[0] });
   }
 
+  tooltip(args) {
+    if (args.column.field === "stateDescription" && args.data.roleId === 3) {
+      const tooltip = new Tooltip({
+        content: getValue(args.column.field, args.data).toString(),
+      });
+      tooltip.appendTo(args.cell);
+    }
+  }
+
   render() {
     return (
       <Fragment>
@@ -209,6 +238,7 @@ class Employees extends Component {
               <i className="icon-list"></i> Trabajadores
             </div>
             <div className="card-body"></div>
+
             <Row>
               <GridComponent
                 dataSource={this.users}
@@ -234,6 +264,8 @@ class Employees extends Component {
                 allowTextWrap={true}
                 textWrapSettings={this.wrapSettings}
                 allowSorting={true}
+                dataBound={this.dataBound}
+                queryCellInfo={this.tooltip}
               >
                 <ColumnsDirective>
                   <ColumnDirective
@@ -245,6 +277,7 @@ class Employees extends Component {
                     visible={false}
                   />
                   <ColumnDirective
+                    field="stateDescription"
                     headerText="Foto"
                     width="100"
                     template={this.template}

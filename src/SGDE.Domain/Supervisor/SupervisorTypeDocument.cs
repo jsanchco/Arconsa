@@ -35,7 +35,8 @@
                 IPAddress = newTypeDocumentViewModel.iPAddress,
 
                 Name = newTypeDocumentViewModel.name,
-                Description = newTypeDocumentViewModel.description
+                Description = newTypeDocumentViewModel.description,
+                IsRequired = newTypeDocumentViewModel.isRequired
             };
 
             _typeDocumentRepository.Add(typeDocument);
@@ -55,7 +56,8 @@
             typeDocument.IPAddress = typeDocumentViewModel.iPAddress;
 
             typeDocument.Name = typeDocumentViewModel.name;
-            typeDocument.Description = typeDocument.Description;
+            typeDocument.Description = typeDocumentViewModel.description;
+            typeDocument.IsRequired = typeDocumentViewModel.isRequired;
 
             return _typeDocumentRepository.Update(typeDocument);
         }

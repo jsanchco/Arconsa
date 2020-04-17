@@ -26,5 +26,6 @@
         User Add(User newUser);
         bool Update(User user);
         bool Delete(int id);
+        List<UserDocument> GetPendingDocuments(int userId);
     }
 }

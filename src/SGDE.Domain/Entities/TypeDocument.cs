@@ -10,6 +10,7 @@
     {
         public string Name { get; set; }
         public string Description { get; set; }
+        public bool IsRequired { get; set; }
 
         public virtual ICollection<UserDocument> UserDocuments { get; set; } = new HashSet<UserDocument>();
     }

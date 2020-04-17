@@ -24,7 +24,8 @@
                 iPAddress = typeDocument.IPAddress,
 
                 name = typeDocument.Name,
-                description = typeDocument.Description
+                description = typeDocument.Description,
+                isRequired = typeDocument.IsRequired
             };
 
             return typeDocumentViewModel;
@@ -42,7 +43,8 @@
                     iPAddress = typeDocument.IPAddress,
 
                     name = typeDocument.Name,
-                    description = typeDocument.Description
+                    description = typeDocument.Description,
+                    isRequired = typeDocument.IsRequired
                 };
                 return model;
             })

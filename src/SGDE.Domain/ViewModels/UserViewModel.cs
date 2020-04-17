@@ -29,6 +29,8 @@ namespace SGDE.Domain.ViewModels
         public string observations { get; set; }
         public string accountNumber { get; set; }
         public byte[] photo { get; set; }
+        public int state { get; set; }
+        public string stateDescription { get; set; }
         public string token { get; set; }
         public int? professionId { get; set; }
         public string professionName { get; set; }

@@ -227,5 +227,13 @@
         {
             return _context.User.Count();
         }
+
+        public List<UserDocument> GetPendingDocuments(int userId)
+        {
+            return _context.UserDocument
+                .Include(x => x.TypeDocument)
+                .Where(x => x.UserId == userId && x.TypeDocument.IsRequired == true)
+                .ToList();
+        }
     }
 }
