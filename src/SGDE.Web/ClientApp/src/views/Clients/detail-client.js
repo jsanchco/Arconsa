@@ -75,6 +75,8 @@ class DetailClient extends Component {
   }
 
   render() {
+    const user = JSON.parse(localStorage.getItem("user"));
+
     let title = "";
     if (
       this.props.history.location.state.client !== null &&
@@ -115,11 +117,12 @@ class DetailClient extends Component {
                     header={this.headerText[2]}
                     content={this.contentTemplateProfessionInClient}
                   />
-
-                  <TabItemDirective
-                    header={this.headerText[3]}
-                    content={this.contentTemplateInvoicesInClient}
-                  />
+                  {user.roleId === 1 ? (
+                    <TabItemDirective
+                      header={this.headerText[3]}
+                      content={this.contentTemplateInvoicesInClient}
+                    />
+                  ) : null}
                 </TabItemsDirective>
               </TabComponent>
             </div>

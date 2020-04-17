@@ -17,7 +17,7 @@ class DetailWork extends Component {
     this.headerText = [
       { text: "Datos Básicos" },
       { text: "Altas/Bajas de Trabajadores" },
-      { text: "Facturas" }
+      { text: "Facturas" },
     ];
 
     this.contentTemplateAuthorizeCancelWorkers = this.contentTemplateAuthorizeCancelWorkers.bind(
@@ -62,6 +62,8 @@ class DetailWork extends Component {
   }
 
   render() {
+    const user = JSON.parse(localStorage.getItem("user"));
+
     let title = "";
     if (
       this.props.history.location.state.work !== null &&
@@ -96,10 +98,12 @@ class DetailWork extends Component {
                     header={this.headerText[1]}
                     content={this.contentTemplateAuthorizeCancelWorkers}
                   />
-                  <TabItemDirective
-                    header={this.headerText[2]}
-                    content={this.contentTemplateInvoicesWork}
-                  />                  
+                  {user.roleId === 1 ? (
+                    <TabItemDirective
+                      header={this.headerText[2]}
+                      content={this.contentTemplateInvoicesWork}
+                    />
+                  ) : null}
                 </TabItemsDirective>
               </TabComponent>
             </div>

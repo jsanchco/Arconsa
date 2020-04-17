@@ -13,21 +13,21 @@ export default {
         url: '/settings',
         icon: 'icon-settings',
         children: [
-          {
-            name: 'Roles',
-            url: '/settings/roles',
-            icon: 'icon-people',
-          },
+          // {
+          //   name: 'Roles',
+          //   url: '/settings/roles',
+          //   icon: 'icon-people',
+          // },
           {
             name: 'Puestos de Trabajo',
             url: '/settings/professions',
             icon: 'icon-people',
           },
-          {
-            name: 'Tipos de Documento',
-            url: '/settings/typesdocument',
-            icon: 'icon-layers',
-          },
+          // {
+          //   name: 'Tipos de Documento',
+          //   url: '/settings/typesdocument',
+          //   icon: 'icon-layers',
+          // },
           // {
           //   name: 'Agregar Usuarios',
           //   url: '/settings/usersnoworker',
