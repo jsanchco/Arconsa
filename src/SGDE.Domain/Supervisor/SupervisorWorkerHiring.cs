@@ -51,11 +51,11 @@
                     workId = worker.WorkId,
                     workName = worker.Work?.Name,
                     state = state,
-                    dateStart = state != 1 ? GetAllUserHiring(0, workId)?.Find(x => x.endDate == null)?.startDate : null
+                    dateStart = state != 1 ? GetAllUserHiring(0, workId).Data?.Find(x => x.endDate == null)?.startDate : null
                 };
                 if (state == 0)
                 {
-                    var userHiring = GetAllUserHiring(worker.Id, 0)?.Find(x => x.endDate == null);
+                    var userHiring = GetAllUserHiring(worker.Id, 0).Data?.Find(x => x.endDate == null);
                     if (userHiring?.professionId != null)
                     {
                         workerHiringViewModel.professionId = (int)userHiring.professionId;

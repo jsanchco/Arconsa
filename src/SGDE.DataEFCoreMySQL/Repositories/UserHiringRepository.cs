@@ -8,6 +8,7 @@
     using Domain.Repositories;
     using Microsoft.EntityFrameworkCore;
     using System;
+    using SGDE.Domain.Helpers;
 
     #endregion
 
@@ -30,11 +31,13 @@
             return GetById(id) != null;
         }
 
-        public List<UserHiring> GetAll(int userId = 0, int workId = 0)
+        public QueryResult<UserHiring> GetAll(int skip = 0, int take = 0, string filter = null, int userId = 0, int workId = 0)
         {
+            List<UserHiring> data = new List<UserHiring>();
+
             if (userId == 0 && workId == 0)
             {
-                return _context.UserHiring
+                data = _context.UserHiring
                     .Include(x => x.Work)
                     .ThenInclude(x => x.Client)
                     .Include(x => x.User)
@@ -44,7 +47,7 @@
 
             if (userId != 0 && workId == 0)
             {
-                return _context.UserHiring
+                data = _context.UserHiring
                     .Include(x => x.Work)
                     .ThenInclude(x => x.Client)
                     .Include(x => x.User)
@@ -55,7 +58,7 @@
 
             if (userId == 0 && workId != 0)
             {
-                return _context.UserHiring
+                data = _context.UserHiring
                     .Include(x => x.Work)
                     .ThenInclude(x => x.Client)
                     .Include(x => x.User)
@@ -66,7 +69,7 @@
 
             if (userId != 0 && workId != 0)
             {
-                return _context.UserHiring
+                data = _context.UserHiring
                     .Include(x => x.Work)
                     .ThenInclude(x => x.Client)
                     .Include(x => x.User)
@@ -75,12 +78,18 @@
                     .ToList();
             }
 
-            return _context.UserHiring
-                .Include(x => x.Work)
-                .ThenInclude(x => x.Client)
-                .Include(x => x.User)
-                .Include(x => x.Profession)
-                .ToList();
+            var count = data.Count;
+            return (skip != 0 || take != 0)
+                ? new QueryResult<UserHiring>
+                {
+                    Data = data.Skip(skip).Take(take).ToList(),
+                    Count = count
+                }
+                : new QueryResult<UserHiring>
+                {
+                    Data = data.Skip(0).Take(count).ToList(),
+                    Count = count
+                };
         }
 
         public List<UserHiring> GetOpen()
@@ -362,7 +371,7 @@
         private void ValidateUpdateUserHiring(UserHiring userHiring)
         {
             var listUserHiringsByUser = GetAll(userHiring.UserId);
-            var openUserHiring = listUserHiringsByUser.FirstOrDefault(x => x.EndDate == null && x.Id != userHiring.Id);
+            var openUserHiring = listUserHiringsByUser.Data.FirstOrDefault(x => x.EndDate == null && x.Id != userHiring.Id);
             if (openUserHiring != null && userHiring.EndDate == null)
             {
                 throw new Exception("No se puede actualizar esta contratación, existe otra en uso");

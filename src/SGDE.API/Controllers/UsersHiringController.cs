@@ -54,8 +54,9 @@ namespace SGDE.API.Controllers
                 var userId = Convert.ToInt32(queryString["userId"]);
                 var workId = Convert.ToInt32(queryString["workId"]);
 
-                var data = _supervisor.GetAllUserHiring(userId, workId).ToList();
-                return new { Items = data, data.Count };
+                var queryResult = _supervisor.GetAllUserHiring(skip, take, filter, userId, workId);
+
+                return new { Items = queryResult.Data, Count = queryResult.Count };
             }
             catch (Exception ex)
             {

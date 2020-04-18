@@ -84,7 +84,7 @@ namespace SGDE.Domain.Supervisor
 
         #region UserHiring
 
-        List<UserHiringViewModel> GetAllUserHiring(int userId = 0, int workId = 0);
+        QueryResult<UserHiringViewModel> GetAllUserHiring(int skip = 0, int take = 0, string filter = null, int userId = 0, int workId = 0);
         UserHiringViewModel GetUserHiringById(int id);
         UserHiringViewModel AddUserHiring(UserHiringViewModel newUserHiringViewModel);
         bool UpdateUserHiring(UserHiringViewModel userHiringViewModel);

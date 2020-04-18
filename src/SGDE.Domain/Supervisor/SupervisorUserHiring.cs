@@ -3,21 +3,23 @@
     #region Using
 
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Threading;
-    using System.Threading.Tasks;
     using Converters;
     using Entities;
     using ViewModels;
+    using Domain.Helpers;
 
     #endregion
 
     public partial class Supervisor
     {
-        public List<UserHiringViewModel> GetAllUserHiring(int userId = 0, int workId = 0)
+        public QueryResult<UserHiringViewModel> GetAllUserHiring(int skip = 0, int take = 0, string filter = null, int userId = 0, int workId = 0)
         {
-            return UserHiringConverter.ConvertList(_userHiringRepository.GetAll(userId, workId));
+            var queryResult = _userHiringRepository.GetAll(skip, take, filter, userId, workId);
+            return new QueryResult<UserHiringViewModel>
+            {
+                Data = UserHiringConverter.ConvertList(queryResult.Data),
+                Count = queryResult.Count
+            };
         }
 
         public UserHiringViewModel GetUserHiringById(int id)
