@@ -4,9 +4,13 @@ Migración
 **************
 ****Previo****
 **************
-Vistar esta opagina para configurar SQL: https://www.dundas.com/support/learning/documentation/installation/how-to-enable-sql-server-authentication
-***************************************************************************************************************************************************
-***************************************************************************************************************************************************
+******************************************************************************************************************************************************
+******************************************************************************************************************************************************
+ - Vistar esta opagina para configurar SQL: https://www.dundas.com/support/learning/documentation/installation/how-to-enable-sql-server-authentication
+ - Crear un usuario: user-> admin password-> admin  Luego restart SQL modificar en Security->Logins->admin [entrar en admin y en ServerRoles añadir el check de sysadmin]
+ - Restart SQL
+******************************************************************************************************************************************************
+******************************************************************************************************************************************************
 
 1- Establecer como proyecto de inicio en donde tengamos instanciado SGDE.Domain (cadena de conexión). En mi caso SGDE.API
 2- En la 'Consola del Administrador de Paquetes' establecer como 'Proyecto predeterminado' en donde tengamos instanciados los repositorios. En mi caso SGDE.DataEFCoreSQL
