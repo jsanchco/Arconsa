@@ -21,13 +21,11 @@ class InvoicesClient extends Component {
               {title}
             </div>
             <div className="card-body"></div>
-            <Row>
-              <GridInvoice
-                clientId={this.props.client.id}
-                workId={null}
-                showMessage={this.props.showMessage}
-              />
-            </Row>
+            <GridInvoice
+              clientId={this.props.client.id}
+              workId={null}
+              showMessage={this.props.showMessage}
+            />
           </div>
         </div>
       </Fragment>

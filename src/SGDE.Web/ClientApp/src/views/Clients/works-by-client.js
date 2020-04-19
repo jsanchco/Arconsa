@@ -183,11 +183,11 @@ class WorksByClient extends Component {
                   headerText="Dirección"
                   width="100"
                 />
-                <ColumnDirective
+                {/* <ColumnDirective
                   field="estimatedDuration"
                   headerText="Duración Estimada"
                   width="100"
-                />
+                /> */}
                 <ColumnDirective
                   field="worksToRealize"
                   headerText="Trabajos a Realizar"
@@ -195,14 +195,14 @@ class WorksByClient extends Component {
                 />
                 <ColumnDirective
                   field="numberPersonsRequested"
-                  headerText="Personas"
-                  width="100"
+                  headerText="Trabajadores"
+                  width="70"
                   fotmat="N0"
                   textAlign="right"
                   editType="numericedit"
                   edit={this.numericParams}
                 />
-                <ColumnDirective
+                {/* <ColumnDirective
                   field="clientId"
                   headerText="Cliente"
                   width="100"
@@ -211,19 +211,19 @@ class WorksByClient extends Component {
                   foreignKeyField="id"
                   validationRules={this.clientIdRules}
                   dataSource={this.clients}
-                />
+                /> */}
                 <ColumnDirective
                   field="closeDate"
                   headerText="Fechas"
-                  width="100"
+                  width="120"
                   template={this.dateTemplate}
                   textAlign="Center"
                   allowEditing={false}
                 />
                 <ColumnDirective
                   field="open"
-                  headerText="Abierta/Cerrada"
-                  width="100"
+                  headerText="Ab./Cer."
+                  width="70"
                   template={this.openTemplate}
                   textAlign="Center"
                   allowEditing={false}
