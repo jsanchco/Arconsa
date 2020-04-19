@@ -113,7 +113,7 @@ class DetailEmployee extends Component {
         showMessage={this.props.showMessage}
       />
     );
-  }  
+  }
 
   renderTemplateDailySignings() {
     if (this.props.history.location.state.user.roleId === 3) {
@@ -140,7 +140,9 @@ class DetailEmployee extends Component {
       this.props.history.location.state.user !== null &&
       this.props.history.location.state.user !== undefined
     ) {
-      title = ` Detalle Trabajador [${this.props.history.location.state.user.fullname}]`;
+      this.props.history.location.state.user.roleId === 3 ?
+        title = ` Detalle Trabajador [${this.props.history.location.state.user.fullname}]` :
+        title = ` Perfil [${this.props.history.location.state.user.fullname}]`
     }
 
     return (
@@ -168,22 +170,32 @@ class DetailEmployee extends Component {
                     header={this.headerText[1]}
                     content={this.contentTemplateDocuments}
                   />
-                  <TabItemDirective
-                    header={this.headerText[2]}
-                    content={this.contentTemplateDailySignings}
-                  />
-                  <TabItemDirective
-                    header={this.headerText[3]}
-                    content={this.contentTemplatCostWorkers}
-                  />
-                  <TabItemDirective
-                    header={this.headerText[4]}
-                    content={this.contentTemplatHistoryHirings}
-                  />                     
+
+                  {this.props.history.location.state.user.roleId === 3 ?
+                    <TabItemDirective
+                      header={this.headerText[2]}
+                      content={this.contentTemplateDailySignings}
+                    /> :
+                    null}
+
+                  {this.props.history.location.state.user.roleId === 3 ?
+                    <TabItemDirective
+                      header={this.headerText[3]}
+                      content={this.contentTemplatCostWorkers}
+                    /> :
+                    null}
+
+                  {this.props.history.location.state.user.roleId === 3 ?
+                    <TabItemDirective
+                      header={this.headerText[4]}
+                      content={this.contentTemplatHistoryHirings}
+                    /> :
+                    null}
+
                   <TabItemDirective
                     header={this.headerText[5]}
                     content={this.contentTemplatChangePassword}
-                  />              
+                  />
                 </TabItemsDirective>
               </TabComponent>
             </div>
