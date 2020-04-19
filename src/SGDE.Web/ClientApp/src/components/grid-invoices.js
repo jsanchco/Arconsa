@@ -56,8 +56,8 @@ class GridInvoice extends Component {
     this.selectedRow = null;
     this.toolbarOptions = [
       "Delete",
-      "Update",
-      "Cancel",
+      // "Update",
+      // "Cancel",
       {
         text: "Imprimir Factura",
         tooltipText: "Imprimir Factura",

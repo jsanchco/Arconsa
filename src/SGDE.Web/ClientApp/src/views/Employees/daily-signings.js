@@ -52,6 +52,8 @@ class DailySignings extends Component {
   hourTypeIdRules = { required: true };
   grid = null;
 
+  wrapSettings = { wrapMode: "Content" };
+
   constructor(props) {
     super(props);
 
@@ -323,6 +325,8 @@ class DailySignings extends Component {
                 rowSelected={this.rowSelected}
                 ref={g => (this.grid = g)}
                 query={this.queryDailySignings}
+                allowTextWrap={true}
+                textWrapSettings={this.wrapSettings}
               >
                 <ColumnsDirective>
                   <ColumnDirective type="checkbox" width="50"></ColumnDirective>
@@ -332,7 +336,7 @@ class DailySignings extends Component {
                     width="100"
                     editType="dropdownedit"
                     validationRules={this.userHiringIdRules}
-                    textAlign="Center"
+                    textAlign="Left"
                     dataSource={this.userHirings}
                     foreignKeyValue="name"
                     foreignKeyField="id"

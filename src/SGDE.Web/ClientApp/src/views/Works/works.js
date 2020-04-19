@@ -205,12 +205,12 @@ class Works extends Component {
     return (
       <div>
         <div style={{ display: "flex" }}>
-          <div style={{ textAlign: "left", width: "50%" }}>Aper.:</div>
-          <div style={{ textAlign: "left", width: "50%" }}>{args.openDate}</div>
+          <div style={{ textAlign: "left", width: "30%" }}>Aper.:</div>
+          <div style={{ textAlign: "left", width: "70%" }}>{args.openDate}</div>
         </div>
         <div style={{ display: "flex" }}>
-          <div style={{ textAlign: "left", width: "50%" }}>Cier.:</div>
-          <div style={{ textAlign: "left", width: "50%" }}>
+          <div style={{ textAlign: "left", width: "30%" }}>Cier.:</div>
+          <div style={{ textAlign: "left", width: "70%" }}>
             {args.closeDate}
           </div>
         </div>
