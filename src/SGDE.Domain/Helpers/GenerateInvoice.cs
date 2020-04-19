@@ -104,7 +104,7 @@
             _pdf.Add(GetTableTitle());
             _pdf.Add(new Paragraph(" ", _STANDARFONT_14_BOLD));
             _pdf.Add(GetTableTitleInvoice());
-            _pdf.Add(new Paragraph(" ", _STANDARFONT_14_BOLD));
+            //_pdf.Add(new Paragraph(" ", _STANDARFONT_14_BOLD));
             _pdf.Add(GetAllRowsDetailInvoice(_pdf));
             _pdf.Add(new Paragraph(" ", _STANDARFONT_8));
             _pdf.Add(GetLineSeparator());
@@ -304,6 +304,11 @@
             var pdfPTable = new PdfPTable(4) { WidthPercentage = 100 };
             var widths = new[] { 40f, 20f, 20f, 20f };
             pdfPTable.SetWidths(widths);
+
+            if (string.IsNullOrEmpty(title))
+            {
+                return pdfPTable;
+            }
 
             var pdfCell = new PdfPCell(new Phrase(title, _STANDARFONT_10))
             {
@@ -555,6 +560,49 @@
             pdfCell = new PdfPCell(new Phrase(" ", _STANDARFONT_10)) { BorderWidth = 0 };
             pdfPTable.AddCell(pdfCell);
             pdfCell = new PdfPCell(new Phrase(" ", _STANDARFONT_10)) { BorderWidth = 0 };
+            pdfPTable.AddCell(pdfCell);
+        }
+
+        protected void AddRowClearToDetailInvoice(PdfPTable pdfPTable)
+        {
+            var pdfCell = new PdfPCell(new Phrase(" ", _STANDARFONT_10))
+            {
+                HorizontalAlignment = Element.ALIGN_RIGHT,
+                VerticalAlignment = Element.ALIGN_MIDDLE,
+                PaddingTop = 2f,
+                PaddingBottom = 6f,
+                BorderWidth = 0
+            };
+            pdfPTable.AddCell(pdfCell);
+
+            pdfCell = new PdfPCell(new Phrase(" ", _STANDARFONT_10))
+            {
+                HorizontalAlignment = Element.ALIGN_RIGHT,
+                VerticalAlignment = Element.ALIGN_MIDDLE,
+                PaddingTop = 2f,
+                PaddingBottom = 6f,
+                BorderWidth = 0
+            };
+            pdfPTable.AddCell(pdfCell);
+
+            pdfCell = new PdfPCell(new Phrase(" ", _STANDARFONT_10))
+            {
+                HorizontalAlignment = Element.ALIGN_RIGHT,
+                VerticalAlignment = Element.ALIGN_MIDDLE,
+                PaddingTop = 2f,
+                PaddingBottom = 6f,
+                BorderWidth = 0
+            };
+            pdfPTable.AddCell(pdfCell);
+
+            pdfCell = new PdfPCell(new Phrase(" ", _STANDARFONT_10))
+            {
+                HorizontalAlignment = Element.ALIGN_RIGHT,
+                VerticalAlignment = Element.ALIGN_MIDDLE,
+                PaddingTop = 2f,
+                PaddingBottom = 6f,
+                BorderWidth = 0
+            };
             pdfPTable.AddCell(pdfCell);
         }
     }
