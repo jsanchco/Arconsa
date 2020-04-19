@@ -27,6 +27,8 @@ L10n.load(data);
 class GridSelection extends Component {
   grid = null;
 
+  wrapSettings = { wrapMode: "Content" };
+
   constructor(props) {
     super(props);
 
@@ -371,6 +373,8 @@ class GridSelection extends Component {
               allowExcelExport={true}
               rowSelected={this.rowSelected}
               ref={(g) => (this.grid = g)}
+              allowTextWrap={true}
+              textWrapSettings={this.wrapSettings}
             >
               <ColumnsDirective>
                 {this.renderClient()}

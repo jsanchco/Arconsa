@@ -24,6 +24,8 @@ class HistoryHirings extends Component {
 
   grid = null;
 
+  wrapSettings = { wrapMode: "Content" };
+
   constructor(props) {
     super(props);
 
@@ -64,6 +66,8 @@ class HistoryHirings extends Component {
                 allowGrouping={false}
                 ref={(g) => (this.grid = g)}
                 query={this.query}
+                allowTextWrap={true}
+                textWrapSettings={this.wrapSettings}
               >
                 <ColumnsDirective>
                   <ColumnDirective

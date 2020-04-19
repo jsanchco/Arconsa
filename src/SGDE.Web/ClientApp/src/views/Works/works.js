@@ -318,7 +318,7 @@ class Works extends Component {
             />
           </div>
 
-          <Row>
+          <div>
             <GridComponent
               dataSource={this.works}
               locale="es-US"
@@ -413,7 +413,7 @@ class Works extends Component {
                 services={[Group, ContextMenu, ForeignKey, Page, Toolbar, Edit]}
               />
             </GridComponent>
-          </Row>
+          </div>
         </div>
       </div>
     );
