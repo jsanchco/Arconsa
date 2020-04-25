@@ -9,10 +9,11 @@
     using Domain.Entities;
     using Microsoft.EntityFrameworkCore;
     using System.Linq;
+    using System;
 
     #endregion
 
-    public class ProfessionRepository : IProfessionRepository
+    public class ProfessionRepository : IProfessionRepository, IDisposable
     {
         private readonly EFContextSQL _context;
 
@@ -23,7 +24,16 @@
 
         public void Dispose()
         {
-            _context.Dispose();
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                _context.Dispose();
+            }
         }
 
         public async Task<List<Profession>> GetAllAsync(CancellationToken ct = default(CancellationToken))

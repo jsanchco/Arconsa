@@ -12,7 +12,7 @@
 
     #endregion
 
-    public class UserHiringRepository : IUserHiringRepository
+    public class UserHiringRepository : IUserHiringRepository, IDisposable
     {
         private readonly EFContextSQL _context;
 
@@ -23,7 +23,16 @@
 
         public void Dispose()
         {
-            _context.Dispose();
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                _context.Dispose();
+            }
         }
 
         private bool UserHiringExists(int id)

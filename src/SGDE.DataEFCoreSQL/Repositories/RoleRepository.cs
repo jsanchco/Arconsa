@@ -7,10 +7,11 @@
     using Domain.Entities;
     using Domain.Repositories;
     using Microsoft.EntityFrameworkCore;
+    using System;
 
     #endregion
 
-    public class RoleRepository : IRoleRepository
+    public class RoleRepository : IRoleRepository, IDisposable
     {
         private readonly EFContextSQL _context;
 
@@ -21,7 +22,16 @@
 
         public void Dispose()
         {
-            _context.Dispose();
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                _context.Dispose();
+            }
         }
 
         private bool RoleExists(int id)

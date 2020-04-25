@@ -8,10 +8,11 @@
     using Domain.Repositories;
     using Microsoft.EntityFrameworkCore;
     using SGDE.Domain.Helpers;
+    using System;
 
     #endregion
 
-    public class CostWorkerRepository : ICostWorkerRepository
+    public class CostWorkerRepository : ICostWorkerRepository, IDisposable
     {
         private readonly EFContextSQL _context;
 
@@ -19,10 +20,18 @@
         {
             _context = context;
         }
-
         public void Dispose()
         {
-            _context.Dispose();
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                _context.Dispose();
+            }
         }
 
         private bool CostWorkerExists(int id)

@@ -6,10 +6,11 @@
     using Domain.Entities;
     using System.Linq;
     using SGDE.Domain.Repositories;
+    using System;
 
     #endregion
 
-    public class SettingRepository : ISettingRepository
+    public class SettingRepository : ISettingRepository, IDisposable
     {
         private readonly EFContextSQL _context;
 
@@ -20,7 +21,16 @@
 
         public void Dispose()
         {
-            _context.Dispose();
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                _context.Dispose();
+            }
         }
 
         private bool SettingExists(int id)
