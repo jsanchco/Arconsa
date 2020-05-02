@@ -8,10 +8,11 @@
     using Domain.Repositories;
     using Microsoft.EntityFrameworkCore;
     using SGDE.Domain.Helpers;
+    using System;
 
     #endregion
 
-    public class ClientRepository : IClientRepository
+    public class ClientRepository : IClientRepository, IDisposable
     {
         private readonly EFContextSQL _context;
 
@@ -22,7 +23,16 @@
 
         public void Dispose()
         {
-            _context.Dispose();
+            Dispose(true);
+            GC.SuppressFinalize(this);            
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                _context.Dispose();
+            }
         }
 
         private bool ClientExists(int id)

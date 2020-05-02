@@ -6,10 +6,11 @@
     using System.Linq;
     using Domain.Entities;
     using Domain.Repositories;
+    using System;
 
     #endregion
 
-    public class DetailInvoiceRepository : IDetailInvoiceRepository
+    public class DetailInvoiceRepository : IDetailInvoiceRepository, IDisposable
     {
         private readonly EFContextSQL _context;
 
@@ -20,7 +21,16 @@
 
         public void Dispose()
         {
-            _context.Dispose();
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                _context.Dispose();
+            }
         }
 
         private bool DetailInvoiceExists(int id)

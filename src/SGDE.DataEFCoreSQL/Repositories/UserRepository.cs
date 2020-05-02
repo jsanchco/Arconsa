@@ -10,10 +10,11 @@
     using Microsoft.EntityFrameworkCore;
     using System.Linq;
     using Domain.Helpers;
+    using System;
 
     #endregion
 
-    public class UserRepository : IUserRepository
+    public class UserRepository : IUserRepository, IDisposable
     {
         private readonly EFContextSQL _context;
 
@@ -24,7 +25,16 @@
 
         public void Dispose()
         {
-            _context.Dispose();
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                _context.Dispose();
+            }
         }
 
         private async Task<bool> UserExistsAsync(int id, CancellationToken ct = default(CancellationToken))
