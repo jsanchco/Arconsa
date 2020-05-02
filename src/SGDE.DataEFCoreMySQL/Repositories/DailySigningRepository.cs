@@ -139,7 +139,7 @@
         public List<DailySigning> GetByUserId(string startDate, string endDate, int userId)
         {
             var dtStart = DateTime.ParseExact(startDate, "d/MM/yyyy", null);
-            var dtEnd = DateTime.ParseExact(endDate, "d/MM/yyyy", null);
+            var dtEnd = DateTime.ParseExact(endDate, "d/MM/yyyy", null).AddHours(23).AddMinutes(59);
 
             return _context.DailySigning
                 .Include(x => x.UserHiring)
@@ -160,7 +160,7 @@
         public List<DailySigning> GetByWorkId(string startDate, string endDate, int workId)
         {
             var dtStart = DateTime.ParseExact(startDate, "d/MM/yyyy", null);
-            var dtEnd = DateTime.ParseExact(endDate, "d/MM/yyyy", null);
+            var dtEnd = DateTime.ParseExact(endDate, "d/MM/yyyy", null).AddHours(23).AddMinutes(59);
 
             return _context.DailySigning
                 .Include(x => x.UserHiring)
@@ -182,7 +182,7 @@
         public List<DailySigning> GetByClientId(string startDate, string endDate, int clientId)
         {
             var dtStart = DateTime.ParseExact(startDate, "d/MM/yyyy", null);
-            var dtEnd = DateTime.ParseExact(endDate, "d/MM/yyyy", null);
+            var dtEnd = DateTime.ParseExact(endDate, "d/MM/yyyy", null).AddHours(23).AddMinutes(59);
 
             return _context.DailySigning
                 .Include(x => x.UserHiring)
