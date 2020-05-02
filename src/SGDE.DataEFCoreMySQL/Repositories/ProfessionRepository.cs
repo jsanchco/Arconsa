@@ -2,17 +2,18 @@
 {
     #region Using
 
-    using SGDE.Domain.Repositories;
-    using System.Collections.Generic;
-    using System.Threading;
-    using System.Threading.Tasks;
     using Domain.Entities;
     using Microsoft.EntityFrameworkCore;
+    using SGDE.Domain.Repositories;
+    using System;
+    using System.Collections.Generic;
     using System.Linq;
+    using System.Threading;
+    using System.Threading.Tasks;
 
     #endregion
 
-    public class ProfessionRepository : IProfessionRepository
+    public class ProfessionRepository : IProfessionRepository, IDisposable
     {
         private readonly EFContextMySQL _context;
 
@@ -23,7 +24,19 @@
 
         public void Dispose()
         {
-            _context.Dispose();
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (_context != null)
+                {
+                    _context.Dispose();
+                }
+            }
         }
 
         public async Task<List<Profession>> GetAllAsync(CancellationToken ct = default(CancellationToken))

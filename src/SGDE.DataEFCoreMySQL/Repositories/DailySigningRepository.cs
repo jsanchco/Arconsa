@@ -12,7 +12,7 @@
 
     #endregion
 
-    public class DailySigningRepository : IDailySigningRepository
+    public class DailySigningRepository : IDailySigningRepository, IDisposable
     {
         private readonly EFContextMySQL _context;
 
@@ -23,7 +23,19 @@
 
         public void Dispose()
         {
-            _context.Dispose();
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (_context != null)
+                {
+                    _context.Dispose();
+                }
+            }
         }
 
         private bool DailySigningExists(int id)

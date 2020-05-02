@@ -2,15 +2,16 @@
 {
     #region Using
 
-    using System.Collections.Generic;
-    using System.Linq;
     using Domain.Entities;
     using Domain.Repositories;
     using Microsoft.EntityFrameworkCore;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
 
     #endregion
 
-    public class UserDocumentRepository : IUserDocumentRepository
+    public class UserDocumentRepository : IUserDocumentRepository, IDisposable
     {
         private readonly EFContextMySQL _context;
 
@@ -21,7 +22,19 @@
 
         public void Dispose()
         {
-            _context.Dispose();
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (_context != null)
+                {
+                    _context.Dispose();
+                }
+            }
         }
 
         private bool UserDocumentExists(int id)

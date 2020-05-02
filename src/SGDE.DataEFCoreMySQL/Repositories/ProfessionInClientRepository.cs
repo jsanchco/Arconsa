@@ -2,16 +2,17 @@
 {
     #region Using
 
-    using System.Collections.Generic;
-    using System.Linq;
     using Domain.Entities;
     using Domain.Repositories;
     using Microsoft.EntityFrameworkCore;
     using SGDE.Domain.Helpers;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
 
     #endregion
 
-    public class ProfessionInClientRepository: IProfessionInClientRepository
+    public class ProfessionInClientRepository: IProfessionInClientRepository, IDisposable
     {
         private readonly EFContextMySQL _context;
 
@@ -22,7 +23,19 @@
 
         public void Dispose()
         {
-            _context.Dispose();
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (_context != null)
+                {
+                    _context.Dispose();
+                }
+            }
         }
 
         private bool ProfessionInClientExists(int id)

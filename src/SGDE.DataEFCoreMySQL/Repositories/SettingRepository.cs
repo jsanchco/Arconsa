@@ -2,14 +2,15 @@
 {
     #region Using
 
-    using System.Collections.Generic;
     using Domain.Entities;
-    using System.Linq;
     using SGDE.Domain.Repositories;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
 
     #endregion
 
-    public class SettingRepository : ISettingRepository
+    public class SettingRepository : ISettingRepository, IDisposable
     {
         private readonly EFContextMySQL _context;
 
@@ -20,7 +21,19 @@
 
         public void Dispose()
         {
-            _context.Dispose();
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (_context != null)
+                {
+                    _context.Dispose();
+                }
+            }
         }
 
         private bool SettingExists(int id)
