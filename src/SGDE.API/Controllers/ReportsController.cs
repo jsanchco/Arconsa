@@ -74,5 +74,53 @@
                 return StatusCode(500, ex);
             }
         }
+
+        [HttpGet("GetReportAll")]
+        public object GetReportAll()
+        {
+            try
+            {
+                var queryString = Request.Query;
+                var skip = Convert.ToInt32(queryString["$skip"]);
+                var take = Convert.ToInt32(queryString["$top"]);
+                var startDate = queryString["startDate"];
+                var endDate = queryString["endDate"];
+                var workers = Convert.ToBoolean(queryString["workers"]);
+                var works = Convert.ToBoolean(queryString["works"]);
+                var clients = Convert.ToBoolean(queryString["clients"]);
+
+                if (string.IsNullOrEmpty(startDate) || string.IsNullOrEmpty(endDate))
+                    throw new Exception("Informe mal configurado");
+
+                var reportAllViewModel = new ReportQueryAllViewModel
+                {
+                    startDate = startDate,
+                    endDate = endDate,
+                    workers = workers,
+                    works = works,
+                    clients = clients
+                };
+
+                var data = new List<ReportVariousInfoViewModel>();
+                if (workers && !works && !clients)
+                    data = _supervisor.GetHoursByAllUser(reportAllViewModel);
+
+                if (!workers && works && !clients)
+                    data = _supervisor.GetHoursByAllWork(reportAllViewModel);
+
+                if (!workers && !works && clients)
+                    data = _supervisor.GetHoursByAllClient(reportAllViewModel);
+
+                if (!workers && !works && !clients)
+                    throw new Exception("Informe mal configurado");
+
+                return new { Items = data, data.Count };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Exception: ");
+                return StatusCode(500, ex);
+            }
+        }
     }
 }

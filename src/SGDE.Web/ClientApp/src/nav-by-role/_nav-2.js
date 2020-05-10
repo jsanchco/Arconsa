@@ -69,6 +69,11 @@ export default {
             name: 'Cliente',
             url: '/reports/ReportHoursClient',
             icon: 'icon-list',
+          },
+          {
+            name: "Varios",
+            url: "/reports/ReportsVarious",
+            icon: "icon-list"
           }
         ],
       }
