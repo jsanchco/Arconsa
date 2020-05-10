@@ -5,11 +5,6 @@ import { DatePickerComponent } from "@syncfusion/ej2-react-calendars";
 import { DropDownListComponent } from "@syncfusion/ej2-react-dropdowns";
 import { L10n } from "@syncfusion/ej2-base";
 import data from "../../locales/locale.json";
-import {
-  createSpinner,
-  showSpinner,
-  hideSpinner,
-} from "@syncfusion/ej2-popups";
 
 L10n.load(data);
 
@@ -32,7 +27,8 @@ class HeaderSettingsVarious extends Component {
   componentDidMount() {
     this.ddl.dataSource = [
       "Trabajadores",
-      "Obras"
+      "Obras",
+      "Clientes"
     ];
   }
 

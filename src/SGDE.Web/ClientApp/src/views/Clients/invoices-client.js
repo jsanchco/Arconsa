@@ -1,5 +1,4 @@
 import React, { Component, Fragment } from "react";
-import { Row } from "reactstrap";
 import GridInvoice from "../../components/grid-invoices";
 
 class InvoicesClient extends Component {

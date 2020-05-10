@@ -74,22 +74,87 @@
 
         public List<ReportVariousInfoViewModel> GetHoursByAllWork(ReportQueryAllViewModel reportAllViewModel)
         {
-            var users = _userRepository.GetAll(0, 0, null, null, new List<int> { 3 });
-            foreach (var user in users.Data)
+            var works = _workRepository.GetAll(0, 0, null, 0);
+            var result = new List<ReportVariousInfoViewModel>();
+            foreach (var work in works.Data)
             {
-                var dailySignings = _dailySigningRepository.GetByUserId(reportAllViewModel.startDate, reportAllViewModel.endDate, user.Id);
+                var listReportResultViewModel = ReportResultConverter.ConvertList(_dailySigningRepository.GetByWorkId(reportAllViewModel.startDate, reportAllViewModel.endDate, work.Id));
+                result.Add(new ReportVariousInfoViewModel
+                {
+                    workName = work.Name,
+                    totalWorkers = work.UserHirings.Where(x => x.EndDate == null).Count(),
+                    totalHoursOrdinary = listReportResultViewModel
+                                                .Where(x => x.hourTypeId == 1)
+                                                .Select(x => x.hours).Sum(),
+                    totalHoursExtraordinary = listReportResultViewModel
+                                                .Where(x => x.hourTypeId == 2)
+                                                .Select(x => x.hours).Sum(),
+                    totalHoursFestive = listReportResultViewModel
+                                                .Where(x => x.hourTypeId == 3)
+                                                .Select(x => x.hours).Sum(),
+                    priceTotalHoursOrdinary = (double)listReportResultViewModel
+                                                .Where(x => x.hourTypeId == 1)
+                                                .Select(x => x.priceHour).Sum(),
+                    priceTotalHoursSaleOrdinary = (double)listReportResultViewModel
+                                                .Where(x => x.hourTypeId == 1)
+                                                .Select(x => x.priceHourSale).Sum(),
+                    priceTotalHoursExtraordinary = (double)listReportResultViewModel
+                                                .Where(x => x.hourTypeId == 2)
+                                                .Select(x => x.priceHour).Sum(),
+                    priceTotalHoursSaleExtraordinary = (double)listReportResultViewModel
+                                                .Where(x => x.hourTypeId == 2)
+                                                .Select(x => x.priceHourSale).Sum(),
+                    priceTotalHoursFestive = (double)listReportResultViewModel
+                                                .Where(x => x.hourTypeId == 3)
+                                                .Select(x => x.priceHour).Sum(),
+                    priceTotalHoursSaleFestive = (double)listReportResultViewModel
+                                                .Where(x => x.hourTypeId == 3)
+                                                .Select(x => x.priceHourSale).Sum(),
+                });
             }
-            return null;
+            return result;
         }
 
         public List<ReportVariousInfoViewModel> GetHoursByAllClient(ReportQueryAllViewModel reportAllViewModel)
         {
-            var users = _userRepository.GetAll(0, 0, null, null, new List<int> { 3 });
-            foreach (var user in users.Data)
+            var clients = _clientRepository.GetAll(0, 0, null);
+            var result = new List<ReportVariousInfoViewModel>();
+            foreach (var client in clients.Data)
             {
-                var dailySignings = _dailySigningRepository.GetByUserId(reportAllViewModel.startDate, reportAllViewModel.endDate, user.Id);
+                var listReportResultViewModel = ReportResultConverter.ConvertList(_dailySigningRepository.GetByClientId(reportAllViewModel.startDate, reportAllViewModel.endDate, client.Id));
+                result.Add(new ReportVariousInfoViewModel
+                {
+                    clientName = client.Name,
+                    totalHoursOrdinary = listReportResultViewModel
+                                                .Where(x => x.hourTypeId == 1)
+                                                .Select(x => x.hours).Sum(),
+                    totalHoursExtraordinary = listReportResultViewModel
+                                                .Where(x => x.hourTypeId == 2)
+                                                .Select(x => x.hours).Sum(),
+                    totalHoursFestive = listReportResultViewModel
+                                                .Where(x => x.hourTypeId == 3)
+                                                .Select(x => x.hours).Sum(),
+                    priceTotalHoursOrdinary = (double)listReportResultViewModel
+                                                .Where(x => x.hourTypeId == 1)
+                                                .Select(x => x.priceHour).Sum(),
+                    priceTotalHoursSaleOrdinary = (double)listReportResultViewModel
+                                                .Where(x => x.hourTypeId == 1)
+                                                .Select(x => x.priceHourSale).Sum(),
+                    priceTotalHoursExtraordinary = (double)listReportResultViewModel
+                                                .Where(x => x.hourTypeId == 2)
+                                                .Select(x => x.priceHour).Sum(),
+                    priceTotalHoursSaleExtraordinary = (double)listReportResultViewModel
+                                                .Where(x => x.hourTypeId == 2)
+                                                .Select(x => x.priceHourSale).Sum(),
+                    priceTotalHoursFestive = (double)listReportResultViewModel
+                                                .Where(x => x.hourTypeId == 3)
+                                                .Select(x => x.priceHour).Sum(),
+                    priceTotalHoursSaleFestive = (double)listReportResultViewModel
+                                                .Where(x => x.hourTypeId == 3)
+                                                .Select(x => x.priceHourSale).Sum(),
+                });
             }
-            return null;
+            return result;
         }
     }
 }

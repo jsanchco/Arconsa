@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
 import {
   ColumnDirective,
@@ -24,7 +24,7 @@ import { COMPANY_DATA } from "../../constants";
 
 L10n.load(data);
 
-class GridWorkers extends Component {
+class GridReportVarious extends Component {
 
   grid = null;
 
@@ -38,6 +38,9 @@ class GridWorkers extends Component {
       cif: "",
       address: "",
       phoneNumber: "",
+      title: "",
+      titleColumn: "",
+      field: ""
     };
 
     this.toolbarOptions = [
@@ -53,6 +56,8 @@ class GridWorkers extends Component {
 
     this.clickHandler = this.clickHandler.bind(this);
     this.getExcelExportProperties = this.getExcelExportProperties.bind(this);
+    this.renderColumn = this.renderColumn.bind(this);
+    this.footerCount = this.footerCount.bind(this);
 
     this.format = { type: "dateTime", format: "dd/MM/yyyy" };
   }
@@ -78,58 +83,78 @@ class GridWorkers extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { settings } = this.props;
-    switch (settings.textSelection) {
-      case "Trabajadores":
-        this.grid.dataSource = new DataManager({
-          adaptor: new WebApiAdaptor(),
-          url: `${config.URL_API}/${REPORTS_ALL}`,
-          headers: [
-            { Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) },
-          ],
-        });
-        this.grid.query = new Query()
-          .addParams("workers", true)
-          .addParams("startDate", settings.start)
-          .addParams("endDate", settings.end);
+    if (prevProps.settings !== this.props.settings) {
+      const { settings } = this.props;
+      switch (settings.textSelection) {
+        case "Trabajadores":
+          this.setState({
+            title: "TRABAJADORES",
+            titleColumn: "Trabajador",
+            titleFooter: "Trabajadores",
+            field: "workerName"
+          });
+          this.grid.dataSource = new DataManager({
+            adaptor: new WebApiAdaptor(),
+            url: `${config.URL_API}/${REPORTS_ALL}`,
+            headers: [
+              { Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) },
+            ],
+          });
+          this.grid.query = new Query()
+            .addParams("workers", true)
+            .addParams("startDate", settings.start)
+            .addParams("endDate", settings.end);
 
-        this.grid.refresh();
-        break;
+          this.grid.refresh();
+          break;
 
-      case "Obras":
-        this.grid.dataSource = new DataManager({
-          adaptor: new WebApiAdaptor(),
-          url: `${config.URL_API}/${REPORTS_ALL}`,
-          headers: [
-            { Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) },
-          ],
-        });
-        this.grid.query = new Query()
-          .addParams("works", true)
-          .addParams("startDate", settings.start)
-          .addParams("endDate", settings.end);
+        case "Obras":
+          this.setState({
+            title: "OBRAS",
+            titleColumn: "Obra",
+            titleFooter: "Obras",
+            field: "workName"
+          });
+          this.grid.dataSource = new DataManager({
+            adaptor: new WebApiAdaptor(),
+            url: `${config.URL_API}/${REPORTS_ALL}`,
+            headers: [
+              { Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) },
+            ],
+          });
+          this.grid.query = new Query()
+            .addParams("works", true)
+            .addParams("startDate", settings.start)
+            .addParams("endDate", settings.end);
 
-        this.grid.refresh();
-        break;
+          this.grid.refresh();
+          break;
 
-      case "Clientes":
-        this.grid.dataSource = new DataManager({
-          adaptor: new WebApiAdaptor(),
-          url: `${config.URL_API}/${REPORTS_ALL}`,
-          headers: [
-            { Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) },
-          ],
-        });
-        this.grid.query = new Query()
-          .addParams("clients", true)
-          .addParams("startDate", settings.start)
-          .addParams("endDate", settings.end);
+        case "Clientes":
+          this.setState({
+            title: "CLIENTES",
+            titleColumn: "Cliente",
+            titleFooter: "Clientes",
+            field: "clientName"
+          });
+          this.grid.dataSource = new DataManager({
+            adaptor: new WebApiAdaptor(),
+            url: `${config.URL_API}/${REPORTS_ALL}`,
+            headers: [
+              { Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) },
+            ],
+          });
+          this.grid.query = new Query()
+            .addParams("clients", true)
+            .addParams("startDate", settings.start)
+            .addParams("endDate", settings.end);
 
-        this.grid.refresh();
-        break;
+          this.grid.refresh();
+          break;
 
-      default:
-        break;
+        default:
+          break;
+      }
     }
   }
 
@@ -145,7 +170,7 @@ class GridWorkers extends Component {
   }
 
   footerCount(args) {
-    return <span>Total: {args.Count} Trabajadores</span>;
+    return <span>Total: {args.Count} {this.state.titleFooter}</span>;
   }
 
   footerSum(args) {
@@ -153,6 +178,7 @@ class GridWorkers extends Component {
   }
 
   footerSumEuros(args) {
+    // return <span>Total: {args.Sum.toFixed(2)}€</span>;
     return <span>Total: {args.Sum}€</span>;
   }
 
@@ -175,9 +201,9 @@ class GridWorkers extends Component {
   }
 
   getExcelExportProperties() {
-    let title = "INFORME de TRABAJADORES";
-    let type = "TRABAJADOR";
-    let fileName = "Inf_tr.xlsx";
+    let title = `INFORME de ${this.state.title}`;
+    let type = this.state.title;
+    let fileName = `Inf_${this.state.title}.xlsx`;
     const date = this.formatDate(new Date());
 
     return {
@@ -245,12 +271,12 @@ class GridWorkers extends Component {
               },
               {
                 index: 5,
-                value: "",
+                value: "Fecha Inicio",
                 style: { fontColor: "#C67878", bold: true },
               },
               {
                 index: 6,
-                value: "",
+                value: "Fecha Fin",
                 width: 150,
                 style: { fontColor: "#C67878", bold: true },
               },
@@ -259,37 +285,34 @@ class GridWorkers extends Component {
           {
             index: 6,
             cells: [
-              { index: 5, value: "" },
-              { index: 6, value: "", width: 150 },
+              { index: 5, value: this.props.settings.start },
+              { index: 6, value: this.props.settings.end, width: 150 },
             ],
           },
         ],
       },
-      // footer: {
-      //   footerRows: 5,
-      //   rows: [
-      //     {
-      //       cells: [
-      //         {
-      //           colSpan: 6,
-      //           value: "Thank you for your business!",
-      //           style: { fontColor: "#C67878", hAlign: "Center", bold: true }
-      //         }
-      //       ]
-      //     },
-      //     {
-      //       cells: [
-      //         {
-      //           colSpan: 6,
-      //           value: "!Visit Again!",
-      //           style: { fontColor: "#C67878", hAlign: "Center", bold: true }
-      //         }
-      //       ]
-      //     }
-      //   ]
-      // },
       fileName: fileName,
     };
+  }
+
+  renderColumn() {
+    if (this.state.titleColumn === "") {
+      return null;
+    }
+
+    switch (this.state.titleColumn) {
+      case "Obra":
+        return (
+          <ColumnDirective
+            field="totalWorkers"
+            headerText="Nº Trab."
+            width="70"
+          />
+        );
+
+      default:
+        return null;
+    }
   }
 
   render() {
@@ -314,16 +337,18 @@ class GridWorkers extends Component {
               ref={(g) => (this.grid = g)}
               allowTextWrap={true}
               textWrapSettings={this.wrapSettings}
-              query={new Query().addParams("roles", [3])}
               allowSorting={true}
             >
-              <ColumnsDirective>
+              <ColumnsDirective>              
 
                 <ColumnDirective
-                  field="workerName"
-                  headerText="Nombre"
+                  field={this.state.field}
+                  headerText={this.state.titleColumn}
                   width="100"
                 />
+
+                 {this.renderColumn()}
+
                 <ColumnDirective
                   field="totalHoursOrdinary"
                   headerText="Ordinarias"
@@ -356,17 +381,17 @@ class GridWorkers extends Component {
                 />
                 <ColumnDirective
                   field="totalHoursFestive"
-                  headerText="Extra"
+                  headerText="Festivo"
                   width="70"
                 />
                 <ColumnDirective
                   field="priceTotalHoursFestive"
-                  headerText="Precio Extra"
+                  headerText="Precio Festivo"
                   width="70"
                 />
                 <ColumnDirective
                   field="priceTotalHoursSaleFestive"
-                  headerText="Venta Extra"
+                  headerText="Venta Festivo"
                   width="70"
                 />
               </ColumnsDirective>
@@ -377,7 +402,7 @@ class GridWorkers extends Component {
                     <AggregateColumnDirective
                       field="totalHoursOrdinary"
                       type="Sum"
-                      format="C2"
+                      format="N2"
                       footerTemplate={this.footerSum}
                     >
                       {" "}
@@ -386,7 +411,7 @@ class GridWorkers extends Component {
                     <AggregateColumnDirective
                       field="priceTotalHoursOrdinary"
                       type="Sum"
-                      format="C2"
+                      format="N2"
                       footerTemplate={this.footerSumEuros}
                     >
                       {" "}
@@ -395,7 +420,7 @@ class GridWorkers extends Component {
                     <AggregateColumnDirective
                       field="priceTotalHoursSaleOrdinary"
                       type="Sum"
-                      format="C2"
+                      format="N2"
                       footerTemplate={this.footerSumEuros}
                     >
                       {" "}
@@ -404,16 +429,16 @@ class GridWorkers extends Component {
                     <AggregateColumnDirective
                       field="totalHoursExtraordinary"
                       type="Sum"
-                      format="C2"
+                      format="N2"
                       footerTemplate={this.footerSum}
                     >
                       {" "}
                     </AggregateColumnDirective>
 
                     <AggregateColumnDirective
-                      field="priceTotalHoursEstraordinary"
+                      field="priceTotalHoursExtraordinary"
                       type="Sum"
-                      format="C2"
+                      format="N2"
                       footerTemplate={this.footerSumEuros}
                     >
                       {" "}
@@ -422,7 +447,7 @@ class GridWorkers extends Component {
                     <AggregateColumnDirective
                       field="priceTotalHoursSaleExtraordinary"
                       type="Sum"
-                      format="C2"
+                      format="N2"
                       footerTemplate={this.footerSumEuros}
                     >
                       {" "}
@@ -430,7 +455,7 @@ class GridWorkers extends Component {
                     <AggregateColumnDirective
                       field="totalHoursFestive"
                       type="Sum"
-                      format="C2"
+                      format="N2"
                       footerTemplate={this.footerSum}
                     >
                       {" "}
@@ -439,7 +464,7 @@ class GridWorkers extends Component {
                     <AggregateColumnDirective
                       field="priceTotalHoursFestive"
                       type="Sum"
-                      format="C2"
+                      format="N2"
                       footerTemplate={this.footerSumEuros}
                     >
                       {" "}
@@ -448,7 +473,7 @@ class GridWorkers extends Component {
                     <AggregateColumnDirective
                       field="priceTotalHoursSaleFestive"
                       type="Sum"
-                      format="C2"
+                      format="N2"
                       footerTemplate={this.footerSumEuros}
                     >
                       {" "}
@@ -459,15 +484,16 @@ class GridWorkers extends Component {
                 <AggregateDirective>
                   <AggregateColumnsDirective>
                     <AggregateColumnDirective
-                      field="workerName"
+                      field="priceTotalHoursSaleFestive"
                       type="Count"
-                      format="C"
+                      format="N"
                       footerTemplate={this.footerCount}
                     >
                       {" "}
                     </AggregateColumnDirective>
                   </AggregateColumnsDirective>
                 </AggregateDirective>
+
               </AggregatesDirective>
 
               <Inject
@@ -481,8 +507,8 @@ class GridWorkers extends Component {
   }
 }
 
-GridWorkers.propTypes = {
+GridReportVarious.propTypes = {
   showMessage: PropTypes.func.isRequired,
 };
 
-export default GridWorkers;
+export default GridReportVarious;
