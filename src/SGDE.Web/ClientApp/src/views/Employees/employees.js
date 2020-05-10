@@ -70,7 +70,8 @@ class Employees extends Component {
         prefixIcon: "e-custom-icons e-details",
         id: "Details",
       },
-      "Search",
+      "Print",
+      "Search"
     ];
     this.editSettings = {
       showDeleteConfirmDialog: true,

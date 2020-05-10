@@ -70,6 +70,7 @@ class GridInvoice extends Component {
         prefixIcon: "e-custom-icons e-empty",
         id: "CancelInvoice",
       },
+      "Print"
     ];
     if (props.showViewInvoice === true) {
       this.toolbarOptions.push({

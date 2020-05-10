@@ -48,6 +48,7 @@ class Clients extends Component {
         prefixIcon: "e-custom-icons e-details",
         id: "Details"
       },
+      "Print",
       "Search"
     ];
     this.editSettings = {

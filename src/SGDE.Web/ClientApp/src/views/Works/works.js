@@ -80,6 +80,7 @@ class Works extends Component {
         prefixIcon: "e-custom-icons e-file-workers",
         id: "Workers"
       },
+      "Print",
       "Search"
     ];
     this.editSettings = {

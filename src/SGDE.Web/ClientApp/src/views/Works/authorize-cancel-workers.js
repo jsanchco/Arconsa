@@ -40,7 +40,7 @@ class AuthorizeCancelWorkers extends Component {
       usersHiring: null
     };
 
-    this.toolbarOptions = ["Edit", "Delete", "Update", "Cancel"];
+    this.toolbarOptions = ["Edit", "Delete", "Update", "Cancel", "Print"];
     this.editSettings = {
       showDeleteConfirmDialog: true,
       allowEditing: true,

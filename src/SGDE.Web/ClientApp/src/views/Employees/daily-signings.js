@@ -82,7 +82,8 @@ class DailySignings extends Component {
         tooltipText: "Borrar registros seleccionados",
         prefixIcon: "e-custom-icons e-remove",
         id: "RemoveAll"
-      }
+      },
+      "Print"
     ];
     this.editSettings = {
       showDeleteConfirmDialog: true,
