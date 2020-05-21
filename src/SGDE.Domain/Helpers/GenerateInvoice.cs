@@ -183,6 +183,8 @@
             pdfPTable.AddCell(pdfCell);
             pdfCell = new PdfPCell(new Phrase("Obra", _STANDARFONT_10_BOLD)) { BorderWidth = 0 };
             pdfPTable.AddCell(pdfCell);
+            pdfCell = new PdfPCell(new Phrase(_work.Name, _STANDARFONT_10)) { BorderWidth = 0 };
+            pdfPTable.AddCell(pdfCell);
 
             return pdfPTable;
         }
