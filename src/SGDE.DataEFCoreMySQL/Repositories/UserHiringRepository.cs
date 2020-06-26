@@ -389,5 +389,16 @@
                 throw new Exception("No se puede actualizar esta contratación, existe otra en uso");
             }
         }
+        public UserHiring GetByWorkAndStartDateNull(int workId)
+        {
+            return _context.UserHiring
+                    .FirstOrDefault(x => x.WorkId == workId && x.StartDate == null);
+        }
+
+        public UserHiring GetByWorkerAndEndDateNull(int workerId)
+        {
+            return _context.UserHiring
+                    .FirstOrDefault(x => x.UserId == workerId && x.EndDate == null);
+        }
     }
 }

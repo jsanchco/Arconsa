@@ -51,14 +51,16 @@
                     workId = worker.WorkId,
                     workName = worker.Work?.Name,
                     state = state,
-                    dateStart = state != 1 ? GetAllUserHiring(0, workId).Data?.Find(x => x.endDate == null)?.startDate : null
+                    dateStart = state != 1 ? _userHiringRepository.GetByWorkAndStartDateNull(workId)?.StartDate.ToString("MM/dd/yyyy") : null
+                    //dateStart = state != 1 ? GetAllUserHiring(0, workId).Data?.Find(x => x.endDate == null)?.startDate : null
                 };
                 if (state == 0)
                 {
-                    var userHiring = GetAllUserHiring(worker.Id, 0).Data?.Find(x => x.endDate == null);
-                    if (userHiring?.professionId != null)
+                    //var userHiring = GetAllUserHiring(worker.Id, 0).Data?.Find(x => x.endDate == null);
+                    var userHiring = _userHiringRepository.GetByWorkerAndEndDateNull(worker.Id);
+                    if (userHiring?.ProfessionId != null)
                     {
-                        workerHiringViewModel.professionId = (int)userHiring.professionId;
+                        workerHiringViewModel.professionId = (int)userHiring.ProfessionId;
                     }
                     else
                     {
