@@ -156,8 +156,8 @@
                 work.CloseDate = null;
             }
             else
-            {
-                work.OpenDate = DateTime.Parse(workViewModel.openDate);
+            { 
+                work.OpenDate = DateTime.ParseExact(workViewModel.openDate, "dd/MM/yyyy", null);
                 work.CloseDate = DateTime.Now;
             }
 
