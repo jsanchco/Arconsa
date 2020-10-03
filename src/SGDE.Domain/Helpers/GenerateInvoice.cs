@@ -18,7 +18,7 @@
 
     public abstract class GenerateInvoice
     {
-        public const string _CREATOR = "Servicio de Report (ARCONSA)";
+        public const string _CREATOR = "Servicio de Report (ADECUA)";
         public static readonly Font _STANDARFONT_10 = FontFactory.GetFont(FontFactory.HELVETICA, 10);
         public static readonly Font _STANDARFONT_8 = FontFactory.GetFont(FontFactory.HELVETICA, 8);
         public static readonly Font _STANDARFONT_10_BOLD = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 10);

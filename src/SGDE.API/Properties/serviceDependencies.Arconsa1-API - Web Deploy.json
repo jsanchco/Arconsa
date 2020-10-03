@@ -1,0 +1,16 @@
+{
+  "dependencies": {
+    "mssql1": {
+      "type": "mssql",
+      "connectionId": "SGDEContextSQL",
+      "suggestion": "true",
+      "ignored": "true"
+    },
+    "mssql2": {
+      "type": "mssql",
+      "connectionId": "Infrastructure/ConnectionString",
+      "suggestion": "true",
+      "ignored": "true"
+    }
+  }
+}

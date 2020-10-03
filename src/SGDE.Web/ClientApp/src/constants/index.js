@@ -39,7 +39,7 @@ const dev = {
 };
 
 const prod = {
-  URL_API: "https://arconsa-api.azurewebsites.net"
+  URL_API: "https://arconsa1-api.azurewebsites.net/"
 };
 
 export const config = process.env.NODE_ENV === "development" ? dev : prod;

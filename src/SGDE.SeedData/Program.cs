@@ -137,37 +137,28 @@ namespace SGDE.SeedData
                         PhoneNumber = "616203002",
                         RoleId = 1
                     });
-                    context.SaveChanges();
-
                     context.User.Add(new User
                     {
-                        Name = "Raul",
-                        Surname = "Pérez Rodríguez",
-                        Username = "rperez",
+                        Name = "Virgilio",
+                        Surname = "Carrasco Martínez",
+                        Username = "vcarrasco",
                         AddedDate = DateTime.Now,
-                        BirthDate = new DateTime(1989, 3, 23),
-                        Email = "rperez@gmail.com",
-                        Password = "123456",
-                        PhoneNumber = "678963366",
-                        RoleId = 2,
-                        ProfessionId = 1
+                        Password = "12011969",
+                        RoleId = 1
                     });
-                    context.SaveChanges();
 
-                    for (var i = 0; i < 40; i++)
+                    context.SaveChanges();               
+                }
+
+                if (!context.Setting.Any())
+                {
+                    context.Setting.Add(new Setting
                     {
-                        context.User.Add(new User
-                        {
-                            Name = "Trabajador" + (i + 1),
-                            Surname = "Apellidos" + (i + 1),
-                            Username = "trabajador" + (i + 1),
-                            AddedDate = DateTime.Now,
-                            Password = "123456",
-                            RoleId = 3,
-                            ProfessionId = 1
-                        });
-                        context.SaveChanges();
-                    }                   
+                        Name = "COMPANY_DATA",
+                        Data = " "
+                    });
+
+                    context.SaveChanges();
                 }
 
                 dbContextTransaction.Commit();
@@ -217,24 +208,24 @@ namespace SGDE.SeedData
                     context.SaveChanges();
                 }
 
-                if (!context.Profession.Any())
-                {
-                    context.Profession.Add(new Profession
-                    {
-                        AddedDate = DateTime.Now,
-                        Name = "Peon 1ª",
-                        Description = "Peon 1ª"
-                    });
+                //if (!context.Profession.Any())
+                //{
+                //    context.Profession.Add(new Profession
+                //    {
+                //        AddedDate = DateTime.Now,
+                //        Name = "Peon 1ª",
+                //        Description = "Peon 1ª"
+                //    });
 
-                    context.Profession.Add(new Profession
-                    {
-                        AddedDate = DateTime.Now,
-                        Name = "Peon aprendiz",
-                        Description = "Peon aprendiz"
-                    });
+                //    context.Profession.Add(new Profession
+                //    {
+                //        AddedDate = DateTime.Now,
+                //        Name = "Peon aprendiz",
+                //        Description = "Peon aprendiz"
+                //    });
 
-                    context.SaveChanges();
-                }
+                //    context.SaveChanges();
+                //}
 
                 if (!context.User.Any())
                 {

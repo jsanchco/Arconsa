@@ -489,7 +489,7 @@ class Dashboard extends Component {
             style={{ cursor: "pointer" }}
             className="clearfix"
           >
-            <h1 className="float-left display-3 mr-4">ARCONSA</h1>
+            <h1 className="float-left display-3 mr-4">ADECUA</h1>
             <h4 className="pt-3">Test</h4>
             <p className="text-muted float-left">Página de presentación</p>
           </div>
