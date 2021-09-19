@@ -35,7 +35,7 @@ export const COMPANY_DATA = "COMPANY_DATA";
 
 const dev = {
   URL_API: "http://localhost:51667"
-  //URL_API: "https://arconsa-api.azurewebsites.net"
+  //URL_API: "https://arconsa1-api.azurewebsites.net"
 };
 
 const prod = {
