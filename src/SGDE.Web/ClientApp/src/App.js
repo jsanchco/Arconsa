@@ -2,23 +2,39 @@ import React, { Component } from "react";
 import { HashRouter, Route, Switch } from "react-router-dom";
 // import { renderRoutes } from 'react-router-config';
 import "./App.scss";
-import { loadCldr } from "@syncfusion/ej2-base";
 import PrivateRoute from "./routes/PrivateRoute";
 import Login from "./views/Pages/Login";
 import DefaultLayout from "./containers/DefaultLayout/DefaultLayout";
 import { Provider } from "react-redux";
 import store from "./store/store";
+import data from "./locales/locale.json";
+
+import { loadCldr, L10n, setCulture, setCurrencyCode } from "@syncfusion/ej2-base";
+
+import gregorian from 'cldr-data/main/es/ca-gregorian.json';
+import numbers from 'cldr-data/main/es/numbers.json';
+import currencyData from 'cldr-data/main/es/currencies.json';
+import timeZoneNames from 'cldr-data/main/es/timeZoneNames.json';
+import numberingSystems from 'cldr-data/supplemental/numberingSystems.json';
+import weekData from 'cldr-data/supplemental/weekData.json';
+
+loadCldr(numberingSystems, currencyData, gregorian, numbers, timeZoneNames, weekData);
+setCulture("es");
+setCurrencyCode("EUR");
+L10n.load(data);
 
 loadCldr(
   require("cldr-data/supplemental/numberingSystems.json"),
   require("cldr-data/main/es-US/ca-gregorian.json"),
   require("cldr-data/main/es-US/numbers.json"),
-  require("cldr-data/main/es-US/timeZoneNames.json")
+  require("cldr-data/main/es-US/timeZoneNames.json"),
+  require("cldr-data/supplemental/weekData.json")
 );
 
 const loading = () => (
   <div className="animated fadeIn pt-3 text-center">Cargando...</div>
 );
+
 
 // Containers
 // const DefaultLayout = React.lazy(() => import('./containers/DefaultLayout'));
@@ -60,8 +76,7 @@ class App extends Component {
                 name="Page 500"
                 render={props => <Page500 {...props} />}
               />
-              <PrivateRoute path="/" name="Home" component={DefaultLayout} />}
-              />
+              <PrivateRoute path="/" name="Home" component={DefaultLayout} />
             </Switch>
           </React.Suspense>
         </HashRouter>

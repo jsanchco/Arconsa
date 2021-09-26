@@ -11,9 +11,10 @@ import {
   Page,
   ForeignKey,
   Group,
-  Sort,
+  Sort
 } from "@syncfusion/ej2-react-grids";
 import { Tooltip } from "@syncfusion/ej2-popups";
+import { DatePickerComponent } from "@syncfusion/ej2-react-calendars";
 import { DataManager, WebApiAdaptor, Query } from "@syncfusion/ej2-data";
 import { config, USERS, PROFESSIONS, ROLES } from "../../constants";
 import { L10n } from "@syncfusion/ej2-base";
@@ -243,7 +244,7 @@ class Employees extends Component {
             <Row>
               <GridComponent
                 dataSource={this.users}
-                locale="es-US"
+                locale="es"
                 allowPaging={true}
                 pageSettings={this.pageSettings}
                 toolbar={this.toolbarOptions}

@@ -318,8 +318,8 @@ class BasicData extends Component {
                       <Label htmlFor="birthDate">Fecha de Nacimiento</Label>
                       <DatePickerComponent
                         id="birthDate"
+                        locale="es"
                         name="birthDate"
-                        placeholder="fecha de nacimiento"
                         required
                         format="dd/MM/yyyy"
                         value={this.state.birthDate || ""}

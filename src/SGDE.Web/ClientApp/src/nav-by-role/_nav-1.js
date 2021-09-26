@@ -1,5 +1,13 @@
 export default {
   items: [
+    // {
+    //   name: "Blank Page",
+    //   url: "/pages/blank/blank",
+    //   icon: "icon-speedometer",
+    //   badge: {
+    //     variant: "info"
+    //   }
+    // },
     {
       name: "Inicio",
       url: "/dashboard",

@@ -1,8 +1,46 @@
 {
+  "es": {
+    "datepicker": {
+      "placeholder": "Por favor seleccione una fecha",
+      "today": "hoy"
+    },
+    "grid": {
+      "Add": "Añadir",
+      "Edit": "Editar",
+      "Delete": "Borrar",
+      "Update": "Actualizar",
+      "Cancel": "Cancelar",
+      "Search": "Buscar",
+      "Print": "Imprimir",
+      "Excelexport": "Exportar a Excel",
+      "EmptyDataSourceError": "DataSource darf bei der Erstauslastung nicht leer sein, da Spalten aus der dataSource im AutoGenerate Spaltenraster",
+      "EmptyRecord": "No existen registros",
+      "GroupDropArea": "Arrastra hasta aquí una columna para poder agrupar por ella",
+      "Item": "Elemento",
+      "Items": "Elementos",
+      "UnGroup": "Quitar agrupación",
+      "EditOperationAlert": "Selecciona un registro para poder Editar",
+      "DeleteOperationAlert": "Selecciona un registro para poder Borrar",
+      "ConfirmDelete": "¿Quieres Borrar este registro?"
+    },
+    "pager": {
+      "currentPageInfo": "{0} de {1} Página/s",
+      "firstPageTooltip": "Primera página",
+      "lastPageTooltip": "Última página",
+      "nextPageTooltip": "Próxima página",
+      "nextPagerTooltip": "Zum nächsten Pager",
+      "previousPageTooltip": "Página previa",
+      "previousPagerTooltip": "Zum vorherigen Pager",
+      "totalItemsInfo": "({0} Registro/s)"
+    },
+    "formValidator": {
+      "required": "Este campo es obligatorio"
+    }
+  },
   "es-US": {
-    "datepicker": { 
+    "datepicker": {
       "placeholder": "Wählen Sie ein Datum aus",
-      "today": "hoy" 
+      "today": "hoy"
     },
     "schedule": {
       "day": "Día",

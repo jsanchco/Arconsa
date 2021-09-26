@@ -63,9 +63,12 @@ const ReportsVarious = React.lazy(() => import('./views/Reports/reports-various'
 const Invoices = React.lazy(() => import('./views/Invoices/invoices'));
 const InvoicesCustom = React.lazy(() => import('./views/Invoices/invoices-custom'));
 
+const Blank = React.lazy(() => import('./views/Pages/Blank/blank'));
+
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
 const routes = [
   { path: '/', exact: true, name: 'Inicio' },
+  { path: '/pages/blank/blank', name: 'Blank Page', component: Blank },
   { path: '/dashboard', name: 'Inicio', component: Dashboard },
   { path: '/theme', exact: true, name: 'Theme', component: Colors },
   { path: '/theme/colors', name: 'Colors', component: Colors },
