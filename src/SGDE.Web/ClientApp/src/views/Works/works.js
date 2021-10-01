@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import {
   ColumnDirective,
   ColumnsDirective,
@@ -9,8 +9,10 @@ import {
   Page,
   ForeignKey,
   ContextMenu,
-  Group
+  Group,
+  Resize,
 } from "@syncfusion/ej2-react-grids";
+import { Breadcrumb, BreadcrumbItem, Container } from "reactstrap";
 import { DataManager, WebApiAdaptor } from "@syncfusion/ej2-data";
 import { config, WORKS, CLIENTSWITHOUTFILTER } from "../../constants";
 import { L10n } from "@syncfusion/ej2-base";
@@ -27,27 +29,27 @@ class Works extends Component {
   works = new DataManager({
     adaptor: new WebApiAdaptor(),
     url: `${config.URL_API}/${WORKS}`,
-    headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }]
+    headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }],
   });
 
   clients = new DataManager({
     adaptor: new WebApiAdaptor(),
     url: `${config.URL_API}/${CLIENTSWITHOUTFILTER}`,
-    headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }]
+    headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }],
   });
 
   grid = null;
   clientIdRules = { required: true };
   contextMenuItems = [
     { text: "Cerrar Obra", target: ".e-content", id: "closeWork" },
-    { text: "Abrir Obra", target: ".e-content", id: "openWork" }
+    { text: "Abrir Obra", target: ".e-content", id: "openWork" },
   ];
   numericParams = {
     params: {
       decimals: 0,
       format: "N",
-      validateDecimalOnType: true
-    }
+      validateDecimalOnType: true,
+    },
   };
   wrapSettings = { wrapMode: "Content" };
 
@@ -59,7 +61,7 @@ class Works extends Component {
       clients: null,
       rowSelected: null,
       rowSelectedindex: null,
-      modal: false
+      modal: false,
     };
 
     this.toolbarOptions = [
@@ -72,23 +74,23 @@ class Works extends Component {
         text: "Detalles",
         tooltipText: "Detalles",
         prefixIcon: "e-custom-icons e-details",
-        id: "Details"
+        id: "Details",
       },
       {
         text: "Añadir/Quitar trabajadores",
         tooltipText: "Añadir/Quitar Trabajadores",
         prefixIcon: "e-custom-icons e-file-workers",
-        id: "Workers"
+        id: "Workers",
       },
       "Print",
-      "Search"
+      "Search",
     ];
     this.editSettings = {
       showDeleteConfirmDialog: true,
       allowEditing: true,
       allowAdding: true,
       allowDeleting: true,
-      newRowPosition: "Top"
+      newRowPosition: "Top",
     };
     this.pageSettings = { pageCount: 10, pageSize: 10 };
     this.actionFailure = this.actionFailure.bind(this);
@@ -103,7 +105,7 @@ class Works extends Component {
 
     this.selectionSettings = {
       checkboxMode: "ResetOnRowClick",
-      type: "Single"
+      type: "Single",
     };
   }
 
@@ -114,17 +116,17 @@ class Works extends Component {
         this.setState({ rowSelected: selectedRecords[0] });
 
         this.props.history.push({
-          pathname: "/works/detailwork",
+          pathname: "/works/detailwork/" + selectedRecords[0].id,
           state: {
-            work: selectedRecords[0]
-          }
+            work: selectedRecords[0],
+          },
         });
       } else {
         this.setState({ rowSelected: null });
         this.props.showMessage({
           statusText: "Debes seleccionar un solo registro",
           responseText: "Debes seleccionar un solo registro",
-          type: "danger"
+          type: "danger",
         });
       }
     }
@@ -139,7 +141,7 @@ class Works extends Component {
         this.props.showMessage({
           statusText: "Debes seleccionar un solo registro",
           responseText: "Debes seleccionar un solo registro",
-          type: "danger"
+          type: "danger",
         });
       }
     }
@@ -147,7 +149,7 @@ class Works extends Component {
 
   toggleModal() {
     this.setState({
-      modal: !this.state.modal
+      modal: !this.state.modal,
     });
   }
 
@@ -250,7 +252,7 @@ class Works extends Component {
     const selectedRowIndex = this.grid.getSelectedRowIndexes();
     this.setState({
       rowSelected: selectedRecords[0],
-      rowSelectedindex: selectedRowIndex[0]
+      rowSelectedindex: selectedRowIndex[0],
     });
   }
 
@@ -262,7 +264,7 @@ class Works extends Component {
     this.props.showMessage({
       statusText: error.statusText,
       responseText: error.responseText,
-      type: "danger"
+      type: "danger",
     });
   }
 
@@ -271,14 +273,14 @@ class Works extends Component {
       this.props.showMessage({
         statusText: "200",
         responseText: "Operación realizada con éxito",
-        type: "success"
+        type: "success",
       });
     }
     if (args.requestType === "delete") {
       this.props.showMessage({
         statusText: "200",
         responseText: "Operación realizada con éxito",
-        type: "success"
+        type: "success",
       });
     }
   }
@@ -290,144 +292,171 @@ class Works extends Component {
 
   render() {
     return (
-      <div className="animated fadeIn" id="target-works">
-        <ModalWorkers
-          isOpen={this.state.modal}
-          toggle={this.toggleModal}
-          workSelected={this.state.rowSelected}
-          showMessage={this.props.showMessage}
-        />
-        <div className="card">
-          <div className="card-header">
-            <i className="icon-globe"></i> Obras
-          </div>
-          <div className="card-body"></div>
+      <Fragment>
+        <Breadcrumb class>
+          {/*eslint-disable-next-line*/}
+          <BreadcrumbItem><a href="#">Inicio</a></BreadcrumbItem>
+          {/* eslint-disable-next-line*/}
+          <BreadcrumbItem active>Obras</BreadcrumbItem>
+        </Breadcrumb>
 
-          <div
-            style={{
-              marginLeft: "35px",
-              marginTop: "-20px",
-              marginBottom: "30px"
-            }}
-          >
-            <Legend
-              elements={[
-                { color: "dot-green", text: "Obra Abierta" },
-                { color: "dot-red", text: "Obra Cerrada" }
-              ]}
+        <Container fluid>
+          <div className="animated fadeIn" id="target-works">
+            <ModalWorkers
+              isOpen={this.state.modal}
+              toggle={this.toggleModal}
+              workSelected={this.state.rowSelected}
+              showMessage={this.props.showMessage}
             />
-          </div>
+            <div className="card">
+              <div className="card-header">
+                <i className="icon-globe"></i> Obras
+              </div>
+              <div className="card-body"></div>
 
-          <div>
-            <GridComponent
-              dataSource={this.works}
-              locale="es-US"
-              allowPaging={true}
-              pageSettings={this.pageSettings}
-              toolbar={this.toolbarOptions}
-              toolbarClick={this.clickHandler}
-              editSettings={this.editSettings}
-              style={{
-                marginLeft: 30,
-                marginRight: 30,
-                marginTop: -20,
-                marginBottom: 20
-              }}
-              actionFailure={this.actionFailure}
-              actionComplete={this.actionComplete}
-              allowGrouping={true}
-              rowSelected={this.rowSelected}
-              ref={g => (this.grid = g)}
-              contextMenuItems={this.contextMenuItems}
-              contextMenuOpen={this.contextMenuOpen}
-              contextMenuClick={this.contextMenuClick}
-              selectionSettings={this.selectionSettings}
-              headerCellInfo={this.headerCellInfo}
-              allowTextWrap={true}
-              textWrapSettings={this.wrapSettings}
-            >
-              <ColumnsDirective>
-                <ColumnDirective type="checkbox" width="50"></ColumnDirective>
-                <ColumnDirective
-                  field="id"
-                  headerText="Id"
-                  width="40"
-                  isPrimaryKey={true}
-                  isIdentity={true}
-                  visible={false}
+              <div
+                style={{
+                  marginLeft: "35px",
+                  marginTop: "-20px",
+                  marginBottom: "30px",
+                }}
+              >
+                <Legend
+                  elements={[
+                    { color: "dot-green", text: "Obra Abierta" },
+                    { color: "dot-red", text: "Obra Cerrada" },
+                  ]}
                 />
-                <ColumnDirective field="name" headerText="Nombre" width="100" />
-                <ColumnDirective
-                  field="address"
-                  headerText="Dirección"
-                  width="200"
-                />
-                {/* <ColumnDirective
+              </div>
+
+              <div>
+                <GridComponent
+                  dataSource={this.works}
+                  locale="es-US"
+                  allowPaging={true}
+                  pageSettings={this.pageSettings}
+                  toolbar={this.toolbarOptions}
+                  toolbarClick={this.clickHandler}
+                  editSettings={this.editSettings}
+                  style={{
+                    marginLeft: 30,
+                    marginRight: 30,
+                    marginTop: -20,
+                    marginBottom: 20,
+                  }}
+                  actionFailure={this.actionFailure}
+                  actionComplete={this.actionComplete}
+                  allowGrouping={true}
+                  rowSelected={this.rowSelected}
+                  ref={(g) => (this.grid = g)}
+                  contextMenuItems={this.contextMenuItems}
+                  contextMenuOpen={this.contextMenuOpen}
+                  contextMenuClick={this.contextMenuClick}
+                  selectionSettings={this.selectionSettings}
+                  headerCellInfo={this.headerCellInfo}
+                  allowTextWrap={true}
+                  textWrapSettings={this.wrapSettings}
+                  allowResizing={true}
+                >
+                  <ColumnsDirective>
+                    <ColumnDirective
+                      type="checkbox"
+                      width="50"
+                    ></ColumnDirective>
+                    <ColumnDirective
+                      field="id"
+                      headerText="Id"
+                      width="40"
+                      isPrimaryKey={true}
+                      isIdentity={true}
+                      visible={false}
+                    />
+                    <ColumnDirective
+                      field="name"
+                      headerText="Nombre"
+                      width="100"
+                    />
+                    <ColumnDirective
+                      field="address"
+                      headerText="Dirección"
+                      width="200"
+                    />
+                    {/* <ColumnDirective
                   field="estimatedDuration"
                   headerText="Duración Estimada"
                   width="100"
                 /> */}
-                <ColumnDirective
-                  field="worksToRealize"
-                  headerText="Tipo"
-                  width="50"
-                />
-                <ColumnDirective
-                  field="numberPersonsRequested"
-                  headerText="Personas"
-                  width="50"
-                  textAlign="right"
-                  allowEditing={false}
-                />
-                <ColumnDirective
-                  field="clientId"
-                  headerText="Cliente"
-                  width="100"
-                  editType="dropdownedit"
-                  foreignKeyValue="name"
-                  foreignKeyField="id"
-                  validationRules={this.clientIdRules}
-                  dataSource={this.clients}
-                />
-                <ColumnDirective
-                  field="closeDate"
-                  headerText="Fechas"
-                  width="100"
-                  template={this.dateTemplate}
-                  textAlign="Center"
-                  allowEditing={false}
-                  defaultValue={true}
-                />
-                <ColumnDirective
-                  field="open"
-                  headerText="Ab./Cer."
-                  width="100"
-                  template={this.openTemplate}
-                  textAlign="Center"
-                  allowEditing={false}
-                />
-                <ColumnDirective field="openDate" visible={false} />
-                <ColumnDirective field="closeDate" visible={false} />
-              </ColumnsDirective>
-              <Inject
-                services={[Group, ContextMenu, ForeignKey, Page, Toolbar, Edit]}
-              />
-            </GridComponent>
+                    <ColumnDirective
+                      field="worksToRealize"
+                      headerText="Tipo"
+                      width="50"
+                    />
+                    <ColumnDirective
+                      field="numberPersonsRequested"
+                      headerText="Personas"
+                      width="50"
+                      textAlign="right"
+                      allowEditing={false}
+                    />
+                    <ColumnDirective
+                      field="clientId"
+                      headerText="Cliente"
+                      width="100"
+                      editType="dropdownedit"
+                      foreignKeyValue="name"
+                      foreignKeyField="id"
+                      validationRules={this.clientIdRules}
+                      dataSource={this.clients}
+                    />
+                    <ColumnDirective
+                      field="closeDate"
+                      headerText="Fechas"
+                      width="100"
+                      template={this.dateTemplate}
+                      textAlign="Center"
+                      allowEditing={false}
+                      defaultValue={true}
+                    />
+                    <ColumnDirective
+                      field="open"
+                      headerText="Ab./Cer."
+                      width="100"
+                      template={this.openTemplate}
+                      textAlign="Center"
+                      allowEditing={false}
+                    />
+                    <ColumnDirective field="openDate" visible={false} />
+                    <ColumnDirective field="closeDate" visible={false} />
+                  </ColumnsDirective>
+                  <Inject
+                    services={[
+                      Group,
+                      ContextMenu,
+                      ForeignKey,
+                      Page,
+                      Toolbar,
+                      Edit,
+                      Resize,
+                    ]}
+                  />
+                </GridComponent>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
+        </Container>
+      </Fragment>
     );
   }
 }
 
 Works.propTypes = {};
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {};
 };
 
-const mapDispatchToProps = dispatch => ({
-  showMessage: message => dispatch(ACTION_APPLICATION.showMessage(message))
+const mapDispatchToProps = (dispatch) => ({
+  showMessage: (message) => dispatch(ACTION_APPLICATION.showMessage(message)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Works);

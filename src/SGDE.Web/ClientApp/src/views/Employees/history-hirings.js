@@ -36,7 +36,7 @@ class HistoryHirings extends Component {
     this.format = { type: "dateTime", format: "dd/MM/yyyy" };
 
     this.pageSettings = { pageCount: 10, pageSize: 10 };
-    this.query = new Query().addParams("userId", props.user.id);
+    this.query = new Query().addParams("userId", props.userId);
   }
 
   render() {

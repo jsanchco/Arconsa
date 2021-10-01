@@ -100,6 +100,28 @@ export const getUsers = () => {
     });
 };
 
+export const getUser = id => {
+  return new Promise((resolve, reject) => {
+    const url = `${config.URL_API}/${USERS}/${id}`;
+    fetch(url, {
+      headers: {
+        Accept: "text/plain",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`
+      },
+      method: "GET"
+    })
+      .then(data => data.json())
+      .then(result => {
+        resolve(result);
+      })
+      .catch(error => {
+        console.log("error ->", error);
+        reject();
+      });
+  });
+};
+
 export const getProfessions = () => {
   const url = `${config.URL_API}/${PROFESSIONS}`;
   fetch(url, {
@@ -547,6 +569,28 @@ export const getWorks = () => {
       .then(data => data.json())
       .then(result => {
         resolve(result.Items);
+      })
+      .catch(error => {
+        console.log("error ->", error);
+        reject();
+      });
+  });
+};
+
+export const getWork = id => {
+  return new Promise((resolve, reject) => {
+    const url = `${config.URL_API}/${WORKS}/${id}`;
+    fetch(url, {
+      headers: {
+        Accept: "text/plain",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`
+      },
+      method: "GET"
+    })
+      .then(data => data.json())
+      .then(result => {
+        resolve(result);
       })
       .catch(error => {
         console.log("error ->", error);

@@ -3,7 +3,7 @@ import { Form, Col, FormGroup, Input, Label, Row, Button } from "reactstrap";
 import { AppSwitch } from "@coreui/react";
 import { DatePickerComponent } from "@syncfusion/ej2-react-calendars";
 import { NumericTextBoxComponent } from "@syncfusion/ej2-react-inputs";
-import { updateWork } from "../../services";
+import { updateWork, getWork } from "../../services";
 import {
   createSpinner,
   showSpinner,
@@ -14,22 +14,25 @@ class BasicDataWork extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      id: props.work.id,
-      name: props.work.name,
-      address: props.work.address,
-      worksToRealize: props.work.worksToRealize,
-      numberPersonsRequested: props.work.numberPersonsRequested,
-      estimatedDuration: props.work.estimatedDuration,
-      openDate: props.work.openDate,
-      closeDate: props.work.closeDate,
-      passiveSubject: props.work.passiveSubject,
-      invoiceToOrigin: props.work.invoiceToOrigin,
-      totalContract: props.work.totalContract,
-      percentageRetention: props.work.percentageRetention,
-      open: props.work.open,
-      clientId: props.work.clientId,
-    };
+    getWork(props.workId)
+    .then(result => {
+      this.setState({
+        id: result.id,
+        name: result.name,
+        address: result.address,
+        worksToRealize: result.worksToRealize,
+        numberPersonsRequested: result.numberPersonsRequested,
+        estimatedDuration: result.estimatedDuration,
+        openDate: result.openDate,
+        closeDate: result.closeDate,
+        passiveSubject: result.passiveSubject,
+        invoiceToOrigin: result.invoiceToOrigin,
+        totalContract: result.totalContract,
+        percentageRetention: result.percentageRetention,
+        open: result.open,
+        clientId: result.clientId,
+      });
+    });
 
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);

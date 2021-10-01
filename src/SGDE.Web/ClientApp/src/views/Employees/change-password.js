@@ -37,7 +37,7 @@ class ChangePassword extends Component {
       {
         click: () => {
           this.setState({ hideConfirmDialog: false });
-          restorePassword(this.props.user.id);
+          restorePassword(this.props.userId);
         },
         buttonModel: { content: "Si", isPrimary: true }
       },
@@ -79,7 +79,7 @@ class ChangePassword extends Component {
       });
       showSpinner(element);
       updatePassword({
-        id: this.props.user.id,
+        id: this.props.userId,
         password: this.state.password,
         newPassword: this.state.newPassword
       })
