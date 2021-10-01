@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react";
-import { Row } from "reactstrap";
+import { Breadcrumb, BreadcrumbItem, Container, Row } from "reactstrap";
 import { getValue } from "@syncfusion/ej2-base";
 import {
   ColumnDirective,
@@ -11,10 +11,10 @@ import {
   Page,
   ForeignKey,
   Group,
-  Sort
+  Sort,
+  Resize
 } from "@syncfusion/ej2-react-grids";
 import { Tooltip } from "@syncfusion/ej2-popups";
-import { DatePickerComponent } from "@syncfusion/ej2-react-calendars";
 import { DataManager, WebApiAdaptor, Query } from "@syncfusion/ej2-data";
 import { config, USERS, PROFESSIONS, ROLES } from "../../constants";
 import { L10n } from "@syncfusion/ej2-base";
@@ -72,7 +72,7 @@ class Employees extends Component {
         id: "Details",
       },
       "Print",
-      "Search"
+      "Search",
     ];
     this.editSettings = {
       showDeleteConfirmDialog: true,
@@ -184,7 +184,7 @@ class Employees extends Component {
       const { rowSelected } = this.state;
       if (rowSelected !== null) {
         this.props.history.push({
-          pathname: "/employees/detailemployee",
+          pathname: "/employees/detailemployee/" + rowSelected.id,
           state: {
             user: rowSelected,
           },
@@ -234,117 +234,137 @@ class Employees extends Component {
   render() {
     return (
       <Fragment>
-        <div className="animated fadeIn">
-          <div className="card">
-            <div className="card-header">
-              <i className="icon-list"></i> Trabajadores
-            </div>
-            <div className="card-body"></div>
+        <Breadcrumb class>
+          {/*eslint-disable-next-line*/}
+          <BreadcrumbItem>
+            <a href="#">Inicio</a>
+          </BreadcrumbItem>
+          {/* eslint-disable-next-line*/}
+          <BreadcrumbItem active>Trabajadores</BreadcrumbItem>
+        </Breadcrumb>
 
-            <Row>
-              <GridComponent
-                dataSource={this.users}
-                locale="es"
-                allowPaging={true}
-                pageSettings={this.pageSettings}
-                toolbar={this.toolbarOptions}
-                toolbarClick={this.clickHandler}
-                editSettings={this.editSettings}
-                style={{
-                  marginLeft: 30,
-                  marginRight: 30,
-                  marginTop: -20,
-                  marginBottom: 20,
-                }}
-                actionFailure={this.actionFailure}
-                actionComplete={this.actionComplete}
-                actionBegin={this.actionBegin}
-                allowGrouping={true}
-                rowSelected={this.rowSelected}
-                ref={(g) => (this.grid = g)}
-                query={this.query}
-                allowTextWrap={true}
-                textWrapSettings={this.wrapSettings}
-                allowSorting={true}
-                dataBound={this.dataBound}
-                queryCellInfo={this.tooltip}
-              >
-                <ColumnsDirective>
-                  <ColumnDirective
-                    field="id"
-                    headerText="Id"
-                    width="40"
-                    isPrimaryKey={true}
-                    isIdentity={true}
-                    visible={false}
+        <Container fluid>
+          <div className="animated fadeIn">
+            <div className="card">
+              <div className="card-header">
+                <i className="icon-list"></i> Trabajadores
+              </div>
+              <div className="card-body"></div>
+
+              <Row>
+                <GridComponent
+                  dataSource={this.users}
+                  locale="es"
+                  allowPaging={true}
+                  pageSettings={this.pageSettings}
+                  toolbar={this.toolbarOptions}
+                  toolbarClick={this.clickHandler}
+                  editSettings={this.editSettings}
+                  style={{
+                    marginLeft: 30,
+                    marginRight: 30,
+                    marginTop: -20,
+                    marginBottom: 20,
+                  }}
+                  actionFailure={this.actionFailure}
+                  actionComplete={this.actionComplete}
+                  actionBegin={this.actionBegin}
+                  allowGrouping={true}
+                  rowSelected={this.rowSelected}
+                  ref={(g) => (this.grid = g)}
+                  query={this.query}
+                  allowTextWrap={true}
+                  textWrapSettings={this.wrapSettings}
+                  allowSorting={true}
+                  dataBound={this.dataBound}
+                  queryCellInfo={this.tooltip}
+                  allowResizing={true}
+                >
+                  <ColumnsDirective>
+                    <ColumnDirective
+                      field="id"
+                      headerText="Id"
+                      width="40"
+                      isPrimaryKey={true}
+                      isIdentity={true}
+                      visible={false}
+                    />
+                    <ColumnDirective
+                      field="stateDescription"
+                      headerText="Foto"
+                      width="100"
+                      template={this.template}
+                      textAlign="Center"
+                      allowEditing={false}
+                    />
+                    <ColumnDirective
+                      field="name"
+                      headerText="Nombre"
+                      width="60"
+                    />
+                    <ColumnDirective
+                      field="surname"
+                      headerText="Apellidos"
+                      width="70"
+                    />
+                    <ColumnDirective
+                      field="workName"
+                      headerText="Obra"
+                      width="70"
+                    />
+                    <ColumnDirective
+                      field="birthDate"
+                      headerText="F. Nacim."
+                      width="70"
+                      type="date"
+                      format={this.format}
+                      editType="datepickeredit"
+                    />
+                    <ColumnDirective field="dni" headerText="DNI" width="70" />
+                    <ColumnDirective
+                      field="securitySocialNumber"
+                      headerText="S. Social"
+                      width="70"
+                    />
+                    <ColumnDirective
+                      field="phoneNumber"
+                      headerText="Teléfono"
+                      width="70"
+                    />
+                    <ColumnDirective
+                      field="professionId"
+                      headerText="Profesión"
+                      width="100"
+                      editType="dropdownedit"
+                      foreignKeyValue="name"
+                      foreignKeyField="id"
+                      validationRules={this.professionIdRules}
+                      dataSource={this.professions}
+                    />
+                    <ColumnDirective
+                      field="roleId"
+                      headerText="Role"
+                      width="100"
+                      visible={false}
+                      defaultValue={3}
+                    />
+                  </ColumnsDirective>
+                  <Inject
+                    services={[
+                      ForeignKey,
+                      Group,
+                      Page,
+                      Toolbar,
+                      Edit,
+                      Sort,
+                      Resize
+                    ]}
                   />
-                  <ColumnDirective
-                    field="stateDescription"
-                    headerText="Foto"
-                    width="100"
-                    template={this.template}
-                    textAlign="Center"
-                    allowEditing={false}
-                  />
-                  <ColumnDirective
-                    field="name"
-                    headerText="Nombre"
-                    width="60"
-                  />
-                  <ColumnDirective
-                    field="surname"
-                    headerText="Apellidos"
-                    width="70"
-                  />
-                  <ColumnDirective
-                    field="workName"
-                    headerText="Obra"
-                    width="70"
-                  />
-                  <ColumnDirective
-                    field="birthDate"
-                    headerText="F. Nacim."
-                    width="70"
-                    type="date"
-                    format={this.format}
-                    editType="datepickeredit"
-                  />
-                  <ColumnDirective field="dni" headerText="DNI" width="70" />
-                  <ColumnDirective
-                    field="securitySocialNumber"
-                    headerText="S. Social"
-                    width="70"
-                  />
-                  <ColumnDirective
-                    field="phoneNumber"
-                    headerText="Teléfono"
-                    width="70"
-                  />
-                  <ColumnDirective
-                    field="professionId"
-                    headerText="Profesión"
-                    width="100"
-                    editType="dropdownedit"
-                    foreignKeyValue="name"
-                    foreignKeyField="id"
-                    validationRules={this.professionIdRules}
-                    dataSource={this.professions}
-                  />
-                  <ColumnDirective
-                    field="roleId"
-                    headerText="Role"
-                    width="100"
-                    visible={false}
-                    defaultValue={3}
-                  />
-                </ColumnsDirective>
-                <Inject
-                  services={[ForeignKey, Group, Page, Toolbar, Edit, Sort]}
-                />
-              </GridComponent>
-            </Row>
+                </GridComponent>
+              </Row>
+            </div>
           </div>
-        </div>
+        </Container>
       </Fragment>
     );
   }

@@ -1,11 +1,13 @@
 import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 import ACTION_APPLICATION from "../../actions/applicationAction";
+import { getWork } from "../../services";
 import {
   TabComponent,
   TabItemDirective,
   TabItemsDirective,
 } from "@syncfusion/ej2-react-navigations";
+import { Breadcrumb, BreadcrumbItem, Container } from "reactstrap";
 import AuthorizeCancelWorkers from "./authorize-cancel-workers";
 import BasicDataWork from "./basic-data-work";
 import InvoicesWork from "./invoices-work";
@@ -14,27 +16,40 @@ class DetailWork extends Component {
   constructor(props) {
     super(props);
 
+    this.state = {
+      work: {
+        name: ""
+      },
+    };
+
     this.headerText = [
       { text: "Datos Básicos" },
       { text: "Altas/Bajas de Trabajadores" },
       { text: "Facturas" },
     ];
 
-    this.contentTemplateAuthorizeCancelWorkers = this.contentTemplateAuthorizeCancelWorkers.bind(
-      this
-    );
-    this.contentTemplateBasicDataWork = this.contentTemplateBasicDataWork.bind(
-      this
-    );
-    this.contentTemplateInvoicesWork = this.contentTemplateInvoicesWork.bind(
-      this
-    );
+    this.contentTemplateAuthorizeCancelWorkers =
+      this.contentTemplateAuthorizeCancelWorkers.bind(this);
+    this.contentTemplateBasicDataWork =
+      this.contentTemplateBasicDataWork.bind(this);
+    this.contentTemplateInvoicesWork =
+      this.contentTemplateInvoicesWork.bind(this);
+  }
+
+  componentDidMount() {
+    getWork(this.props.match.params.id).then((result) => {
+      this.setState({
+        work: {
+          name: result.name
+        },
+      });
+    });
   }
 
   contentTemplateBasicDataWork() {
     return (
       <BasicDataWork
-        work={this.props.history.location.state.work}
+        workId={this.props.match.params.id}
         history={this.props.history}
         showMessage={this.props.showMessage}
       />
@@ -44,7 +59,7 @@ class DetailWork extends Component {
   contentTemplateAuthorizeCancelWorkers() {
     return (
       <AuthorizeCancelWorkers
-        work={this.props.history.location.state.work}
+        workId={this.props.match.params.id}
         history={this.props.history}
         showMessage={this.props.showMessage}
       />
@@ -54,7 +69,7 @@ class DetailWork extends Component {
   contentTemplateInvoicesWork() {
     return (
       <InvoicesWork
-        work={this.props.history.location.state.work}
+        workId={this.props.match.params.id}
         history={this.props.history}
         showMessage={this.props.showMessage}
       />
@@ -66,49 +81,61 @@ class DetailWork extends Component {
 
     let title = "";
     if (
-      this.props.history.location.state.work !== null &&
-      this.props.history.location.state.work !== undefined
+      this.state.work !== null &&
+      this.state.work !== undefined
     ) {
-      title = ` Detalle Obra [${this.props.history.location.state.work.name}]`;
+      title = ` Detalle Obra [${this.state.work.name}]`;
     }
 
     return (
       <Fragment>
-        <div className="animated fadeIn">
-          <div className="card">
-            <div className="card-header">
-              <i className="icon-book-open"></i>
-              {title}
-            </div>
-            <div className="card-body">
-              <TabComponent
-                style={{
-                  marginLeft: 30,
-                  marginRight: 30,
-                  marginTop: 0,
-                  marginBottom: 20,
-                }}
-              >
-                <TabItemsDirective>
-                  <TabItemDirective
-                    header={this.headerText[0]}
-                    content={this.contentTemplateBasicDataWork}
-                  />
-                  <TabItemDirective
-                    header={this.headerText[1]}
-                    content={this.contentTemplateAuthorizeCancelWorkers}
-                  />
-                  {user.roleId === 1 ? (
+        <Breadcrumb class>
+          {/*eslint-disable-next-line*/}
+          <BreadcrumbItem> <a href="#">Inicio</a></BreadcrumbItem>
+          {/* eslint-disable-next-line*/}
+          <BreadcrumbItem>
+            <a href="#/works/works">Obras</a>
+          </BreadcrumbItem>
+          <BreadcrumbItem active>Detalles</BreadcrumbItem>
+        </Breadcrumb>
+
+        <Container fluid>
+          <div className="animated fadeIn">
+            <div className="card">
+              <div className="card-header">
+                <i className="icon-book-open"></i>
+                {title}
+              </div>
+              <div className="card-body">
+                <TabComponent
+                  style={{
+                    marginLeft: 30,
+                    marginRight: 30,
+                    marginTop: 0,
+                    marginBottom: 20,
+                  }}
+                >
+                  <TabItemsDirective>
                     <TabItemDirective
-                      header={this.headerText[2]}
-                      content={this.contentTemplateInvoicesWork}
+                      header={this.headerText[0]}
+                      content={this.contentTemplateBasicDataWork}
                     />
-                  ) : null}
-                </TabItemsDirective>
-              </TabComponent>
+                    <TabItemDirective
+                      header={this.headerText[1]}
+                      content={this.contentTemplateAuthorizeCancelWorkers}
+                    />
+                    {user.roleId === 1 ? (
+                      <TabItemDirective
+                        header={this.headerText[2]}
+                        content={this.contentTemplateInvoicesWork}
+                      />
+                    ) : null}
+                  </TabItemsDirective>
+                </TabComponent>
+              </div>
             </div>
           </div>
-        </div>
+        </Container>
       </Fragment>
     );
   }

@@ -2,7 +2,7 @@ import React, { Component, Fragment } from "react";
 import { Form, Col, FormGroup, Input, Label, Row, Button } from "reactstrap";
 import { DatePickerComponent } from "@syncfusion/ej2-react-calendars";
 import { MaskedTextBoxComponent } from "@syncfusion/ej2-react-inputs";
-import { updateUser } from "../../services";
+import { updateUser, getUser } from "../../services";
 import ModalSelectImage from "../Modals/modal-select-image";
 import {
   createSpinner,
@@ -14,27 +14,34 @@ class BasicData extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      id: props.user.id,
-      name: props.user.name,
-      surname: props.user.surname,
-      dni: props.user.dni,
-      securitySocialNumber: props.user.securitySocialNumber,
-      birthDate: this.parseDate(props.user.birthDate),
-      username: props.user.username,
-      address: props.user.address,
-      phoneNumber: props.user.phoneNumber,
-      priceHour: props.user.priceHour,
-      priceHourSale: props.user.priceHourSale,
-      accountNumber: props.user.accountNumber,
-      observations: props.user.observations,
-      photo: props.user.photo,
-      roleId: props.user.roleId,
-      professionId: props.user.professionId,
-      workId: props.user.workId,
-      clientId: props.user.clientId,
-      modal: false
+    this.state = { 
+      modal: false,
+      photo: null
     };
+
+    getUser(props.userId)
+    .then(result => {
+      this.setState({
+        id: result.id,
+        name: result.name,
+        surname: result.surname,
+        dni: result.dni,
+        securitySocialNumber: result.securitySocialNumber,
+        birthDate: this.parseDate(result.birthDate),
+        address: result.address,
+        phoneNumber: result.phoneNumber,
+        priceHour: result.priceHour,
+        priceHourSale: result.priceHourSale,
+        accountNumber: result.accountNumber,
+        observations: result.observations,
+        photo: result.photo,
+        roleId: result.roleId,
+        professionId: result.professionId,
+        workId: result.workId,
+        clientId: result.clientId,
+        modal: false
+      });
+    });
 
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -138,7 +145,7 @@ class BasicData extends Component {
           isOpen={this.state.modal}
           toggle={this.toggleModal}
           updatePhoto={this.updatePhoto}
-          userId={this.props.user.id}
+          userId={this.props.userId}
           type="image"
         />
         <div

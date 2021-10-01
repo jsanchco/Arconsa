@@ -106,7 +106,7 @@ class DailySignings extends Component {
     this.template = this.gridTemplate;
     this.format = { type: "dateTime", format: "dd/MM/yyyy HH:mm" };
 
-    this.queryDailySignings = new Query().addParams("userId", props.user.id);
+    this.queryDailySignings = new Query().addParams("userId", props.userId);
 
     this.animationSettings = { effect: "None" };
     this.confirmButton = [
@@ -290,7 +290,7 @@ class DailySignings extends Component {
         <ModalMassiveSigning
           isOpen={this.state.modal}
           toggle={this.toggleModal}
-          userId={this.props.user.id}
+          userId={this.props.userId}
           showMessage={this.props.showMessage}
           updateDailySignings={this.updateDailySignings}
         />

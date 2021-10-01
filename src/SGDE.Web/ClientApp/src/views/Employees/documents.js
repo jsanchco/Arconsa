@@ -83,7 +83,7 @@ class Documents extends Component {
 
     this.template = this.gridTemplate;
 
-    this.query = new Query().addParams("userId", props.user.id);
+    this.query = new Query().addParams("userId", props.userId);
 
     this.selectionSettings = {
       checkboxMode: "ResetOnRowClick"
@@ -218,7 +218,7 @@ class Documents extends Component {
           isOpen={this.state.modal}
           toggle={this.toggleModal}
           updateDocument={this.updateDocument}
-          userId={this.props.user.id}
+          userId={this.props.userId}
           rowSelected={this.state.rowSelected}
           type="document"
         />
@@ -296,7 +296,7 @@ class Documents extends Component {
                   />
                   <ColumnDirective
                     field="userId"
-                    defaultValue={this.props.user.id}
+                    defaultValue={this.props.userId}
                     visible={false}
                   />
                   <ColumnDirective field="typeFile" visible={false} />

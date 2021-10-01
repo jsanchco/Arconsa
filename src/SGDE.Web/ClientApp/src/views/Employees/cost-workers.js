@@ -58,7 +58,7 @@ class CostWorkers extends Component {
     this.template = this.gridTemplate;
 
     this.format = { type: "dateTime", format: "dd/MM/yyyy" };
-    this.query = new Query().addParams("userId", props.user.id);
+    this.query = new Query().addParams("userId", props.userId);
   }
 
   actionFailure(args) {
@@ -230,7 +230,7 @@ class CostWorkers extends Component {
                     field="userId"
                     headerText="User"
                     width="100"
-                    defaultValue={this.props.user.id}
+                    defaultValue={this.props.userId}
                     visible={false}
                   />
                 </ColumnsDirective>
