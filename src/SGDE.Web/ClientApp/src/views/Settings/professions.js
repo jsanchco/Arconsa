@@ -1,12 +1,12 @@
 import React, { Component, Fragment } from "react";
-import { Row } from "reactstrap";
+import { Breadcrumb, BreadcrumbItem, Container, Row } from "reactstrap";
 import {
   ColumnDirective,
   ColumnsDirective,
   GridComponent,
   Edit,
   Inject,
-  Toolbar
+  Toolbar,
 } from "@syncfusion/ej2-react-grids";
 import { DataManager, WebApiAdaptor } from "@syncfusion/ej2-data";
 import { config, PROFESSIONS } from "../../constants";
@@ -22,7 +22,7 @@ class Professions extends Component {
   professions = new DataManager({
     adaptor: new WebApiAdaptor(),
     url: `${config.URL_API}/${PROFESSIONS}`,
-    headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }]
+    headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }],
   });
 
   grid = null;
@@ -31,7 +31,7 @@ class Professions extends Component {
     super(props);
 
     this.state = {
-      roles: null
+      roles: null,
     };
 
     this.toolbarOptions = ["Add", "Edit", "Delete", "Update", "Cancel"];
@@ -40,7 +40,7 @@ class Professions extends Component {
       allowEditing: true,
       allowAdding: true,
       allowDeleting: true,
-      newRowPosition: "Top"
+      newRowPosition: "Top",
     };
     this.actionFailure = this.actionFailure.bind(this);
     this.actionComplete = this.actionComplete.bind(this);
@@ -54,7 +54,7 @@ class Professions extends Component {
     this.props.showMessage({
       statusText: error.statusText,
       responseText: error.responseText,
-      type: "danger"
+      type: "danger",
     });
   }
 
@@ -63,14 +63,14 @@ class Professions extends Component {
       this.props.showMessage({
         statusText: "200",
         responseText: "Operación realizada con éxito",
-        type: "success"
+        type: "success",
       });
     }
     if (args.requestType === "delete") {
       this.props.showMessage({
         statusText: "200",
         responseText: "Operación realizada con éxito",
-        type: "success"
+        type: "success",
       });
     }
   }
@@ -78,55 +78,64 @@ class Professions extends Component {
   render() {
     return (
       <Fragment>
-        <div className="animated fadeIn">
-          <div className="card">
-            <div className="card-header">
-              <i className="icon-people"></i> Puestos de Trabajo
+        <Breadcrumb class>
+          {/*eslint-disable-next-line*/}
+          <BreadcrumbItem><a href="#">Inicio</a></BreadcrumbItem>
+          {/* eslint-disable-next-line*/}
+          <BreadcrumbItem active>Puestos de Trabajo</BreadcrumbItem>
+        </Breadcrumb>
+
+        <Container fluid>
+          <div className="animated fadeIn">
+            <div className="card">
+              <div className="card-header">
+                <i className="icon-people"></i> Puestos de Trabajo
+              </div>
+              <div className="card-body"></div>
+              <Row>
+                <GridComponent
+                  dataSource={this.professions}
+                  locale="es-US"
+                  toolbar={this.toolbarOptions}
+                  toolbarClick={this.clickHandler}
+                  editSettings={this.editSettings}
+                  style={{
+                    marginLeft: 30,
+                    marginRight: 30,
+                    marginTop: -20,
+                    marginBottom: 20,
+                  }}
+                  actionFailure={this.actionFailure}
+                  actionComplete={this.actionComplete}
+                  rowSelected={this.rowSelected}
+                  ref={(g) => (this.grid = g)}
+                >
+                  <ColumnsDirective>
+                    <ColumnDirective
+                      field="id"
+                      headerText="Id"
+                      width="40"
+                      isPrimaryKey={true}
+                      isIdentity={true}
+                      visible={false}
+                    />
+                    <ColumnDirective
+                      field="name"
+                      headerText="Nombre"
+                      width="100"
+                    />
+                    <ColumnDirective
+                      field="description"
+                      headerText="Descripción"
+                      width="100"
+                    />
+                  </ColumnsDirective>
+                  <Inject services={[Toolbar, Edit]} />
+                </GridComponent>
+              </Row>
             </div>
-            <div className="card-body"></div>
-            <Row>
-              <GridComponent
-                dataSource={this.professions}
-                locale="es-US"
-                toolbar={this.toolbarOptions}
-                toolbarClick={this.clickHandler}
-                editSettings={this.editSettings}
-                style={{
-                  marginLeft: 30,
-                  marginRight: 30,
-                  marginTop: -20,
-                  marginBottom: 20
-                }}
-                actionFailure={this.actionFailure}
-                actionComplete={this.actionComplete}
-                rowSelected={this.rowSelected}
-                ref={g => (this.grid = g)}
-              >
-                <ColumnsDirective>
-                  <ColumnDirective
-                    field="id"
-                    headerText="Id"
-                    width="40"
-                    isPrimaryKey={true}
-                    isIdentity={true}
-                    visible={false}
-                  />
-                  <ColumnDirective
-                    field="name"
-                    headerText="Nombre"
-                    width="100"
-                  />
-                  <ColumnDirective
-                    field="description"
-                    headerText="Descripción"
-                    width="100"
-                  />
-                </ColumnsDirective>
-                <Inject services={[Toolbar, Edit]} />
-              </GridComponent>
-            </Row>
           </div>
-        </div>
+        </Container>
       </Fragment>
     );
   }
@@ -134,14 +143,14 @@ class Professions extends Component {
 
 Professions.propTypes = {};
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
-    errorApplication: state.applicationReducer.error
+    errorApplication: state.applicationReducer.error,
   };
 };
 
-const mapDispatchToProps = dispatch => ({
-  showMessage: message => dispatch(ACTION_APPLICATION.showMessage(message))
+const mapDispatchToProps = (dispatch) => ({
+  showMessage: (message) => dispatch(ACTION_APPLICATION.showMessage(message)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Professions);

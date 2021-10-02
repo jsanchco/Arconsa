@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react";
-import { Row } from "reactstrap";
+import { Breadcrumb, BreadcrumbItem, Container, Row } from "reactstrap";
 import { connect } from "react-redux";
 import ACTION_APPLICATION from "../../actions/applicationAction";
 import HeaderSettingsVarious from "./header-settings-various";
@@ -10,7 +10,7 @@ class ReportsVarious extends Component {
     super(props);
 
     this.state = {
-      settings: null
+      settings: null,
     };
 
     this.updateReport = this.updateReport.bind(this);
@@ -23,27 +23,34 @@ class ReportsVarious extends Component {
   render() {
     return (
       <Fragment>
-        <div className="animated fadeIn" id="selection-report">
-          <div className="card">
-            <div className="card-header">
-              <i className="icon-list"></i> Informes Varios
-            </div>
-            <div className="card-body"></div>
-            <div>
-              <HeaderSettingsVarious
-                showMessage={this.props.showMessage}
-                updateReport={this.updateReport}
-              />
-            </div>
+        <Breadcrumb class>
+          {/*eslint-disable-next-line*/}
+          <BreadcrumbItem><a href="#">Inicio</a></BreadcrumbItem>
+          {/* eslint-disable-next-line*/}
+          <BreadcrumbItem active>Informes Varios</BreadcrumbItem>
+        </Breadcrumb>
 
-            <Row style={{ marginTop: "10px" }} id="row-grid">
+        <Container fluid>
+          <div className="animated fadeIn" id="selection-report">
+            <div className="card">
+              <div className="card-header">
+                <i className="icon-list"></i> Informes Varios
+              </div>
+              <div className="card-body"></div>
+              <div>
+                <HeaderSettingsVarious
+                  showMessage={this.props.showMessage}
+                  updateReport={this.updateReport}
+                />
+              </div>
 
-              <GridReportVarious
-                showMessage={this.props.showMessage}
-                settings={this.state.settings}
-              />
+              <Row style={{ marginTop: "10px" }} id="row-grid">
+                <GridReportVarious
+                  showMessage={this.props.showMessage}
+                  settings={this.state.settings}
+                />
 
-              {/* {
+                {/* {
                 !settings ?
                   <Col id="select-list" xs="12" style={{ textAlign: "center", margin: "50px" }}><h2>Selecciona Listado</h2></Col> :
                   <GridReportVarious
@@ -51,10 +58,10 @@ class ReportsVarious extends Component {
                     settings={this.state.settings}
                   />
               } */}
-
-            </Row>
+              </Row>
+            </div>
           </div>
-        </div>
+        </Container>
       </Fragment>
     );
   }
@@ -62,14 +69,14 @@ class ReportsVarious extends Component {
 
 ReportsVarious.propTypes = {};
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
-    errorApplication: state.applicationReducer.error
+    errorApplication: state.applicationReducer.error,
   };
 };
 
-const mapDispatchToProps = dispatch => ({
-  showMessage: message => dispatch(ACTION_APPLICATION.showMessage(message))
+const mapDispatchToProps = (dispatch) => ({
+  showMessage: (message) => dispatch(ACTION_APPLICATION.showMessage(message)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ReportsVarious);

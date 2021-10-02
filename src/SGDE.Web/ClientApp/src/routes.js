@@ -120,7 +120,7 @@ const routes = [
   { path: '/settings/typesdocument', exact: true, name: 'Tipos de Documento', component: TypesDocument },
   { path: '/settings/usersnoworker', exact: true, name: 'Usuarios', component: UsersNoWorker },
   { path: '/clients/clients', exact: true, name: 'Clientes', component: Clients },
-  { path: '/clients/detailclient', exact: true, name: 'Detalle Cliente', component: DetailClient },
+  { path: '/clients/detailclient/:id', exact: true, name: 'Detalle Cliente', component: DetailClient },
   { path: '/works/works', exact: true, name: 'Obras', component: Works },
   { path: '/works/detailwork/:id', exact: true, name: 'Detalle Obra', component: DetailWork },
   { path: '/works/basicdatawork', exact: true, name: 'Datos Básicos', component: BasicDataWork },

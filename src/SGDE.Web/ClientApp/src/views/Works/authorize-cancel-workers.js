@@ -56,7 +56,7 @@ class AuthorizeCancelWorkers extends Component {
     this.template = this.gridTemplate;
     this.format = { type: "dateTime", format: "dd/MM/yyyy" };
 
-    this.query = new Query().addParams("workId", props.work.id);
+    this.query = new Query().addParams("workId", props.workId);
   }
 
   gridTemplate(args) {
@@ -140,10 +140,7 @@ class AuthorizeCancelWorkers extends Component {
   }
 
   render() {
-    let title = "";
-    if (this.props.work !== null && this.props.work !== undefined) {
-      title = ` Contratos [${this.props.work.name}]`;
-    }
+    let title = ` Contratos [${this.props.workName}]`;
 
     return (
       <Fragment>

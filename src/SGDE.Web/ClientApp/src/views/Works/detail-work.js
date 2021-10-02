@@ -16,11 +16,7 @@ class DetailWork extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      work: {
-        name: ""
-      },
-    };
+    this.state = { };
 
     this.headerText = [
       { text: "Datos Básicos" },
@@ -60,6 +56,7 @@ class DetailWork extends Component {
     return (
       <AuthorizeCancelWorkers
         workId={this.props.match.params.id}
+        workName={this.state.work.name}
         history={this.props.history}
         showMessage={this.props.showMessage}
       />
@@ -70,6 +67,7 @@ class DetailWork extends Component {
     return (
       <InvoicesWork
         workId={this.props.match.params.id}
+        workName={this.state.work.name}
         history={this.props.history}
         showMessage={this.props.showMessage}
       />
@@ -91,7 +89,7 @@ class DetailWork extends Component {
       <Fragment>
         <Breadcrumb class>
           {/*eslint-disable-next-line*/}
-          <BreadcrumbItem> <a href="#">Inicio</a></BreadcrumbItem>
+          <BreadcrumbItem><a href="#">Inicio</a></BreadcrumbItem>
           {/* eslint-disable-next-line*/}
           <BreadcrumbItem>
             <a href="#/works/works">Obras</a>

@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import { Form, Col, FormGroup, Input, Label, Row, Button } from "reactstrap";
 import { AppSwitch } from "@coreui/react";
 import { DatePickerComponent } from "@syncfusion/ej2-react-calendars";
@@ -14,8 +14,8 @@ class BasicDataWork extends Component {
   constructor(props) {
     super(props);
 
-    getWork(props.workId)
-    .then(result => {
+    this.state = {};
+    getWork(this.props.workId).then((result) => {
       this.setState({
         id: result.id,
         name: result.name,
@@ -39,9 +39,8 @@ class BasicDataWork extends Component {
     this.getWork = this.getWork.bind(this);
     this.formatDate = this.formatDate.bind(this);
     this.handleChangeTotalContract = this.handleChangeTotalContract.bind(this);
-    this.handleChangePercentageRetention = this.handleChangePercentageRetention.bind(
-      this
-    );
+    this.handleChangePercentageRetention =
+      this.handleChangePercentageRetention.bind(this);
     this.updateFromInvoiceToOrigin = this.updateFromInvoiceToOrigin.bind(this);
 
     this.ntbTotalContract = null;
@@ -161,183 +160,181 @@ class BasicDataWork extends Component {
         }}
         id="container"
       >
-        <Fragment>
-          <Form>
-            <Row>
-              <Col xs="4">
-                <FormGroup>
-                  <Label htmlFor="name">Nombre</Label>
-                  <Input
-                    type="text"
-                    id="name"
-                    name="name"
-                    placeholder="nombre"
-                    required
-                    value={this.state.name}
-                    onChange={this.handleInputChange}
-                  />
-                </FormGroup>
-              </Col>
-              <Col xs="4">
-                <FormGroup>
-                  <Label htmlFor="address">Dirección</Label>
-                  <Input
-                    type="text"
-                    id="address"
-                    name="address"
-                    placeholder="dirección"
-                    required
-                    value={this.state.address || ""}
-                    onChange={this.handleInputChange}
-                  />
-                </FormGroup>
-              </Col>
-              <Col xs="4">
-                <FormGroup>
-                  <Label htmlFor="worksToRealize">Tipo de Trabajo</Label>
-                  <Input
-                    type="text"
-                    id="worksToRealize"
-                    name="worksToRealize"
-                    placeholder="tipo de trabajo"
-                    value={this.state.worksToRealize || ""}
-                    onChange={this.handleInputChange}
-                  />
-                </FormGroup>
-              </Col>
-            </Row>
-            <Row>
-              <Col xs="2">
-                <FormGroup>
-                  <Label
-                    htmlFor="passiveSubject"
-                    style={{ verticalAlign: "bottom" }}
-                  >
-                    Sujeto Pasivo&nbsp;
-                  </Label>
-                  <AppSwitch
-                    className={"mx-1 mt-4"}
-                    variant={"pill"}
-                    color={"primary"}
-                    label
-                    checked={this.state.passiveSubject}
-                    id="passiveSubject"
-                    name="passiveSubject"
-                    placeholder="sujeto pasivo"
-                    onChange={this.handleInputChange}
-                    dataOn="Si"
-                    dataOff="No"
-                  />
-                </FormGroup>
-              </Col>
-              <Col xs="2">
-                <FormGroup>
-                  <Label htmlFor="estimatedDuration">T. Estimado</Label>
-                  <Input
-                    type="text"
-                    id="estimatedDuration"
-                    name="estimatedDuration"
-                    placeholder="tiempo estimado"
-                    value={this.state.estimatedDuration}
-                    onChange={this.handleInputChange}
-                  />
-                </FormGroup>
-              </Col>
-              <Col xs="4">
-                <FormGroup>
-                  <Label htmlFor="openDate">Fecha de Apertura de Obra</Label>
-                  <DatePickerComponent
-                    id="openDate"
-                    name="openDate"
-                    placeholder="fecha de apertura"
-                    required
-                    format="dd/MM/yyyy"
-                    value={this.state.openDate}
-                    onChange={this.handleInputChange}
-                  />
-                </FormGroup>
-              </Col>
-              <Col xs="4">
-                <FormGroup>
-                  <Label htmlFor="address">Fecha de Cierre de Obra</Label>
-                  <DatePickerComponent
-                    id="closeDate"
-                    name="closeDate"
-                    placeholder="fecha de cierre"
-                    format="dd/MM/yyyy"
-                    value={this.state.closeDate}
-                    onChange={this.handleInputChange}
-                  />
-                </FormGroup>
-              </Col>
-            </Row>
-            <Row>
-              <Col xs="4">
-                <FormGroup>
-                  <Label
-                    htmlFor="invoiceToOrigin"
-                    style={{ verticalAlign: "bottom" }}
-                  >
-                    Factura a Origen&nbsp;
-                  </Label>
-                  <AppSwitch
-                    className={"mx-1 mt-4"}
-                    variant={"pill"}
-                    color={"primary"}
-                    label
-                    checked={this.state.invoiceToOrigin}
-                    id="invoiceToOrigin"
-                    name="invoiceToOrigin"
-                    placeholder="factura a origen"
-                    onChange={this.handleInputChange}
-                    dataOn="Si"
-                    dataOff="No"
-                  />
-                </FormGroup>
-              </Col>
-              <Col xs="4">
-                <FormGroup>
-                  <Label htmlFor="totalContract">Total Contrato</Label>
-                  <NumericTextBoxComponent
-                    format="N2"
-                    id="totalContract"
-                    name="totalContract"
-                    value={this.state.totalContract}
-                    placeholder="total contrato"
-                    change={this.handleChangeTotalContract}
-                    ref={(g) => (this.ntbTotalContract = g)}
-                  />
-                </FormGroup>
-              </Col>
-              <Col xs="4">
-                <FormGroup>
-                  <Label htmlFor="percentageRetention">Retención</Label>
-                  <NumericTextBoxComponent
-                    format="p2"
-                    id="percentageRetention"
-                    name="percentageRetention"
-                    value={this.state.percentageRetention}
-                    min={0}
-                    max={1}
-                    step={0.01}
-                    placeholder="porcentaje retención"
-                    change={this.handleChangePercentageRetention}
-                    ref={(g) => (this.ntbPercentageRetention = g)}
-                  />
-                </FormGroup>
-              </Col>
-            </Row>
-            <Row>
-              <Col xs="12" style={{ marginTop: "20px", textAlign: "right" }}>
-                <div className="form-actions">
-                  <Button color="primary" onClick={this.handleSubmit}>
-                    Guardar
-                  </Button>
-                </div>
-              </Col>
-            </Row>
-          </Form>
-        </Fragment>
+        <Form>
+          <Row>
+            <Col xs="4">
+              <FormGroup>
+                <Label htmlFor="name">Nombre</Label>
+                <Input
+                  type="text"
+                  id="name"
+                  name="name"
+                  placeholder="nombre"
+                  required
+                  value={this.state.name}
+                  onChange={this.handleInputChange}
+                />
+              </FormGroup>
+            </Col>
+            <Col xs="4">
+              <FormGroup>
+                <Label htmlFor="address">Dirección</Label>
+                <Input
+                  type="text"
+                  id="address"
+                  name="address"
+                  placeholder="dirección"
+                  required
+                  value={this.state.address || ""}
+                  onChange={this.handleInputChange}
+                />
+              </FormGroup>
+            </Col>
+            <Col xs="4">
+              <FormGroup>
+                <Label htmlFor="worksToRealize">Tipo de Trabajo</Label>
+                <Input
+                  type="text"
+                  id="worksToRealize"
+                  name="worksToRealize"
+                  placeholder="tipo de trabajo"
+                  value={this.state.worksToRealize || ""}
+                  onChange={this.handleInputChange}
+                />
+              </FormGroup>
+            </Col>
+          </Row>
+          <Row>
+            <Col xs="2">
+              <FormGroup>
+                <Label
+                  htmlFor="passiveSubject"
+                  style={{ verticalAlign: "bottom" }}
+                >
+                  Sujeto Pasivo&nbsp;
+                </Label>
+                <AppSwitch
+                  className={"mx-1 mt-4"}
+                  variant={"pill"}
+                  color={"primary"}
+                  label
+                  checked={this.state.passiveSubject}
+                  id="passiveSubject"
+                  name="passiveSubject"
+                  placeholder="sujeto pasivo"
+                  onChange={this.handleInputChange}
+                  dataOn="Si"
+                  dataOff="No"
+                />
+              </FormGroup>
+            </Col>
+            <Col xs="2">
+              <FormGroup>
+                <Label htmlFor="estimatedDuration">T. Estimado</Label>
+                <Input
+                  type="text"
+                  id="estimatedDuration"
+                  name="estimatedDuration"
+                  placeholder="tiempo estimado"
+                  value={this.state.estimatedDuration}
+                  onChange={this.handleInputChange}
+                />
+              </FormGroup>
+            </Col>
+            <Col xs="4">
+              <FormGroup>
+                <Label htmlFor="openDate">Fecha de Apertura de Obra</Label>
+                <DatePickerComponent
+                  id="openDate"
+                  name="openDate"
+                  placeholder="fecha de apertura"
+                  required
+                  format="dd/MM/yyyy"
+                  value={this.state.openDate}
+                  onChange={this.handleInputChange}
+                />
+              </FormGroup>
+            </Col>
+            <Col xs="4">
+              <FormGroup>
+                <Label htmlFor="address">Fecha de Cierre de Obra</Label>
+                <DatePickerComponent
+                  id="closeDate"
+                  name="closeDate"
+                  placeholder="fecha de cierre"
+                  format="dd/MM/yyyy"
+                  value={this.state.closeDate}
+                  onChange={this.handleInputChange}
+                />
+              </FormGroup>
+            </Col>
+          </Row>
+          <Row>
+            <Col xs="4">
+              <FormGroup>
+                <Label
+                  htmlFor="invoiceToOrigin"
+                  style={{ verticalAlign: "bottom" }}
+                >
+                  Factura a Origen&nbsp;
+                </Label>
+                <AppSwitch
+                  className={"mx-1 mt-4"}
+                  variant={"pill"}
+                  color={"primary"}
+                  label
+                  checked={this.state.invoiceToOrigin}
+                  id="invoiceToOrigin"
+                  name="invoiceToOrigin"
+                  placeholder="factura a origen"
+                  onChange={this.handleInputChange}
+                  dataOn="Si"
+                  dataOff="No"
+                />
+              </FormGroup>
+            </Col>
+            <Col xs="4">
+              <FormGroup>
+                <Label htmlFor="totalContract">Total Contrato</Label>
+                <NumericTextBoxComponent
+                  format="N2"
+                  id="totalContract"
+                  name="totalContract"
+                  value={this.state.totalContract}
+                  placeholder="total contrato"
+                  change={this.handleChangeTotalContract}
+                  ref={(g) => (this.ntbTotalContract = g)}
+                />
+              </FormGroup>
+            </Col>
+            <Col xs="4">
+              <FormGroup>
+                <Label htmlFor="percentageRetention">Retención</Label>
+                <NumericTextBoxComponent
+                  format="p2"
+                  id="percentageRetention"
+                  name="percentageRetention"
+                  value={this.state.percentageRetention}
+                  min={0}
+                  max={1}
+                  step={0.01}
+                  placeholder="porcentaje retención"
+                  change={this.handleChangePercentageRetention}
+                  ref={(g) => (this.ntbPercentageRetention = g)}
+                />
+              </FormGroup>
+            </Col>
+          </Row>
+          <Row>
+            <Col xs="12" style={{ marginTop: "20px", textAlign: "right" }}>
+              <div className="form-actions">
+                <Button color="primary" onClick={this.handleSubmit}>
+                  Guardar
+                </Button>
+              </div>
+            </Col>
+          </Row>
+        </Form>
       </div>
     );
   }

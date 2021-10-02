@@ -1,5 +1,15 @@
 import React, { Component, Fragment } from "react";
-import { Form, Col, FormGroup, Label, Row, Button } from "reactstrap";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  Container,
+  Form,
+  Col,
+  FormGroup,
+  Label,
+  Row,
+  Button,
+} from "reactstrap";
 import { DatePickerComponent } from "@syncfusion/ej2-react-calendars";
 import { DropDownListComponent } from "@syncfusion/ej2-react-dropdowns";
 import { getWorks } from "../../services";
@@ -8,12 +18,12 @@ import ACTION_APPLICATION from "../../actions/applicationAction";
 import {
   createSpinner,
   showSpinner,
-  hideSpinner
+  hideSpinner,
 } from "@syncfusion/ej2-popups";
 import {
   getInvoiceResponse,
   base64ToArrayBuffer,
-  saveByteArray
+  saveByteArray,
 } from "../../services";
 import GridInvoice from "../../components/grid-invoices";
 
@@ -29,12 +39,12 @@ class Invoices extends Component {
       typeInvoice: 1,
       clientId: null,
       workId: null,
-      updateGrid: null
+      updateGrid: null,
     };
 
     this.ddl = null;
     this.fields = { text: "name", value: "id" };
-    this.dataSource = getWorks().then(items => {
+    this.dataSource = getWorks().then((items) => {
       this.ddl.dataSource = items;
     });
 
@@ -54,7 +64,7 @@ class Invoices extends Component {
       issueDate: this.state.issueDate,
       typeInvoice: this.state.typeInvoice,
       clientId: this.state.clientId,
-      workId: this.state.workId
+      workId: this.state.workId,
     };
   }
 
@@ -66,7 +76,7 @@ class Invoices extends Component {
       issueDate: this.state.issueDate,
       typeInvoice: this.state.typeInvoice,
       clientId: this.state.clientId,
-      workId: this.state.workId
+      workId: this.state.workId,
     };
   }
 
@@ -75,20 +85,20 @@ class Invoices extends Component {
     const name = target.name;
 
     this.setState({
-      [name]: target.value
+      [name]: target.value,
     });
   }
 
   handleDropDown(event) {
     this.setState({
-      workId: event.value
+      workId: event.value,
     });
   }
 
   handleDate(event) {
     const name = event.element.name;
     this.setState({
-      [name]: this.formatDate(event.value)
+      [name]: this.formatDate(event.value),
     });
   }
 
@@ -126,27 +136,27 @@ class Invoices extends Component {
       this.props.showMessage({
         statusText: "Fechas mal configuradas",
         responseText: "Fechas mal configuradas",
-        type: "danger"
+        type: "danger",
       });
     }
 
     const element = document.getElementById("container");
 
     createSpinner({
-      target: element
+      target: element,
     });
     showSpinner(element);
 
     const data = this.getDataInvoiceResponse();
     getInvoiceResponse(data)
-      .then(result => {
+      .then((result) => {
         const fileArr = base64ToArrayBuffer(result.file);
         saveByteArray(result.fileName, fileArr, result.typeFile);
         hideSpinner(element);
 
         this.setState({ updateGrid: Math.random() });
       })
-      .catch(error => {
+      .catch((error) => {
         hideSpinner(element);
       });
   }
@@ -158,21 +168,29 @@ class Invoices extends Component {
           marginLeft: 10,
           marginRight: 60,
           marginTop: 20,
-          marginBottom: 20
+          marginBottom: 20,
         }}
         id="container"
       >
         <Fragment>
-          <div className="animated fadeIn">
-            <div className="card">
-              <div className="card-header">
-                <i className="cui-file"></i>
-                Facturas
-              </div>
-              <div className="card-body">
-                <Form>
-                  <Row style={{marginLeft: "20px", marginRight: "20px"}}>
-                    {/* <Col xs="3">
+          <Breadcrumb class>
+            {/*eslint-disable-next-line*/}
+            <BreadcrumbItem><a href="#">Inicio</a></BreadcrumbItem>
+            {/* eslint-disable-next-line*/}
+            <BreadcrumbItem active>Facturas</BreadcrumbItem>
+          </Breadcrumb>
+
+          <Container fluid>
+            <div className="animated fadeIn">
+              <div className="card">
+                <div className="card-header">
+                  <i className="cui-file"></i>
+                  Facturas
+                </div>
+                <div className="card-body">
+                  <Form>
+                    <Row style={{ marginLeft: "20px", marginRight: "20px" }}>
+                      {/* <Col xs="3">
                       <FormGroup>
                         <Label htmlFor="name">Nº Factura</Label>
                         <Input
@@ -186,95 +204,96 @@ class Invoices extends Component {
                         />
                       </FormGroup>
                     </Col> */}
-                    <Col xs="4">
-                      <FormGroup>
-                        <Label htmlFor="name">Obra</Label>
-                        <DropDownListComponent
-                          id="workId"
-                          name="workId"
-                          dataSource={this.dataSource}
-                          fields={this.fields}
-                          placeholder="selecciona obra"
-                          change={this.handleDropDown}
-                          ref={g => (this.ddl = g)}
+                      <Col xs="4">
+                        <FormGroup>
+                          <Label htmlFor="name">Obra</Label>
+                          <DropDownListComponent
+                            id="workId"
+                            name="workId"
+                            dataSource={this.dataSource}
+                            fields={this.fields}
+                            placeholder="selecciona obra"
+                            change={this.handleDropDown}
+                            ref={(g) => (this.ddl = g)}
+                          />
+                        </FormGroup>
+                      </Col>
+                      <Col xs="2">
+                        <FormGroup>
+                          <Label htmlFor="startDate">Fecha de Inicio</Label>
+                          <DatePickerComponent
+                            id="startDate"
+                            name="startDate"
+                            placeholder="fecha de inicio"
+                            format="dd/MM/yyyy"
+                            value={this.state.startDate}
+                            change={this.handleDate}
+                          />
+                        </FormGroup>
+                      </Col>
+                      <Col xs="2">
+                        <FormGroup>
+                          <Label htmlFor="endDate">Fecha Final</Label>
+                          <DatePickerComponent
+                            id="endDate"
+                            name="endDate"
+                            placeholder="fecha final"
+                            format="dd/MM/yyyy"
+                            value={this.state.endDate}
+                            change={this.handleDate}
+                          />
+                        </FormGroup>
+                      </Col>
+                      <Col xs="2">
+                        <FormGroup>
+                          <Label htmlFor="issueDate">Fecha de Emisión</Label>
+                          <DatePickerComponent
+                            id="issueDate"
+                            name="issueDate"
+                            placeholder="fecha de emisión"
+                            format="dd/MM/yyyy"
+                            value={this.state.issueDate}
+                            change={this.handleDate}
+                          />
+                        </FormGroup>
+                      </Col>
+                      <Col
+                        xs="2"
+                        style={{
+                          marginTop: "20px",
+                          textAlign: "right",
+                        }}
+                      >
+                        <div className="form-actions">
+                          <Button color="primary" onClick={this.handleSubmit}>
+                            Generar Factura
+                          </Button>
+                        </div>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col xs="12" style={{}}>
+                        <div style={{ textAlign: "center", marginTop: "40px" }}>
+                          <h1>Listado de Facturas</h1>
+                        </div>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col xs="12" style={{ marginTop: "40px" }}>
+                        <GridInvoice
+                          clientId={null}
+                          workId={null}
+                          update={this.state.updateGrid}
+                          showMessage={this.props.showMessage}
+                          showViewInvoice={false}
                         />
-                      </FormGroup>
-                    </Col>
-                    <Col xs="2">
-                      <FormGroup>
-                        <Label htmlFor="startDate">Fecha de Inicio</Label>
-                        <DatePickerComponent
-                          id="startDate"
-                          name="startDate"
-                          placeholder="fecha de inicio"
-                          format="dd/MM/yyyy"
-                          value={this.state.startDate}
-                          change={this.handleDate}
-                        />
-                      </FormGroup>
-                    </Col>
-                    <Col xs="2">
-                      <FormGroup>
-                        <Label htmlFor="endDate">Fecha Final</Label>
-                        <DatePickerComponent
-                          id="endDate"
-                          name="endDate"
-                          placeholder="fecha final"
-                          format="dd/MM/yyyy"
-                          value={this.state.endDate}
-                          change={this.handleDate}
-                        />
-                      </FormGroup>
-                    </Col>
-                    <Col xs="2">
-                      <FormGroup>
-                        <Label htmlFor="issueDate">Fecha de Emisión</Label>
-                        <DatePickerComponent
-                          id="issueDate"
-                          name="issueDate"
-                          placeholder="fecha de emisión"
-                          format="dd/MM/yyyy"
-                          value={this.state.issueDate}
-                          change={this.handleDate}
-                        />
-                      </FormGroup>
-                    </Col>
-                    <Col
-                      xs="2"
-                      style={{
-                        marginTop: "20px",
-                        textAlign: "right"
-                      }}
-                    >
-                      <div className="form-actions">
-                        <Button color="primary" onClick={this.handleSubmit}>
-                          Generar Factura
-                        </Button>
-                      </div>
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col xs="12" style={{}}>
-                      <div style={{ textAlign: "center", marginTop: "40px" }}>
-                        <h1>Listado de Facturas</h1>
-                      </div>
-                    </Col>
-                  </Row>                  
-                  <Row>
-                    <Col xs="12" style={{ marginTop: "40px" }}>
-                      <GridInvoice
-                        clientId={null}
-                        workId={null}
-                        update={this.state.updateGrid}
-                        showMessage={this.props.showMessage}
-                        showViewInvoice={false}
-                      />
-                    </Col>
-                  </Row>
-                </Form>
+                      </Col>
+                    </Row>
+                  </Form>
+                </div>
               </div>
             </div>
-          </div>
+          </Container>
         </Fragment>
       </div>
     );
@@ -283,14 +302,14 @@ class Invoices extends Component {
 
 Invoices.propTypes = {};
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
-    errorApplication: state.applicationReducer.error
+    errorApplication: state.applicationReducer.error,
   };
 };
 
-const mapDispatchToProps = dispatch => ({
-  showMessage: message => dispatch(ACTION_APPLICATION.showMessage(message))
+const mapDispatchToProps = (dispatch) => ({
+  showMessage: (message) => dispatch(ACTION_APPLICATION.showMessage(message)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Invoices);

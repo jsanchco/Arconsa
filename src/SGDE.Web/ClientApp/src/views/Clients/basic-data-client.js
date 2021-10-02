@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from "react";
 import { Form, Col, FormGroup, Input, Label, Row, Button } from "reactstrap";
 import { MaskedTextBoxComponent } from "@syncfusion/ej2-react-inputs";
-import { updateClient } from "../../services";
+import { updateClient, getClient } from "../../services";
 import {
   createSpinner,
   showSpinner,
@@ -12,15 +12,18 @@ class BasicDataClient extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      id: props.client.id,
-      name: props.client.name,
-      cif: props.client.cif,
-      phoneNumber: props.client.phoneNumber,
-      address: props.client.address,
-      wayToPay: props.client.wayToPay,
-      accountNumber: props.client.accountNumber
-    };
+    this.state = {};
+    getClient(this.props.clientId).then((result) => {
+      this.setState({
+        id: result.id,
+        name: result.name,
+        cif: result.cif,
+        phoneNumber: result.phoneNumber,
+        address: result.address,
+        wayToPay: result.wayToPay,
+        accountNumber: result.accountNumber
+      });
+    });
 
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);

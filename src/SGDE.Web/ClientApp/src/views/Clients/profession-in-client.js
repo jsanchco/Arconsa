@@ -56,7 +56,7 @@ class ProfessionInClient extends Component {
     this.actionFailure = this.actionFailure.bind(this);
     this.actionComplete = this.actionComplete.bind(this);
 
-    this.query = new Query().addParams("clientId", props.client.id);
+    this.query = new Query().addParams("clientId", props.clientId);
   }
 
   actionFailure(args) {
@@ -89,10 +89,7 @@ class ProfessionInClient extends Component {
   }
 
   render() {
-    let title = "";
-    if (this.props.client !== null && this.props.client !== undefined) {
-      title = ` Precios por Profesión [${this.props.client.name}]`;
-    }
+    let title = ` Precios por Profesión [${this.props.clientName}]`;
 
     return (
       <Fragment>
@@ -211,7 +208,7 @@ class ProfessionInClient extends Component {
                   />
                   <ColumnDirective
                     field="clientId"
-                    defaultValue={this.props.client.id}
+                    defaultValue={this.props.clientId}
                     visible={false}
                   />
                 </ColumnsDirective>

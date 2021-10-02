@@ -57,7 +57,7 @@ class WorksByClient extends Component {
     this.openTemplate = this.openTemplate.bind(this);
     this.dateTemplate = this.dateTemplate.bind(this);
 
-    this.query = new Query().addParams("clientId", props.client.id);
+    this.query = new Query().addParams("clientId", props.clientId);
   }
 
   openTemplate(args) {
@@ -124,13 +124,7 @@ class WorksByClient extends Component {
   }
 
   render() {
-    let title = "";
-    if (
-      this.props.client !== null &&
-      this.props.client !== undefined
-    ) {
-      title = ` Obras [${this.props.client.name}]`;
-    }
+    let title = ` Obras [${this.props.clientName}]`;
 
     return (
       <div className="animated fadeIn" id="target-works">

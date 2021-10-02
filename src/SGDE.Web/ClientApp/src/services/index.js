@@ -748,6 +748,28 @@ export const getClients = () => {
   });
 };
 
+export const getClient = id => {
+  return new Promise((resolve, reject) => {
+    const url = `${config.URL_API}/${CLIENTS}/${id}`;
+    fetch(url, {
+      headers: {
+        Accept: "text/plain",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`
+      },
+      method: "GET"
+    })
+      .then(data => data.json())
+      .then(result => {
+        resolve(result);
+      })
+      .catch(error => {
+        console.log("error ->", error);
+        reject();
+      });
+  });
+};
+
 export const getInvoiceResponse = invoice => {
   return new Promise((resolve, reject) => {
     const url = `${config.URL_API}/${INVOICERESPONSES}`;

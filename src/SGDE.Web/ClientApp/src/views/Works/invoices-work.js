@@ -3,11 +3,8 @@ import GridInvoice from "../../components/grid-invoices";
 
 class InvoicesWork extends Component {
   render() {
-    let title = "";
-    if (this.props.work !== null && this.props.work !== undefined) {
-      title = ` Facturas [${this.props.work.name}]`;
-    }
-
+    let title = ` Facturas [${this.props.workName}]`;
+    
     return (
       <Fragment>
         <div className="animated fadeIn">
@@ -22,7 +19,7 @@ class InvoicesWork extends Component {
             <div className="card-body"></div>
             <GridInvoice
               clientId={null}
-              workId={this.props.work.id}
+              workId={this.props.workId}
               showMessage={this.props.showMessage}
             />
           </div>

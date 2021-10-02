@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react";
-import { Row } from "reactstrap";
+import { Breadcrumb, BreadcrumbItem, Container, Row } from "reactstrap";
 import {
   ColumnDirective,
   ColumnsDirective,
@@ -9,7 +9,7 @@ import {
   Toolbar,
   Page,
   ForeignKey,
-  Group
+  Group,
 } from "@syncfusion/ej2-react-grids";
 import { DataManager, WebApiAdaptor, Query } from "@syncfusion/ej2-data";
 import { config, USERS, PROFESSIONS, ROLES } from "../../constants";
@@ -25,19 +25,19 @@ class UsersNoWorker extends Component {
   users = new DataManager({
     adaptor: new WebApiAdaptor(),
     url: `${config.URL_API}/${USERS}`,
-    headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }]
+    headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }],
   });
 
   professions = new DataManager({
     adaptor: new WebApiAdaptor(),
     url: `${config.URL_API}/${PROFESSIONS}`,
-    headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }]
+    headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }],
   });
 
   roles = new DataManager({
     adaptor: new WebApiAdaptor(),
     url: `${config.URL_API}/${ROLES}`,
-    headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }]
+    headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }],
   });
 
   professionIdRules = { required: false };
@@ -51,7 +51,7 @@ class UsersNoWorker extends Component {
       users: null,
       professions: null,
       roles: null,
-      rowSelected: null
+      rowSelected: null,
     };
 
     this.toolbarOptions = [
@@ -64,16 +64,16 @@ class UsersNoWorker extends Component {
         text: "Detalles",
         tooltipText: "Detalles",
         prefixIcon: "e-custom-icons e-details",
-        id: "Details"
+        id: "Details",
       },
-      "Search"
+      "Search",
     ];
     this.editSettings = {
       showDeleteConfirmDialog: true,
       allowEditing: true,
       allowAdding: true,
       allowDeleting: true,
-      newRowPosition: "Top"
+      newRowPosition: "Top",
     };
     this.pageSettings = { pageCount: 10, pageSize: 10 };
     this.actionFailure = this.actionFailure.bind(this);
@@ -116,7 +116,7 @@ class UsersNoWorker extends Component {
     this.props.showMessage({
       statusText: error.statusText,
       responseText: error.responseText,
-      type: "danger"
+      type: "danger",
     });
   }
 
@@ -125,7 +125,7 @@ class UsersNoWorker extends Component {
       this.props.showMessage({
         statusText: "200",
         responseText: "Operación realizada con éxito",
-        type: "success"
+        type: "success",
       });
       this.setState({ rowSelected: null });
     }
@@ -133,7 +133,7 @@ class UsersNoWorker extends Component {
       this.props.showMessage({
         statusText: "200",
         responseText: "Operación realizada con éxito",
-        type: "success"
+        type: "success",
       });
       this.setState({ rowSelected: null });
     }
@@ -146,8 +146,8 @@ class UsersNoWorker extends Component {
         this.props.history.push({
           pathname: "/employees/detailemployee",
           state: {
-            user: rowSelected
-          }
+            user: rowSelected,
+          },
         });
       }
     }
@@ -179,107 +179,115 @@ class UsersNoWorker extends Component {
       case 2:
         return (
           <ColumnDirective
-          field="roleId"
-          headerText="Role"
-          width="100"
-          visible={false}
-          defaultValue={2}
-        />
+            field="roleId"
+            headerText="Role"
+            width="100"
+            visible={false}
+            defaultValue={2}
+          />
         );
 
-        default:
-          return null;
+      default:
+        return null;
     }
   }
 
   render() {
     return (
       <Fragment>
-        <div className="animated fadeIn">
-          <div className="card">
-            <div className="card-header">
-              <i className="icon-list"></i> Usuarios
-            </div>
-            <div className="card-body"></div>
-            <Row>
-              <GridComponent
-                dataSource={this.users}
-                locale="es-US"
-                allowPaging={true}
-                pageSettings={this.pageSettings}
-                toolbar={this.toolbarOptions}
-                toolbarClick={this.clickHandler}
-                editSettings={this.editSettings}
-                style={{
-                  marginLeft: 30,
-                  marginRight: 30,
-                  marginTop: -20,
-                  marginBottom: 20
-                }}
-                actionFailure={this.actionFailure}
-                actionComplete={this.actionComplete}
-                allowGrouping={true}
-                rowSelected={this.rowSelected}
-                ref={g => (this.grid = g)}
-                query={this.query}
-              >
-                <ColumnsDirective>                  
-                  <ColumnDirective
-                    field="id"
-                    headerText="Id"
-                    width="40"
-                    isPrimaryKey={true}
-                    isIdentity={true}
-                    visible={false}
-                  />
-                  <ColumnDirective
-                    headerText="Foto"
-                    width="100"
-                    template={this.template}
-                    textAlign="Center"
-                    allowEditing={false}
-                  />
-                  <ColumnDirective field="dni" headerText="DNI" width="100" />
-                  <ColumnDirective
-                    field="name"
-                    headerText="Nombre"
-                    width="100"
-                  />
-                  <ColumnDirective
-                    field="surname"
-                    headerText="Apellidos"
-                    width="100"
-                  />
-                  <ColumnDirective
-                    field="username"
-                    headerText="Código Acceso"
-                    width="100"
-                    required={true}
-                  />
-                  <ColumnDirective
-                    field="phoneNumber"
-                    headerText="Teléfono"
-                    width="100"
-                  />
-                  <ColumnDirective
-                    field="professionId"
-                    headerText="Profesión"
-                    width="100"
-                    editType="dropdownedit"
-                    foreignKeyValue="name"
-                    foreignKeyField="id"
-                    validationRules={this.professionIdRules}
-                    dataSource={this.professions}
-                  />
+        <Breadcrumb class>
+          {/*eslint-disable-next-line*/}
+          <BreadcrumbItem><a href="#">Inicio</a></BreadcrumbItem>
+          {/* eslint-disable-next-line*/}
+          <BreadcrumbItem active>Gestión de Usuarios</BreadcrumbItem>
+        </Breadcrumb>
 
-                  {this.renderColumnRole()}
-                  
-                </ColumnsDirective>
-                <Inject services={[ForeignKey, Group, Page, Toolbar, Edit]} />
-              </GridComponent>
-            </Row>
+        <Container fluid>
+          <div className="animated fadeIn">
+            <div className="card">
+              <div className="card-header">
+                <i className="icon-list"></i> Gestión de Usuarios
+              </div>
+              <div className="card-body"></div>
+              <Row>
+                <GridComponent
+                  dataSource={this.users}
+                  locale="es-US"
+                  allowPaging={true}
+                  pageSettings={this.pageSettings}
+                  toolbar={this.toolbarOptions}
+                  toolbarClick={this.clickHandler}
+                  editSettings={this.editSettings}
+                  style={{
+                    marginLeft: 30,
+                    marginRight: 30,
+                    marginTop: -20,
+                    marginBottom: 20,
+                  }}
+                  actionFailure={this.actionFailure}
+                  actionComplete={this.actionComplete}
+                  allowGrouping={true}
+                  rowSelected={this.rowSelected}
+                  ref={(g) => (this.grid = g)}
+                  query={this.query}
+                >
+                  <ColumnsDirective>
+                    <ColumnDirective
+                      field="id"
+                      headerText="Id"
+                      width="40"
+                      isPrimaryKey={true}
+                      isIdentity={true}
+                      visible={false}
+                    />
+                    <ColumnDirective
+                      headerText="Foto"
+                      width="100"
+                      template={this.template}
+                      textAlign="Center"
+                      allowEditing={false}
+                    />
+                    <ColumnDirective field="dni" headerText="DNI" width="100" />
+                    <ColumnDirective
+                      field="name"
+                      headerText="Nombre"
+                      width="100"
+                    />
+                    <ColumnDirective
+                      field="surname"
+                      headerText="Apellidos"
+                      width="100"
+                    />
+                    <ColumnDirective
+                      field="username"
+                      headerText="Código Acceso"
+                      width="100"
+                      required={true}
+                    />
+                    <ColumnDirective
+                      field="phoneNumber"
+                      headerText="Teléfono"
+                      width="100"
+                    />
+                    <ColumnDirective
+                      field="professionId"
+                      headerText="Profesión"
+                      width="100"
+                      editType="dropdownedit"
+                      foreignKeyValue="name"
+                      foreignKeyField="id"
+                      validationRules={this.professionIdRules}
+                      dataSource={this.professions}
+                    />
+
+                    {this.renderColumnRole()}
+                  </ColumnsDirective>
+                  <Inject services={[ForeignKey, Group, Page, Toolbar, Edit]} />
+                </GridComponent>
+              </Row>
+            </div>
           </div>
-        </div>
+        </Container>
       </Fragment>
     );
   }
@@ -287,14 +295,14 @@ class UsersNoWorker extends Component {
 
 UsersNoWorker.propTypes = {};
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
-    errorApplication: state.applicationReducer.error
+    errorApplication: state.applicationReducer.error,
   };
 };
 
-const mapDispatchToProps = dispatch => ({
-  showMessage: message => dispatch(ACTION_APPLICATION.showMessage(message))
+const mapDispatchToProps = (dispatch) => ({
+  showMessage: (message) => dispatch(ACTION_APPLICATION.showMessage(message)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(UsersNoWorker);

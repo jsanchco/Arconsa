@@ -3,10 +3,7 @@ import GridInvoice from "../../components/grid-invoices";
 
 class InvoicesClient extends Component {
   render() {
-    let title = "";
-    if (this.props.client !== null && this.props.client !== undefined) {
-      title = ` Facturas [${this.props.client.name}]`;
-    }
+    let title = ` Facturas [${this.props.clientName}]`;
 
     return (
       <Fragment>
@@ -21,7 +18,7 @@ class InvoicesClient extends Component {
             </div>
             <div className="card-body"></div>
             <GridInvoice
-              clientId={this.props.client.id}
+              clientId={this.props.clientId}
               workId={null}
               showMessage={this.props.showMessage}
             />

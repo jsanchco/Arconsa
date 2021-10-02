@@ -1,11 +1,13 @@
 import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 import ACTION_APPLICATION from "../../actions/applicationAction";
+import { getClient } from "../../services";
 import {
   TabComponent,
   TabItemDirective,
   TabItemsDirective,
 } from "@syncfusion/ej2-react-navigations";
+import { Breadcrumb, BreadcrumbItem, Container } from "reactstrap";
 import BasicDataClient from "./basic-data-client";
 import WorksByClient from "./works-by-client";
 import ProfessionInClient from "./profession-in-client";
@@ -15,6 +17,8 @@ class DetailClient extends Component {
   constructor(props) {
     super(props);
 
+    this.state = {};
+
     this.headerText = [
       { text: "Datos Básicos" },
       { text: "Obras" },
@@ -23,21 +27,28 @@ class DetailClient extends Component {
     ];
 
     this.contentTemplateWorks = this.contentTemplateWorks.bind(this);
-    this.contentTemplateBasicDataClient = this.contentTemplateBasicDataClient.bind(
-      this
-    );
-    this.contentTemplateProfessionInClient = this.contentTemplateProfessionInClient.bind(
-      this
-    );
-    this.contentTemplateInvoicesInClient = this.contentTemplateInvoicesInClient.bind(
-      this
-    );
+    this.contentTemplateBasicDataClient =
+      this.contentTemplateBasicDataClient.bind(this);
+    this.contentTemplateProfessionInClient =
+      this.contentTemplateProfessionInClient.bind(this);
+    this.contentTemplateInvoicesInClient =
+      this.contentTemplateInvoicesInClient.bind(this);
+  }
+
+  componentDidMount() {
+    getClient(this.props.match.params.id).then((result) => {
+      this.setState({
+        client: {
+          name: result.name,
+        },
+      });
+    });
   }
 
   contentTemplateBasicDataClient() {
     return (
       <BasicDataClient
-        client={this.props.history.location.state.client}
+        clientId={this.props.match.params.id}
         history={this.props.history}
         showMessage={this.props.showMessage}
       />
@@ -47,7 +58,8 @@ class DetailClient extends Component {
   contentTemplateWorks() {
     return (
       <WorksByClient
-        client={this.props.history.location.state.client}
+        clientId={this.props.match.params.id}
+        clientName={this.state.client.name}
         history={this.props.history}
         showMessage={this.props.showMessage}
       />
@@ -57,7 +69,8 @@ class DetailClient extends Component {
   contentTemplateProfessionInClient() {
     return (
       <ProfessionInClient
-        client={this.props.history.location.state.client}
+        clientId={this.props.match.params.id}
+        clientName={this.state.client.name}
         history={this.props.history}
         showMessage={this.props.showMessage}
       />
@@ -67,7 +80,8 @@ class DetailClient extends Component {
   contentTemplateInvoicesInClient() {
     return (
       <InvoicesClient
-        client={this.props.history.location.state.client}
+        clientId={this.props.match.params.id}
+        clientName={this.state.client.name}
         history={this.props.history}
         showMessage={this.props.showMessage}
       />
@@ -78,56 +92,65 @@ class DetailClient extends Component {
     const user = JSON.parse(localStorage.getItem("user"));
 
     let title = "";
-    if (
-      this.props.history.location.state.client !== null &&
-      this.props.history.location.state.client !== undefined
-    ) {
-      title = ` Detalle Cliente [${this.props.history.location.state.client.name}]`;
+    if (this.state.client !== null && this.state.client !== undefined) {
+      title = ` Detalle Cliente [${this.state.client.name}]`;
     }
 
     return (
       <Fragment>
-        <div className="animated fadeIn">
-          <div className="card">
-            <div className="card-header">
-              <i className="icon-book-open"></i>
-              {title}
-            </div>
-            <div className="card-body">
-              <TabComponent
-                style={{
-                  marginLeft: 30,
-                  marginRight: 30,
-                  marginTop: 0,
-                  marginBottom: 20,
-                }}
-              >
-                <TabItemsDirective>
-                  <TabItemDirective
-                    header={this.headerText[0]}
-                    content={this.contentTemplateBasicDataClient}
-                  />
+        <Breadcrumb class>
+          {/*eslint-disable-next-line*/}
+          <BreadcrumbItem><a href="#">Inicio</a></BreadcrumbItem>
+          {/* eslint-disable-next-line*/}
+          <BreadcrumbItem>
+            <a href="#/clients/clients">Clientes</a>
+          </BreadcrumbItem>
+          <BreadcrumbItem active>Detalles</BreadcrumbItem>
+        </Breadcrumb>
 
-                  <TabItemDirective
-                    header={this.headerText[1]}
-                    content={this.contentTemplateWorks}
-                  />
-
-                  <TabItemDirective
-                    header={this.headerText[2]}
-                    content={this.contentTemplateProfessionInClient}
-                  />
-                  {user.roleId === 1 ? (
+        <Container fluid>
+          <div className="animated fadeIn">
+            <div className="card">
+              <div className="card-header">
+                <i className="icon-book-open"></i>
+                {title}
+              </div>
+              <div className="card-body">
+                <TabComponent
+                  style={{
+                    marginLeft: 30,
+                    marginRight: 30,
+                    marginTop: 0,
+                    marginBottom: 20,
+                  }}
+                >
+                  <TabItemsDirective>
                     <TabItemDirective
-                      header={this.headerText[3]}
-                      content={this.contentTemplateInvoicesInClient}
+                      header={this.headerText[0]}
+                      content={this.contentTemplateBasicDataClient}
                     />
-                  ) : null}
-                </TabItemsDirective>
-              </TabComponent>
+
+                    <TabItemDirective
+                      header={this.headerText[1]}
+                      content={this.contentTemplateWorks}
+                    />
+
+                    <TabItemDirective
+                      header={this.headerText[2]}
+                      content={this.contentTemplateProfessionInClient}
+                    />
+                    {user.roleId === 1 ? (
+                      <TabItemDirective
+                        header={this.headerText[3]}
+                        content={this.contentTemplateInvoicesInClient}
+                      />
+                    ) : null}
+                  </TabItemsDirective>
+                </TabComponent>
+              </div>
             </div>
           </div>
-        </div>
+        </Container>
       </Fragment>
     );
   }
