@@ -174,7 +174,7 @@ class DailySignings extends Component {
       this.grid.columns[1].edit.params.query.params = [];
       this.grid.columns[1].edit.params.query.addParams(
         "userId",
-        this.props.user.id
+        this.props.userId
       );
     }
 

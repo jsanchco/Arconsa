@@ -41,11 +41,11 @@
                 ModifiedDate = null,
                 IPAddress = newDailySigningViewModel.iPAddress,
 
-                StartHour = DateTime.ParseExact(newDailySigningViewModel.startHour, "dd/MM/yyyy HH:mm", null),
+                StartHour = DateTime.Parse(newDailySigningViewModel.startHour),
 
                 EndHour = string.IsNullOrEmpty(newDailySigningViewModel.endHour)
                 ? null :
-                (DateTime?)DateTime.ParseExact(newDailySigningViewModel.endHour, "dd/MM/yyyy HH:mm", null),
+                (DateTime?)DateTime.Parse(newDailySigningViewModel.endHour),
 
                 UserHiringId = newDailySigningViewModel.userHiringId,
                 HourTypeId = newDailySigningViewModel.hourTypeId
@@ -71,11 +71,11 @@
             dailySigning.ModifiedDate = DateTime.Now;
             dailySigning.IPAddress = dailySigningViewModel.iPAddress;
 
-            dailySigning.StartHour = DateTime.ParseExact(dailySigningViewModel.startHour, "dd/MM/yyyy HH:mm", null);
+            dailySigning.StartHour = DateTime.Parse(dailySigningViewModel.startHour);
 
             dailySigning.EndHour = string.IsNullOrEmpty(dailySigningViewModel.endHour)
                 ? null
-                : (DateTime?)DateTime.ParseExact(dailySigningViewModel.endHour, "dd/MM/yyyy HH:mm", null);
+                : (DateTime?)DateTime.Parse(dailySigningViewModel.endHour);
 
             dailySigning.UserHiringId = dailySigningViewModel.userHiringId;
             dailySigning.HourTypeId = dailySigningViewModel.hourTypeId;
@@ -98,8 +98,8 @@
 
             var result = true;
 
-            var actualDay = DateTime.ParseExact($"{massiveSigningQueryViewModel.startSigning}", "dd/MM/yyyy", null);
-            var endDay = DateTime.ParseExact($"{massiveSigningQueryViewModel.endSigning}", "dd/MM/yyyy", null);
+            var actualDay = DateTime.Parse($"{massiveSigningQueryViewModel.startSigning}");
+            var endDay = DateTime.Parse($"{massiveSigningQueryViewModel.endSigning}");
             while (actualDay <= endDay)
             {
                 if ((actualDay.DayOfWeek == DayOfWeek.Saturday) || (actualDay.DayOfWeek == DayOfWeek.Sunday))

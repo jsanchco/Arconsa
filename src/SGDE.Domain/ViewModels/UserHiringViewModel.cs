@@ -12,7 +12,7 @@
         {
             get
             {
-                var dtStartDate = DateTime.ParseExact(startDate, "MM/dd/yyyy", null);
+                var dtStartDate = DateTime.Parse(startDate);
 
                 return $"{workName} {dtStartDate.ToString("dd/MM/yyyy")}";
             }
