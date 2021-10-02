@@ -236,9 +236,7 @@ class Employees extends Component {
       <Fragment>
         <Breadcrumb class>
           {/*eslint-disable-next-line*/}
-          <BreadcrumbItem>
-            <a href="#">Inicio</a>
-          </BreadcrumbItem>
+          <BreadcrumbItem><a href="#">Inicio</a></BreadcrumbItem>
           {/* eslint-disable-next-line*/}
           <BreadcrumbItem active>Trabajadores</BreadcrumbItem>
         </Breadcrumb>
