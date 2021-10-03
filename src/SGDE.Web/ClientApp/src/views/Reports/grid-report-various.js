@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 import {
   ColumnDirective,
@@ -13,7 +13,8 @@ import {
   AggregateColumnsDirective,
   AggregateColumnDirective,
   AggregateDirective,
-  AggregatesDirective
+  AggregatesDirective,
+  Resize,
 } from "@syncfusion/ej2-react-grids";
 import { DataManager, WebApiAdaptor, Query } from "@syncfusion/ej2-data";
 import { config, REPORTS_ALL } from "../../constants";
@@ -25,7 +26,6 @@ import { COMPANY_DATA } from "../../constants";
 L10n.load(data);
 
 class GridReportVarious extends Component {
-
   grid = null;
 
   wrapSettings = { wrapMode: "Content" };
@@ -40,7 +40,7 @@ class GridReportVarious extends Component {
       phoneNumber: "",
       title: "",
       titleColumn: "",
-      field: ""
+      field: "",
     };
 
     this.toolbarOptions = [
@@ -91,7 +91,7 @@ class GridReportVarious extends Component {
             title: "TRABAJADORES",
             titleColumn: "Trabajador",
             titleFooter: "Trabajadores",
-            field: "workerName"
+            field: "workerName",
           });
           this.grid.dataSource = new DataManager({
             adaptor: new WebApiAdaptor(),
@@ -113,7 +113,7 @@ class GridReportVarious extends Component {
             title: "OBRAS",
             titleColumn: "Obra",
             titleFooter: "Obras",
-            field: "workName"
+            field: "workName",
           });
           this.grid.dataSource = new DataManager({
             adaptor: new WebApiAdaptor(),
@@ -135,7 +135,7 @@ class GridReportVarious extends Component {
             title: "CLIENTES",
             titleColumn: "Cliente",
             titleFooter: "Clientes",
-            field: "clientName"
+            field: "clientName",
           });
           this.grid.dataSource = new DataManager({
             adaptor: new WebApiAdaptor(),
@@ -170,7 +170,11 @@ class GridReportVarious extends Component {
   }
 
   footerCount(args) {
-    return <span>Total: {args.Count} {this.state.titleFooter}</span>;
+    return (
+      <span>
+        Total: {args.Count} {this.state.titleFooter}
+      </span>
+    );
   }
 
   footerSum(args) {
@@ -317,192 +321,186 @@ class GridReportVarious extends Component {
 
   render() {
     return (
-      <div className="control-pane">
-        <div className="control-section">
-          <div>
-            <GridComponent
-              dataSource={this.users}
-              id="GridWorker"
-              locale="es-US"
-              toolbar={this.toolbarOptions}
-              toolbarClick={this.clickHandler}
-              style={{
-                marginLeft: 30,
-                marginRight: 30,
-                marginTop: 10,
-                marginBottom: 20,
-              }}
-              allowGrouping={true}
-              allowExcelExport={true}
-              ref={(g) => (this.grid = g)}
-              allowTextWrap={true}
-              textWrapSettings={this.wrapSettings}
-              allowSorting={true}
-            >
-              <ColumnsDirective>              
+      <GridComponent
+        dataSource={this.users}
+        id="GridWorker"
+        locale="es"
+        toolbar={this.toolbarOptions}
+        toolbarClick={this.clickHandler}
+        style={{
+          marginLeft: 30,
+          marginRight: 30,
+          marginTop: 10,
+          marginBottom: 20,
+          overflow: "auto",
+        }}
+        allowGrouping={true}
+        allowExcelExport={true}
+        ref={(g) => (this.grid = g)}
+        allowTextWrap={true}
+        textWrapSettings={this.wrapSettings}
+        allowSorting={true}
+        allowResizing={true}
+      >
+        <ColumnsDirective>
+          <ColumnDirective
+            field={this.state.field}
+            headerText={this.state.titleColumn}
+            width="100"
+          />
 
-                <ColumnDirective
-                  field={this.state.field}
-                  headerText={this.state.titleColumn}
-                  width="100"
-                />
+          {this.renderColumn()}
 
-                 {this.renderColumn()}
+          <ColumnDirective
+            field="totalHoursOrdinary"
+            headerText="Ordinarias"
+            width="70"
+          />
+          <ColumnDirective
+            field="priceTotalHoursOrdinary"
+            headerText="Precio Ord."
+            width="70"
+          />
+          <ColumnDirective
+            field="priceTotalHoursSaleOrdinary"
+            headerText="Venta Ord."
+            width="70"
+          />
+          <ColumnDirective
+            field="totalHoursExtraordinary"
+            headerText="Extra"
+            width="70"
+          />
+          <ColumnDirective
+            field="priceTotalHoursExtraordinary"
+            headerText="Precio Extra"
+            width="70"
+          />
+          <ColumnDirective
+            field="priceTotalHoursSaleExtraordinary"
+            headerText="Venta Extra"
+            width="70"
+          />
+          <ColumnDirective
+            field="totalHoursFestive"
+            headerText="Festivo"
+            width="70"
+          />
+          <ColumnDirective
+            field="priceTotalHoursFestive"
+            headerText="Precio Festivo"
+            width="70"
+          />
+          <ColumnDirective
+            field="priceTotalHoursSaleFestive"
+            headerText="Venta Festivo"
+            width="70"
+          />
+        </ColumnsDirective>
 
-                <ColumnDirective
-                  field="totalHoursOrdinary"
-                  headerText="Ordinarias"
-                  width="70"
-                />
-                <ColumnDirective
-                  field="priceTotalHoursOrdinary"
-                  headerText="Precio Ord."
-                  width="70"
-                />
-                <ColumnDirective
-                  field="priceTotalHoursSaleOrdinary"
-                  headerText="Venta Ord."
-                  width="70"
-                />
-                <ColumnDirective
-                  field="totalHoursExtraordinary"
-                  headerText="Extra"
-                  width="70"
-                />
-                <ColumnDirective
-                  field="priceTotalHoursExtraordinary"
-                  headerText="Precio Extra"
-                  width="70"
-                />
-                <ColumnDirective
-                  field="priceTotalHoursSaleExtraordinary"
-                  headerText="Venta Extra"
-                  width="70"
-                />
-                <ColumnDirective
-                  field="totalHoursFestive"
-                  headerText="Festivo"
-                  width="70"
-                />
-                <ColumnDirective
-                  field="priceTotalHoursFestive"
-                  headerText="Precio Festivo"
-                  width="70"
-                />
-                <ColumnDirective
-                  field="priceTotalHoursSaleFestive"
-                  headerText="Venta Festivo"
-                  width="70"
-                />
-              </ColumnsDirective>
+        <AggregatesDirective>
+          <AggregateDirective>
+            <AggregateColumnsDirective>
+              <AggregateColumnDirective
+                field="totalHoursOrdinary"
+                type="Sum"
+                format="N2"
+                footerTemplate={this.footerSum}
+              >
+                {" "}
+              </AggregateColumnDirective>
 
-              <AggregatesDirective>
-                <AggregateDirective>
-                  <AggregateColumnsDirective>
-                    <AggregateColumnDirective
-                      field="totalHoursOrdinary"
-                      type="Sum"
-                      format="N2"
-                      footerTemplate={this.footerSum}
-                    >
-                      {" "}
-                    </AggregateColumnDirective>
+              <AggregateColumnDirective
+                field="priceTotalHoursOrdinary"
+                type="Sum"
+                format="N2"
+                footerTemplate={this.footerSumEuros}
+              >
+                {" "}
+              </AggregateColumnDirective>
 
-                    <AggregateColumnDirective
-                      field="priceTotalHoursOrdinary"
-                      type="Sum"
-                      format="N2"
-                      footerTemplate={this.footerSumEuros}
-                    >
-                      {" "}
-                    </AggregateColumnDirective>
+              <AggregateColumnDirective
+                field="priceTotalHoursSaleOrdinary"
+                type="Sum"
+                format="N2"
+                footerTemplate={this.footerSumEuros}
+              >
+                {" "}
+              </AggregateColumnDirective>
 
-                    <AggregateColumnDirective
-                      field="priceTotalHoursSaleOrdinary"
-                      type="Sum"
-                      format="N2"
-                      footerTemplate={this.footerSumEuros}
-                    >
-                      {" "}
-                    </AggregateColumnDirective>
+              <AggregateColumnDirective
+                field="totalHoursExtraordinary"
+                type="Sum"
+                format="N2"
+                footerTemplate={this.footerSum}
+              >
+                {" "}
+              </AggregateColumnDirective>
 
-                    <AggregateColumnDirective
-                      field="totalHoursExtraordinary"
-                      type="Sum"
-                      format="N2"
-                      footerTemplate={this.footerSum}
-                    >
-                      {" "}
-                    </AggregateColumnDirective>
+              <AggregateColumnDirective
+                field="priceTotalHoursExtraordinary"
+                type="Sum"
+                format="N2"
+                footerTemplate={this.footerSumEuros}
+              >
+                {" "}
+              </AggregateColumnDirective>
 
-                    <AggregateColumnDirective
-                      field="priceTotalHoursExtraordinary"
-                      type="Sum"
-                      format="N2"
-                      footerTemplate={this.footerSumEuros}
-                    >
-                      {" "}
-                    </AggregateColumnDirective>
+              <AggregateColumnDirective
+                field="priceTotalHoursSaleExtraordinary"
+                type="Sum"
+                format="N2"
+                footerTemplate={this.footerSumEuros}
+              >
+                {" "}
+              </AggregateColumnDirective>
+              <AggregateColumnDirective
+                field="totalHoursFestive"
+                type="Sum"
+                format="N2"
+                footerTemplate={this.footerSum}
+              >
+                {" "}
+              </AggregateColumnDirective>
 
-                    <AggregateColumnDirective
-                      field="priceTotalHoursSaleExtraordinary"
-                      type="Sum"
-                      format="N2"
-                      footerTemplate={this.footerSumEuros}
-                    >
-                      {" "}
-                    </AggregateColumnDirective>
-                    <AggregateColumnDirective
-                      field="totalHoursFestive"
-                      type="Sum"
-                      format="N2"
-                      footerTemplate={this.footerSum}
-                    >
-                      {" "}
-                    </AggregateColumnDirective>
+              <AggregateColumnDirective
+                field="priceTotalHoursFestive"
+                type="Sum"
+                format="N2"
+                footerTemplate={this.footerSumEuros}
+              >
+                {" "}
+              </AggregateColumnDirective>
 
-                    <AggregateColumnDirective
-                      field="priceTotalHoursFestive"
-                      type="Sum"
-                      format="N2"
-                      footerTemplate={this.footerSumEuros}
-                    >
-                      {" "}
-                    </AggregateColumnDirective>
+              <AggregateColumnDirective
+                field="priceTotalHoursSaleFestive"
+                type="Sum"
+                format="N2"
+                footerTemplate={this.footerSumEuros}
+              >
+                {" "}
+              </AggregateColumnDirective>
+            </AggregateColumnsDirective>
+          </AggregateDirective>
 
-                    <AggregateColumnDirective
-                      field="priceTotalHoursSaleFestive"
-                      type="Sum"
-                      format="N2"
-                      footerTemplate={this.footerSumEuros}
-                    >
-                      {" "}
-                    </AggregateColumnDirective>
-                  </AggregateColumnsDirective>
-                </AggregateDirective>
+          <AggregateDirective>
+            <AggregateColumnsDirective>
+              <AggregateColumnDirective
+                field="priceTotalHoursSaleFestive"
+                type="Count"
+                format="N"
+                footerTemplate={this.footerCount}
+              >
+                {" "}
+              </AggregateColumnDirective>
+            </AggregateColumnsDirective>
+          </AggregateDirective>
+        </AggregatesDirective>
 
-                <AggregateDirective>
-                  <AggregateColumnsDirective>
-                    <AggregateColumnDirective
-                      field="priceTotalHoursSaleFestive"
-                      type="Count"
-                      format="N"
-                      footerTemplate={this.footerCount}
-                    >
-                      {" "}
-                    </AggregateColumnDirective>
-                  </AggregateColumnsDirective>
-                </AggregateDirective>
-
-              </AggregatesDirective>
-
-              <Inject
-                services={[Group, ExcelExport, Toolbar, Sort, Aggregate]}
-              />
-            </GridComponent>
-          </div>
-        </div>
-      </div>
+        <Inject
+          services={[Group, ExcelExport, Toolbar, Sort, Aggregate, Resize]}
+        />
+      </GridComponent>
     );
   }
 }

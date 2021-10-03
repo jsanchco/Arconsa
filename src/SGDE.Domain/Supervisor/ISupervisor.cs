@@ -54,6 +54,7 @@ namespace SGDE.Domain.Supervisor
 
         #region Client
 
+        List<ClientViewModel> GetAllClientWithoutFilter();
         QueryResult<ClientViewModel> GetAllClient(int skip = 0, int take = 0, string filter = null);
         ClientViewModel GetClientById(int id);
         ClientViewModel AddClient(ClientViewModel newClientViewModel);

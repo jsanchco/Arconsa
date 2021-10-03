@@ -332,7 +332,7 @@ class Works extends Component {
               <div>
                 <GridComponent
                   dataSource={this.works}
-                  locale="es-US"
+                  locale="es"
                   allowPaging={true}
                   pageSettings={this.pageSettings}
                   toolbar={this.toolbarOptions}

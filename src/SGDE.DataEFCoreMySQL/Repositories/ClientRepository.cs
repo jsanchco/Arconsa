@@ -7,6 +7,7 @@
     using Microsoft.EntityFrameworkCore;
     using SGDE.Domain.Helpers;
     using System;
+    using System.Collections.Generic;
     using System.Linq;
 
     #endregion
@@ -40,6 +41,14 @@
         private bool ClientExists(int id)
         {
             return GetById(id) != null;
+        }
+
+        public List<Client> GetAllWithoutFilter()
+        {
+            return _context.Client
+                .Include(x => x.ClientResponsibles)
+                .Include(x => x.ProfessionInClients)
+                .ToList();
         }
 
         public QueryResult<Client> GetAll(int skip = 0, int take = 0, string filter = null)

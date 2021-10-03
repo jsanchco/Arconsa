@@ -13,6 +13,7 @@ import {
 } from "reactstrap";
 import { DatePickerComponent } from "@syncfusion/ej2-react-calendars";
 import { DropDownListComponent } from "@syncfusion/ej2-react-dropdowns";
+import { Query } from '@syncfusion/ej2-data';
 import { connect } from "react-redux";
 import ACTION_APPLICATION from "../../actions/applicationAction";
 import {
@@ -117,6 +118,14 @@ class Invoices extends Component {
     });
   }
 
+  _handleFiltering(e)
+  {
+      let query = new Query();
+      query =
+        e.text !== "" ? query.where("name", "contains", e.text, true) : query;
+      e.updateData(this.ddl.dataSource, query);
+  }
+
   formatDate(args) {
     if (args === null || args === "") {
       return "";
@@ -143,7 +152,7 @@ class Invoices extends Component {
     if (this.state.endDate === null || this.state.endDate === undefined) {
       error = true;
     }
-    if (this.state.startDate > this.state.endDate) {
+    if (Date.parse(this.state.startDate) > Date.parse(this.state.endDate)) {
       error = true;
     }
 
@@ -153,6 +162,8 @@ class Invoices extends Component {
         responseText: "Fechas mal configuradas",
         type: "danger",
       });
+
+      return;
     }
 
     const element = document.getElementById("container");
@@ -263,6 +274,8 @@ class Invoices extends Component {
                               placeholder="selecciona obra"
                               change={this.handleDropDown}
                               ref={(g) => (this.ddl = g)}
+                              filtering={this._handleFiltering.bind(this)}
+                              allowFiltering={true}
                             />
                           </FormGroup>
                         </Col>

@@ -13,6 +13,11 @@
 
     public partial class Supervisor
     {
+        public List<ClientViewModel> GetAllClientWithoutFilter()
+        {
+            return ClientConverter.ConvertList(_clientRepository.GetAllWithoutFilter());
+        }
+
         public QueryResult<ClientViewModel> GetAllClient(int skip = 0, int take = 0, string filter = null)
         {
             var queryResult = _clientRepository.GetAll(skip, take, filter);

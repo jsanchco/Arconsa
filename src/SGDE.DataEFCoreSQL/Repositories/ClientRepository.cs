@@ -40,6 +40,14 @@
             return GetById(id) != null;
         }
 
+        public List<Client> GetAllWithoutFilter()
+        {
+            return _context.Client
+                .Include(x => x.ClientResponsibles)
+                .Include(x => x.ProfessionInClients)
+                .ToList();
+        }
+
         public QueryResult<Client> GetAll(int skip = 0, int take = 0, string filter = null)
         {
             var data = _context.Client
@@ -52,6 +60,7 @@
                 data = data
                     .Where(x =>
                         Searcher.RemoveAccentsWithNormalization(x.Address?.ToLower()).Contains(filter) ||
+                        Searcher.RemoveAccentsWithNormalization(x.Cif?.ToLower()).Contains(filter) ||
                         Searcher.RemoveAccentsWithNormalization(x.Name.ToLower()).Contains(filter) ||
                         Searcher.RemoveAccentsWithNormalization(x.WayToPay?.ToLower()).Contains(filter))
                     .ToList();

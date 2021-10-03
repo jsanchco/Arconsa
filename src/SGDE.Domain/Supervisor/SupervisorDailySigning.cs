@@ -2,14 +2,11 @@
 {
     #region Using
 
-    using System;
-    using System.Collections.Generic;
-    using System.Globalization;
-    using System.Threading;
-    using System.Threading.Tasks;
     using Converters;
     using Entities;
     using SGDE.Domain.Helpers;
+    using System;
+    using System.Collections.Generic;
     using ViewModels;
 
     #endregion
@@ -41,11 +38,11 @@
                 ModifiedDate = null,
                 IPAddress = newDailySigningViewModel.iPAddress,
 
-                StartHour = DateTime.Parse(newDailySigningViewModel.startHour),
+                StartHour = DateTime.ParseExact(newDailySigningViewModel.startHour, "dd/MM/yyyy HH:mm", null),
 
                 EndHour = string.IsNullOrEmpty(newDailySigningViewModel.endHour)
                 ? null :
-                (DateTime?)DateTime.Parse(newDailySigningViewModel.endHour),
+                (DateTime?)DateTime.ParseExact(newDailySigningViewModel.endHour, "dd/MM/yyyy HH:mm", null),
 
                 UserHiringId = newDailySigningViewModel.userHiringId,
                 HourTypeId = newDailySigningViewModel.hourTypeId
@@ -71,11 +68,11 @@
             dailySigning.ModifiedDate = DateTime.Now;
             dailySigning.IPAddress = dailySigningViewModel.iPAddress;
 
-            dailySigning.StartHour = DateTime.Parse(dailySigningViewModel.startHour);
+            dailySigning.StartHour = DateTime.ParseExact(dailySigningViewModel.startHour, "dd/MM/yyyy HH:mm", null);
 
             dailySigning.EndHour = string.IsNullOrEmpty(dailySigningViewModel.endHour)
                 ? null
-                : (DateTime?)DateTime.Parse(dailySigningViewModel.endHour);
+                : (DateTime?)DateTime.ParseExact(dailySigningViewModel.endHour, "dd/MM/yyyy HH:mm", null);
 
             dailySigning.UserHiringId = dailySigningViewModel.userHiringId;
             dailySigning.HourTypeId = dailySigningViewModel.hourTypeId;
@@ -98,8 +95,8 @@
 
             var result = true;
 
-            var actualDay = DateTime.Parse($"{massiveSigningQueryViewModel.startSigning}");
-            var endDay = DateTime.Parse($"{massiveSigningQueryViewModel.endSigning}");
+            var actualDay = DateTime.ParseExact($"{massiveSigningQueryViewModel.startSigning}", "dd/MM/yyyy", null);
+            var endDay = DateTime.ParseExact($"{massiveSigningQueryViewModel.endSigning}", "dd/MM/yyyy", null);
             while (actualDay <= endDay)
             {
                 if ((actualDay.DayOfWeek == DayOfWeek.Saturday) || (actualDay.DayOfWeek == DayOfWeek.Sunday))
@@ -145,7 +142,7 @@
 
         public bool ValidateDataMassiveSigning(List<PeriodByHoursViewModel> data)
         {
-            foreach(var item in data)
+            foreach (var item in data)
             {
                 foreach (var itemCompare in data)
                 {

@@ -1,7 +1,6 @@
 import React, { Component, Suspense, Fragment } from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
 import * as router from "react-router-dom";
-import { Container } from "reactstrap";
 import { connect } from "react-redux";
 
 import {
@@ -13,7 +12,6 @@ import {
   AppSidebarForm,
   AppSidebarHeader,
   AppSidebarMinimizer,
-  AppBreadcrumb2 as AppBreadcrumb,
   AppSidebarNav2 as AppSidebarNav
 } from "@coreui/react";
 // sidebar nav config

@@ -46,7 +46,7 @@
             {
                 _invoiceQueryViewModel.detailInvoice.Add(new DetailInvoiceViewModel
                 {
-                    servicesPerformed = $"{itemByProfession.HourTypeName.ToString()} {itemByProfession.ProfessionName}",
+                    servicesPerformed = $"{itemByProfession.HourTypeName} {itemByProfession.ProfessionName}",
                     priceUnity = GetPriceHourSale((int)itemByProfession.HourTypeId, (int)itemByProfession.ProfessionId),
                     units = itemByProfession.Hours,
                     nameUnit = "horas"

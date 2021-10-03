@@ -2,13 +2,12 @@
 {
     #region Using
 
-    using Microsoft.AspNetCore.Mvc;
-    using Microsoft.AspNetCore.Authorization;
     using Domain.Supervisor;
+    using Domain.ViewModels;
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Logging;
     using System;
-    using Domain.ViewModels;
-    using System.Linq;
 
     #endregion
 
@@ -65,7 +64,7 @@
         }
 
         [HttpPost]
-        public object Post([FromBody]InvoiceViewModel invoiceViewModel)
+        public object Post([FromBody] InvoiceViewModel invoiceViewModel)
         {
             try
             {
@@ -80,7 +79,7 @@
         }
 
         [HttpPut]
-        public object Put([FromBody]InvoiceViewModel invoiceViewModel)
+        public object Put([FromBody] InvoiceViewModel invoiceViewModel)
         {
             try
             {
@@ -113,7 +112,7 @@
                 return StatusCode(500, ex.Message);
             }
         }
-        
+
         [HttpGet("print/{invoiceId:int}")]
         public object Print(int invoiceId)
         {
@@ -145,7 +144,7 @@
         }
 
         [HttpPost("importpreviousinvoice")]
-        public object ImportPreviousInvoice([FromBody]InvoiceViewModel invoiceViewModel)
+        public object ImportPreviousInvoice([FromBody] InvoiceViewModel invoiceViewModel)
         {
             try
             {

@@ -11,6 +11,7 @@ import {
   showSpinner,
   hideSpinner,
 } from "@syncfusion/ej2-popups";
+import { Query } from '@syncfusion/ej2-data';
 
 import * as gregorian from "cldr-data/main/es-US/ca-gregorian.json";
 import * as numbers from "cldr-data/main/es-US/numbers.json";
@@ -44,6 +45,8 @@ class HeaderSettings extends Component {
       getWorkers()
         .then((items) => {
           this.ddl.dataSource = items;
+          this.searchData = this.ddl.dataSource;
+
           hideSpinner(this.element);
         })
         .catch((error) => {
@@ -55,6 +58,8 @@ class HeaderSettings extends Component {
       getWorks()
         .then((items) => {
           this.ddl.dataSource = items;
+          this.searchData = this.ddl.dataSource;
+
           hideSpinner(this.element);
         })
         .catch((error) => {
@@ -66,6 +71,8 @@ class HeaderSettings extends Component {
       getClients()
         .then((items) => {
           this.ddl.dataSource = items;
+          this.searchData = this.ddl.dataSource;
+
           hideSpinner(this.element);
         })
         .catch((error) => {
@@ -114,6 +121,14 @@ class HeaderSettings extends Component {
         );
       }
     }
+  }
+
+  _handleFiltering(e)
+  {
+      let query = new Query();
+      query =
+        e.text !== "" ? query.where("name", "contains", e.text, true) : query;
+      e.updateData(this.searchData, query);
   }
 
   formatDate(args) {
@@ -192,6 +207,8 @@ class HeaderSettings extends Component {
             placeholder={`Selecciona ${title}`}
             fields={this.fields}
             ref={(g) => (this.ddl = g)}
+            filtering={this._handleFiltering.bind(this)}
+            allowFiltering={true}
           />
         </FormGroup>
         <Button
