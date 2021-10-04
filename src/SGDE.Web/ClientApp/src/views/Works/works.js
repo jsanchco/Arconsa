@@ -12,7 +12,16 @@ import {
   Group,
   Resize,
 } from "@syncfusion/ej2-react-grids";
-import { Breadcrumb, BreadcrumbItem, Container } from "reactstrap";
+import { AppSwitch } from "@coreui/react";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  Container,
+  FormGroup,
+  Label,
+  Row,
+  Col,
+} from "reactstrap";
 import { DataManager, WebApiAdaptor } from "@syncfusion/ej2-data";
 import { config, WORKS, CLIENTSWITHOUTFILTER } from "../../constants";
 import { L10n } from "@syncfusion/ej2-base";
@@ -295,7 +304,9 @@ class Works extends Component {
       <Fragment>
         <Breadcrumb class>
           {/*eslint-disable-next-line*/}
-          <BreadcrumbItem><a href="#">Inicio</a></BreadcrumbItem>
+          <BreadcrumbItem>
+            <a href="#">Inicio</a>
+          </BreadcrumbItem>
           {/* eslint-disable-next-line*/}
           <BreadcrumbItem active>Obras</BreadcrumbItem>
         </Breadcrumb>
@@ -321,12 +332,39 @@ class Works extends Component {
                   marginBottom: "30px",
                 }}
               >
-                <Legend
-                  elements={[
-                    { color: "dot-green", text: "Obra Abierta" },
-                    { color: "dot-red", text: "Obra Cerrada" },
-                  ]}
-                />
+                <Row>
+                  <Col xs="9">
+                    <Legend
+                      elements={[
+                        { color: "dot-green", text: "Obra Abierta" },
+                        { color: "dot-red", text: "Obra Cerrada" },
+                      ]}
+                    />
+                    </Col>
+                    <Col xs="3">
+                    <FormGroup>
+                      <Label
+                        htmlFor="passiveSubject"
+                        style={{ verticalAlign: "bottom" }}
+                      >
+                        Sujeto Pasivo&nbsp;
+                      </Label>
+                      <AppSwitch
+                        className={"mx-1 mt-4"}
+                        variant={"pill"}
+                        color={"primary"}
+                        label
+                        checked={this.state.passiveSubject}
+                        id="passiveSubject"
+                        name="passiveSubject"
+                        placeholder="sujeto pasivo"
+                        onChange={this.handleInputChange}
+                        dataOn="Si"
+                        dataOff="No"
+                      />
+                    </FormGroup>
+                  </Col>
+                </Row>
               </div>
 
               <div>
@@ -343,7 +381,7 @@ class Works extends Component {
                     marginRight: 30,
                     marginTop: -20,
                     marginBottom: 20,
-                    overflow: "auto"
+                    overflow: "auto",
                   }}
                   actionFailure={this.actionFailure}
                   actionComplete={this.actionComplete}
