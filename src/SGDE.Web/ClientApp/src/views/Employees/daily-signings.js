@@ -4,6 +4,7 @@ import {
   ColumnDirective,
   ColumnsDirective,
   GridComponent,
+  RowDataBoundEventArgs,
   Edit,
   Inject,
   Toolbar,
@@ -100,6 +101,7 @@ class DailySignings extends Component {
     this.startHourTemplate = this.startHourTemplate.bind(this);
     this.formatDate = this.formatDate.bind(this);
     this.clickHandler = this.clickHandler.bind(this);
+    this.rowDataBound = this.rowDataBound.bind(this);
     this.toggleModal = this.toggleModal.bind(this);
     this.updateDailySignings = this.updateDailySignings.bind(this);
 
@@ -270,6 +272,29 @@ class DailySignings extends Component {
     this.grid.refresh();
   }
 
+  rowDataBound(args) {
+    if (args.row) {
+      var startDate = new Date(getValue("startHour", args.data));
+      switch (startDate.getDay()) {
+        case 0:
+        case 6:
+          args.row.classList.add("color-green");
+          break;
+
+        default:
+          break;
+      }
+      
+      // if (getValue("startHour", args.data) < 30){
+      //   args.row.classList.add('below-30');
+      // } else if(getValue('Freight', args.data) < 80 ) {
+      //     args.row.classList.add('below-80');
+      // } else {
+      //     args.row.classList.add('above-80');
+      // }
+    }
+}
+
   render() {
     return (
       <Fragment>
@@ -324,6 +349,7 @@ class DailySignings extends Component {
                 actionBegin={this.actionBegin}
                 allowGrouping={false}
                 rowSelected={this.rowSelected}
+                rowDataBound={this.rowDataBound}
                 ref={g => (this.grid = g)}
                 query={this.queryDailySignings}
                 allowTextWrap={true}
