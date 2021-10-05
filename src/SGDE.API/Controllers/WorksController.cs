@@ -52,6 +52,7 @@ namespace SGDE.API.Controllers
                 var take = Convert.ToInt32(queryString["$top"]);
                 var filter = Util.Helper.getSearch(queryString["$filter"]);
                 var clientId = Convert.ToInt32(queryString["clientId"]);
+                var showCloseWorks = Convert.ToBoolean(queryString["showCloseWorks"]);
 
                 var queryResult = _supervisor.GetAllWork(skip, take, filter, clientId);
 

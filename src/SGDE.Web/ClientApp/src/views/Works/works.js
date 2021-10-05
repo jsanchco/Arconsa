@@ -22,7 +22,7 @@ import {
   Row,
   Col,
 } from "reactstrap";
-import { DataManager, WebApiAdaptor } from "@syncfusion/ej2-data";
+import { DataManager, WebApiAdaptor , Query } from "@syncfusion/ej2-data";
 import { config, WORKS, CLIENTSWITHOUTFILTER } from "../../constants";
 import { L10n } from "@syncfusion/ej2-base";
 import data from "../../locales/locale.json";
@@ -71,6 +71,7 @@ class Works extends Component {
       rowSelected: null,
       rowSelectedindex: null,
       modal: false,
+      showCloseWorks: false
     };
 
     this.toolbarOptions = [
@@ -111,11 +112,22 @@ class Works extends Component {
     this.dateTemplate = this.dateTemplate.bind(this);
     this.clickHandler = this.clickHandler.bind(this);
     this.toggleModal = this.toggleModal.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this);
 
     this.selectionSettings = {
       checkboxMode: "ResetOnRowClick",
       type: "Single",
     };
+
+    this.query = new Query().addParams("showCloseWorks", this.state.showCloseWorks);
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.showWorksClosed !== this.state.showWorksClosed) {
+      console.log("showWorksClosed -> ", this.state.showWorksClosed);
+      this.grid.query = new Query().addParams("showCloseWorks", this.state.showWorksClosed);
+      this.grid.refresh();
+    }
   }
 
   clickHandler(args) {
@@ -299,14 +311,23 @@ class Works extends Component {
       args.node.getElementsByClassName("e-checkbox-wrapper")[0].remove();
   }
 
+  handleInputChange(event) {
+    const target = event.target;
+    const name = target.name;
+
+    if (name === "worksClosed") {
+      this.setState({
+        showWorksClosed: !target.checked
+      });
+    }
+  }
+
   render() {
     return (
       <Fragment>
         <Breadcrumb class>
           {/*eslint-disable-next-line*/}
-          <BreadcrumbItem>
-            <a href="#">Inicio</a>
-          </BreadcrumbItem>
+          <BreadcrumbItem><a href="#">Inicio</a></BreadcrumbItem>
           {/* eslint-disable-next-line*/}
           <BreadcrumbItem active>Obras</BreadcrumbItem>
         </Breadcrumb>
@@ -342,22 +363,22 @@ class Works extends Component {
                     />
                     </Col>
                     <Col xs="3">
-                    <FormGroup>
+                    <FormGroup
+                      style={{ marginTop: -20 }}>
                       <Label
-                        htmlFor="passiveSubject"
+                        htmlFor="worksClosed"
                         style={{ verticalAlign: "bottom" }}
                       >
-                        Sujeto Pasivo&nbsp;
+                        Mostrar obras cerradas&nbsp;
                       </Label>
                       <AppSwitch
                         className={"mx-1 mt-4"}
                         variant={"pill"}
                         color={"primary"}
                         label
-                        checked={this.state.passiveSubject}
-                        id="passiveSubject"
-                        name="passiveSubject"
-                        placeholder="sujeto pasivo"
+                        id="worksClosed"
+                        name="worksClosed"
+                        placeholder="obras cerradas"
                         onChange={this.handleInputChange}
                         dataOn="Si"
                         dataOff="No"
@@ -396,6 +417,7 @@ class Works extends Component {
                   allowTextWrap={true}
                   textWrapSettings={this.wrapSettings}
                   allowResizing={true}
+                  query={this.query}
                 >
                   <ColumnsDirective>
                     <ColumnDirective

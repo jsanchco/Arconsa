@@ -43,7 +43,7 @@
             return GetById(id) != null;
         }
 
-        public QueryResult<Work> GetAll(int skip = 0, int take = 0, string filter = null, int clientId = 0)
+        public QueryResult<Work> GetAll(int skip = 0, int take = 0, string filter = null, int clientId = 0, bool showCloseWorks = true)
         {
             List<Work> data;
 
