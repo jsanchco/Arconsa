@@ -54,7 +54,7 @@ namespace SGDE.API.Controllers
                 var clientId = Convert.ToInt32(queryString["clientId"]);
                 var showCloseWorks = Convert.ToBoolean(queryString["showCloseWorks"]);
 
-                var queryResult = _supervisor.GetAllWork(skip, take, filter, clientId);
+                var queryResult = _supervisor.GetAllWork(skip, take, filter, clientId, showCloseWorks);
 
                 return new { Items = queryResult.Data, Count = queryResult.Count };
             }

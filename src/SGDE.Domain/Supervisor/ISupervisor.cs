@@ -97,7 +97,7 @@ namespace SGDE.Domain.Supervisor
 
         #region Work
 
-        QueryResult<WorkViewModel> GetAllWork(int skip = 0, int take = 0, string filter = null, int clientId = 0);
+        QueryResult<WorkViewModel> GetAllWork(int skip = 0, int take = 0, string filter = null, int clientId = 0, bool showCloseWorks = true);
         WorkViewModel GetWorkById(int id);
         List<UserViewModel> GetUsersByWork(int workId, int state = 0); // 0 = all, 1 = asset, 2 = no asset
         WorkViewModel AddWork(WorkViewModel newWorkViewModel);

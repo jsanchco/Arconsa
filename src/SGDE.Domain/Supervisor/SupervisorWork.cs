@@ -13,9 +13,9 @@
 
     public partial class Supervisor
     {
-        public QueryResult<WorkViewModel> GetAllWork(int skip = 0, int take = 0, string filter = null, int clientId = 0)
+        public QueryResult<WorkViewModel> GetAllWork(int skip = 0, int take = 0, string filter = null, int clientId = 0, bool showCloseWorks = true)
         {
-            var queryResult = _workRepository.GetAll(skip, take, filter, clientId);
+            var queryResult = _workRepository.GetAll(skip, take, filter, clientId, showCloseWorks);
             return new QueryResult<WorkViewModel>
             {
                 Data = WorkConverter.ConvertList(queryResult.Data),

@@ -63,6 +63,13 @@
                         .ToList();
             }
 
+            if (!showCloseWorks)
+            {
+                data = data
+                    .Where(x => x.CloseDate == null)
+                    .ToList();
+            }
+
             if (!string.IsNullOrEmpty(filter))
             {
                 data = data

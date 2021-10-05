@@ -129,7 +129,7 @@ namespace SGDE.Domain.Supervisor
                 SecuritySocialNumber = newUserViewModel.securitySocialNumber,
                 BirthDate = string.IsNullOrEmpty(newUserViewModel.birthDate)
                     ? null
-                    : (DateTime?)DateTime.Parse(newUserViewModel.birthDate),
+                    : (DateTime?)DateTime.ParseExact(newUserViewModel.birthDate, "dd/MM/yyyy", null),
                 Email = newUserViewModel.email,
                 Address = newUserViewModel.address,
                 PhoneNumber = newUserViewModel.phoneNumber,
@@ -170,7 +170,7 @@ namespace SGDE.Domain.Supervisor
             //    : (DateTime?)DateTime.ParseExact(userViewModel.birthDate, "yyyy/MM/dd", null);
             user.BirthDate = string.IsNullOrEmpty(userViewModel.birthDate)
                 ? null
-                : (DateTime?)DateTime.Parse(userViewModel.birthDate);
+                : (DateTime?)DateTime.ParseExact(userViewModel.birthDate, "dd/MM/yyyy", null);
             user.Email = userViewModel.email;
             user.Address = userViewModel.address;
             user.PhoneNumber = userViewModel.phoneNumber;

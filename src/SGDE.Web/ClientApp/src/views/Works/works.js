@@ -71,7 +71,7 @@ class Works extends Component {
       rowSelected: null,
       rowSelectedindex: null,
       modal: false,
-      showCloseWorks: false
+      showCloseWorks: true
     };
 
     this.toolbarOptions = [
@@ -380,8 +380,8 @@ class Works extends Component {
                         name="worksClosed"
                         placeholder="obras cerradas"
                         onChange={this.handleInputChange}
-                        dataOn="Si"
-                        dataOff="No"
+                        dataOn="No"
+                        dataOff="Si"
                       />
                     </FormGroup>
                   </Col>

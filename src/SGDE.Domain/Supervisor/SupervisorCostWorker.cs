@@ -42,11 +42,11 @@
                 PriceHourExtra = newCostWorkerViewModel.priceHourExtra,
                 PriceHourFestive = newCostWorkerViewModel.priceHourFestive,
 
-                StartDate = DateTime.Parse(newCostWorkerViewModel.startDate),
+                StartDate = DateTime.ParseExact(newCostWorkerViewModel.startDate, "dd/MM/yyyy", null),
 
                 EndDate = string.IsNullOrEmpty(newCostWorkerViewModel.endDate)
                 ? null :
-                (DateTime?)DateTime.Parse(newCostWorkerViewModel.endDate),
+                (DateTime?)DateTime.ParseExact(newCostWorkerViewModel.endDate, "dd/MM/yyyy", null),
 
                 Observations = newCostWorkerViewModel.observations,
 
@@ -76,11 +76,11 @@
             costWorker.PriceHourExtra = costWorkerViewModel.priceHourExtra;
             costWorker.PriceHourFestive = costWorkerViewModel.priceHourFestive;
 
-            costWorker.StartDate = DateTime.Parse(costWorkerViewModel.startDate);
+            costWorker.StartDate = DateTime.ParseExact(costWorkerViewModel.startDate, "dd/MM/yyyy", null);
 
             costWorker.EndDate = string.IsNullOrEmpty(costWorkerViewModel.endDate)
                 ? null
-                : (DateTime?)DateTime.Parse(costWorkerViewModel.endDate);
+                : (DateTime?)DateTime.ParseExact(costWorkerViewModel.endDate, "dd/MM/yyyy", null);
 
             costWorker.Observations = costWorkerViewModel.observations;
 
