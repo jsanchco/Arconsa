@@ -12,7 +12,7 @@ import {
   ForeignKey,
   Group,
   Sort,
-  Resize
+  Resize,
 } from "@syncfusion/ej2-react-grids";
 import { Tooltip } from "@syncfusion/ej2-popups";
 import { DataManager, WebApiAdaptor, Query } from "@syncfusion/ej2-data";
@@ -48,6 +48,7 @@ class Employees extends Component {
   roleIdRules = { required: true };
   grid = null;
   wrapSettings = { wrapMode: "Content" };
+  initialRender = true;
 
   constructor(props) {
     super(props);
@@ -90,11 +91,23 @@ class Employees extends Component {
     this.rowSelected = this.rowSelected.bind(this);
     this.formatDate = this.formatDate.bind(this);
     this.template = this.gridTemplate.bind(this);
-    this.tooltip = this.tooltip.bind(this);
+    // this.tooltip = this.tooltip.bind(this);
+    this.dataBound = this.dataBound.bind(this);
 
     this.format = { type: "dateTime", format: "dd/MM/yyyy" };
 
     this.query = new Query().addParams("roles", [3]);
+  }
+
+  dataBound() {
+    if (this.initialRender) {
+      var stateGrid = window.localStorage.getItem("gridEmployees");
+      if (stateGrid !== null && stateGrid !== undefined) {
+        var model = JSON.parse(stateGrid);
+        this.grid.setProperties(model);
+      }
+      this.initialRender = false;
+    }
   }
 
   gridTemplate(args) {
@@ -116,14 +129,14 @@ class Employees extends Component {
       const src = "data:image/png;base64," + args.photo;
       return (
         <div className="image">
-          <span id={"user-" + args.id} className={color}></span>
+          {/* <span id={"user-" + args.id} className={color}></span> */}
           <img src={src} alt={args.name} width="100px" height="100px" />
         </div>
       );
     } else {
       return (
         <div className="image">
-          <span id={"user-" + args.id} className={color}></span>
+          {/* <span id={"user-" + args.id} className={color}></span> */}
           <img
             src={"assets/img/avatars/user_no_photo.png"}
             alt={args.name}
@@ -222,21 +235,23 @@ class Employees extends Component {
     this.setState({ rowSelected: selectedRecords[0] });
   }
 
-  tooltip(args) {
-    if (args.column.field === "stateDescription" && args.data.roleId === 3) {
-      const tooltip = new Tooltip({
-        content: getValue(args.column.field, args.data).toString(),
-      });
-      tooltip.appendTo(args.cell);
-    }
-  }
+  // tooltip(args) {
+  //   if (args.column.field === "stateDescription" && args.data.roleId === 3) {
+  //     const tooltip = new Tooltip({
+  //       content: getValue(args.column.field, args.data).toString(),
+  //     });
+  //     tooltip.appendTo(args.cell);
+  //   }
+  // }
 
   render() {
     return (
       <Fragment>
         <Breadcrumb class>
           {/*eslint-disable-next-line*/}
-          <BreadcrumbItem><a href="#">Inicio</a></BreadcrumbItem>
+          <BreadcrumbItem>
+            <a href="#">Inicio</a>
+          </BreadcrumbItem>
           {/* eslint-disable-next-line*/}
           <BreadcrumbItem active>Trabajadores</BreadcrumbItem>
         </Breadcrumb>
@@ -252,6 +267,7 @@ class Employees extends Component {
               <Row>
                 <GridComponent
                   dataSource={this.users}
+                  id="Employees"
                   locale="es"
                   allowPaging={true}
                   pageSettings={this.pageSettings}
@@ -263,7 +279,7 @@ class Employees extends Component {
                     marginRight: 30,
                     marginTop: -20,
                     marginBottom: 20,
-                    overflow: "auto"
+                    overflow: "auto",
                   }}
                   actionFailure={this.actionFailure}
                   actionComplete={this.actionComplete}
@@ -275,9 +291,10 @@ class Employees extends Component {
                   allowTextWrap={true}
                   textWrapSettings={this.wrapSettings}
                   allowSorting={true}
-                  dataBound={this.dataBound}
                   queryCellInfo={this.tooltip}
                   allowResizing={true}
+                  // enablePersistence={true}
+                  // dataBound={this.dataBound}
                 >
                   <ColumnsDirective>
                     <ColumnDirective
@@ -356,7 +373,7 @@ class Employees extends Component {
                       Toolbar,
                       Edit,
                       Sort,
-                      Resize
+                      Resize,
                     ]}
                   />
                 </GridComponent>

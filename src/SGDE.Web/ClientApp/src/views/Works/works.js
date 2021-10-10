@@ -22,7 +22,7 @@ import {
   Row,
   Col,
 } from "reactstrap";
-import { DataManager, WebApiAdaptor , Query } from "@syncfusion/ej2-data";
+import { DataManager, WebApiAdaptor, Query } from "@syncfusion/ej2-data";
 import { config, WORKS, CLIENTSWITHOUTFILTER } from "../../constants";
 import { L10n } from "@syncfusion/ej2-base";
 import data from "../../locales/locale.json";
@@ -61,6 +61,7 @@ class Works extends Component {
     },
   };
   wrapSettings = { wrapMode: "Content" };
+  initialRender = true;
 
   constructor(props) {
     super(props);
@@ -71,7 +72,7 @@ class Works extends Component {
       rowSelected: null,
       rowSelectedindex: null,
       modal: false,
-      showCloseWorks: true
+      showCloseWorks: true,
     };
 
     this.toolbarOptions = [
@@ -113,20 +114,47 @@ class Works extends Component {
     this.clickHandler = this.clickHandler.bind(this);
     this.toggleModal = this.toggleModal.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
+    this.dataBound = this.dataBound.bind(this);
 
     this.selectionSettings = {
       checkboxMode: "ResetOnRowClick",
       type: "Single",
     };
 
-    this.query = new Query().addParams("showCloseWorks", this.state.showCloseWorks);
+    this.query = new Query().addParams(
+      "showCloseWorks",
+      this.state.showCloseWorks
+    );
   }
 
   componentDidUpdate(prevProps, prevState) {
     if (prevState.showWorksClosed !== this.state.showWorksClosed) {
       console.log("showWorksClosed -> ", this.state.showWorksClosed);
-      this.grid.query = new Query().addParams("showCloseWorks", this.state.showWorksClosed);
+      this.grid.query = new Query().addParams(
+        "showCloseWorks",
+        this.state.showWorksClosed
+      );
       this.grid.refresh();
+    }
+
+    // if (this.enablePersistence === true) {
+    //   this.enablePersistence = false;
+    //   var stateGrid = window.localStorage.getItem("gridWorks");
+    //   if (stateGrid !== null && stateGrid !== undefined) {
+    //     var model = JSON.parse(stateGrid);
+    //     this.grid.setProperties(model);
+    //   }
+    // }
+  }
+
+  dataBound() {
+    if (this.initialRender) {
+      var stateGrid = window.localStorage.getItem("gridWorks");
+        if (stateGrid !== null && stateGrid !== undefined) {
+          var model = JSON.parse(stateGrid);
+          this.grid.setProperties(model);
+        }
+      this.initialRender = false;
     }
   }
 
@@ -317,7 +345,7 @@ class Works extends Component {
 
     if (name === "worksClosed") {
       this.setState({
-        showWorksClosed: !target.checked
+        showWorksClosed: !target.checked,
       });
     }
   }
@@ -327,7 +355,9 @@ class Works extends Component {
       <Fragment>
         <Breadcrumb class>
           {/*eslint-disable-next-line*/}
-          <BreadcrumbItem><a href="#">Inicio</a></BreadcrumbItem>
+          <BreadcrumbItem>
+            <a href="#">Inicio</a>
+          </BreadcrumbItem>
           {/* eslint-disable-next-line*/}
           <BreadcrumbItem active>Obras</BreadcrumbItem>
         </Breadcrumb>
@@ -361,10 +391,9 @@ class Works extends Component {
                         { color: "dot-red", text: "Obra Cerrada" },
                       ]}
                     />
-                    </Col>
-                    <Col xs="3">
-                    <FormGroup
-                      style={{ marginTop: -20 }}>
+                  </Col>
+                  <Col xs="3">
+                    <FormGroup style={{ marginTop: -20 }}>
                       <Label
                         htmlFor="worksClosed"
                         style={{ verticalAlign: "bottom" }}
@@ -391,6 +420,7 @@ class Works extends Component {
               <div>
                 <GridComponent
                   dataSource={this.works}
+                  id="Works"
                   locale="es"
                   allowPaging={true}
                   pageSettings={this.pageSettings}
@@ -418,6 +448,8 @@ class Works extends Component {
                   textWrapSettings={this.wrapSettings}
                   allowResizing={true}
                   query={this.query}
+                  // enablePersistence={true}
+                  // dataBound={this.dataBound}
                 >
                   <ColumnsDirective>
                     <ColumnDirective

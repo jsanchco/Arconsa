@@ -28,6 +28,7 @@ class Clients extends Component {
 
   grid = null;
   wrapSettings = { wrapMode: "Content" };
+  initialRender = true;
 
   constructor(props) {
     super(props);
@@ -62,6 +63,7 @@ class Clients extends Component {
     this.actionFailure = this.actionFailure.bind(this);
     this.actionComplete = this.actionComplete.bind(this);
     this.clickHandler = this.clickHandler.bind(this);
+    this.dataBound = this.dataBound.bind(this);
   }
 
   clickHandler(args) {
@@ -84,6 +86,17 @@ class Clients extends Component {
           type: "danger",
         });
       }
+    }
+  }
+
+  dataBound() {
+    if (this.initialRender) {
+      var stateGrid = window.localStorage.getItem("gridClients");
+        if (stateGrid !== null && stateGrid !== undefined) {
+          var model = JSON.parse(stateGrid);
+          this.grid.setProperties(model);
+        }
+      this.initialRender = false;
     }
   }
 
@@ -136,7 +149,8 @@ class Clients extends Component {
               <Row>
                 <GridComponent
                   dataSource={this.clients}
-                  locale="es-US"
+                  id="Clients"
+                  locale="es"
                   allowPaging={true}
                   pageSettings={this.pageSettings}
                   toolbar={this.toolbarOptions}
@@ -154,6 +168,8 @@ class Clients extends Component {
                   ref={(g) => (this.grid = g)}
                   allowTextWrap={true}
                   textWrapSettings={this.wrapSettings}
+                  // enablePersistence={true}
+                  // dataBound={this.dataBound}
                 >
                   <ColumnsDirective>
                     <ColumnDirective

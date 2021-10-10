@@ -115,10 +115,10 @@
             work.TotalContract = (decimal)workViewModel.totalContract;
             work.PercentageRetention = (decimal)workViewModel.percentageRetention;
 
-            work.OpenDate = DateTime.Parse(workViewModel.openDate);
+            work.OpenDate = DateTime.ParseExact(workViewModel.openDate, "dd/MM/yyyy", null);
             work.CloseDate = string.IsNullOrEmpty(workViewModel.closeDate)
                     ? null
-                    : (DateTime?)DateTime.Parse(workViewModel.closeDate);
+                    : (DateTime?)DateTime.ParseExact(workViewModel.closeDate, "dd/MM/yyyy", null);
             work.Open = string.IsNullOrEmpty(workViewModel.closeDate);
 
             if (work.OpenDate > work.CloseDate)

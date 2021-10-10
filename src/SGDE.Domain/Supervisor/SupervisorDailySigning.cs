@@ -90,8 +90,8 @@
 
         public bool MassiveSigning(MassiveSigningQueryViewModel massiveSigningQueryViewModel)
         {
-            if (!ValidateDataMassiveSigning(massiveSigningQueryViewModel.data))
-                throw new Exception("Algunos periodos no están bien configurados");
+            //if (!ValidateDataMassiveSigning(massiveSigningQueryViewModel.data))
+            //    throw new Exception("Algunos periodos no están bien configurados");
 
             var result = true;
 
@@ -99,7 +99,13 @@
             var endDay = DateTime.ParseExact($"{massiveSigningQueryViewModel.endSigning}", "dd/MM/yyyy", null);
             while (actualDay <= endDay)
             {
-                if ((actualDay.DayOfWeek == DayOfWeek.Saturday) || (actualDay.DayOfWeek == DayOfWeek.Sunday))
+                if ((actualDay.DayOfWeek == DayOfWeek.Saturday) && (!massiveSigningQueryViewModel.includeSaturdays))
+                {
+                    actualDay = actualDay.AddDays(1);
+                    continue;
+                }
+
+                if ((actualDay.DayOfWeek == DayOfWeek.Sunday) && (!massiveSigningQueryViewModel.includeSundays))
                 {
                     actualDay = actualDay.AddDays(1);
                     continue;
@@ -119,7 +125,9 @@
                         IPAddress = null,
 
                         StartHour = new DateTime(actualDay.Year, actualDay.Month, actualDay.Day, hourStart, minuteStart, 0),
-                        EndHour = new DateTime(actualDay.Year, actualDay.Month, actualDay.Day, hourEnd, minuteEnd, 0),
+                        EndHour = hourStart <= hourEnd ? 
+                            new DateTime(actualDay.Year, actualDay.Month, actualDay.Day, hourEnd, minuteEnd, 0) :
+                            new DateTime(actualDay.Year, actualDay.Month, actualDay.Day, hourEnd, minuteEnd, 0).AddDays(1),
 
                         UserHiringId = massiveSigningQueryViewModel.userHiringId,
                         HourTypeId = item.hourTypeId
