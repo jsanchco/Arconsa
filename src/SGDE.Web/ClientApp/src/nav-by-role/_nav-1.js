@@ -64,6 +64,11 @@ export default {
       icon: "icon-people"
     },
     {
+      name: "Fichajes",
+      url: "/signings/signings",
+      icon: "icon-book-open"
+    },
+    {
       name: "Informes",
       url: "/reports",
       icon: "icon-info",

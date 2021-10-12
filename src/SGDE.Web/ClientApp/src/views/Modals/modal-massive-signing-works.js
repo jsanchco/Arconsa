@@ -10,10 +10,9 @@ import {
   FormGroup,
   Label,
   Row,
+  Col,
 } from "reactstrap";
-import { getWorksByUserId } from "../../services";
 import { DatePickerComponent } from "@syncfusion/ej2-react-calendars";
-import { DropDownListComponent } from "@syncfusion/ej2-react-dropdowns";
 import { DialogComponent } from "@syncfusion/ej2-react-popups";
 import { sendMassiveSigning } from "../../services";
 import {
@@ -28,7 +27,6 @@ import "./modal-select.css";
 import "./modal-worker.css";
 
 class ModalMassiveSigning extends Component {
-  fields = { text: "name", value: "id" };
   ddl = null;
   grid = null;
 
@@ -91,16 +89,6 @@ class ModalMassiveSigning extends Component {
     this.handleInputChange = this.handleInputChange.bind(this);
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    if (this.props.userId && this.props.isOpen === true) {
-      getWorksByUserId(this.props.userId).then((items) => {
-        if (this.ddl) {
-          this.ddl.dataSource = items;
-        }
-      });
-    }
-  }
-
   handleOnClickSave() {
     this.setState({ hideConfirmDialog: true });
   }
@@ -147,7 +135,7 @@ class ModalMassiveSigning extends Component {
       });
 
       return;
-    } 
+    }
     sendMassiveSigning({
       userHiringId: valueDdl,
       startSigning: valueDtpStartDate,
@@ -227,6 +215,7 @@ class ModalMassiveSigning extends Component {
   }
 
   render() {
+    const title = `Obra seleccionada: ${this.props.workName}`;
     return (
       <Fragment>
         <DialogComponent
@@ -238,7 +227,7 @@ class ModalMassiveSigning extends Component {
           width="500px"
           content="¿Estás seguro de hacer estos fichajes?"
           ref={(dialog) => (this.confirmDialogInstance = dialog)}
-          target="#target-daily-signing"
+          target="#target-works"
           buttons={this.confirmButton}
           close={this.dialogClose.bind(this)}
         ></DialogComponent>
@@ -249,41 +238,42 @@ class ModalMassiveSigning extends Component {
           className={"modal-lg modal-primary"}
         >
           <ModalHeader toggle={this.props.toggle}>
-            Selecciona Fechas y Obra
+            Selecciona Fechas
           </ModalHeader>
           <ModalBody>
             <Row>
-              <Form inline style={{ marginLeft: "10px", marginBottom: "20px" }}>
-                <FormGroup className="col-2">
-                  <Label for="startDate">Fecha Inicio</Label>
-                  <DatePickerComponent
-                    id="startDate"
-                    ref={(g) => (this.dtpStartDate = g)}
-                    format="dd/MM/yyyy"
-                  />
-                </FormGroup>
-                <FormGroup className="col-2" style={{ marginLeft: "10px" }}>
-                  <Label for="endDate">Fecha Fin</Label>
-                  <DatePickerComponent
-                    id="endDate"
-                    ref={(g) => (this.dtpEndDate = g)}
-                    format="dd/MM/yyyy"
-                  />
-                </FormGroup>
-                <FormGroup className="col-7" style={{ marginLeft: "10px" }}>
-                  <Label for="workId">Obra</Label>
-                  <DropDownListComponent
-                    id="workId"
-                    dataSource={null}
-                    placeholder={`Selecciona Obra`}
-                    fields={this.fields}
-                    ref={(g) => (this.ddl = g)}
-                  />
-                </FormGroup>
-              </Form>
+              <Col style={{ textAlign: "center", marginBottom: "25px" }}>
+                <h2>{title}</h2>
+                <hr />
+              </Col>
             </Row>
-            <Row style={{ marginTop: "-10px" }}>
-              <FormGroup className="col-4" style={{ marginLeft: "10px" }}>
+            <Row>
+              <Col>
+                <Form
+                  inline
+                  style={{ marginBottom: "20px" }}
+                >
+                  <FormGroup className="col-6" >
+                    <Label for="startDate">Fecha Inicio</Label>
+                    <DatePickerComponent
+                      id="startDate"
+                      ref={(g) => (this.dtpStartDate = g)}
+                      format="dd/MM/yyyy"
+                    />
+                  </FormGroup>
+                  <FormGroup className="col-6" >
+                    <Label for="endDate">Fecha Fin</Label>
+                    <DatePickerComponent
+                      id="endDate"
+                      ref={(g) => (this.dtpEndDate = g)}
+                      format="dd/MM/yyyy"
+                    />
+                  </FormGroup>
+                </Form>
+              </Col>
+            </Row>
+            <Row style={{ marginTop: "-10px", marginLeft: "-10px" }}>
+              <FormGroup className="col-4" style={{ marginLeft: "10px", marginRight: "120px" }}>
                 <Label
                   htmlFor="includeSaturdays"
                   style={{ verticalAlign: "bottom" }}
@@ -405,6 +395,8 @@ ModalMassiveSigning.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   toggle: PropTypes.func.isRequired,
   userId: PropTypes.number.isRequired,
+  workId: PropTypes.number.isRequired,
+  workName: PropTypes.string.isRequired,
   showMessage: PropTypes.func.isRequired,
   updateDailySignings: PropTypes.func.isRequired,
 };

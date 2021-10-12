@@ -30,6 +30,7 @@ import { connect } from "react-redux";
 import ACTION_APPLICATION from "../../actions/applicationAction";
 import { TOKEN_KEY, updateDatesWork } from "../../services";
 import ModalWorkers from "../Modals/modal-workers";
+import ModalMassiveSigningWorks from "../Modals/modal-massive-signing-works";
 import Legend from "../../components/legend";
 
 L10n.load(data);
@@ -72,6 +73,7 @@ class Works extends Component {
       rowSelected: null,
       rowSelectedindex: null,
       modal: false,
+      modalTemplateSigning: false,
       showCloseWorks: true,
     };
 
@@ -81,6 +83,12 @@ class Works extends Component {
       "Delete",
       "Update",
       "Cancel",
+      // {
+      //   text: "Plantilla Automática",
+      //   tooltipText: "Plantilla para a generación de Fichajes Automática",
+      //   prefixIcon: "e-custom-icons e-details",
+      //   id: "TemplateSigning",
+      // },
       {
         text: "Detalles",
         tooltipText: "Detalles",
@@ -113,6 +121,8 @@ class Works extends Component {
     this.dateTemplate = this.dateTemplate.bind(this);
     this.clickHandler = this.clickHandler.bind(this);
     this.toggleModal = this.toggleModal.bind(this);
+    this.toggleModalTemplateSigning =
+      this.toggleModalTemplateSigning.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
     this.dataBound = this.dataBound.bind(this);
 
@@ -150,10 +160,10 @@ class Works extends Component {
   dataBound() {
     if (this.initialRender) {
       var stateGrid = window.localStorage.getItem("gridWorks");
-        if (stateGrid !== null && stateGrid !== undefined) {
-          var model = JSON.parse(stateGrid);
-          this.grid.setProperties(model);
-        }
+      if (stateGrid !== null && stateGrid !== undefined) {
+        var model = JSON.parse(stateGrid);
+        this.grid.setProperties(model);
+      }
       this.initialRender = false;
     }
   }
@@ -194,11 +204,32 @@ class Works extends Component {
         });
       }
     }
+
+    if (args.item.id === "TemplateSigning") {
+      const selectedRecords = this.grid.getSelectedRecords();
+      if (Array.isArray(selectedRecords) && selectedRecords.length === 1) {
+        this.setState({ rowSelected: selectedRecords[0] });
+        this.toggleModalTemplateSigning();
+      } else {
+        this.setState({ rowSelected: null });
+        this.props.showMessage({
+          statusText: "Debes seleccionar un solo registro",
+          responseText: "Debes seleccionar un solo registro",
+          type: "danger",
+        });
+      }
+    }
   }
 
   toggleModal() {
     this.setState({
       modal: !this.state.modal,
+    });
+  }
+
+  toggleModalTemplateSigning() {
+    this.setState({
+      modalTemplateSigning: !this.state.modalTemplateSigning,
     });
   }
 
@@ -362,14 +393,26 @@ class Works extends Component {
           <BreadcrumbItem active>Obras</BreadcrumbItem>
         </Breadcrumb>
 
+        <ModalWorkers
+          isOpen={this.state.modal}
+          toggle={this.toggleModal}
+          workSelected={this.state.rowSelected}
+          showMessage={this.props.showMessage}
+        />
+
+        {this.state.rowSelected ? (
+          <ModalMassiveSigningWorks
+            isOpen={this.state.modalTemplateSigning}
+            toggle={this.toggleModalTemplateSigning}
+            userId={this.props.userId}
+            workId={this.state.rowSelected.id}
+            workName={this.state.rowSelected.name}
+            showMessage={this.props.showMessage}
+          />
+        ) : null}
+
         <Container fluid>
           <div className="animated fadeIn" id="target-works">
-            <ModalWorkers
-              isOpen={this.state.modal}
-              toggle={this.toggleModal}
-              workSelected={this.state.rowSelected}
-              showMessage={this.props.showMessage}
-            />
             <div className="card">
               <div className="card-header">
                 <i className="icon-globe"></i> Obras

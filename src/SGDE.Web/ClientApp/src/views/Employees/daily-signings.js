@@ -4,7 +4,6 @@ import {
   ColumnDirective,
   ColumnsDirective,
   GridComponent,
-  RowDataBoundEventArgs,
   Edit,
   Inject,
   Toolbar,

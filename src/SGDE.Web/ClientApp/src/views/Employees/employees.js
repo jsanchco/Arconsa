@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from "react";
 import { Breadcrumb, BreadcrumbItem, Container, Row } from "reactstrap";
-import { getValue } from "@syncfusion/ej2-base";
+// import { getValue } from "@syncfusion/ej2-base";
 import {
   ColumnDirective,
   ColumnsDirective,
@@ -14,7 +14,7 @@ import {
   Sort,
   Resize,
 } from "@syncfusion/ej2-react-grids";
-import { Tooltip } from "@syncfusion/ej2-popups";
+// import { Tooltip } from "@syncfusion/ej2-popups";
 import { DataManager, WebApiAdaptor, Query } from "@syncfusion/ej2-data";
 import { config, USERS, PROFESSIONS, ROLES } from "../../constants";
 import { L10n } from "@syncfusion/ej2-base";

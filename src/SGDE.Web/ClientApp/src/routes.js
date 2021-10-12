@@ -55,6 +55,8 @@ const Works = React.lazy(() => import('./views/Works/works'));
 const DetailWork = React.lazy(() => import('./views/Works/detail-work'));
 const BasicDataWork = React.lazy(() => import('./views/Works/basic-data-work'));
 
+const Signings = React.lazy(() => import('./views/Signings/signings'));
+
 const ReportHoursUser = React.lazy(() => import('./views/Reports/report-hours-user'));
 const ReportHoursWork = React.lazy(() => import('./views/Reports/report-hours-work'));
 const ReportHoursClient = React.lazy(() => import('./views/Reports/report-hours-client'));
@@ -124,6 +126,7 @@ const routes = [
   { path: '/works/works', exact: true, name: 'Obras', component: Works },
   { path: '/works/detailwork/:id', exact: true, name: 'Detalle Obra', component: DetailWork },
   { path: '/works/basicdatawork', exact: true, name: 'Datos Básicos', component: BasicDataWork },
+  { path: '/signings/signings', exact: true, name: 'Fichajes', component: Signings },
   { path: '/reports/reporthoursuser', exact: true, name: 'Informe Horas Trabajador', component: ReportHoursUser },
   { path: '/reports/reporthourswork', exact: true, name: 'Informe Horas Obra', component: ReportHoursWork },
   { path: '/reports/reporthoursclient', exact: true, name: 'Informe Horas Cliente', component: ReportHoursClient },

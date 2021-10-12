@@ -101,7 +101,6 @@ class HistoryHirings extends Component {
                     headerText="Profesión"
                     width="100"
                   />
-                  />
                 </ColumnsDirective>
                 <Inject services={[Page]} />
               </GridComponent>

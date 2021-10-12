@@ -7,6 +7,7 @@
     using Entities;
     using ViewModels;
     using Domain.Helpers;
+    using System.Collections.Generic;
 
     #endregion
 
@@ -20,6 +21,11 @@
                 Data = UserHiringConverter.ConvertList(queryResult.Data),
                 Count = queryResult.Count
             };
+        }
+
+        public List<UserHiringViewModel> GetAllUserHiringByWorkId(int workId = 0, bool actualWorking = false)
+        {
+            return UserHiringConverter.ConvertList(_userHiringRepository.GetAllByWorkId(workId, actualWorking));
         }
 
         public UserHiringViewModel GetUserHiringById(int id)

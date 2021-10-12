@@ -11,6 +11,7 @@
     public interface IUserHiringRepository
     {
         QueryResult<UserHiring> GetAll(int skip = 0, int take = 0, string filter = null, int userId = 0, int workId = 0);
+        List<UserHiring> GetAllByWorkId(int workId = 0, bool actualWorking = false);
         List<UserHiring> GetOpen();
         UserHiring GetById(int id);
         UserHiring Add(UserHiring newUserHiring);

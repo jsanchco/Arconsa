@@ -101,6 +101,23 @@
                 };
         }
 
+        public List<UserHiring> GetAllByWorkId(int workId, bool actualWorking = false)
+        {
+            List<UserHiring> data = new List<UserHiring>();
+
+            data = actualWorking ?
+                _context.UserHiring
+                    .Include(x => x.User)
+                    .Where(x => x.WorkId == workId && x.EndDate == null)
+                    .ToList() :
+                _context.UserHiring
+                    .Include(x => x.User)
+                    .Where(x => x.WorkId == workId)
+                    .ToList();
+
+            return data;
+        }
+
         public List<UserHiring> GetOpen()
         {
             return _context.UserHiring
