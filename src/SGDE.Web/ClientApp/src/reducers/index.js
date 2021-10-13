@@ -5,7 +5,12 @@ import authenticationReducer from "./authenticationReducer";
 export const INITIAL_STATE = {
   application: {
     message: null,
-    selectedIndexWorkers: []
+    currentPageEmployees: 1,
+    currentSearchEmployees: "",
+    currentPageWorks: 1,
+    currentSearchWorks: "",
+    currentPageClients: 1,
+    currentSearchClients: "",  
   },
   authentication: {
     user: null, 

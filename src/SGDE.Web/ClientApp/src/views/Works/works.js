@@ -62,7 +62,6 @@ class Works extends Component {
     },
   };
   wrapSettings = { wrapMode: "Content" };
-  initialRender = true;
 
   constructor(props) {
     super(props);
@@ -111,7 +110,14 @@ class Works extends Component {
       allowDeleting: true,
       newRowPosition: "Top",
     };
-    this.pageSettings = { pageCount: 10, pageSize: 10 };
+    this.pageSettings = { 
+      pageCount: 10, 
+      pageSize: 10, 
+      currentPage: props.currentPageWorks 
+    };
+    this.searchSettings = { 
+      key: props.currentSearchWorks
+    };
     this.actionFailure = this.actionFailure.bind(this);
     this.actionComplete = this.actionComplete.bind(this);
     this.contextMenuClick = this.contextMenuClick.bind(this);
@@ -158,14 +164,8 @@ class Works extends Component {
   }
 
   dataBound() {
-    if (this.initialRender) {
-      var stateGrid = window.localStorage.getItem("gridWorks");
-      if (stateGrid !== null && stateGrid !== undefined) {
-        var model = JSON.parse(stateGrid);
-        this.grid.setProperties(model);
-      }
-      this.initialRender = false;
-    }
+    this.props.setCurrentPageWorks(this.grid.pageSettings.currentPage);
+    this.props.setCurrentSearchWorks(this.grid.searchSettings.key);
   }
 
   clickHandler(args) {
@@ -386,9 +386,7 @@ class Works extends Component {
       <Fragment>
         <Breadcrumb class>
           {/*eslint-disable-next-line*/}
-          <BreadcrumbItem>
-            <a href="#">Inicio</a>
-          </BreadcrumbItem>
+          <BreadcrumbItem><a href="#">Inicio</a></BreadcrumbItem>
           {/* eslint-disable-next-line*/}
           <BreadcrumbItem active>Obras</BreadcrumbItem>
         </Breadcrumb>
@@ -467,6 +465,7 @@ class Works extends Component {
                   locale="es"
                   allowPaging={true}
                   pageSettings={this.pageSettings}
+                  searchSettings={this.searchSettings} 
                   toolbar={this.toolbarOptions}
                   toolbarClick={this.clickHandler}
                   editSettings={this.editSettings}
@@ -492,7 +491,7 @@ class Works extends Component {
                   allowResizing={true}
                   query={this.query}
                   // enablePersistence={true}
-                  // dataBound={this.dataBound}
+                  dataBound={this.dataBound}
                 >
                   <ColumnsDirective>
                     <ColumnDirective
@@ -588,11 +587,16 @@ class Works extends Component {
 Works.propTypes = {};
 
 const mapStateToProps = (state) => {
-  return {};
+  return {
+    currentPageWorks: state.applicationReducer.currentPageWorks,
+    currentSearchWorks: state.applicationReducer.currentSearchWorks
+  };
 };
 
 const mapDispatchToProps = (dispatch) => ({
   showMessage: (message) => dispatch(ACTION_APPLICATION.showMessage(message)),
+  setCurrentPageWorks: (currentPageWorks) => dispatch(ACTION_APPLICATION.setCurrentPageWorks(currentPageWorks)),
+  setCurrentSearchWorks: (currentSearchWorks) => dispatch(ACTION_APPLICATION.setCurrentSearchWorks(currentSearchWorks))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Works);

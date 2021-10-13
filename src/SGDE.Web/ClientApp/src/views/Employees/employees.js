@@ -48,7 +48,6 @@ class Employees extends Component {
   roleIdRules = { required: true };
   grid = null;
   wrapSettings = { wrapMode: "Content" };
-  initialRender = true;
 
   constructor(props) {
     super(props);
@@ -82,8 +81,14 @@ class Employees extends Component {
       allowDeleting: true,
       newRowPosition: "Top",
     };
-    this.pageSettings = { pageCount: 10, pageSize: 10 };
-
+    this.pageSettings = { 
+      pageCount: 10, 
+      pageSize: 10, 
+      currentPage: props.currentPageEmployees 
+    };
+    this.searchSettings = { 
+      key: props.currentSearchEmployees
+    };
     this.actionFailure = this.actionFailure.bind(this);
     this.actionComplete = this.actionComplete.bind(this);
     this.actionBegin = this.actionBegin.bind(this);
@@ -100,30 +105,24 @@ class Employees extends Component {
   }
 
   dataBound() {
-    if (this.initialRender) {
-      var stateGrid = window.localStorage.getItem("gridEmployees");
-      if (stateGrid !== null && stateGrid !== undefined) {
-        var model = JSON.parse(stateGrid);
-        this.grid.setProperties(model);
-      }
-      this.initialRender = false;
-    }
+    this.props.setCurrentPageEmployees(this.grid.pageSettings.currentPage);
+    this.props.setCurrentSearchEmployees(this.grid.searchSettings.key);
   }
 
   gridTemplate(args) {
-    let color = "";
-    switch (args.state) {
-      case 0:
-        color = "dot-small-green";
-        break;
-      case 1:
-        color = "dot-small-red";
-        break;
+    // let color = "";
+    // switch (args.state) {
+    //   case 0:
+    //     color = "dot-small-green";
+    //     break;
+    //   case 1:
+    //     color = "dot-small-red";
+    //     break;
 
-      default:
-        color = "dot-small-green";
-        break;
-    }
+    //   default:
+    //     color = "dot-small-green";
+    //     break;
+    // }
 
     if (args.photo !== null && args.photo !== "") {
       const src = "data:image/png;base64," + args.photo;
@@ -249,9 +248,7 @@ class Employees extends Component {
       <Fragment>
         <Breadcrumb class>
           {/*eslint-disable-next-line*/}
-          <BreadcrumbItem>
-            <a href="#">Inicio</a>
-          </BreadcrumbItem>
+          <BreadcrumbItem><a href="#">Inicio</a></BreadcrumbItem>
           {/* eslint-disable-next-line*/}
           <BreadcrumbItem active>Trabajadores</BreadcrumbItem>
         </Breadcrumb>
@@ -271,6 +268,7 @@ class Employees extends Component {
                   locale="es"
                   allowPaging={true}
                   pageSettings={this.pageSettings}
+                  searchSettings={this.searchSettings} 
                   toolbar={this.toolbarOptions}
                   toolbarClick={this.clickHandler}
                   editSettings={this.editSettings}
@@ -294,7 +292,7 @@ class Employees extends Component {
                   queryCellInfo={this.tooltip}
                   allowResizing={true}
                   // enablePersistence={true}
-                  // dataBound={this.dataBound}
+                  dataBound={this.dataBound}
                 >
                   <ColumnsDirective>
                     <ColumnDirective
@@ -391,11 +389,15 @@ Employees.propTypes = {};
 const mapStateToProps = (state) => {
   return {
     errorApplication: state.applicationReducer.error,
+    currentPageEmployees: state.applicationReducer.currentPageEmployees,
+    currentSearchEmployees: state.applicationReducer.currentSearchEmployees
   };
 };
 
 const mapDispatchToProps = (dispatch) => ({
   showMessage: (message) => dispatch(ACTION_APPLICATION.showMessage(message)),
+  setCurrentPageEmployees: (currentPageEmployees) => dispatch(ACTION_APPLICATION.setCurrentPageEmployees(currentPageEmployees)),
+  setCurrentSearchEmployees: (currentSearchEmployees) => dispatch(ACTION_APPLICATION.setCurrentSearchEmployees(currentSearchEmployees))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Employees);

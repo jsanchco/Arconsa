@@ -128,14 +128,14 @@ class Signings extends Component {
       e.updateData(this.searchDataWorks, query);
   }
 
-  handleChangeEmployee() {
+  handleSelectEmployee(args) {
     const element = document.getElementById("target-signings");
     createSpinner({
       target: element,
     });
     showSpinner(element);
 
-    getWorksByUserId(this.ddlEmployees.value).then((items) => {
+    getWorksByUserId(args.itemData.id).then((items) => {
       this.ddlWorks.dataSource = items;
       this.searchDataWorks = this.ddlWorks.dataSource;
 
@@ -147,6 +147,28 @@ class Signings extends Component {
   }
 
   handleOnClickSave() {
+    const valueDtpStartDate = this.formatDate(this.dtpStartDate.value);
+    const valueDtpEndDate = this.formatDate(this.dtpEndDate.value);
+    const valueDdlEmployees = this.ddlEmployees.value;
+    const valueDdlWorks = this.ddlWorks.value;
+
+    if (
+      valueDtpStartDate === null ||
+      valueDtpStartDate === "" ||
+      valueDtpEndDate === null ||
+      valueDtpEndDate === "" ||
+      valueDdlEmployees === null ||
+      valueDdlWorks === null
+    ) {
+      this.props.showMessage({
+        statusText: "Consulta mal configurada",
+        responseText: "Consulta mal configurada",
+        type: "danger",
+      });
+
+      return;
+    }
+
     this.setState({ hideConfirmDialog: true });
   }
 
@@ -174,35 +196,29 @@ class Signings extends Component {
   }
 
   sendMassiveSigning() {
+    const element = document.getElementById("target-signings");
+    createSpinner({
+      target: element,
+    });
+    showSpinner(element);
+
     const valueDtpStartDate = this.formatDate(this.dtpStartDate.value);
     const valueDtpEndDate = this.formatDate(this.dtpEndDate.value);
-    const valueDdl = this.ddl.value;
-
-    if (
-      valueDtpStartDate === null ||
-      valueDtpStartDate === "" ||
-      valueDtpEndDate === null ||
-      valueDtpEndDate === "" ||
-      valueDdl === null
-    ) {
-      this.props.showMessage({
-        statusText: "Consulta mal configurada",
-        responseText: "Consulta mal configurada",
-        type: "danger",
-      });
-
-      return;
-    }
+    const valueDdlWorks = this.ddlWorks.value;
+  
     sendMassiveSigning({
-      userHiringId: valueDdl,
+      userHiringId: valueDdlWorks,
       startSigning: valueDtpStartDate,
       endSigning: valueDtpEndDate,
       data: this.grid.getCurrentViewRecords(),
       includeSaturdays: this.state.includeSaturdays,
       includeSundays: this.state.includeSundays,
     }).then(() => {
-      this.props.updateDailySignings();
-    });
+      hideSpinner(element);
+    })
+    .catch((error) => {
+      hideSpinner(element);
+    });;
   }
 
   formatDate(args) {
@@ -338,20 +354,20 @@ class Signings extends Component {
                       <Label for="employees">Trabajador</Label>
                       <DropDownListComponent
                         id="employees"
-                        dataSource={this.ddlEmployees}
+                        dataSource={null}
                         placeholder={`Selecciona Trabajador`}
                         fields={this.fields}
                         ref={(g) => (this.ddlEmployees = g)}
                         filtering={this.handleFilteringEmployees.bind(this)}
                         allowFiltering={true}
-                        change={this.handleChangeEmployee.bind(this)} 
+                        select={this.handleSelectEmployee.bind(this)} 
                       />
                     </FormGroup>
                     <FormGroup className="col-4" style={{ marginLeft: "10px" }}>
                       <Label for="works">Obra</Label>
                       <DropDownListComponent
                         id="works"
-                        dataSource={this.ddlWorks}
+                        dataSource={null}
                         placeholder={`Selecciona Obra`}
                         fields={this.fields}
                         ref={(g) => (this.ddlWorks = g)}

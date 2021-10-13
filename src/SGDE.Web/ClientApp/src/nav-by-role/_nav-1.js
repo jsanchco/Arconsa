@@ -49,6 +49,11 @@ export default {
       ]
     },
     {
+      name: "Trabajadores",
+      url: "/employees/employees",
+      icon: "icon-people"
+    },
+    {
       name: "Clientes",
       url: "/clients/clients",
       icon: "icon-chart"
@@ -59,14 +64,14 @@ export default {
       icon: "icon-globe"
     },
     {
-      name: "Trabajadores",
-      url: "/employees/employees",
-      icon: "icon-people"
-    },
-    {
       name: "Fichajes",
       url: "/signings/signings",
       icon: "icon-book-open"
+    },
+    {
+      name: "Facturas",
+      url: "/invoices/InvoicesCustom",
+      icon: "cui-file"
     },
     {
       name: "Informes",
@@ -94,11 +99,6 @@ export default {
           icon: "icon-list"
         }
       ]
-    },
-    {
-      name: "Facturas",
-      url: "/invoices/InvoicesCustom",
-      icon: "cui-file"
     }
   ]
 };

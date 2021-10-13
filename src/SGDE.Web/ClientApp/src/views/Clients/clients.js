@@ -28,7 +28,6 @@ class Clients extends Component {
 
   grid = null;
   wrapSettings = { wrapMode: "Content" };
-  initialRender = true;
 
   constructor(props) {
     super(props);
@@ -59,7 +58,14 @@ class Clients extends Component {
       allowDeleting: true,
       newRowPosition: "Top",
     };
-    this.pageSettings = { pageCount: 10, pageSize: 10 };
+    this.pageSettings = { 
+      pageCount: 10, 
+      pageSize: 10, 
+      currentPage: props.currentPageClients 
+    };
+    this.searchSettings = { 
+      key: props.currentSearchClients
+    };
     this.actionFailure = this.actionFailure.bind(this);
     this.actionComplete = this.actionComplete.bind(this);
     this.clickHandler = this.clickHandler.bind(this);
@@ -90,14 +96,8 @@ class Clients extends Component {
   }
 
   dataBound() {
-    if (this.initialRender) {
-      var stateGrid = window.localStorage.getItem("gridClients");
-        if (stateGrid !== null && stateGrid !== undefined) {
-          var model = JSON.parse(stateGrid);
-          this.grid.setProperties(model);
-        }
-      this.initialRender = false;
-    }
+    this.props.setCurrentPageClients(this.grid.pageSettings.currentPage);
+    this.props.setCurrentSearchClients(this.grid.searchSettings.key);
   }
 
   actionFailure(args) {
@@ -153,6 +153,7 @@ class Clients extends Component {
                   locale="es"
                   allowPaging={true}
                   pageSettings={this.pageSettings}
+                  searchSettings={this.searchSettings} 
                   toolbar={this.toolbarOptions}
                   toolbarClick={this.clickHandler}
                   editSettings={this.editSettings}
@@ -169,7 +170,7 @@ class Clients extends Component {
                   allowTextWrap={true}
                   textWrapSettings={this.wrapSettings}
                   // enablePersistence={true}
-                  // dataBound={this.dataBound}
+                  dataBound={this.dataBound}
                 >
                   <ColumnsDirective>
                     <ColumnDirective
@@ -213,11 +214,15 @@ Clients.propTypes = {};
 const mapStateToProps = (state) => {
   return {
     errorApplication: state.applicationReducer.error,
+    currentPageClients: state.applicationReducer.currentPageClients,
+    currentSearchClients: state.applicationReducer.currentSearchClients
   };
 };
 
 const mapDispatchToProps = (dispatch) => ({
   showMessage: (message) => dispatch(ACTION_APPLICATION.showMessage(message)),
+  setCurrentPageClients: (currentPageClients) => dispatch(ACTION_APPLICATION.setCurrentPageClients(currentPageClients)),
+  setCurrentSearchClients: (currentSearchClients) => dispatch(ACTION_APPLICATION.setCurrentSearchClients(currentSearchClients))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Clients);
