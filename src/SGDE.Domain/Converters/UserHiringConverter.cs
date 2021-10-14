@@ -25,6 +25,7 @@
 
                 startDate = userHiring.StartDate.ToString("MM/dd/yyyy"),
                 endDate = userHiring.EndDate?.ToString("MM/dd/yyyy"),
+                inWork = userHiring.InWork,
                 userId = userHiring.UserId,
                 userName = $"{userHiring.User.Name} {userHiring.User.Surname}",
                 clientName = userHiring.Work.Client.Name,
@@ -50,6 +51,7 @@
 
                     startDate = userHiring.StartDate.ToString("MM/dd/yyyy"),
                     endDate = userHiring.EndDate?.ToString("MM/dd/yyyy"),
+                    inWork = userHiring.InWork,
                     userId = userHiring.UserId,
                     userName = $"{userHiring.User.Name} {userHiring.User.Surname}",
                     clientName = userHiring.Work.Client.Name,

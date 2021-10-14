@@ -20,6 +20,7 @@
 
         public string startDate { get; set; }
         public string endDate { get; set; }
+        public bool inWork { get; set; }
 
         public string clientName { get; set; }
         public int workId { get; set; }

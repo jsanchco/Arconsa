@@ -1,5 +1,8 @@
 {
   "es": {
+    "dropdowns": {
+      "noRecordsTemplate": "Sin Registros"
+    },
     "datepicker": {
       "placeholder": "Por favor seleccione una fecha",
       "today": "hoy"

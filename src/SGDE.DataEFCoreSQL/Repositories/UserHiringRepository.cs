@@ -51,6 +51,7 @@
                     .ThenInclude(x => x.Client)
                     .Include(x => x.User)
                     .Include(x => x.Profession)
+                    .OrderBy(x => x.StartDate)
                     .ToList();
             }
 
@@ -62,6 +63,7 @@
                     .Include(x => x.User)
                     .Include(x => x.Profession)
                     .Where(x => x.UserId == userId)
+                    .OrderBy(x => x.StartDate)
                     .ToList();
             }
 
@@ -73,6 +75,7 @@
                     .Include(x => x.User)
                     .Include(x => x.Profession)
                     .Where(x => x.WorkId == workId)
+                    .OrderBy(x => x.StartDate)
                     .ToList();
             }
 
@@ -84,6 +87,7 @@
                     .Include(x => x.User)
                     .Include(x => x.Profession)
                     .Where(x => x.UserId == userId && x.WorkId == workId)
+                    .OrderBy(x => x.StartDate)
                     .ToList();
             }
 
