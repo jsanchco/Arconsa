@@ -261,6 +261,7 @@ namespace SGDE.Domain.Supervisor
         #region HistoryHiring
 
         QueryResult<HistoryHiringViewModel> GetHistoryByUserId(int userId, int skip = 0, int take = 0);
+        QueryResult<HistoryHiringViewModel> GetHistoryByWorkId(int workId, int skip = 0, int take = 0);
         bool UpdateHistoryInWork(HistoryHiringViewModel historyHiringViewModel);
 
         #endregion

@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react";
-import { Row } from "reactstrap";
+import { Row, Col } from "reactstrap";
 import {
   ColumnDirective,
   ColumnsDirective,
@@ -13,7 +13,12 @@ import { DataManager, WebApiAdaptor, Query } from "@syncfusion/ej2-data";
 import { config, USERSHIRING, PROFESSIONS } from "../../constants";
 import { L10n } from "@syncfusion/ej2-base";
 import data from "../../locales/locale.json";
-import { TOKEN_KEY, getUser } from "../../services";
+import { 
+  TOKEN_KEY, 
+  getUser, 
+  updateUserHiringInWorkByUser
+ } from "../../services";
+import Legend from "../../components/legend";
 
 L10n.load(data);
 
@@ -30,6 +35,11 @@ class AuthorizeCancelWorkers extends Component {
     headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }],
   });
   grid = null;
+  contextMenuItems = [
+    { text: "En Obra", target: ".e-content", id: "inWork" },
+    { text: "Fuera de Obra", target: ".e-content", id: "outWork" },
+  ];
+
 
   professionIdRules = { required: false };
 
@@ -38,6 +48,8 @@ class AuthorizeCancelWorkers extends Component {
 
     this.state = {
       usersHiring: null,
+      rowSelected: null,
+      rowSelectedindex: null
     };
 
     this.toolbarOptions = ["Edit", "Delete", "Update", "Cancel", "Print"];
@@ -53,6 +65,9 @@ class AuthorizeCancelWorkers extends Component {
     this.actionComplete = this.actionComplete.bind(this);
     this.actionBegin = this.actionBegin.bind(this);
     this.beforePrint = this.beforePrint.bind(this);
+    this.rowSelected = this.rowSelected.bind(this);
+    this.contextMenuClick = this.contextMenuClick.bind(this);
+    this.contextMenuOpen = this.contextMenuOpen.bind(this);
 
     this.template = this.gridTemplate;
     this.format = { type: "dateTime", format: "dd/MM/yyyy" };
@@ -68,6 +83,82 @@ class AuthorizeCancelWorkers extends Component {
         },
       });
     });
+  }
+
+  contextMenuOpen() {
+    const { rowSelected } = this.state;
+    var contextMenuObj = this.grid.contextMenuModule.contextMenu;
+    if (rowSelected && rowSelected.inWork) {
+      // contextMenuObj.enableItems(["Cerrar Obra"], false);
+      contextMenuObj.hideItems(["En Obra"]);
+      contextMenuObj.showItems(["Fuera de Obra"]);
+    } else {
+      // contextMenuObj.enableItems(["Abrir Obra"], false);
+      contextMenuObj.hideItems(["Fuera de Obra"]);
+      contextMenuObj.showItems(["En Obra"]);
+    }
+  }
+
+  contextMenuClick(args) {
+    const userHiringSelected = this.state.rowSelected;
+    if (userHiringSelected === null || userHiringSelected === undefined) {
+      return;
+    }
+    
+    if (args.item.id === "inWork") {
+      updateUserHiringInWorkByUser({ userHiringId: userHiringSelected.id, inWork: true }).then(() => {
+        this.grid.refresh();
+      });
+    }
+    if (args.item.id === "outWork") {
+      updateUserHiringInWorkByUser({ userHiringId: userHiringSelected.id, inWork: false }).then(() => {
+        this.grid.refresh();
+      });
+    }
+  }
+
+  inWorkTemplate(args) {
+    if (args.inWork === true) {
+      return (
+        <div>
+          <span className="dot-green"></span>
+        </div>
+      );
+    } else {
+      return (
+        <div>
+          <span className="dot-red"></span>
+        </div>
+      );
+    }
+  }
+
+  inWorkStatus(args) {
+    if (args.inWork === true) {
+      return <div>En Obra</div>;
+    } else {
+      return <div>Fuera de Obra</div>;
+    }
+  }
+
+  toolbarClick(args) {
+    for (var i = 0; i < this.columns.length; i++) {
+      if (this.columns[i].field === "status") {
+        this.columns[i].visible = true;
+      } else if (this.columns[i].field === "inWork") {
+        this.columns[i].visible = false;
+      }
+    }
+  }
+
+  printComplete(args) {
+    for (var i = 0; i < this.columns.length; i++) {
+      if (this.columns[i].field === "status") {
+        this.columns[i].visible = false;
+      } else if (this.columns[i].field === "inWork") {
+        this.columns[i].visible = true;
+      }
+    }
   }
 
   gridTemplate(args) {
@@ -159,6 +250,15 @@ class AuthorizeCancelWorkers extends Component {
     args.element.insertBefore(div, args.element.childNodes[0]);
   }
 
+  rowSelected() {
+    const selectedRecords = this.grid.getSelectedRecords();
+    const selectedRowIndex = this.grid.getSelectedRowIndexes();
+    this.setState({
+      rowSelected: selectedRecords[0],
+      rowSelectedindex: selectedRowIndex[0],
+    });
+  }
+
   render() {
     let title = ` Contratos [${this.props.workName}]`;
 
@@ -175,13 +275,29 @@ class AuthorizeCancelWorkers extends Component {
             </div>
             <div className="card-body"></div>
             <Row>
+              <Col
+                xs="9"
+                style={{
+                  marginTop: "-25px",
+                  marginBottom: "25px",
+                  marginLeft: "15px",
+                }}
+              >
+                <Legend
+                  elements={[
+                    { color: "dot-green", text: "En Obra" },
+                    { color: "dot-red", text: "Fuera de Obra" },
+                  ]}
+                />
+              </Col>
+            </Row>
+            <Row>
               <GridComponent
                 dataSource={this.usersHiring}
                 locale="es-US"
                 allowPaging={true}
                 pageSettings={this.pageSettings}
                 toolbar={this.toolbarOptions}
-                toolbarClick={this.clickHandler}
                 editSettings={this.editSettings}
                 style={{
                   marginLeft: 30,
@@ -197,6 +313,11 @@ class AuthorizeCancelWorkers extends Component {
                 ref={(g) => (this.grid = g)}
                 query={this.query}
                 beforePrint={this.beforePrint}
+                printComplete={this.printComplete}
+                toolbarClick={this.toolbarClick}
+                contextMenuItems={this.contextMenuItems}
+                contextMenuOpen={this.contextMenuOpen}
+                contextMenuClick={this.contextMenuClick}
               >
                 <ColumnsDirective>
                   <ColumnDirective
@@ -238,6 +359,20 @@ class AuthorizeCancelWorkers extends Component {
                     type="date"
                     format={this.format}
                     editType="datepickeredit"
+                  />
+                  <ColumnDirective
+                    field="inWork"
+                    headerText="Estado"
+                    template={this.inWorkTemplate}
+                    textAlign="Center"
+                    width="100"
+                  />
+                  <ColumnDirective
+                    field="status"
+                    headerText="Estado"
+                    textAlign="Center"
+                    width="100"
+                    visible={false}
                   />
                 </ColumnsDirective>
                 <Inject services={[Page, Toolbar, Edit]} />

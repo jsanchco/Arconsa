@@ -16,7 +16,7 @@ import data from "../../locales/locale.json";
 import {
   TOKEN_KEY,
   getUser,
-  updateUserHiringInWorkByUser,
+  updateUserHiringInWorkByUser
 } from "../../services";
 import Legend from "../../components/legend";
 
@@ -121,6 +121,10 @@ class HistoryHirings extends Component {
 
   contextMenuClick(args) {
     const historyHiringSelected = this.state.rowSelected;
+    if (historyHiringSelected === null || historyHiringSelected === undefined) {
+      return;
+    }
+
     if (args.item.id === "inWork") {
       historyHiringSelected.inWork = true;
       updateUserHiringInWorkByUser(historyHiringSelected).then(() => {

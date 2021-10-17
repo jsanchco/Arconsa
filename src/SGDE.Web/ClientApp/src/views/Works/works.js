@@ -554,7 +554,7 @@ class Works extends Component {
                     />
                     <ColumnDirective
                       field="open"
-                      headerText="Ab./Cer."
+                      headerText="Estado"
                       width="100"
                       template={this.openTemplate}
                       textAlign="Center"

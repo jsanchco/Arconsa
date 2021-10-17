@@ -47,6 +47,28 @@
             }
         }
 
+
+        [HttpGet("getbyworkid")]
+        public object GetByWorkId()
+        {
+            try
+            {
+                var queryString = Request.Query;
+                var skip = Convert.ToInt32(queryString["$skip"]);
+                var take = Convert.ToInt32(queryString["$top"]);
+                var workId = Convert.ToInt32(queryString["workId"]);
+
+                var queryResult = _supervisor.GetHistoryByWorkId(workId, skip, take);
+
+                return new { Items = queryResult.Data, Count = queryResult.Count };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Exception: ");
+                return StatusCode(500, ex);
+            }
+        }
+
         [HttpPost("updateinwork")]
         public object UpdateInWork([FromBody] HistoryHiringViewModel historyHiringViewModel)
         {

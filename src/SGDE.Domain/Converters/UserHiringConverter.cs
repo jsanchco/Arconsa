@@ -24,7 +24,7 @@
                 iPAddress = userHiring.IPAddress,
 
                 startDate = userHiring.StartDate.ToString("MM/dd/yyyy"),
-                endDate = userHiring.EndDate?.ToString("MM/dd/yyyy"),
+                endDate = !userHiring.InWork ? userHiring.EndDate?.ToString("MM/dd/yyyy") : null,
                 inWork = userHiring.InWork,
                 userId = userHiring.UserId,
                 userName = $"{userHiring.User.Name} {userHiring.User.Surname}",
@@ -50,7 +50,7 @@
                     iPAddress = userHiring.IPAddress,
 
                     startDate = userHiring.StartDate.ToString("MM/dd/yyyy"),
-                    endDate = userHiring.EndDate?.ToString("MM/dd/yyyy"),
+                    endDate = !userHiring.InWork ? userHiring.EndDate?.ToString("MM/dd/yyyy") : null,
                     inWork = userHiring.InWork,
                     userId = userHiring.UserId,
                     userName = $"{userHiring.User.Name} {userHiring.User.Surname}",
