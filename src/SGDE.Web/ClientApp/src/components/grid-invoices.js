@@ -98,6 +98,7 @@ class GridInvoice extends Component {
     this.clickHandler = this.clickHandler.bind(this);
     this.billPayment = this.billPayment.bind(this);
     this.rowSelected = this.rowSelected.bind(this);
+    this.beforePrint = this.beforePrint.bind(this);
 
     this.confirmButton = [
       {
@@ -277,6 +278,17 @@ class GridInvoice extends Component {
     }
   }
 
+  
+  beforePrint(args) {
+    var div = document.createElement("Div");
+    div.innerHTML = this.props.workName;
+    div.style.textAlign = "center";
+    div.style.color = "red";
+    div.style.padding = "10px 0";
+    div.style.fontSize = "25px";
+    args.element.insertBefore(div, args.element.childNodes[0]);
+  }
+
   render() {
     return (
       <Fragment>
@@ -317,6 +329,7 @@ class GridInvoice extends Component {
           allowTextWrap={true}
           textWrapSettings={this.wrapSettings}
           id="gridInvoices"
+          beforePrint={this.beforePrint}
         >
           <ColumnsDirective>
             <ColumnDirective

@@ -11,6 +11,7 @@
     public interface IDailySigningRepository
     {
         QueryResult<DailySigning> GetAll(int skip = 0, int take = 0, int userId = 0);
+        List<DailySigning> GetHistoryByUserId(int userId);    
         DailySigning GetById(int id);
         DailySigning Add(DailySigning newDailySigning);
         bool Update(DailySigning dailySigning);

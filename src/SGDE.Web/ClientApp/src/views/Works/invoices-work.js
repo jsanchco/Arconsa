@@ -20,6 +20,7 @@ class InvoicesWork extends Component {
             <GridInvoice
               clientId={null}
               workId={this.props.workId}
+              workName={this.props.workName}
               showMessage={this.props.showMessage}
             />
           </div>

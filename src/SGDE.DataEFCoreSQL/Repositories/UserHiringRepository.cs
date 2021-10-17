@@ -420,5 +420,12 @@
             return _context.UserHiring
                     .FirstOrDefault(x => x.UserId == workerId && x.EndDate == null);
         }
+
+        public List<UserHiring> GetByUserAndInWork(int userId, bool inWork)
+        {
+            return _context.UserHiring
+                    .Where(x => x.UserId == userId && x.InWork == inWork)
+                    .ToList();
+        }
     }
 }

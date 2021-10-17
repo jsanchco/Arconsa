@@ -7,13 +7,13 @@ import {
   Edit,
   Inject,
   Toolbar,
-  Page
+  Page,
 } from "@syncfusion/ej2-react-grids";
 import { DataManager, WebApiAdaptor, Query } from "@syncfusion/ej2-data";
 import { config, USERSHIRING, PROFESSIONS } from "../../constants";
 import { L10n } from "@syncfusion/ej2-base";
 import data from "../../locales/locale.json";
-import { TOKEN_KEY } from "../../services";
+import { TOKEN_KEY, getUser } from "../../services";
 
 L10n.load(data);
 
@@ -21,13 +21,13 @@ class AuthorizeCancelWorkers extends Component {
   usersHiring = new DataManager({
     adaptor: new WebApiAdaptor(),
     url: `${config.URL_API}/${USERSHIRING}`,
-    headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }]
+    headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }],
   });
 
   professions = new DataManager({
     adaptor: new WebApiAdaptor(),
     url: `${config.URL_API}/${PROFESSIONS}`,
-    headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }]
+    headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }],
   });
   grid = null;
 
@@ -37,7 +37,7 @@ class AuthorizeCancelWorkers extends Component {
     super(props);
 
     this.state = {
-      usersHiring: null
+      usersHiring: null,
     };
 
     this.toolbarOptions = ["Edit", "Delete", "Update", "Cancel", "Print"];
@@ -46,17 +46,28 @@ class AuthorizeCancelWorkers extends Component {
       allowEditing: true,
       allowAdding: true,
       allowDeleting: true,
-      newRowPosition: "Top"
+      newRowPosition: "Top",
     };
     this.pageSettings = { pageCount: 10, pageSize: 10 };
     this.actionFailure = this.actionFailure.bind(this);
     this.actionComplete = this.actionComplete.bind(this);
     this.actionBegin = this.actionBegin.bind(this);
+    this.beforePrint = this.beforePrint.bind(this);
 
     this.template = this.gridTemplate;
     this.format = { type: "dateTime", format: "dd/MM/yyyy" };
 
     this.query = new Query().addParams("workId", props.workId);
+  }
+
+  componentDidMount() {
+    getUser(this.props.userId).then((result) => {
+      this.setState({
+        user: {
+          fullname: result.fullname,
+        },
+      });
+    });
   }
 
   gridTemplate(args) {
@@ -81,9 +92,8 @@ class AuthorizeCancelWorkers extends Component {
     }
 
     let day = args.getDate();
-    if (day < 10)
-      day = "0" + day;
-      
+    if (day < 10) day = "0" + day;
+
     const month = args.getMonth() + 1;
     const year = args.getFullYear();
 
@@ -114,11 +124,11 @@ class AuthorizeCancelWorkers extends Component {
     let error = Array.isArray(args) ? args[0].error : args.error;
     if (Array.isArray(error)) {
       error = error[0].error;
-    } 
+    }
     this.props.showMessage({
       statusText: error.statusText,
       responseText: error.responseText,
-      type: "danger"
+      type: "danger",
     });
   }
 
@@ -127,16 +137,26 @@ class AuthorizeCancelWorkers extends Component {
       this.props.showMessage({
         statusText: "200",
         responseText: "Operación realizada con éxito",
-        type: "success"
+        type: "success",
       });
     }
     if (args.requestType === "delete") {
       this.props.showMessage({
         statusText: "200",
         responseText: "Operación realizada con éxito",
-        type: "success"
+        type: "success",
       });
     }
+  }
+
+  beforePrint(args) {
+    var div = document.createElement("Div");
+    div.innerHTML = this.props.workName;
+    div.style.textAlign = "center";
+    div.style.color = "red";
+    div.style.padding = "10px 0";
+    div.style.fontSize = "25px";
+    args.element.insertBefore(div, args.element.childNodes[0]);
   }
 
   render() {
@@ -167,15 +187,16 @@ class AuthorizeCancelWorkers extends Component {
                   marginLeft: 30,
                   marginRight: 30,
                   marginTop: -20,
-                  marginBottom: 20
+                  marginBottom: 20,
                 }}
                 actionFailure={this.actionFailure}
                 actionComplete={this.actionComplete}
                 actionBegin={this.actionBegin}
                 allowGrouping={false}
                 rowSelected={this.rowSelected}
-                ref={g => (this.grid = g)}
+                ref={(g) => (this.grid = g)}
                 query={this.query}
+                beforePrint={this.beforePrint}
               >
                 <ColumnsDirective>
                   <ColumnDirective

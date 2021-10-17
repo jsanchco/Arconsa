@@ -7,7 +7,7 @@ import {
   Edit,
   Inject,
   Toolbar,
-  Page
+  Page,
 } from "@syncfusion/ej2-react-grids";
 import { DateTimePickerComponent } from "@syncfusion/ej2-react-calendars";
 import { getValue } from "@syncfusion/ej2-base";
@@ -33,19 +33,19 @@ class DailySignings extends Component {
   dailySignings = new DataManager({
     adaptor: new WebApiAdaptor(),
     url: `${config.URL_API}/${DAILYSIGNINGS}`,
-    headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }]
+    headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }],
   });
 
   userHirings = new DataManager({
     adaptor: new WebApiAdaptor(),
     url: `${config.URL_API}/${USERSHIRING}`,
-    headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }]
+    headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }],
   });
 
   hourTypes = new DataManager({
     adaptor: new WebApiAdaptor(),
     url: `${config.URL_API}/${HOURTYPES}`,
-    headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }]
+    headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }],
   });
 
   userHiringIdRules = { required: true };
@@ -62,7 +62,7 @@ class DailySignings extends Component {
       userHirings: null,
       rowSelected: null,
       modal: false,
-      hideConfirmDialog: false
+      hideConfirmDialog: false,
     };
 
     this.toolbarOptions = [
@@ -75,22 +75,22 @@ class DailySignings extends Component {
         text: "Plantilla Automática",
         tooltipText: "Plantilla para a generación de Fichajes Automática",
         prefixIcon: "e-custom-icons e-details",
-        id: "Template"
+        id: "Template",
       },
       {
         text: "Borrar Seleccionados",
         tooltipText: "Borrar registros seleccionados",
         prefixIcon: "e-custom-icons e-remove",
-        id: "RemoveAll"
+        id: "RemoveAll",
       },
-      "Print"
+      "Print",
     ];
     this.editSettings = {
       showDeleteConfirmDialog: true,
       allowEditing: true,
       allowAdding: true,
       allowDeleting: true,
-      newRowPosition: "Top"
+      newRowPosition: "Top",
     };
     this.pageSettings = { pageCount: 10, pageSize: 10 };
     this.actionFailure = this.actionFailure.bind(this);
@@ -103,6 +103,7 @@ class DailySignings extends Component {
     this.rowDataBound = this.rowDataBound.bind(this);
     this.toggleModal = this.toggleModal.bind(this);
     this.updateDailySignings = this.updateDailySignings.bind(this);
+    this.beforePrint = this.beforePrint.bind(this);
 
     this.template = this.gridTemplate;
     this.format = { type: "dateTime", format: "dd/MM/yyyy HH:mm" };
@@ -112,29 +113,29 @@ class DailySignings extends Component {
     this.animationSettings = { effect: "None" };
     this.confirmButton = [
       {
-        click: () => {          
-          const selectedRecords = this.grid.getSelectedRecords();      
+        click: () => {
+          const selectedRecords = this.grid.getSelectedRecords();
           if (Array.isArray(selectedRecords) && selectedRecords.length > 0) {
-            let result = selectedRecords.map(a => a.id);
+            let result = selectedRecords.map((a) => a.id);
             removeAllDailySigning(result)
-            .then(() => {
-              this.setState({ hideConfirmDialog: false });
-              this.updateDailySignings();
-            })
-            .catch(() => {
-              this.setState({ hideConfirmDialog: false });
-              this.updateDailySignings();
-            });
+              .then(() => {
+                this.setState({ hideConfirmDialog: false });
+                this.updateDailySignings();
+              })
+              .catch(() => {
+                this.setState({ hideConfirmDialog: false });
+                this.updateDailySignings();
+              });
           }
         },
-        buttonModel: { content: "Si", isPrimary: true }
+        buttonModel: { content: "Si", isPrimary: true },
       },
       {
         click: () => {
           this.setState({ hideConfirmDialog: false });
         },
-        buttonModel: { content: "No" }
-      }
+        buttonModel: { content: "No" },
+      },
     ];
   }
 
@@ -156,7 +157,7 @@ class DailySignings extends Component {
 
   dialogClose() {
     this.setState({
-      hideConfirmDialog: false
+      hideConfirmDialog: false,
     });
   }
 
@@ -202,7 +203,7 @@ class DailySignings extends Component {
     this.props.showMessage({
       statusText: error.statusText,
       responseText: error.responseText,
-      type: "danger"
+      type: "danger",
     });
   }
 
@@ -211,14 +212,14 @@ class DailySignings extends Component {
       this.props.showMessage({
         statusText: "200",
         responseText: "Operación realizada con éxito",
-        type: "success"
+        type: "success",
       });
     }
     if (args.requestType === "delete") {
       this.props.showMessage({
         statusText: "200",
         responseText: "Operación realizada con éxito",
-        type: "success"
+        type: "success",
       });
     }
   }
@@ -234,7 +235,7 @@ class DailySignings extends Component {
 
   toggleModal() {
     this.setState({
-      modal: !this.state.modal
+      modal: !this.state.modal,
     });
   }
 
@@ -283,7 +284,7 @@ class DailySignings extends Component {
         default:
           break;
       }
-      
+
       // if (getValue("startHour", args.data) < 30){
       //   args.row.classList.add('below-30');
       // } else if(getValue('Freight', args.data) < 80 ) {
@@ -292,7 +293,17 @@ class DailySignings extends Component {
       //     args.row.classList.add('above-80');
       // }
     }
-}
+  }
+
+  beforePrint(args) {
+    var div = document.createElement("Div");
+    div.innerHTML = this.state.user.fullname;
+    div.style.textAlign = "center";
+    div.style.color = "red";
+    div.style.padding = "10px 0";
+    div.style.fontSize = "25px";
+    args.element.insertBefore(div, args.element.childNodes[0]);
+  }
 
   render() {
     return (
@@ -305,7 +316,7 @@ class DailySignings extends Component {
           animationSettings={this.animationSettings}
           width="500px"
           content="¿Estás seguro de eliminar estos fichajes?"
-          ref={dialog => (this.confirmDialogInstance = dialog)}
+          ref={(dialog) => (this.confirmDialogInstance = dialog)}
           target="#target-daily-signing"
           buttons={this.confirmButton}
           close={this.dialogClose.bind(this)}
@@ -341,7 +352,7 @@ class DailySignings extends Component {
                   marginLeft: 30,
                   marginRight: 30,
                   marginTop: -20,
-                  marginBottom: 20
+                  marginBottom: 20,
                 }}
                 actionFailure={this.actionFailure}
                 actionComplete={this.actionComplete}
@@ -349,10 +360,11 @@ class DailySignings extends Component {
                 allowGrouping={false}
                 rowSelected={this.rowSelected}
                 rowDataBound={this.rowDataBound}
-                ref={g => (this.grid = g)}
+                ref={(g) => (this.grid = g)}
                 query={this.queryDailySignings}
                 allowTextWrap={true}
                 textWrapSettings={this.wrapSettings}
+                beforePrint={this.beforePrint}
               >
                 <ColumnsDirective>
                   <ColumnDirective type="checkbox" width="50"></ColumnDirective>

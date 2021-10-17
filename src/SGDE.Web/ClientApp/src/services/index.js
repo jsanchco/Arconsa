@@ -20,7 +20,8 @@ import {
   PRINTINVOICE,
   BILLPAYMENT,
   DETAILINVOICEBYHOURSWORKER,
-  IMPORTPREVIOUSINVOICE
+  IMPORTPREVIOUSINVOICE,
+  HISTORYHIRINGUPDATEINWORK
 } from "../constants";
 import store from "../store/store";
 import ACTION_AUTHENTICATION from "../actions/authenticationAction";
@@ -1139,6 +1140,55 @@ export const importPreviousInvoice = data => {
           ACTION_APPLICATION.showMessage({
             statusText: error.message,
             responseText: error.message,
+            type: "danger"
+          })
+        );
+        reject();
+      });
+  });
+};
+
+export const updateUserHiringInWorkByUser = historyHiring => {
+  return new Promise((resolve, reject) => {
+    const url = `${config.URL_API}/${HISTORYHIRINGUPDATEINWORK}`;
+    fetch(url, {
+      headers: {
+        Accept: "text/plain",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`
+      },
+      method: "POST",
+      body: JSON.stringify(historyHiring)
+    })
+      .then(data => data.json())
+      .then(result => {
+        if (result.Message) {
+          console.log("error ->", result.Message);
+          store.dispatch(
+            ACTION_APPLICATION.showMessage({
+              statusText: result.Message,
+              responseText: result.Message,
+              type: "danger"
+            })
+          );
+          reject();
+        } else {
+          store.dispatch(
+            ACTION_APPLICATION.showMessage({
+              statusText: "200",
+              responseText: "Operación realizada con éxito",
+              type: "success"
+            })
+          );
+          resolve();
+        }
+      })
+      .catch(error => {
+        console.log("error ->", error);
+        store.dispatch(
+          ACTION_APPLICATION.showMessage({
+            statusText: error,
+            responseText: error,
             type: "danger"
           })
         );

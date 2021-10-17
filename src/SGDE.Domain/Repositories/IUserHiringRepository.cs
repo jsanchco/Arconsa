@@ -21,5 +21,6 @@
         bool IsProfessionInClient(int? professionId, int workId = 0, int clientId = 0);
         UserHiring GetByWorkAndStartDateNull(int workId);
         UserHiring GetByWorkerAndEndDateNull(int workerId);
+        List<UserHiring> GetByUserAndInWork(int userId, bool inWork);
     }
 }

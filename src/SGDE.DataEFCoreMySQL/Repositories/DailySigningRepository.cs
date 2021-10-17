@@ -80,6 +80,20 @@
                 };
         }
 
+        public List<DailySigning> GetHistoryByUserId(int userId)
+        {
+            return _context.DailySigning
+                .Include(x => x.UserHiring)
+                .ThenInclude(y => y.Work)
+                .ThenInclude(v => v.Client)
+                .Include(z => z.UserHiring)
+                .ThenInclude(w => w.User)
+                .ThenInclude(u => u.Profession)
+                .Where(x => x.UserHiring.User.Id == userId)
+                .OrderBy(x => x.StartHour)
+                .ToList();
+        }
+
         public DailySigning GetById(int id)
         {
             return _context.DailySigning

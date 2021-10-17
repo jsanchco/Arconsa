@@ -55,6 +55,7 @@ class GridSelection extends Component {
     this.renderClient = this.renderClient.bind(this);
     this.clickHandler = this.clickHandler.bind(this);
     this.getExcelExportProperties = this.getExcelExportProperties.bind(this);
+    this.beforePrint = this.beforePrint.bind(this);
   }
 
   componentDidMount() {
@@ -352,6 +353,16 @@ class GridSelection extends Component {
     };
   }
 
+  beforePrint(args) {
+    var div = document.createElement("Div");
+    div.innerHTML = this.props.settings.textSelection;
+    div.style.textAlign = "center";
+    div.style.color = "red";
+    div.style.padding = "10px 0";
+    div.style.fontSize = "25px";
+    args.element.insertBefore(div, args.element.childNodes[0]);
+  }
+
   render() {
     return (
       <div className="control-pane">
@@ -375,6 +386,7 @@ class GridSelection extends Component {
               ref={(g) => (this.grid = g)}
               allowTextWrap={true}
               textWrapSettings={this.wrapSettings}
+              beforePrint={this.beforePrint}
             >
               <ColumnsDirective>
                 {this.renderClient()}

@@ -50,7 +50,8 @@
 
                 WorkId = newUserHiringViewModel.workId,
                 UserId = newUserHiringViewModel.userId,
-                ProfessionId = newUserHiringViewModel.professionId
+                ProfessionId = newUserHiringViewModel.professionId,
+                InWork = newUserHiringViewModel.inWork
             };
 
             _userHiringRepository.Add(userHiring);
@@ -77,6 +78,7 @@
             userHiring.WorkId = userHiringViewModel.workId;
             userHiring.UserId = userHiringViewModel.userId;
             userHiring.ProfessionId = userHiringViewModel.professionId;
+            userHiring.InWork = userHiringViewModel.inWork;
 
             return _userHiringRepository.Update(userHiring);
         }

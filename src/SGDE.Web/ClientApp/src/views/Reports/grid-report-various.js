@@ -58,6 +58,7 @@ class GridReportVarious extends Component {
     this.getExcelExportProperties = this.getExcelExportProperties.bind(this);
     this.renderColumn = this.renderColumn.bind(this);
     this.footerCount = this.footerCount.bind(this);
+    this.beforePrint = this.beforePrint.bind(this);
 
     this.format = { type: "dateTime", format: "dd/MM/yyyy" };
   }
@@ -319,6 +320,16 @@ class GridReportVarious extends Component {
     }
   }
 
+  beforePrint(args) {
+    var div = document.createElement("Div");
+    div.innerHTML = this.props.settings.textSelection;
+    div.style.textAlign = "center";
+    div.style.color = "red";
+    div.style.padding = "10px 0";
+    div.style.fontSize = "25px";
+    args.element.insertBefore(div, args.element.childNodes[0]);
+  }
+
   render() {
     return (
       <GridComponent
@@ -341,6 +352,7 @@ class GridReportVarious extends Component {
         textWrapSettings={this.wrapSettings}
         allowSorting={true}
         allowResizing={true}
+        beforePrint={this.beforePrint}
       >
         <ColumnsDirective>
           <ColumnDirective

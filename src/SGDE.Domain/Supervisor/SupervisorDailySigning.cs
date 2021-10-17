@@ -7,6 +7,7 @@
     using SGDE.Domain.Helpers;
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using ViewModels;
 
     #endregion
