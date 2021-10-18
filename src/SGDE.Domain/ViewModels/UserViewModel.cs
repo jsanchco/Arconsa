@@ -4,6 +4,7 @@ namespace SGDE.Domain.ViewModels
     #region Using
 
     using System;
+    using System.Collections.Generic;
 
     #endregion
 
@@ -34,6 +35,7 @@ namespace SGDE.Domain.ViewModels
         public string token { get; set; }
         public int? professionId { get; set; }
         public string professionName { get; set; }
+        public List<int> professions { get; set; }
         public int roleId { get; set; }
         public string roleName { get; set; }
         public int? workId { get; set; }
