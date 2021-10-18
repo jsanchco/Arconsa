@@ -21,12 +21,12 @@ import {
   BILLPAYMENT,
   DETAILINVOICEBYHOURSWORKER,
   IMPORTPREVIOUSINVOICE,
-  HISTORYHIRINGUPDATEINWORK
+  HISTORYHIRINGUPDATEINWORK,
 } from "../constants";
 import store from "../store/store";
 import ACTION_AUTHENTICATION from "../actions/authenticationAction";
 import ACTION_APPLICATION from "../actions/applicationAction";
-import { INVOICES } from './../constants/index';
+import { INVOICES } from "./../constants/index";
 
 export const TOKEN_KEY = "jwt";
 
@@ -35,13 +35,13 @@ export const login = (username, password, history) => {
   fetch(url, {
     headers: {
       Accept: "text/plain",
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
     },
     method: "POST",
-    body: JSON.stringify({ username, password })
+    body: JSON.stringify({ username, password }),
   })
-    .then(data => data.json())
-    .then(result => {
+    .then((data) => data.json())
+    .then((result) => {
       if (result.user != null && result.token != null) {
         localStorage.setItem("user", JSON.stringify(result.user));
         localStorage.setItem(TOKEN_KEY, result.token);
@@ -57,19 +57,19 @@ export const login = (username, password, history) => {
             ACTION_APPLICATION.showMessage({
               statusText: result.message,
               responseText: result.message,
-              type: "danger"
+              type: "danger",
             })
           );
         }
       }
     })
-    .catch(error => {
+    .catch((error) => {
       console.log("error ->", error);
       store.dispatch(
         ACTION_APPLICATION.showMessage({
           statusText: error,
           responseText: error,
-          type: "danger"
+          type: "danger",
         })
       );
     });
@@ -90,33 +90,33 @@ export const isLogin = () => {
 export const getUsers = () => {
   const url = `${config.URL_API}/${USERS}`;
   fetch(url, {
-    method: "GET"
+    method: "GET",
   })
-    .then(data => data.json())
-    .then(result => {
+    .then((data) => data.json())
+    .then((result) => {
       return result;
     })
-    .catch(error => {
+    .catch((error) => {
       console.log("error ->", error);
     });
 };
 
-export const getUser = id => {
+export const getUser = (id) => {
   return new Promise((resolve, reject) => {
     const url = `${config.URL_API}/${USERS}/${id}`;
     fetch(url, {
       headers: {
         Accept: "text/plain",
         "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`
+        Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`,
       },
-      method: "GET"
+      method: "GET",
     })
-      .then(data => data.json())
-      .then(result => {
+      .then((data) => data.json())
+      .then((result) => {
         resolve(result);
       })
-      .catch(error => {
+      .catch((error) => {
         console.log("error ->", error);
         reject();
       });
@@ -124,40 +124,43 @@ export const getUser = id => {
 };
 
 export const getProfessions = () => {
-  const url = `${config.URL_API}/${PROFESSIONS}`;
-  fetch(url, {
-    method: "GET"
-  })
-    .then(data => data.json())
-    .then(result => {
-      return result;
+  return new Promise((resolve, reject) => {
+    const url = `${config.URL_API}/${PROFESSIONS}`;
+    fetch(url, {
+      method: "GET",
     })
-    .catch(error => {
-      console.log("error ->", error);
-    });
+      .then((data) => data.json())
+      .then((result) => {
+        resolve(result);
+      })
+      .catch((error) => {
+        console.log("error ->", error);
+        reject();
+      });
+  });
 };
 
-export const updateUser = user => {
+export const updateUser = (user) => {
   return new Promise((resolve, reject) => {
     const url = `${config.URL_API}/${USERS}`;
     fetch(url, {
       headers: {
         Accept: "text/plain",
         "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`
+        Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`,
       },
       method: "PUT",
-      body: JSON.stringify(user)
+      body: JSON.stringify(user),
     })
-      .then(data => data.json())
-      .then(result => {
+      .then((data) => data.json())
+      .then((result) => {
         if (result.Message) {
           console.log("error ->", result.Message);
           store.dispatch(
             ACTION_APPLICATION.showMessage({
               statusText: result.Message,
               responseText: result.Message,
-              type: "danger"
+              type: "danger",
             })
           );
           reject();
@@ -166,19 +169,19 @@ export const updateUser = user => {
             ACTION_APPLICATION.showMessage({
               statusText: "200",
               responseText: "Operación realizada con éxito",
-              type: "success"
+              type: "success",
             })
           );
           resolve();
         }
       })
-      .catch(error => {
+      .catch((error) => {
         console.log("error ->", error);
         store.dispatch(
           ACTION_APPLICATION.showMessage({
             statusText: error,
             responseText: error,
-            type: "danger"
+            type: "danger",
           })
         );
         reject();
@@ -186,27 +189,27 @@ export const updateUser = user => {
   });
 };
 
-export const updatePassword = user => {
+export const updatePassword = (user) => {
   return new Promise((resolve, reject) => {
     const url = `${config.URL_API}/${UPDATEPASSWORD}`;
     fetch(url, {
       headers: {
         Accept: "text/plain",
         "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`
+        Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`,
       },
       method: "PUT",
-      body: JSON.stringify(user)
+      body: JSON.stringify(user),
     })
-      .then(data => data.json())
-      .then(result => {
+      .then((data) => data.json())
+      .then((result) => {
         if (result.Message) {
           console.log("error ->", result.Message);
           store.dispatch(
             ACTION_APPLICATION.showMessage({
               statusText: result.Message,
               responseText: result.Message,
-              type: "danger"
+              type: "danger",
             })
           );
           reject();
@@ -215,19 +218,19 @@ export const updatePassword = user => {
             ACTION_APPLICATION.showMessage({
               statusText: "200",
               responseText: "Operación realizada con éxito",
-              type: "success"
+              type: "success",
             })
           );
           resolve();
         }
       })
-      .catch(error => {
+      .catch((error) => {
         console.log("error ->", error);
         store.dispatch(
           ACTION_APPLICATION.showMessage({
             statusText: error,
             responseText: error,
-            type: "danger"
+            type: "danger",
           })
         );
         reject();
@@ -235,27 +238,27 @@ export const updatePassword = user => {
   });
 };
 
-export const updateClient = client => {
+export const updateClient = (client) => {
   return new Promise((resolve, reject) => {
     const url = `${config.URL_API}/${CLIENTS}`;
     fetch(url, {
       headers: {
         Accept: "text/plain",
         "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`
+        Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`,
       },
       method: "PUT",
-      body: JSON.stringify(client)
+      body: JSON.stringify(client),
     })
-      .then(data => data.json())
-      .then(result => {
+      .then((data) => data.json())
+      .then((result) => {
         if (result.Message) {
           console.log("error ->", result.Message);
           store.dispatch(
             ACTION_APPLICATION.showMessage({
               statusText: result.Message,
               responseText: result.Message,
-              type: "danger"
+              type: "danger",
             })
           );
           reject();
@@ -264,19 +267,19 @@ export const updateClient = client => {
             ACTION_APPLICATION.showMessage({
               statusText: "200",
               responseText: "Operación realizada con éxito",
-              type: "success"
+              type: "success",
             })
           );
           resolve();
         }
       })
-      .catch(error => {
+      .catch((error) => {
         console.log("error ->", error);
         store.dispatch(
           ACTION_APPLICATION.showMessage({
             statusText: error,
             responseText: error,
-            type: "danger"
+            type: "danger",
           })
         );
         reject();
@@ -284,27 +287,27 @@ export const updateClient = client => {
   });
 };
 
-export const updateWork = work => {
+export const updateWork = (work) => {
   return new Promise((resolve, reject) => {
     const url = `${config.URL_API}/${WORKS}`;
     fetch(url, {
       headers: {
         Accept: "text/plain",
         "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`
+        Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`,
       },
       method: "PUT",
-      body: JSON.stringify(work)
+      body: JSON.stringify(work),
     })
-      .then(data => data.json())
-      .then(result => {
+      .then((data) => data.json())
+      .then((result) => {
         if (result.Message) {
           console.log("error ->", result.Message);
           store.dispatch(
             ACTION_APPLICATION.showMessage({
               statusText: result.Message,
               responseText: result.Message,
-              type: "danger"
+              type: "danger",
             })
           );
           reject();
@@ -313,19 +316,19 @@ export const updateWork = work => {
             ACTION_APPLICATION.showMessage({
               statusText: "200",
               responseText: "Operación realizada con éxito",
-              type: "success"
+              type: "success",
             })
           );
           resolve();
         }
       })
-      .catch(error => {
+      .catch((error) => {
         console.log("error ->", error);
         store.dispatch(
           ACTION_APPLICATION.showMessage({
             statusText: error,
             responseText: error,
-            type: "danger"
+            type: "danger",
           })
         );
         reject();
@@ -333,27 +336,27 @@ export const updateWork = work => {
   });
 };
 
-export const updateDatesWork = work => {
+export const updateDatesWork = (work) => {
   return new Promise((resolve, reject) => {
     const url = `${config.URL_API}/${UPDATEDATESWORK}`;
     fetch(url, {
       headers: {
         Accept: "text/plain",
         "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`
+        Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`,
       },
       method: "PUT",
-      body: JSON.stringify(work)
+      body: JSON.stringify(work),
     })
-      .then(data => data.json())
-      .then(result => {
+      .then((data) => data.json())
+      .then((result) => {
         if (result.Message) {
           console.log("error ->", result.Message);
           store.dispatch(
             ACTION_APPLICATION.showMessage({
               statusText: result.Message,
               responseText: result.Message,
-              type: "danger"
+              type: "danger",
             })
           );
           reject();
@@ -362,19 +365,19 @@ export const updateDatesWork = work => {
             ACTION_APPLICATION.showMessage({
               statusText: "200",
               responseText: "Operación realizada con éxito",
-              type: "success"
+              type: "success",
             })
           );
           resolve();
         }
       })
-      .catch(error => {
+      .catch((error) => {
         console.log("error ->", error);
         store.dispatch(
           ACTION_APPLICATION.showMessage({
             statusText: error,
             responseText: error,
-            type: "danger"
+            type: "danger",
           })
         );
         reject();
@@ -382,27 +385,27 @@ export const updateDatesWork = work => {
   });
 };
 
-export const updateDocument = document => {
+export const updateDocument = (document) => {
   return new Promise((resolve, reject) => {
     const url = `${config.URL_API}/${DOCUMENTS}`;
     fetch(url, {
       headers: {
         Accept: "text/plain",
         "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`
+        Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`,
       },
       method: "PUT",
-      body: JSON.stringify(document)
+      body: JSON.stringify(document),
     })
-      .then(data => data.json())
-      .then(result => {
+      .then((data) => data.json())
+      .then((result) => {
         if (result.Message) {
           console.log("error ->", result.Message);
           store.dispatch(
             ACTION_APPLICATION.showMessage({
               statusText: result.Message,
               responseText: result.Message,
-              type: "danger"
+              type: "danger",
             })
           );
           reject();
@@ -411,19 +414,19 @@ export const updateDocument = document => {
             ACTION_APPLICATION.showMessage({
               statusText: "200",
               responseText: "Operación realizada con éxito",
-              type: "success"
+              type: "success",
             })
           );
           resolve();
         }
       })
-      .catch(error => {
+      .catch((error) => {
         console.log("error ->", error);
         store.dispatch(
           ACTION_APPLICATION.showMessage({
             statusText: error,
             responseText: error,
-            type: "danger"
+            type: "danger",
           })
         );
         reject();
@@ -436,7 +439,7 @@ export const updateWorkersInWork = (workers, workId) => {
     const url = `${config.URL_API}/${ASSIGNWORKERS}`;
     let workersId = [];
 
-    workers.forEach(worker => {
+    workers.forEach((worker) => {
       workersId.push(worker.id);
     });
 
@@ -444,20 +447,20 @@ export const updateWorkersInWork = (workers, workId) => {
       headers: {
         Accept: "text/plain",
         "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`
+        Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`,
       },
       method: "POST",
-      body: JSON.stringify({ listUserId: workersId, workId: workId })
+      body: JSON.stringify({ listUserId: workersId, workId: workId }),
     })
-      .then(data => data.json())
-      .then(result => {
+      .then((data) => data.json())
+      .then((result) => {
         if (result.Message) {
           console.log("error ->", result.Message);
           store.dispatch(
             ACTION_APPLICATION.showMessage({
               statusText: result.Message,
               responseText: result.Message,
-              type: "danger"
+              type: "danger",
             })
           );
           reject();
@@ -466,19 +469,19 @@ export const updateWorkersInWork = (workers, workId) => {
             ACTION_APPLICATION.showMessage({
               statusText: "200",
               responseText: "Operación realizada con éxito",
-              type: "success"
+              type: "success",
             })
           );
           resolve();
         }
       })
-      .catch(error => {
+      .catch((error) => {
         console.log("error ->", error);
         store.dispatch(
           ACTION_APPLICATION.showMessage({
             statusText: error,
             responseText: error,
-            type: "danger"
+            type: "danger",
           })
         );
         reject();
@@ -486,26 +489,26 @@ export const updateWorkersInWork = (workers, workId) => {
   });
 };
 
-export const restorePassword = userId => {
+export const restorePassword = (userId) => {
   return new Promise((resolve, reject) => {
     const url = `${config.URL_API}/${RESTOREPASSWORD}/${userId}`;
     fetch(url, {
       headers: {
         Accept: "text/plain",
         "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`
+        Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`,
       },
-      method: "PUT"
+      method: "PUT",
     })
-      .then(data => data.json())
-      .then(result => {
+      .then((data) => data.json())
+      .then((result) => {
         if (result !== true) {
           console.log("error ->", result.Message);
           store.dispatch(
             ACTION_APPLICATION.showMessage({
               statusText: "Ha ocurrido un error al ralizar la operación",
               responseText: "Ha ocurrido un error al ralizar la operación",
-              type: "danger"
+              type: "danger",
             })
           );
           reject();
@@ -514,19 +517,19 @@ export const restorePassword = userId => {
             ACTION_APPLICATION.showMessage({
               statusText: "Operación realizada con éxito",
               responseText: "Operación realizada con éxito",
-              type: "success"
+              type: "success",
             })
           );
           resolve();
         }
       })
-      .catch(error => {
+      .catch((error) => {
         console.log("error ->", error);
         store.dispatch(
           ACTION_APPLICATION.showMessage({
             statusText: error,
             responseText: error,
-            type: "danger"
+            type: "danger",
           })
         );
         reject();
@@ -541,15 +544,15 @@ export const getWorkers = () => {
       headers: {
         Accept: "text/plain",
         "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`
+        Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`,
       },
-      method: "GET"
+      method: "GET",
     })
-      .then(data => data.json())
-      .then(result => {
+      .then((data) => data.json())
+      .then((result) => {
         resolve(result.Items);
       })
-      .catch(error => {
+      .catch((error) => {
         console.log("error ->", error);
         reject();
       });
@@ -563,85 +566,85 @@ export const getWorks = () => {
       headers: {
         Accept: "text/plain",
         "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`
+        Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`,
       },
-      method: "GET"
+      method: "GET",
     })
-      .then(data => data.json())
-      .then(result => {
+      .then((data) => data.json())
+      .then((result) => {
         resolve(result.Items);
       })
-      .catch(error => {
+      .catch((error) => {
         console.log("error ->", error);
         reject();
       });
   });
 };
 
-export const getWork = id => {
+export const getWork = (id) => {
   return new Promise((resolve, reject) => {
     const url = `${config.URL_API}/${WORKS}/${id}`;
     fetch(url, {
       headers: {
         Accept: "text/plain",
         "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`
+        Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`,
       },
-      method: "GET"
+      method: "GET",
     })
-      .then(data => data.json())
-      .then(result => {
+      .then((data) => data.json())
+      .then((result) => {
         resolve(result);
       })
-      .catch(error => {
+      .catch((error) => {
         console.log("error ->", error);
         reject();
       });
   });
 };
 
-export const getWorksByUserId = userId => {
+export const getWorksByUserId = (userId) => {
   return new Promise((resolve, reject) => {
     const url = `${config.URL_API}/${USERSHIRING}/?userId=${userId}`;
     fetch(url, {
       headers: {
         Accept: "text/plain",
         "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`
+        Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`,
       },
-      method: "GET"
+      method: "GET",
     })
-      .then(data => data.json())
-      .then(result => {
+      .then((data) => data.json())
+      .then((result) => {
         resolve(result.Items);
       })
-      .catch(error => {
+      .catch((error) => {
         console.log("error ->", error);
         reject();
       });
   });
 };
 
-export const sendMassiveSigning = data => {
+export const sendMassiveSigning = (data) => {
   return new Promise((resolve, reject) => {
     const url = `${config.URL_API}/${MASSIVESIGNING}`;
     fetch(url, {
       headers: {
         Accept: "text/plain",
         "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`
+        Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`,
       },
       method: "POST",
-      body: JSON.stringify(data)
+      body: JSON.stringify(data),
     })
-      .then(data => data.json())
-      .then(result => {
+      .then((data) => data.json())
+      .then((result) => {
         if (result.Message) {
           store.dispatch(
             ACTION_APPLICATION.showMessage({
               statusText: result.Message,
               responseText: result.Message,
-              type: "danger"
+              type: "danger",
             })
           );
           reject();
@@ -651,7 +654,7 @@ export const sendMassiveSigning = data => {
               ACTION_APPLICATION.showMessage({
                 statusText: "Fichajes generados correctamente",
                 responseText: "Fichajes generados correctamente",
-                type: "success"
+                type: "success",
               })
             );
             resolve(result);
@@ -661,40 +664,40 @@ export const sendMassiveSigning = data => {
                 statusText: "Algunos de las fichajes no se han podido ejecutar",
                 responseText:
                   "Algunos de las fichajes no se han podido ejecutar",
-                type: "danger"
+                type: "danger",
               })
             );
             resolve(result);
           }
         }
       })
-      .catch(error => {
+      .catch((error) => {
         console.log("error ->", error);
         reject();
       });
   });
 };
 
-export const removeAllDailySigning = data => {
+export const removeAllDailySigning = (data) => {
   return new Promise((resolve, reject) => {
     const url = `${config.URL_API}/${REMOVEALLDAILYSIGNING}`;
     fetch(url, {
       headers: {
         Accept: "text/plain",
         "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`
+        Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`,
       },
       method: "DELETE",
-      body: JSON.stringify(data)
+      body: JSON.stringify(data),
     })
-      .then(data => data.json())
-      .then(result => {
+      .then((data) => data.json())
+      .then((result) => {
         if (result.Message) {
           store.dispatch(
             ACTION_APPLICATION.showMessage({
               statusText: result.Message,
               responseText: result.Message,
-              type: "danger"
+              type: "danger",
             })
           );
           reject();
@@ -704,7 +707,7 @@ export const removeAllDailySigning = data => {
               ACTION_APPLICATION.showMessage({
                 statusText: "Fichajes borrados correctamente",
                 responseText: "Fichajes borrados correctamente",
-                type: "success"
+                type: "success",
               })
             );
             resolve(result);
@@ -713,14 +716,14 @@ export const removeAllDailySigning = data => {
               ACTION_APPLICATION.showMessage({
                 statusText: "Ha habido algún error al borrar los fichajes",
                 responseText: "Ha habido algún error al borrar los fichajes",
-                type: "danger"
+                type: "danger",
               })
             );
             resolve(result);
           }
         }
       })
-      .catch(error => {
+      .catch((error) => {
         console.log("error ->", error);
         reject();
       });
@@ -734,63 +737,63 @@ export const getClients = () => {
       headers: {
         Accept: "text/plain",
         "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`
+        Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`,
       },
-      method: "GET"
+      method: "GET",
     })
-      .then(data => data.json())
-      .then(result => {
+      .then((data) => data.json())
+      .then((result) => {
         resolve(result.Items);
       })
-      .catch(error => {
+      .catch((error) => {
         console.log("error ->", error);
         reject();
       });
   });
 };
 
-export const getClient = id => {
+export const getClient = (id) => {
   return new Promise((resolve, reject) => {
     const url = `${config.URL_API}/${CLIENTS}/${id}`;
     fetch(url, {
       headers: {
         Accept: "text/plain",
         "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`
+        Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`,
       },
-      method: "GET"
+      method: "GET",
     })
-      .then(data => data.json())
-      .then(result => {
+      .then((data) => data.json())
+      .then((result) => {
         resolve(result);
       })
-      .catch(error => {
+      .catch((error) => {
         console.log("error ->", error);
         reject();
       });
   });
 };
 
-export const getInvoiceResponse = invoice => {
+export const getInvoiceResponse = (invoice) => {
   return new Promise((resolve, reject) => {
     const url = `${config.URL_API}/${INVOICERESPONSES}`;
     fetch(url, {
       headers: {
         Accept: "text/plain",
         "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`
+        Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`,
       },
       method: "POST",
-      body: JSON.stringify(invoice)
+      body: JSON.stringify(invoice),
     })
-      .then(data => data.json())
-      .then(result => {
+      .then((data) => data.json())
+      .then((result) => {
         if (result.title) {
           store.dispatch(
             ACTION_APPLICATION.showMessage({
               statusText: result.title,
               responseText: result.title,
-              type: "danger"
+              type: "danger",
             })
           );
           reject();
@@ -800,7 +803,7 @@ export const getInvoiceResponse = invoice => {
               ACTION_APPLICATION.showMessage({
                 statusText: result.Message,
                 responseText: result.Message,
-                type: "danger"
+                type: "danger",
               })
             );
             reject();
@@ -809,19 +812,19 @@ export const getInvoiceResponse = invoice => {
               ACTION_APPLICATION.showMessage({
                 statusText: "Facturada generada correctamente",
                 responseText: "Facturada generada correctamente",
-                type: "success"
+                type: "success",
               })
             );
             resolve(result.Items);
           }
         }
       })
-      .catch(error => {
+      .catch((error) => {
         store.dispatch(
           ACTION_APPLICATION.showMessage({
             statusText: error.message,
             responseText: error.message,
-            type: "danger"
+            type: "danger",
           })
         );
         reject();
@@ -829,26 +832,26 @@ export const getInvoiceResponse = invoice => {
   });
 };
 
-export const getSettings = name => {
+export const getSettings = (name) => {
   return new Promise((resolve, reject) => {
     const url = `${config.URL_API}/${SETTINGS}/${name}`;
     fetch(url, {
       headers: {
         Accept: "text/plain",
         "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`
+        Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`,
       },
-      method: "GET"
+      method: "GET",
     })
-      .then(data => data.json())
-      .then(result => {
+      .then((data) => data.json())
+      .then((result) => {
         if (result.Message) {
           console.log("error ->", result.Message);
           store.dispatch(
             ACTION_APPLICATION.showMessage({
               statusText: result.Message,
               responseText: result.Message,
-              type: "danger"
+              type: "danger",
             })
           );
           reject();
@@ -856,13 +859,13 @@ export const getSettings = name => {
           resolve(result);
         }
       })
-      .catch(error => {
+      .catch((error) => {
         console.log("error ->", error);
         store.dispatch(
           ACTION_APPLICATION.showMessage({
             statusText: error,
             responseText: error,
-            type: "danger"
+            type: "danger",
           })
         );
         reject();
@@ -870,31 +873,31 @@ export const getSettings = name => {
   });
 };
 
-export const updateSettings = setting => {
+export const updateSettings = (setting) => {
   return new Promise((resolve, reject) => {
     const url = `${config.URL_API}/${SETTINGS}`;
     const newSetting = JSON.stringify({
       name: COMPANY_DATA,
-      data: JSON.stringify(setting)
+      data: JSON.stringify(setting),
     });
     fetch(url, {
       headers: {
         Accept: "text/plain",
         "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`
+        Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`,
       },
       method: "POST",
-      body: newSetting
+      body: newSetting,
     })
-      .then(data => data.json())
-      .then(result => {
+      .then((data) => data.json())
+      .then((result) => {
         if (result.Message) {
           console.log("error ->", result.Message);
           store.dispatch(
             ACTION_APPLICATION.showMessage({
               statusText: result.Message,
               responseText: result.Message,
-              type: "danger"
+              type: "danger",
             })
           );
           reject();
@@ -903,19 +906,19 @@ export const updateSettings = setting => {
             ACTION_APPLICATION.showMessage({
               statusText: "200",
               responseText: "Operación realizada con éxito",
-              type: "success"
+              type: "success",
             })
           );
           resolve();
         }
       })
-      .catch(error => {
+      .catch((error) => {
         console.log("error ->", error);
         store.dispatch(
           ACTION_APPLICATION.showMessage({
             statusText: error,
             responseText: error,
-            type: "danger"
+            type: "danger",
           })
         );
         reject();
@@ -923,26 +926,26 @@ export const updateSettings = setting => {
   });
 };
 
-export const printInvoice = invoiceId => {
+export const printInvoice = (invoiceId) => {
   return new Promise((resolve, reject) => {
     const url = `${config.URL_API}/${PRINTINVOICE}/${invoiceId}`;
     fetch(url, {
       headers: {
         Accept: "text/plain",
         "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`
+        Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`,
       },
-      method: "GET"
+      method: "GET",
     })
-      .then(data => data.json())
-      .then(result => {
+      .then((data) => data.json())
+      .then((result) => {
         if (result.Message) {
           console.log("error ->", result.Message);
           store.dispatch(
             ACTION_APPLICATION.showMessage({
               statusText: result.Message,
               responseText: result.Message,
-              type: "danger"
+              type: "danger",
             })
           );
           reject();
@@ -950,13 +953,13 @@ export const printInvoice = invoiceId => {
           resolve(result.items);
         }
       })
-      .catch(error => {
+      .catch((error) => {
         console.log("error ->", error);
         store.dispatch(
           ACTION_APPLICATION.showMessage({
             statusText: error,
             responseText: error,
-            type: "danger"
+            type: "danger",
           })
         );
         reject();
@@ -964,26 +967,26 @@ export const printInvoice = invoiceId => {
   });
 };
 
-export const billPayment = invoiceId => {
+export const billPayment = (invoiceId) => {
   return new Promise((resolve, reject) => {
     const url = `${config.URL_API}/${BILLPAYMENT}/${invoiceId}`;
     fetch(url, {
       headers: {
         Accept: "text/plain",
         "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`
+        Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`,
       },
-      method: "GET"
+      method: "GET",
     })
-      .then(data => data.json())
-      .then(result => {
+      .then((data) => data.json())
+      .then((result) => {
         if (result.Message) {
           console.log("error ->", result.Message);
           store.dispatch(
             ACTION_APPLICATION.showMessage({
               statusText: result.Message,
               responseText: result.Message,
-              type: "danger"
+              type: "danger",
             })
           );
           reject();
@@ -991,13 +994,13 @@ export const billPayment = invoiceId => {
           resolve(result.items);
         }
       })
-      .catch(error => {
+      .catch((error) => {
         console.log("error ->", error);
         store.dispatch(
           ACTION_APPLICATION.showMessage({
             statusText: error,
             responseText: error,
-            type: "danger"
+            type: "danger",
           })
         );
         reject();
@@ -1005,26 +1008,26 @@ export const billPayment = invoiceId => {
   });
 };
 
-export const getInvoice = invoiceId => {
+export const getInvoice = (invoiceId) => {
   return new Promise((resolve, reject) => {
     const url = `${config.URL_API}/${INVOICES}/${invoiceId}`;
     fetch(url, {
       headers: {
         Accept: "text/plain",
         "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`
+        Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`,
       },
-      method: "GET"
+      method: "GET",
     })
-      .then(data => data.json())
-      .then(result => {
+      .then((data) => data.json())
+      .then((result) => {
         if (result.Message) {
           console.log("error ->", result.Message);
           store.dispatch(
             ACTION_APPLICATION.showMessage({
               statusText: result.Message,
               responseText: result.Message,
-              type: "danger"
+              type: "danger",
             })
           );
           reject();
@@ -1032,13 +1035,13 @@ export const getInvoice = invoiceId => {
           resolve(result);
         }
       })
-      .catch(error => {
+      .catch((error) => {
         console.log("error ->", error);
         store.dispatch(
           ACTION_APPLICATION.showMessage({
             statusText: error,
             responseText: error,
-            type: "danger"
+            type: "danger",
           })
         );
         reject();
@@ -1046,26 +1049,26 @@ export const getInvoice = invoiceId => {
   });
 };
 
-export const getDetailInvoiceByHoursWoker = invoiceQuery => {
+export const getDetailInvoiceByHoursWoker = (invoiceQuery) => {
   return new Promise((resolve, reject) => {
     const url = `${config.URL_API}/${DETAILINVOICEBYHOURSWORKER}`;
     fetch(url, {
       headers: {
         Accept: "text/plain",
         "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`
+        Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`,
       },
       method: "POST",
-      body: JSON.stringify(invoiceQuery)
+      body: JSON.stringify(invoiceQuery),
     })
-      .then(data => data.json())
-      .then(result => {
+      .then((data) => data.json())
+      .then((result) => {
         if (result.title) {
           store.dispatch(
             ACTION_APPLICATION.showMessage({
               statusText: result.title,
               responseText: result.title,
-              type: "danger"
+              type: "danger",
             })
           );
           reject();
@@ -1075,7 +1078,7 @@ export const getDetailInvoiceByHoursWoker = invoiceQuery => {
               ACTION_APPLICATION.showMessage({
                 statusText: result.Message,
                 responseText: result.Message,
-                type: "danger"
+                type: "danger",
               })
             );
             reject();
@@ -1084,12 +1087,12 @@ export const getDetailInvoiceByHoursWoker = invoiceQuery => {
           }
         }
       })
-      .catch(error => {
+      .catch((error) => {
         store.dispatch(
           ACTION_APPLICATION.showMessage({
             statusText: error.message,
             responseText: error.message,
-            type: "danger"
+            type: "danger",
           })
         );
         reject();
@@ -1097,26 +1100,26 @@ export const getDetailInvoiceByHoursWoker = invoiceQuery => {
   });
 };
 
-export const importPreviousInvoice = data => {
+export const importPreviousInvoice = (data) => {
   return new Promise((resolve, reject) => {
     const url = `${config.URL_API}/${IMPORTPREVIOUSINVOICE}`;
     fetch(url, {
       headers: {
         Accept: "text/plain",
         "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`
+        Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`,
       },
       method: "POST",
-      body: JSON.stringify(data)
+      body: JSON.stringify(data),
     })
-      .then(data => data.json())
-      .then(result => {
+      .then((data) => data.json())
+      .then((result) => {
         if (result.title) {
           store.dispatch(
             ACTION_APPLICATION.showMessage({
               statusText: result.title,
               responseText: result.title,
-              type: "danger"
+              type: "danger",
             })
           );
           reject();
@@ -1126,7 +1129,7 @@ export const importPreviousInvoice = data => {
               ACTION_APPLICATION.showMessage({
                 statusText: result.Message,
                 responseText: result.Message,
-                type: "danger"
+                type: "danger",
               })
             );
             reject();
@@ -1135,12 +1138,12 @@ export const importPreviousInvoice = data => {
           }
         }
       })
-      .catch(error => {
+      .catch((error) => {
         store.dispatch(
           ACTION_APPLICATION.showMessage({
             statusText: error.message,
             responseText: error.message,
-            type: "danger"
+            type: "danger",
           })
         );
         reject();
@@ -1148,27 +1151,27 @@ export const importPreviousInvoice = data => {
   });
 };
 
-export const updateUserHiringInWorkByUser = historyHiring => {
+export const updateUserHiringInWorkByUser = (historyHiring) => {
   return new Promise((resolve, reject) => {
     const url = `${config.URL_API}/${HISTORYHIRINGUPDATEINWORK}`;
     fetch(url, {
       headers: {
         Accept: "text/plain",
         "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`
+        Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`,
       },
       method: "POST",
-      body: JSON.stringify(historyHiring)
+      body: JSON.stringify(historyHiring),
     })
-      .then(data => data.json())
-      .then(result => {
+      .then((data) => data.json())
+      .then((result) => {
         if (result.Message) {
           console.log("error ->", result.Message);
           store.dispatch(
             ACTION_APPLICATION.showMessage({
               statusText: result.Message,
               responseText: result.Message,
-              type: "danger"
+              type: "danger",
             })
           );
           reject();
@@ -1177,19 +1180,19 @@ export const updateUserHiringInWorkByUser = historyHiring => {
             ACTION_APPLICATION.showMessage({
               statusText: "200",
               responseText: "Operación realizada con éxito",
-              type: "success"
+              type: "success",
             })
           );
           resolve();
         }
       })
-      .catch(error => {
+      .catch((error) => {
         console.log("error ->", error);
         store.dispatch(
           ACTION_APPLICATION.showMessage({
             statusText: error,
             responseText: error,
-            type: "danger"
+            type: "danger",
           })
         );
         reject();
@@ -1197,7 +1200,7 @@ export const updateUserHiringInWorkByUser = historyHiring => {
   });
 };
 
-export const base64ToArrayBuffer = base64 => {
+export const base64ToArrayBuffer = (base64) => {
   var binaryString = window.atob(base64);
   var binaryLen = binaryString.length;
   var bytes = new Uint8Array(binaryLen);
