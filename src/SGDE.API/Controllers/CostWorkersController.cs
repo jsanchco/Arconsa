@@ -112,5 +112,19 @@
                 return StatusCode(500, ex);
             }
         }
+
+        [HttpGet("getprofessionsbyuser")]
+        public object GetProfessionsByUser(int userId)
+        {
+            try
+            {
+                return _supervisor.GetProfessionsByUserId(userId);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Exception: ");
+                return StatusCode(500, ex);
+            }
+        }
     }
 }

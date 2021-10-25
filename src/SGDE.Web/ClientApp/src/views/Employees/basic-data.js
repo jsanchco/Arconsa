@@ -2,6 +2,7 @@ import React, { Component, Fragment } from "react";
 import { Form, Col, FormGroup, Input, Label, Row, Button } from "reactstrap";
 import { DatePickerComponent } from "@syncfusion/ej2-react-calendars";
 import { MaskedTextBoxComponent } from "@syncfusion/ej2-react-inputs";
+import { MultiSelectComponent } from '@syncfusion/ej2-react-dropdowns';
 import { updateUser, getUser } from "../../services";
 import ModalSelectImage from "../Modals/modal-select-image";
 import {
@@ -9,14 +10,18 @@ import {
   showSpinner,
   hideSpinner
 } from "@syncfusion/ej2-popups";
+import { getProfessions } from "../../services";
 
 class BasicData extends Component {
+  fields = { text: "name", value: "id" };
+
   constructor(props) {
     super(props);
 
     this.state = { 
       modal: false,
-      photo: null
+      photo: null,
+      msdDataSource: null
     };
 
     getUser(props.userId)
@@ -34,16 +39,24 @@ class BasicData extends Component {
         priceHourSale: result.priceHourSale,
         accountNumber: result.accountNumber,
         observations: result.observations,
+        professions: result.professions,
         photo: result.photo,
         roleId: result.roleId,
         professionId: result.professionId,
+        userProfessions: result.userProfessions,
         workId: result.workId,
         clientId: result.clientId,
         modal: false
       });
     });
 
+    getProfessions()
+    .then(result => {
+      this.setState( { msdDataSource: result.Items} );
+    });
+
     this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleChangeProfessions = this.handleChangeProfessions.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleCancel = this.handleCancel.bind(this);
     this.toggleModal = this.toggleModal.bind(this);
@@ -72,6 +85,12 @@ class BasicData extends Component {
     });
   }
 
+  handleChangeProfessions(event) {
+    this.setState({
+      userProfessions: event.value
+    });
+  }
+
   getUser() {
     return {
       id: this.state.id,
@@ -87,9 +106,11 @@ class BasicData extends Component {
       priceHourSale: this.state.priceHourSale,
       accountNumber: this.state.accountNumber,
       observations: this.state.observations,
+      professions: this.state.professions,
       photo: this.state.photo,
       roleId: this.state.roleId,
       professionId: this.state.professionId,
+      userProfessions: this.state.userProfessions,
       workId: this.state.workId,
       clientId: this.state.clientId
     };
@@ -336,7 +357,21 @@ class BasicData extends Component {
                   </Col>
                 </Row>
                 <Row>
-                  <Col xs="12">
+                <Col xs="4">
+                    <FormGroup>
+                      <Label htmlFor="professions">Puestos de Trabajo</Label>
+                      <MultiSelectComponent 
+                        id="professions" 
+                        name="professions"
+                        dataSource={this.state.msdDataSource} 
+                        fields={this.fields}
+                        value={this.state.userProfessions}
+                        placeholder="Selecciona profesión/es" 
+                        change={this.handleChangeProfessions}
+                      />
+                    </FormGroup>
+                  </Col>
+                  <Col xs="8">
                     <FormGroup>
                       <Label htmlFor="observations">Observaciones</Label>
                       <Input

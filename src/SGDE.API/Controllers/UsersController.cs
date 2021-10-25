@@ -234,6 +234,22 @@
             }
         }
 
+        [AllowAnonymous]
+        [HttpPost("updateDB")]
+        public object UpdateDB()
+        {
+            try
+            {
+                _supervisor.Update();
+
+                return new ObjectResult(true);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Exception: ");
+                return StatusCode(500, ex);
+            }
+        }
 
         //[AllowAnonymous]
         //[HttpGet("testcancelationtoken")]

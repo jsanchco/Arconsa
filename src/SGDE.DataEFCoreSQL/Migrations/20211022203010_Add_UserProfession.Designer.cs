@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SGDE.DataEFCoreSQL;
 
 namespace SGDE.DataEFCoreSQL.Migrations
 {
     [DbContext(typeof(EFContextSQL))]
-    partial class EFContextSQLModelSnapshot : ModelSnapshot
+    [Migration("20211022203010_Add_UserProfession")]
+    partial class Add_UserProfession
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -112,8 +114,7 @@ namespace SGDE.DataEFCoreSQL.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProfessionId")
-                        .HasName("IFK_Profession_CostWorker");
+                    b.HasIndex("ProfessionId");
 
                     b.HasIndex("UserId")
                         .HasName("IFK_User_CostClient");
@@ -143,9 +144,6 @@ namespace SGDE.DataEFCoreSQL.Migrations
                     b.Property<DateTime?>("ModifiedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("ProfessionId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("StartHour")
                         .HasColumnType("datetime2");
 
@@ -162,9 +160,6 @@ namespace SGDE.DataEFCoreSQL.Migrations
 
                     b.HasIndex("HourTypeId")
                         .HasName("IFK_HourType_DailySigning");
-
-                    b.HasIndex("ProfessionId")
-                        .HasName("IFK_Profession_DailySigning");
 
                     b.HasIndex("UserHiringId")
                         .HasName("IFK_UserHiring_DailySigning");
@@ -878,10 +873,9 @@ namespace SGDE.DataEFCoreSQL.Migrations
 
             modelBuilder.Entity("SGDE.Domain.Entities.CostWorker", b =>
                 {
-                    b.HasOne("SGDE.Domain.Entities.Profession", "Profession")
+                    b.HasOne("SGDE.Domain.Entities.Profession", null)
                         .WithMany("CostWorkers")
-                        .HasForeignKey("ProfessionId")
-                        .HasConstraintName("FK__CostWorker__ProfessionId");
+                        .HasForeignKey("ProfessionId");
 
                     b.HasOne("SGDE.Domain.Entities.User", "User")
                         .WithMany("CostWorkers")
@@ -897,13 +891,6 @@ namespace SGDE.DataEFCoreSQL.Migrations
                         .WithMany("DailySignings")
                         .HasForeignKey("HourTypeId")
                         .HasConstraintName("FK__DailySigning__HourTypeId");
-
-                    b.HasOne("SGDE.Domain.Entities.Profession", "Profession")
-                        .WithMany("DailySignings")
-                        .HasForeignKey("ProfessionId")
-                        .HasConstraintName("FK__DailySigning__ProfessionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
 
                     b.HasOne("SGDE.Domain.Entities.UserHiring", "UserHiring")
                         .WithMany("DailysSigning")

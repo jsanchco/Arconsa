@@ -56,6 +56,7 @@ namespace SGDE.Tests
             var costWorkerRepositoryMock = new Mock<ICostWorkerRepository>();
             var invoiceRepositoryMock = new Mock<IInvoiceRepository>();
             var detailInvoiceRepositoryMock = new Mock<IDetailInvoiceRepository>();
+            var userProfessionRepository = new Mock<IUserProfessionRepository>();
 
             _supervisor = new Supervisor(
                 userRepositoryMock.Object,
@@ -75,7 +76,8 @@ namespace SGDE.Tests
                 hourTypeRepositoryMock.Object,
                 costWorkerRepositoryMock.Object, 
                 invoiceRepositoryMock.Object, 
-                detailInvoiceRepositoryMock.Object);
+                detailInvoiceRepositoryMock.Object,
+                userProfessionRepository.Object);
         }
 
         [TestMethod]

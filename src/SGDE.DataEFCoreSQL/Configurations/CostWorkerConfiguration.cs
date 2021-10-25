@@ -23,6 +23,9 @@
 
             entity.HasIndex(x => x.UserId).HasName("IFK_User_CostClient");
             entity.HasOne(u => u.User).WithMany(a => a.CostWorkers).HasForeignKey(a => a.UserId).HasConstraintName("FK__CostWorker__UserId");
+
+            entity.HasIndex(x => x.ProfessionId).HasName("IFK_Profession_CostWorker");
+            entity.HasOne(u => u.Profession).WithMany(a => a.CostWorkers).HasForeignKey(a => a.ProfessionId).HasConstraintName("FK__CostWorker__ProfessionId");
         }
     }
 }

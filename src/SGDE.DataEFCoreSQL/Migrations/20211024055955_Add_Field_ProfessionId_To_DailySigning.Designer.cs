@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SGDE.DataEFCoreSQL;
 
 namespace SGDE.DataEFCoreSQL.Migrations
 {
     [DbContext(typeof(EFContextSQL))]
-    partial class EFContextSQLModelSnapshot : ModelSnapshot
+    [Migration("20211024055955_Add_Field_ProfessionId_To_DailySigning")]
+    partial class Add_Field_ProfessionId_To_DailySigning
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -112,8 +114,7 @@ namespace SGDE.DataEFCoreSQL.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProfessionId")
-                        .HasName("IFK_Profession_CostWorker");
+                    b.HasIndex("ProfessionId");
 
                     b.HasIndex("UserId")
                         .HasName("IFK_User_CostClient");
@@ -878,10 +879,9 @@ namespace SGDE.DataEFCoreSQL.Migrations
 
             modelBuilder.Entity("SGDE.Domain.Entities.CostWorker", b =>
                 {
-                    b.HasOne("SGDE.Domain.Entities.Profession", "Profession")
+                    b.HasOne("SGDE.Domain.Entities.Profession", null)
                         .WithMany("CostWorkers")
-                        .HasForeignKey("ProfessionId")
-                        .HasConstraintName("FK__CostWorker__ProfessionId");
+                        .HasForeignKey("ProfessionId");
 
                     b.HasOne("SGDE.Domain.Entities.User", "User")
                         .WithMany("CostWorkers")

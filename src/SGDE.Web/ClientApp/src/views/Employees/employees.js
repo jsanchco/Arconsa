@@ -356,6 +356,11 @@ class Employees extends Component {
                       dataSource={this.professions}
                     />
                     <ColumnDirective
+                      field="professions"
+                      headerText="Puestos"
+                      width="100"
+                    />
+                    <ColumnDirective
                       field="roleId"
                       headerText="Role"
                       width="100"

@@ -33,6 +33,7 @@ export const IMPORTPREVIOUSINVOICE = "api/Invoices/importpreviousinvoice";
 export const HISTORYHIRINGBYUSERID = "api/HistoryHiring/getbyuserid";
 export const HISTORYHIRINGBYWORKID = "api/HistoryHiring/getbyworkid";
 export const HISTORYHIRINGUPDATEINWORK = "api/HistoryHiring/updateinwork";
+export const PROFESSIONSBYUSER = "api/costworker/getprofessionsbyuser";
 export const COMPANY_DATA = "COMPANY_DATA";
 
 

@@ -35,7 +35,8 @@ namespace SGDE.Domain.ViewModels
         public string token { get; set; }
         public int? professionId { get; set; }
         public string professionName { get; set; }
-        public List<int> professions { get; set; }
+        public string professions { get; set; }
+        public List<int> userProfessions { get; set; }
         public int roleId { get; set; }
         public string roleName { get; set; }
         public int? workId { get; set; }

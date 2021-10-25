@@ -52,8 +52,7 @@ namespace SGDE.Domain.Supervisor
                     ? null
                     : (DateTime?)DateTime.Parse(newUserViewModel.birthDate),
                 Email = newUserViewModel.email,
-                Password = "123456",
-                ProfessionId = newUserViewModel.professionId
+                Password = "123456"
             };
 
             await _userRepository.AddAsync(user, ct);
@@ -80,7 +79,6 @@ namespace SGDE.Domain.Supervisor
                 ? null
                 : (DateTime?)DateTime.Parse(userViewModel.birthDate);
             user.Email = userViewModel.email;            
-            user.ProfessionId = userViewModel.professionId;
 
             return await _userRepository.UpdateAsync(user, ct);
         }
@@ -137,7 +135,6 @@ namespace SGDE.Domain.Supervisor
                 AccountNumber = newUserViewModel.accountNumber,
                 Photo = newUserViewModel.photo,
                 RoleId = newUserViewModel.roleId,
-                ProfessionId = newUserViewModel.professionId,
                 WorkId = newUserViewModel.workId,
                 ClientId = newUserViewModel.clientId,
                 Password = "123456"
@@ -178,9 +175,30 @@ namespace SGDE.Domain.Supervisor
             user.AccountNumber = userViewModel.accountNumber;
             user.Photo = userViewModel.photo;
             user.RoleId = userViewModel.roleId;
-            user.ProfessionId = userViewModel.professionId;
             user.WorkId = userViewModel.workId;
             user.ClientId = userViewModel.clientId;
+
+            var toAdd = userViewModel.userProfessions
+                .Except(user.UserProfessions.Select(x => x.ProfessionId)).ToList();
+
+            foreach (var profession in toAdd)
+            {
+                _userProfessionRepository.Add(new UserProfession
+                {
+                    UserId = user.Id,
+                    ProfessionId = profession
+                });
+            }
+
+            var toRemove = user.UserProfessions
+                .Select(x => x.ProfessionId)
+                .Except(userViewModel.userProfessions).ToList();
+
+            foreach (var profession in toRemove)
+            {
+                _userProfessionRepository.Delete(user.Id, profession);
+            }
+
 
             return _userRepository.Update(user);
         }

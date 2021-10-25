@@ -35,6 +35,7 @@ namespace SGDE.DataEFCoreMySQL
         public virtual DbSet<CostWorker> CostWorker { get; set; }
         public virtual DbSet<Invoice> Invoice { get; set; }
         public virtual DbSet<DetailInvoice> DetailInvoice { get; set; }
+        public virtual DbSet<UserProfession> UserProfession { get; set; }
 
         public static long InstanceCount;
 
@@ -62,6 +63,7 @@ namespace SGDE.DataEFCoreMySQL
             new CostWorkerConfiguration(modelBuilder.Entity<CostWorker>());
             new InvoiceConfiguration(modelBuilder.Entity<Invoice>());
             new DetailInvoiceConfiguration(modelBuilder.Entity<DetailInvoice>());
+            new UserProfessionConfiguration(modelBuilder.Entity<UserProfession>());
         }
 
         public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<EFContextMySQL>

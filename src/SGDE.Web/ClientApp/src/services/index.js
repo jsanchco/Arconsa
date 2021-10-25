@@ -127,7 +127,12 @@ export const getProfessions = () => {
   return new Promise((resolve, reject) => {
     const url = `${config.URL_API}/${PROFESSIONS}`;
     fetch(url, {
-      method: "GET",
+      headers: {
+        Accept: "text/plain",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`,
+      },
+      method: "GET"
     })
       .then((data) => data.json())
       .then((result) => {

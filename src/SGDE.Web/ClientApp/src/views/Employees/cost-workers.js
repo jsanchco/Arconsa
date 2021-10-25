@@ -7,10 +7,10 @@ import {
   Edit,
   Inject,
   Toolbar,
-  Page
+  Page,
 } from "@syncfusion/ej2-react-grids";
 import { DataManager, WebApiAdaptor, Query } from "@syncfusion/ej2-data";
-import { config, COSTWORKERS } from "../../constants";
+import { config, COSTWORKERS, PROFESSIONSBYUSER } from "../../constants";
 import { L10n } from "@syncfusion/ej2-base";
 import data from "../../locales/locale.json";
 import { TOKEN_KEY } from "../../services";
@@ -21,15 +21,21 @@ class CostWorkers extends Component {
   trainings = new DataManager({
     adaptor: new WebApiAdaptor(),
     url: `${config.URL_API}/${COSTWORKERS}`,
-    headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }]
+    headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }],
+  });
+
+  professions = new DataManager({
+    adaptor: new WebApiAdaptor(),
+    url: `${config.URL_API}/${PROFESSIONSBYUSER}`,
+    headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }],
   });
 
   numericParams = {
     params: {
       decimals: 2,
       format: "N",
-      validateDecimalOnType: true
-    }
+      validateDecimalOnType: true,
+    },
   };
 
   grid = null;
@@ -39,7 +45,7 @@ class CostWorkers extends Component {
     super(props);
 
     this.state = {
-      trainings: null
+      trainings: null,
     };
 
     this.toolbarOptions = ["Add", "Edit", "Delete", "Update", "Cancel"];
@@ -48,7 +54,7 @@ class CostWorkers extends Component {
       allowEditing: true,
       allowAdding: true,
       allowDeleting: true,
-      newRowPosition: "Top"
+      newRowPosition: "Top",
     };
     this.pageSettings = { pageCount: 10, pageSize: 10 };
     this.actionFailure = this.actionFailure.bind(this);
@@ -69,7 +75,7 @@ class CostWorkers extends Component {
     this.props.showMessage({
       statusText: error.statusText,
       responseText: error.responseText,
-      type: "danger"
+      type: "danger",
     });
   }
 
@@ -78,14 +84,14 @@ class CostWorkers extends Component {
       this.props.showMessage({
         statusText: "200",
         responseText: "Operación realizada con éxito",
-        type: "success"
+        type: "success",
       });
     }
     if (args.requestType === "delete") {
       this.props.showMessage({
         statusText: "200",
         responseText: "Operación realizada con éxito",
-        type: "success"
+        type: "success",
       });
     }
   }
@@ -149,14 +155,14 @@ class CostWorkers extends Component {
                   marginLeft: 30,
                   marginRight: 30,
                   marginTop: -20,
-                  marginBottom: 20
+                  marginBottom: 20,
                 }}
                 actionFailure={this.actionFailure}
                 actionComplete={this.actionComplete}
                 actionBegin={this.actionBegin}
                 allowGrouping={false}
                 rowSelected={this.rowSelected}
-                ref={g => (this.grid = g)}
+                ref={(g) => (this.grid = g)}
                 query={this.query}
                 allowTextWrap={true}
                 textWrapSettings={this.wrapSettings}
@@ -189,6 +195,16 @@ class CostWorkers extends Component {
                     textAlign="Center"
                   />
                   <ColumnDirective
+                    field="professionId"
+                    headerText="Profesión"
+                    width="100"
+                    editType="dropdownedit"
+                    foreignKeyValue="name"
+                    foreignKeyField="id"
+                    query={this.query}
+                    dataSource={this.professions}
+                  />
+                  <ColumnDirective
                     headerText="Precio"
                     textAlign="Center"
                     columns={[
@@ -199,7 +215,7 @@ class CostWorkers extends Component {
                         fotmat: "N2",
                         textAlign: "left",
                         editType: "numericedit",
-                        edit: this.numericParams
+                        edit: this.numericParams,
                       },
                       {
                         field: "priceHourExtra",
@@ -208,7 +224,7 @@ class CostWorkers extends Component {
                         fotmat: "N2",
                         textAlign: "left",
                         editType: "numericedit",
-                        edit: this.numericParams
+                        edit: this.numericParams,
                       },
                       {
                         field: "priceHourFestive",
@@ -217,8 +233,8 @@ class CostWorkers extends Component {
                         fotmat: "N2",
                         textAlign: "left",
                         editType: "numericedit",
-                        edit: this.numericParams
-                      }
+                        edit: this.numericParams,
+                      },
                     ]}
                   />
                   <ColumnDirective

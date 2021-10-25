@@ -50,30 +50,33 @@
         public async Task<User> Authenticate(string username, string password, CancellationToken ct = default(CancellationToken))
         {
             return await _context.User
-                .Include(x => x.Profession)
                 .Include(x => x.Role)
                 .Include(x => x.Client)
                 .Include(x => x.Work)
+                .Include(x => x.UserProfessions)
+                .ThenInclude(y => y.Profession)
                 .FirstOrDefaultAsync(x => x.Username == username && x.Password == password, ct);
         }
 
         public async Task<List<User>> GetAllAsync(CancellationToken ct = default(CancellationToken))
         {
             return await _context.User
-                .Include(x => x.Profession)
                 .Include(x => x.Role)
                 .Include(x => x.Client)
                 .Include(x => x.Work)
+                .Include(x => x.UserProfessions)
+                .ThenInclude(y => y.Profession)
                 .ToListAsync(ct);
         }
 
         public async Task<User> GetByIdAsync(int id, CancellationToken ct = default(CancellationToken))
         {
             return await _context.User
-                .Include(x => x.Profession)
                 .Include(x => x.Role)
                 .Include(x => x.Client)
                 .Include(x => x.Work)
+                .Include(x => x.UserProfessions)
+                .ThenInclude(y => y.Profession)
                 .FirstOrDefaultAsync(x => x.Id == id, ct);
         }
 
@@ -112,19 +115,21 @@
             if (roles == null)
             {
                 data = _context.User
-                            .Include(x => x.Profession)
                             .Include(x => x.Role)
                             .Include(x => x.Client)
                             .Include(x => x.Work)
+                            .Include(x => x.UserProfessions)
+                            .ThenInclude(y => y.Profession)
                             .ToList();
             }
             else
             {
                 data = _context.User
-                            .Include(x => x.Profession)
                             .Include(x => x.Role)
                             .Include(x => x.Client)
                             .Include(x => x.Work)
+                            .Include(x => x.UserProfessions)
+                            .ThenInclude(y => y.Profession)
                             .Where(x => roles.Contains(x.RoleId))
                             .ToList();
             }
@@ -143,7 +148,7 @@
                         Searcher.RemoveAccentsWithNormalization(x.Surname?.ToLower()).Contains(filter) ||
                         Searcher.RemoveAccentsWithNormalization(x.Username?.ToLower()).Contains(filter) ||
                         Searcher.RemoveAccentsWithNormalization(x.Role.Name.ToLower()).Contains(filter) ||
-                        Searcher.RemoveAccentsWithNormalization(x.Profession?.Name.ToLower()).Contains(filter) ||
+                        Searcher.RemoveAccentsWithNormalization(string.Join(',', x.UserProfessions?.Select(y => y.Profession.Name.ToLower()))).Contains(filter) ||
                         Searcher.RemoveAccentsWithNormalization(x.Work?.Name.ToLower()).Contains(filter) ||
                         Searcher.RemoveAccentsWithNormalization(x.Client?.Name.ToLower()).Contains(filter))
                     .ToList();
@@ -169,9 +174,6 @@
                     case "birthDate":
                         data = ascending ? data.OrderBy(x => x.BirthDate).ToList() : data.OrderByDescending(x => x.BirthDate).ToList();
                         break;
-                    case "professionName":
-                        data = ascending ? data.OrderBy(x => x.Profession?.Name).ToList() : data.OrderByDescending(x => x.Profession?.Name).ToList();
-                        break;
                 }
             }
 
@@ -194,7 +196,8 @@
             return _context.User
                 .Include(x => x.Role)
                 .Include(x => x.Work)
-                .Include(x => x.Profession)
+                .Include(x => x.UserProfessions)
+                .ThenInclude(y => y.Profession)
                 .Where(x => roles.Contains(x.RoleId))
                 .ToList();
         }
@@ -202,11 +205,12 @@
         public User GetById(int id)
         {
             return _context.User
-                .Include(x => x.Profession)
                 .Include(x => x.Role)
                 .Include(x => x.Client)
                 .Include(x => x.Work)
                 .Include(x => x.UserHirings)
+                .Include(x => x.UserProfessions)
+                .ThenInclude(y => y.Profession)
                 .FirstOrDefault(x => x.Id == id);
         }
 
@@ -231,6 +235,12 @@
         {
             if (!UserExists(id))
                 return false;
+
+            var professions = _context.UserProfession.Where(x => x.UserId == id);
+            foreach (var profession in professions)
+            {
+                _context.UserProfession.Remove(profession);
+            }
 
             var toRemove = _context.User.Find(id);
             _context.User.Remove(toRemove);

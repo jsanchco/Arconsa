@@ -220,6 +220,7 @@ namespace SGDE.Domain.Supervisor
         CostWorkerViewModel AddCostWorker(CostWorkerViewModel newCostWorkerViewModel);
         bool UpdateCostWorker(CostWorkerViewModel costWorkerViewModel);
         bool DeleteCostWorker(int id);
+        List<Profession> GetProfessionsByUserId(int userId);
 
         #endregion
 
@@ -265,5 +266,7 @@ namespace SGDE.Domain.Supervisor
         bool UpdateHistoryInWork(HistoryHiringViewModel historyHiringViewModel);
 
         #endregion
+
+        void Update();
     }
 }

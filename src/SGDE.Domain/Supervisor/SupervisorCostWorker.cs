@@ -2,12 +2,13 @@
 {
     #region Using
 
+    using Converters;
+    using Domain.Helpers;
+    using Entities;
     using System;
     using System.Collections.Generic;
-    using Converters;
-    using Entities;
+    using System.Linq;
     using ViewModels;
-    using Domain.Helpers;
 
     #endregion
 
@@ -95,6 +96,13 @@
         public bool DeleteCostWorker(int id)
         {
             return _costWorkerRepository.Delete(id);
+        }
+
+        public List<Profession> GetProfessionsByUserId(int userId)
+        {
+            return _userProfessionRepository.GetAll(userId)
+                .Select(x => x.Profession)
+                .ToList();
         }
     }
 }

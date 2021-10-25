@@ -23,6 +23,9 @@
 
             entity.HasIndex(x => x.HourTypeId).HasName("IFK_HourType_DailySigning");
             entity.HasOne(u => u.HourType).WithMany(a => a.DailySignings).HasForeignKey(a => a.HourTypeId).HasConstraintName("FK__DailySigning__HourTypeId");
+
+            entity.HasIndex(x => x.ProfessionId).HasName("IFK_Profession_DailySigning");
+            entity.HasOne(u => u.Profession).WithMany(a => a.DailySignings).HasForeignKey(a => a.ProfessionId).HasConstraintName("FK__DailySigning__ProfessionId");
         }
     }
 }

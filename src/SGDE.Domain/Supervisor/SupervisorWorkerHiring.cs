@@ -32,7 +32,7 @@
                         Searcher.RemoveAccentsWithNormalization(x.Surname.ToLower()).Contains(filter) ||
                         Searcher.RemoveAccentsWithNormalization(x.Username?.ToLower()).Contains(filter) ||
                         Searcher.RemoveAccentsWithNormalization(x.Role.Name.ToLower()).Contains(filter) ||
-                        Searcher.RemoveAccentsWithNormalization(x.Profession?.Name.ToLower()).Contains(filter) ||
+                        Searcher.RemoveAccentsWithNormalization(string.Join(',', x.UserProfessions?.Select(y => y.Profession.Name.ToLower()))).Contains(filter) ||
                         Searcher.RemoveAccentsWithNormalization(x.Work?.Name.ToLower()).Contains(filter) ||
                         Searcher.RemoveAccentsWithNormalization(x.Client?.Name.ToLower()).Contains(filter))
                     .ToList();

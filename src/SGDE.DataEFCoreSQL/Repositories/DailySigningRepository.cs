@@ -51,6 +51,7 @@
                 .ThenInclude(y => y.Work)
                 .Include(z => z.UserHiring)
                 .ThenInclude(w => w.User)
+                .ThenInclude(o => o.Profession)
                 .OrderByDescending(x => x.StartHour)
                 .ToList();
             }

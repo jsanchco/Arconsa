@@ -29,6 +29,7 @@ namespace SGDE.Domain.Supervisor
         private readonly ICostWorkerRepository _costWorkerRepository;
         private readonly IInvoiceRepository _invoiceRepository;
         private readonly IDetailInvoiceRepository _detailInvoiceRepository;
+        private readonly IUserProfessionRepository _userProfessionRepository;
 
         public Supervisor()
         {
@@ -52,7 +53,8 @@ namespace SGDE.Domain.Supervisor
             IHourTypeRepository hourTypeRepository,
             ICostWorkerRepository costWorkerRepository,
             IInvoiceRepository invoiceRepository,
-            IDetailInvoiceRepository detailInvoiceRepository)
+            IDetailInvoiceRepository detailInvoiceRepository,
+            IUserProfessionRepository userProfessionRepository)
         {
             _userRepository = userRepository;
             _professionRepository = professionRepository;
@@ -72,6 +74,7 @@ namespace SGDE.Domain.Supervisor
             _costWorkerRepository = costWorkerRepository;
             _invoiceRepository = invoiceRepository;
             _detailInvoiceRepository = detailInvoiceRepository;
+            _userProfessionRepository = userProfessionRepository;
         }
     }
 }
