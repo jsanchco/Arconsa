@@ -52,6 +52,7 @@
                 .Include(z => z.UserHiring)
                 .ThenInclude(w => w.User)
                 .ThenInclude(o => o.Profession)
+                .Include(x => x.Profession)
                 .OrderByDescending(x => x.StartHour)
                 .ToList();
             }
@@ -62,6 +63,7 @@
                 .ThenInclude(y => y.Work)
                 .Include(z => z.UserHiring)
                 .ThenInclude(w => w.User)
+                .Include(x => x.Profession)
                 .Where(x => x.UserHiring.User.Id == userId)
                 .OrderByDescending(x => x.StartHour)
                 .ToList();
@@ -89,6 +91,7 @@
                 .Include(z => z.UserHiring)
                 .ThenInclude(w => w.User)
                 .ThenInclude(u => u.Profession)
+                .Include(x => x.Profession)
                 .Where(x => x.UserHiring.User.Id == userId)
                 .OrderBy(x => x.StartHour)
                 .ToList();
@@ -103,6 +106,7 @@
                 .Include(z => z.UserHiring)
                 .ThenInclude(w => w.User)
                 .ThenInclude(u => u.Profession)
+                .Include(x => x.Profession)
                 .Where(x => x.UserHiring.Work.Id == workId)
                 .OrderBy(x => x.StartHour)
                 .ToList();
@@ -116,6 +120,7 @@
                 .Include(z => z.UserHiring)
                 .ThenInclude(w => w.User)
                 .ThenInclude(u => u.Profession)
+                .Include(x => x.Profession)
                 .FirstOrDefault(x => x.Id == id);
         }
 
@@ -194,6 +199,7 @@
                 .Include(x => x.UserHiring)
                 .ThenInclude(x => x.Profession)
                 .Include(x => x.HourType)
+                .Include(x => x.Profession)
                 .Where(x => x.StartHour >= dtStart && x.EndHour <= dtEnd && x.UserHiring.UserId == userId)
                 .OrderBy(x => x.StartHour)
                 .ToList();
@@ -217,6 +223,7 @@
                 .Include(x => x.UserHiring)
                 .ThenInclude(x => x.Profession)
                 .Include(x => x.HourType)
+                .Include(x => x.Profession)
                 .Where(x => x.StartHour >= dtStart && x.EndHour <= dtEnd && x.UserHiring.WorkId == workId)
                 .ToList();
 
@@ -240,6 +247,7 @@
                 .Include(x => x.UserHiring)
                 .ThenInclude(x => x.Profession)
                 .Include(x => x.HourType)
+                .Include(x => x.Profession)
                 .Where(x => x.StartHour >= dtStart && x.EndHour <= dtEnd && x.UserHiring.Work.ClientId == clientId)
                 .ToList();
         }

@@ -114,11 +114,16 @@
         }
 
         [HttpGet("getprofessionsbyuser")]
-        public object GetProfessionsByUser(int userId)
+        public object GetProfessionsByUser()
         {
             try
             {
-                return _supervisor.GetProfessionsByUserId(userId);
+                var queryString = Request.Query;
+                var userId = Convert.ToInt32(queryString["userId"]);
+
+                var professions = _supervisor.GetProfessionsByUserId(userId);
+
+                return new { Items = professions, Count = professions.Count };
             }
             catch (Exception ex)
             {

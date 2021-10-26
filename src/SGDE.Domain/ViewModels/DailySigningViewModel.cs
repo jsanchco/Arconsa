@@ -29,5 +29,7 @@
         public string userHiringName { get; set; }
         public int? hourTypeId { get; set; }
         public string hourTypeName { get; set; }
+        public int professionId { get; set; }
+        public string professionName { get; set; }
     }
 }

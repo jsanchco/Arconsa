@@ -47,6 +47,7 @@
             {
                 data = _context.CostWorker
                         .Include(x => x.User)
+                        .Include(x => x.Profession)
                         .OrderByDescending(x => x.StartDate)
                         .ToList();
             }
@@ -54,6 +55,7 @@
             {
                 data = _context.CostWorker
                         .Include(x => x.User)
+                        .Include(x => x.Profession)
                         .Where(x => x.UserId == userId)
                         .OrderByDescending(x => x.StartDate)
                         .ToList();
@@ -85,6 +87,7 @@
         {
             return _context.CostWorker
                 .Include(x => x.User)
+                .Include(x => x.Profession)
                 .FirstOrDefault(x => x.Id == id);
         }
 

@@ -30,7 +30,9 @@
                 priceHourFestive = costWorker.PriceHourFestive,
                 observations = costWorker.Observations,
                 userId = costWorker.UserId,
-                userName = costWorker.User.Name
+                userName = costWorker.User.Name,
+                professionId = costWorker.ProfessionId,
+                professionName = costWorker.Profession.Name
             };
 
             return costWorkerViewModel;
@@ -54,7 +56,9 @@
                     priceHourFestive = costWorker.PriceHourFestive,
                     observations = costWorker.Observations,
                     userId = costWorker.UserId,
-                    userName = costWorker.User.Name
+                    userName = costWorker.User.Name,
+                    professionId = costWorker.ProfessionId,
+                    professionName = costWorker.Profession.Name
                 };
                 return model;
             })
