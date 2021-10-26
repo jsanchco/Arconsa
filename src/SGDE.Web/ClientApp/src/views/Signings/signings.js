@@ -10,11 +10,10 @@ import {
   Row,
   Col
 } from "reactstrap";
-import { getWorkers, getWorksByUserId } from "../../services";
+import { sendMassiveSigning, getWorkers, getWorksByUserId } from "../../services";
 import { DatePickerComponent } from "@syncfusion/ej2-react-calendars";
 import { DropDownListComponent } from "@syncfusion/ej2-react-dropdowns";
 import { DialogComponent } from "@syncfusion/ej2-react-popups";
-import { sendMassiveSigning } from "../../services";
 import {
   ColumnDirective,
   ColumnsDirective,

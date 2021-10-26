@@ -22,6 +22,7 @@ import {
   DETAILINVOICEBYHOURSWORKER,
   IMPORTPREVIOUSINVOICE,
   HISTORYHIRINGUPDATEINWORK,
+  PROFESSIONSBYUSER
 } from "../constants";
 import store from "../store/store";
 import ACTION_AUTHENTICATION from "../actions/authenticationAction";
@@ -1200,6 +1201,28 @@ export const updateUserHiringInWorkByUser = (historyHiring) => {
             type: "danger",
           })
         );
+        reject();
+      });
+  });
+};
+
+export const getProfessionsByUser = (userId) => {
+  return new Promise((resolve, reject) => {
+    const url = `${config.URL_API}/${PROFESSIONSBYUSER}?userId=${userId}`;
+    fetch(url, {
+      headers: {
+        Accept: "text/plain",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`,
+      },
+      method: "GET",
+    })
+      .then((data) => data.json())
+      .then((result) => {
+        resolve(result.Items);
+      })
+      .catch((error) => {
+        console.log("error ->", error);
         reject();
       });
   });

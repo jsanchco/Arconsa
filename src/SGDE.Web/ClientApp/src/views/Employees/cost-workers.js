@@ -10,10 +10,10 @@ import {
   Page,
 } from "@syncfusion/ej2-react-grids";
 import { DataManager, WebApiAdaptor, Query } from "@syncfusion/ej2-data";
-import { config, COSTWORKERS, PROFESSIONSBYUSER } from "../../constants";
+import { config, COSTWORKERS } from "../../constants";
 import { L10n } from "@syncfusion/ej2-base";
 import data from "../../locales/locale.json";
-import { TOKEN_KEY } from "../../services";
+import { TOKEN_KEY, getProfessionsByUser } from "../../services";
 
 L10n.load(data);
 
@@ -24,11 +24,11 @@ class CostWorkers extends Component {
     headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }],
   });
 
-  professions = new DataManager({
-    adaptor: new WebApiAdaptor(),
-    url: `${config.URL_API}/${PROFESSIONSBYUSER}`,
-    headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }],
-  });
+  // professions = new DataManager({
+  //   adaptor: new WebApiAdaptor(),
+  //   url: `${config.URL_API}/${PROFESSIONSBYUSER}`,
+  //   headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }],
+  // });
 
   numericParams = {
     params: {
@@ -39,6 +39,7 @@ class CostWorkers extends Component {
   };
 
   grid = null;
+  ddlProfessions = null;
   wrapSettings = { wrapMode: "Content" };
 
   constructor(props) {
@@ -65,6 +66,14 @@ class CostWorkers extends Component {
 
     this.format = { type: "dateTime", format: "dd/MM/yyyy" };
     this.query = new Query().addParams("userId", props.userId);
+    this.queryProfessions = new Query().addParams("userId", props.userId);
+  }
+
+  componentDidMount() {
+    getProfessionsByUser(this.props.userId)
+    .then((items) => {
+      this.ddlProfessions.dataSource = items;
+    });
   }
 
   actionFailure(args) {
@@ -195,14 +204,15 @@ class CostWorkers extends Component {
                     textAlign="Center"
                   />
                   <ColumnDirective
-                    field="professionName"
-                    headerText="Profesión"
+                    field="professionId"
+                    headerText="Puesto"
                     width="100"
                     editType="dropdownedit"
                     foreignKeyValue="name"
                     foreignKeyField="id"
-                    query={this.query}
-                    dataSource={this.professions}
+                    dataSource={this.ddlProfessions}
+                    // query={this.queryProfessions}
+                    // allowFiltering={true}
                   />
                   <ColumnDirective
                     headerText="Precio"
