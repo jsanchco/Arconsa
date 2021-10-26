@@ -24,11 +24,11 @@ class CostWorkers extends Component {
     headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }],
   });
 
-  // professions = new DataManager({
-  //   adaptor: new WebApiAdaptor(),
-  //   url: `${config.URL_API}/${PROFESSIONSBYUSER}`,
-  //   headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }],
-  // });
+  professions = new DataManager({
+    adaptor: new WebApiAdaptor(),
+    url: `${config.URL_API}/${PROFESSIONSBYUSER}`,
+    headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }],
+  });
 
   numericParams = {
     params: {
@@ -194,8 +194,8 @@ class CostWorkers extends Component {
                     format={this.format}
                     textAlign="Center"
                   />
-                  {/* <ColumnDirective
-                    field="professionId"
+                  <ColumnDirective
+                    field="professionName"
                     headerText="Profesión"
                     width="100"
                     editType="dropdownedit"
@@ -203,7 +203,7 @@ class CostWorkers extends Component {
                     foreignKeyField="id"
                     query={this.query}
                     dataSource={this.professions}
-                  /> */}
+                  />
                   <ColumnDirective
                     headerText="Precio"
                     textAlign="Center"

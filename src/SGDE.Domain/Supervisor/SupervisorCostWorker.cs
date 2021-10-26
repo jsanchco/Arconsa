@@ -98,10 +98,14 @@
             return _costWorkerRepository.Delete(id);
         }
 
-        public List<Profession> GetProfessionsByUserId(int userId)
+        public List<ProfessionViewModel> GetProfessionsByUserId(int userId)
         {
             return _userProfessionRepository.GetAll(userId)
-                .Select(x => x.Profession)
+                .Select(x => new ProfessionViewModel
+                {
+                    id = x.ProfessionId,
+                    name = x.Profession.Name
+                })
                 .ToList();
         }
     }
