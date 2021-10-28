@@ -46,6 +46,7 @@
                 (DateTime?)DateTime.ParseExact(newDailySigningViewModel.endHour, "dd/MM/yyyy HH:mm", null),
 
                 UserHiringId = newDailySigningViewModel.userHiringId,
+                ProfessionId = newDailySigningViewModel.professionId,
                 HourTypeId = newDailySigningViewModel.hourTypeId
             };
 
@@ -76,6 +77,7 @@
                 : (DateTime?)DateTime.ParseExact(dailySigningViewModel.endHour, "dd/MM/yyyy HH:mm", null);
 
             dailySigning.UserHiringId = dailySigningViewModel.userHiringId;
+            dailySigning.ProfessionId = dailySigningViewModel.professionId;
             dailySigning.HourTypeId = dailySigningViewModel.hourTypeId;
 
             if (!_dailySigningRepository.ValidateDalilySigning(dailySigning))
@@ -131,6 +133,7 @@
                             new DateTime(actualDay.Year, actualDay.Month, actualDay.Day, hourEnd, minuteEnd, 0).AddDays(1),
 
                         UserHiringId = massiveSigningQueryViewModel.userHiringId,
+                        ProfessionId = massiveSigningQueryViewModel.professionId,
                         HourTypeId = item.hourTypeId
                     };
 

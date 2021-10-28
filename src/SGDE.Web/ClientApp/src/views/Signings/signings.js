@@ -10,7 +10,11 @@ import {
   Row,
   Col
 } from "reactstrap";
-import { sendMassiveSigning, getWorkers, getWorksByUserId } from "../../services";
+import { 
+  sendMassiveSigning, 
+  getWorkers, 
+  getWorksByUserId, 
+  getProfessionsByUserId } from "../../services";
 import { DatePickerComponent } from "@syncfusion/ej2-react-calendars";
 import { DropDownListComponent } from "@syncfusion/ej2-react-dropdowns";
 import { DialogComponent } from "@syncfusion/ej2-react-popups";
@@ -38,6 +42,7 @@ L10n.load(data);
 class Signings extends Component {
   fields = { text: "name", value: "id" };
   ddlEmployees = null;
+  ddlProfessions = null;
   ddlWorks = null;
   grid = null;
 
@@ -64,7 +69,11 @@ class Signings extends Component {
     this.state = {
       hideConfirmDialog: false,
       includeSaturdays: false,
-      includeSundays: false
+      includeSundays: false,
+      // ddlWorks: {
+      //   value: "",
+      //   dataSource: null,
+      // }
     };
 
     this.confirmButton = [
@@ -101,13 +110,14 @@ class Signings extends Component {
     this.templateSumHours = this.templateSumHours.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleSelectEmployee = this.handleSelectEmployee.bind(this)
   }
 
   componentDidMount() {
     getWorkers()
     .then((items) => {
       this.ddlEmployees.dataSource = items;
-      this.searchDataEmployees = this.ddlEmployees.dataSource;
+      this.searchDataEmployees = items;
     });
   }
 
@@ -135,8 +145,23 @@ class Signings extends Component {
     showSpinner(element);
 
     getWorksByUserId(args.itemData.id).then((items) => {
+      this.ddlWorks.value = "";
+      this.ddlWorks.text = null;
       this.ddlWorks.dataSource = items;
-      this.searchDataWorks = this.ddlWorks.dataSource;
+      this.searchDataWorks = items;
+
+      hideSpinner(element);
+    })
+    .catch((error) => {
+      hideSpinner(element);
+    });
+
+    showSpinner(element);
+
+    getProfessionsByUserId(args.itemData.id).then((items) => {
+      this.ddlProfessions.value = "";
+      this.ddlProfessions.text = null
+      this.ddlProfessions.dataSource = items
 
       hideSpinner(element);
     })
@@ -149,6 +174,7 @@ class Signings extends Component {
     const valueDtpStartDate = this.formatDate(this.dtpStartDate.value);
     const valueDtpEndDate = this.formatDate(this.dtpEndDate.value);
     const valueDdlEmployees = this.ddlEmployees.value;
+    const valueDdlProfessions = this.ddlProfessions.value;
     const valueDdlWorks = this.ddlWorks.value;
 
     if (
@@ -157,6 +183,7 @@ class Signings extends Component {
       valueDtpEndDate === null ||
       valueDtpEndDate === "" ||
       valueDdlEmployees === null ||
+      valueDdlProfessions === null ||
       valueDdlWorks === null
     ) {
       this.props.showMessage({
@@ -203,10 +230,12 @@ class Signings extends Component {
 
     const valueDtpStartDate = this.formatDate(this.dtpStartDate.value);
     const valueDtpEndDate = this.formatDate(this.dtpEndDate.value);
+    const valueDdlProfessions = this.ddlProfessions.value;
     const valueDdlWorks = this.ddlWorks.value;
   
     sendMassiveSigning({
       userHiringId: valueDdlWorks,
+      professionId: valueDdlProfessions,
       startSigning: valueDtpStartDate,
       endSigning: valueDtpEndDate,
       data: this.grid.getCurrentViewRecords(),
@@ -349,7 +378,7 @@ class Signings extends Component {
                         format="dd/MM/yyyy"
                       />
                     </FormGroup>
-                    <FormGroup className="col-3" style={{ marginLeft: "10px" }}>
+                    <FormGroup className="col-2" style={{ marginLeft: "10px" }}>
                       <Label for="employees">Trabajador</Label>
                       <DropDownListComponent
                         id="employees"
@@ -362,7 +391,17 @@ class Signings extends Component {
                         select={this.handleSelectEmployee.bind(this)} 
                       />
                     </FormGroup>
-                    <FormGroup className="col-4" style={{ marginLeft: "10px" }}>
+                    <FormGroup className="col-2" style={{ marginLeft: "10px" }}>
+                      <Label for="works">Puesto</Label>
+                      <DropDownListComponent
+                        id="proffesions"
+                        dataSource={null}
+                        placeholder={`Selecciona Puesto`}
+                        fields={this.fields}
+                        ref={(g) => (this.ddlProfessions = g)}
+                      />
+                    </FormGroup>
+                    <FormGroup className="col-3" style={{ marginLeft: "10px" }}>
                       <Label for="works">Obra</Label>
                       <DropDownListComponent
                         id="works"

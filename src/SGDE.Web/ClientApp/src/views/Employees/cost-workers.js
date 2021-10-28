@@ -10,10 +10,10 @@ import {
   Page,
 } from "@syncfusion/ej2-react-grids";
 import { DataManager, WebApiAdaptor, Query } from "@syncfusion/ej2-data";
-import { config, COSTWORKERS } from "../../constants";
+import { config, COSTWORKERS, PROFESSIONSBYUSER } from "../../constants";
 import { L10n } from "@syncfusion/ej2-base";
 import data from "../../locales/locale.json";
-import { TOKEN_KEY, getProfessionsByUser } from "../../services";
+import { TOKEN_KEY } from "../../services";
 
 L10n.load(data);
 
@@ -24,11 +24,11 @@ class CostWorkers extends Component {
     headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }],
   });
 
-  // professions = new DataManager({
-  //   adaptor: new WebApiAdaptor(),
-  //   url: `${config.URL_API}/${PROFESSIONSBYUSER}`,
-  //   headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }],
-  // });
+  professions = new DataManager({
+    adaptor: new WebApiAdaptor(),
+    url: `${config.URL_API}/${PROFESSIONSBYUSER}`,
+    headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }],
+  });
 
   numericParams = {
     params: {
@@ -39,7 +39,7 @@ class CostWorkers extends Component {
   };
 
   grid = null;
-  ddlProfessions = null;
+  // ddlProfessions = null;
   wrapSettings = { wrapMode: "Content" };
 
   constructor(props) {
@@ -66,14 +66,11 @@ class CostWorkers extends Component {
 
     this.format = { type: "dateTime", format: "dd/MM/yyyy" };
     this.query = new Query().addParams("userId", props.userId);
-    this.queryProfessions = new Query().addParams("userId", props.userId);
-  }
-
-  componentDidMount() {
-    getProfessionsByUser(this.props.userId)
-    .then((items) => {
-      this.ddlProfessions.dataSource = items;
-    });
+    this.queryProfessions = {
+      params: {
+        query: new Query().addParams("userId", props.userId),
+      },
+    };
   }
 
   actionFailure(args) {
@@ -188,7 +185,7 @@ class CostWorkers extends Component {
                   <ColumnDirective
                     field="startDate"
                     headerText="Fecha Inicio"
-                    width="100"
+                    width="80"
                     editType="datepickeredit"
                     type="date"
                     format={this.format}
@@ -197,7 +194,7 @@ class CostWorkers extends Component {
                   <ColumnDirective
                     field="endDate"
                     headerText="Fecha Fin"
-                    width="100"
+                    width="80"
                     editType="datepickeredit"
                     type="date"
                     format={this.format}
@@ -210,9 +207,9 @@ class CostWorkers extends Component {
                     editType="dropdownedit"
                     foreignKeyValue="name"
                     foreignKeyField="id"
-                    dataSource={this.ddlProfessions}
-                    // query={this.queryProfessions}
-                    // allowFiltering={true}
+                    dataSource={this.professions}
+                    edit={this.queryProfessions}
+                    allowFiltering={true}
                   />
                   <ColumnDirective
                     headerText="Precio"

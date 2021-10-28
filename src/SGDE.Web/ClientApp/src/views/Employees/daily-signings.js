@@ -12,7 +12,13 @@ import {
 import { DateTimePickerComponent } from "@syncfusion/ej2-react-calendars";
 import { getValue } from "@syncfusion/ej2-base";
 import { DataManager, WebApiAdaptor, Query } from "@syncfusion/ej2-data";
-import { config, DAILYSIGNINGS, USERSHIRING, HOURTYPES } from "../../constants";
+import {
+  config,
+  DAILYSIGNINGS,
+  USERSHIRING,
+  HOURTYPES,
+  PROFESSIONSBYUSER,
+} from "../../constants";
 import { loadCldr, L10n } from "@syncfusion/ej2-base";
 import data from "../../locales/locale.json";
 import { TOKEN_KEY } from "../../services";
@@ -48,6 +54,12 @@ class DailySignings extends Component {
     headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }],
   });
 
+  professions = new DataManager({
+    adaptor: new WebApiAdaptor(),
+    url: `${config.URL_API}/${PROFESSIONSBYUSER}`,
+    headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }],
+  });
+
   userHiringIdRules = { required: true };
   hourTypeIdRules = { required: true };
   grid = null;
@@ -60,6 +72,7 @@ class DailySignings extends Component {
     this.state = {
       dailySignings: null,
       userHirings: null,
+      professions: null,
       rowSelected: null,
       modal: false,
       hideConfirmDialog: false,
@@ -109,6 +122,11 @@ class DailySignings extends Component {
     this.format = { type: "dateTime", format: "dd/MM/yyyy HH:mm" };
 
     this.queryDailySignings = new Query().addParams("userId", props.userId);
+    this.queryProfessions = {
+      params: {
+        query: new Query().addParams("userId", props.userId),
+      },
+    };
 
     this.animationSettings = { effect: "None" };
     this.confirmButton = [
@@ -209,6 +227,7 @@ class DailySignings extends Component {
 
   actionComplete(args) {
     if (args.requestType === "save") {
+      this.grid.refresh();
       this.props.showMessage({
         statusText: "200",
         responseText: "Operación realizada con éxito",
@@ -378,6 +397,17 @@ class DailySignings extends Component {
                     dataSource={this.userHirings}
                     foreignKeyValue="name"
                     foreignKeyField="id"
+                  />
+                  <ColumnDirective
+                    field="professionId"
+                    headerText="Puesto"
+                    width="100"
+                    editType="dropdownedit"
+                    foreignKeyValue="name"
+                    foreignKeyField="id"
+                    dataSource={this.professions}
+                    edit={this.queryProfessions}
+                    allowFiltering={true}
                   />
                   <ColumnDirective
                     field="id"

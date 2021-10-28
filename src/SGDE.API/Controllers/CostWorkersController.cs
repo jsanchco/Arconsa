@@ -113,26 +113,27 @@
             }
         }
 
-        //[HttpGet("getprofessionsbyuser")]
-        //public object GetProfessionsByUser()
-        //{
-        //    try
-        //    {
-        //        var queryString = Request.Query;
-        //        var userId = Convert.ToInt32(queryString["userId"]);
-
-        //        var professions = _supervisor.GetProfessionsByUserId(userId);
-
-        //        return new { Items = professions, Count = professions.Count };
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _logger.LogError(ex, "Exception: ");
-        //        return StatusCode(500, ex);
-        //    }
-        //}
-
         [HttpGet("getprofessionsbyuser")]
+        public object GetProfessionsByUser()
+        {
+            try
+            {
+                var queryString = Request.Query;
+                var userId = Convert.ToInt32(queryString["userId"]);
+                //userId = 4;
+
+                var professions = _supervisor.GetProfessionsByUserId(userId);
+
+                return new { Items = professions, Count = professions.Count };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Exception: ");
+                return StatusCode(500, ex);
+            }
+        }
+
+        [HttpGet("getprofessionsbyuserid")]
         public object GetProfessionsByUser(int userId)
         {
             try

@@ -34,6 +34,7 @@ export const HISTORYHIRINGBYUSERID = "api/HistoryHiring/getbyuserid";
 export const HISTORYHIRINGBYWORKID = "api/HistoryHiring/getbyworkid";
 export const HISTORYHIRINGUPDATEINWORK = "api/HistoryHiring/updateinwork";
 export const PROFESSIONSBYUSER = "api/CostWorkers/getprofessionsbyuser";
+export const PROFESSIONSBYUSERID = "api/CostWorkers/getprofessionsbyuserid";
 export const COMPANY_DATA = "COMPANY_DATA";
 
 

@@ -42,6 +42,7 @@
                 PriceHourOrdinary = newCostWorkerViewModel.priceHourOrdinary,
                 PriceHourExtra = newCostWorkerViewModel.priceHourExtra,
                 PriceHourFestive = newCostWorkerViewModel.priceHourFestive,
+                ProfessionId = newCostWorkerViewModel.professionId,
 
                 StartDate = DateTime.ParseExact(newCostWorkerViewModel.startDate, "dd/MM/yyyy", null),
 
@@ -76,6 +77,7 @@
             costWorker.PriceHourOrdinary = costWorkerViewModel.priceHourOrdinary;
             costWorker.PriceHourExtra = costWorkerViewModel.priceHourExtra;
             costWorker.PriceHourFestive = costWorkerViewModel.priceHourFestive;
+            costWorker.ProfessionId = costWorkerViewModel.professionId;
 
             costWorker.StartDate = DateTime.ParseExact(costWorkerViewModel.startDate, "dd/MM/yyyy", null);
 

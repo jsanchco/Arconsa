@@ -32,11 +32,11 @@ class Employees extends Component {
     headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }],
   });
 
-  professions = new DataManager({
-    adaptor: new WebApiAdaptor(),
-    url: `${config.URL_API}/${PROFESSIONS}`,
-    headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }],
-  });
+  // professions = new DataManager({
+  //   adaptor: new WebApiAdaptor(),
+  //   url: `${config.URL_API}/${PROFESSIONS}`,
+  //   headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }],
+  // });
 
   roles = new DataManager({
     adaptor: new WebApiAdaptor(),
@@ -345,7 +345,7 @@ class Employees extends Component {
                       headerText="Teléfono"
                       width="70"
                     />
-                    <ColumnDirective
+                    {/* <ColumnDirective
                       field="professionId"
                       headerText="Profesión"
                       width="100"
@@ -354,7 +354,7 @@ class Employees extends Component {
                       foreignKeyField="id"
                       validationRules={this.professionIdRules}
                       dataSource={this.professions}
-                    />
+                    /> */}
                     <ColumnDirective
                       field="professions"
                       headerText="Puestos"
