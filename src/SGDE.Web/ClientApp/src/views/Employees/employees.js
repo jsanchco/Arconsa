@@ -359,6 +359,7 @@ class Employees extends Component {
                       field="professions"
                       headerText="Puestos"
                       width="100"
+                      allowEditing={false}
                     />
                     <ColumnDirective
                       field="roleId"
