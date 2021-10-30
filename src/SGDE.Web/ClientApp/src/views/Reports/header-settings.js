@@ -5,7 +5,7 @@ import { DatePickerComponent } from "@syncfusion/ej2-react-calendars";
 import { DropDownListComponent } from "@syncfusion/ej2-react-dropdowns";
 import { L10n, loadCldr } from "@syncfusion/ej2-base";
 import data from "../../locales/locale.json";
-import { getWorkers, getWorks, getClients } from "../../services";
+import { getWorkers, getAllWorks, getClients } from "../../services";
 import {
   createSpinner,
   showSpinner,
@@ -55,7 +55,7 @@ class HeaderSettings extends Component {
     }
 
     if (this.props.type === "works") {
-      getWorks()
+      getAllWorks()
         .then((items) => {
           this.ddl.dataSource = items;
           this.searchData = this.ddl.dataSource;

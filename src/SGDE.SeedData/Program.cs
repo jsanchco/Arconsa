@@ -252,8 +252,7 @@ namespace SGDE.SeedData
                         Email = "rperez@gmail.com",
                         Password = "123456",
                         PhoneNumber = "678963366",
-                        RoleId = 3,
-                        ProfessionId = 1
+                        RoleId = 3
                     });
 
                     context.SaveChanges();

@@ -42,22 +42,18 @@
         public async Task<List<Profession>> GetAllAsync(CancellationToken ct = default(CancellationToken))
         {
             return await _context.Profession
-                .Include(x => x.Users)
                 .ToListAsync(ct);
         }
 
         public async Task<Profession> GetByIdAsync(int id, CancellationToken ct = default(CancellationToken))
         {
             return await _context.Profession
-                .Include(x => x.Users)
                 .FirstOrDefaultAsync(x => x.Id == id, ct);
         }
 
         public async Task<List<User>> GetByProfesionIdAsync(int id, CancellationToken ct = default(CancellationToken))
         {
             return await _context.User
-                .Include(x => x.Profession)
-                .Where(x => x.ProfessionId == id)
                 .ToListAsync(ct);
         }
 
@@ -92,22 +88,18 @@
         public List<Profession> GetAll()
         {
             return _context.Profession
-                .Include(x => x.Users)
                 .ToList();
         }
 
         public Profession GetById(int id)
         {
             return _context.Profession
-                .Include(x => x.Users)
                 .FirstOrDefault(x => x.Id == id);
         }
 
         public List<User> GetByProfesionId(int id)
         {
             return _context.User
-                .Include(x => x.Profession)
-                .Where(x => x.ProfessionId == id)
                 .ToList();
         }
 

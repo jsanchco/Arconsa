@@ -295,10 +295,10 @@
                                 EndDate = null,
                                 WorkId = workId,
                                 UserId = userId,
-                                ProfessionId = user.ProfessionId
+                                //ProfessionId = user.ProfessionId
                             });
-                            if (result == true)
-                                result = IsProfessionInClient(user.ProfessionId, 0, work.ClientId);
+                            //if (result == true)
+                            //    result = IsProfessionInClient(user.ProfessionId, 0, work.ClientId);
 
                             user.WorkId = workId;
                             _context.User.Update(user);
@@ -322,10 +322,9 @@
                                     EndDate = null,
                                     WorkId = workId,
                                     UserId = userId,
-                                    ProfessionId = user.ProfessionId
                                 });
-                                if (result == true)
-                                    result = IsProfessionInClient(user.ProfessionId, 0, work.ClientId);
+                                //if (result == true)
+                                //    result = IsProfessionInClient(user.ProfessionId, 0, work.ClientId);
 
                                 user.WorkId = workId;
                                 _context.User.Update(user);

@@ -101,7 +101,6 @@
                 .ThenInclude(v => v.Client)
                 .Include(z => z.UserHiring)
                 .ThenInclude(w => w.User)
-                .ThenInclude(u => u.Profession)
                 .Where(x => x.UserHiring.Work.Id == workId)
                 .OrderBy(x => x.StartHour)
                 .ToList();

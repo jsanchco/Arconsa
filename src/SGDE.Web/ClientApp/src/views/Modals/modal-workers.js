@@ -277,7 +277,7 @@ class ModalWorkers extends Component {
                     headerText="Nombre"
                     width="100"
                   />
-                  <ColumnDirective
+                  {/* <ColumnDirective
                     field="professionId"
                     headerText="Profesión"
                     width="100"
@@ -286,7 +286,7 @@ class ModalWorkers extends Component {
                     foreignKeyField="id"
                     validationRules={this.professionIdRules}
                     dataSource={this.professions}
-                  />
+                  /> */}
                   <ColumnDirective
                     field="workName"
                     headerText="Obra Asignada"

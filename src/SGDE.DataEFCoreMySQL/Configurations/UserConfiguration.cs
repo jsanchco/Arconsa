@@ -22,8 +22,8 @@
             entity.Property(x => x.BirthDate).IsRequired(false);
             entity.Ignore(x => x.Token);
 
-            entity.HasIndex(x => x.ProfessionId).HasName("IFK_Profession_User");
-            entity.HasOne(u => u.Profession).WithMany(a => a.Users).HasForeignKey(a => a.ProfessionId).HasConstraintName("FK__User__ProfessionId");
+            //entity.HasIndex(x => x.ProfessionId).HasName("IFK_Profession_User");
+            //entity.HasOne(u => u.Profession).WithMany(a => a.Users).HasForeignKey(a => a.ProfessionId).HasConstraintName("FK__User__ProfessionId");
 
             entity.HasIndex(x => x.RoleId).HasName("IFK_Role_User");
             entity.HasOne(u => u.Role).WithMany(a => a.Users).HasForeignKey(a => a.RoleId).HasConstraintName("FK__User__RoleId");

@@ -587,6 +587,28 @@ export const getWorks = () => {
   });
 };
 
+export const getAllWorks = () => {
+  return new Promise((resolve, reject) => {
+    const url = `${config.URL_API}/${WORKS}?showCloseWorks=true`;
+    fetch(url, {
+      headers: {
+        Accept: "text/plain",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`,
+      },
+      method: "GET",
+    })
+      .then((data) => data.json())
+      .then((result) => {
+        resolve(result.Items);
+      })
+      .catch((error) => {
+        console.log("error ->", error);
+        reject();
+      });
+  });
+};
+
 export const getWork = (id) => {
   return new Promise((resolve, reject) => {
     const url = `${config.URL_API}/${WORKS}/${id}`;

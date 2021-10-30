@@ -47,7 +47,7 @@
                     id = worker.Id,
                     name = $"{worker.Name} {worker.Surname}",
                     dni = worker.Dni,
-                    professionName = worker.Profession?.Name,
+                    //professionName = worker.Profession?.Name,
                     workId = worker.WorkId,
                     workName = worker.Work?.Name,
                     state = state,
@@ -64,18 +64,18 @@
                     }
                     else
                     {
-                        if (worker.ProfessionId != null)
-                        {
-                            workerHiringViewModel.professionId = (int)worker.ProfessionId;
-                        }                        
+                        //if (worker.ProfessionId != null)
+                        //{
+                        //    workerHiringViewModel.professionId = (int)worker.ProfessionId;
+                        //}                        
                     }                   
                 }
                 else
                 {
-                    if (worker.ProfessionId != null)
-                    {
-                        workerHiringViewModel.professionId = (int)worker.ProfessionId;
-                    }
+                    //if (worker.ProfessionId != null)
+                    //{
+                    //    workerHiringViewModel.professionId = (int)worker.ProfessionId;
+                    //}
                 }
 
                 listWorkerHiringViewModel.Add(workerHiringViewModel);

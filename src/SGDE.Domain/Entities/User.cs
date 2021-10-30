@@ -24,8 +24,8 @@
         public byte[] Photo { get; set; }
         public string Token { get; set; }
 
-        public int? ProfessionId { get; set; }
-        public virtual Profession Profession { get; set; }
+        //public int? ProfessionId { get; set; }
+        //public virtual Profession Profession { get; set; }
 
         public int RoleId { get; set; }
         public virtual Role Role { get; set; }
