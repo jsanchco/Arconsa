@@ -4,6 +4,7 @@
 
     using SGDE.Domain.Helpers;
     using SGDE.Domain.ViewModels;
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -28,7 +29,7 @@
             var historyHiringViewModel = new HistoryHiringViewModel
             {
                 userHiringId = dailySignings[0].UserHiring.Id,
-                dtStartDate = dailySignings[0].StartHour,
+                dtStartDate = (DateTime)dailySignings[0].StartHour,
                 workId = dailySignings[0].UserHiring.WorkId,
                 workName = dailySignings[0].UserHiring.Work.Name,
                 clientId = dailySignings[0].UserHiring.Work.Client.Id,
@@ -47,7 +48,7 @@
                     historyHiringViewModel = new HistoryHiringViewModel
                     {
                         userHiringId = dailySigning.UserHiring.Id,
-                        dtStartDate = dailySigning.StartHour,
+                        dtStartDate = (DateTime)dailySigning.StartHour,
                         workId = dailySigning.UserHiring.WorkId,
                         workName = dailySigning.UserHiring.Work.Name,
                         clientId = dailySigning.UserHiring.Work.Client.Id,
@@ -99,7 +100,7 @@
             var historyHiringViewModel = new HistoryHiringViewModel
             {
                 userHiringId = dailySignings[0].UserHiring.Id,
-                dtStartDate = dailySignings[0].StartHour,
+                dtStartDate = (DateTime)dailySignings[0].StartHour,
                 userId = dailySignings[0].UserHiring.UserId,
                 userName = $"{dailySignings[0].UserHiring.User.Name} {dailySignings[0].UserHiring.User.Surname}",
                 clientId = dailySignings[0].UserHiring.Work.Client.Id,
@@ -118,7 +119,7 @@
                     historyHiringViewModel = new HistoryHiringViewModel
                     {
                         userHiringId = dailySigning.UserHiring.Id,
-                        dtStartDate = dailySigning.StartHour,
+                        dtStartDate = (DateTime)dailySigning.StartHour,
                         userId = dailySigning.UserHiring.UserId,
                         userName = $"{dailySigning.UserHiring.User.Name} {dailySigning.UserHiring.User.Surname}",
                         clientId = dailySigning.UserHiring.Work.Client.Id,

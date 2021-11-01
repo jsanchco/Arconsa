@@ -26,6 +26,9 @@
                 priceHourSaleOrdinary = professionInClient.PriceHourSaleOrdinary,
                 priceHourSaleExtra = professionInClient.PriceHourSaleExtra,
                 priceHourSaleFestive = professionInClient.PriceHourSaleFestive,
+                priceHourSaleNocturnal = professionInClient.PriceHourSaleNocturnal,
+                priceDailySale = professionInClient.PriceDailySale,
+
                 clientId = professionInClient.ClientId,
                 clientName = professionInClient.Client.Name,
                 professionId = professionInClient.ProfessionId,
@@ -49,6 +52,9 @@
                     priceHourSaleOrdinary = professionInClient.PriceHourSaleOrdinary,
                     priceHourSaleExtra = professionInClient.PriceHourSaleExtra,
                     priceHourSaleFestive = professionInClient.PriceHourSaleFestive,
+                    priceHourSaleNocturnal = professionInClient.PriceHourSaleNocturnal,
+                    priceDailySale = professionInClient.PriceDailySale,
+
                     clientId = professionInClient.ClientId,
                     clientName = professionInClient.Client.Name,
                     professionId = professionInClient.ProfessionId,

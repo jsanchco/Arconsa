@@ -21,6 +21,11 @@ import { L10n } from "@syncfusion/ej2-base";
 import data from "../../locales/locale.json";
 import { TOKEN_KEY, getSettings } from "../../services";
 import { COMPANY_DATA } from "../../constants";
+import {
+  createSpinner,
+  showSpinner,
+  hideSpinner,
+} from "@syncfusion/ej2-popups";
 
 L10n.load(data);
 
@@ -56,6 +61,8 @@ class GridSelection extends Component {
     this.clickHandler = this.clickHandler.bind(this);
     this.getExcelExportProperties = this.getExcelExportProperties.bind(this);
     this.beforePrint = this.beforePrint.bind(this);
+    this.templateHours = this.templateHours.bind(this);
+    this.excelQueryCellInfo = this.excelQueryCellInfo.bind(this);
   }
 
   componentDidMount() {
@@ -79,6 +86,13 @@ class GridSelection extends Component {
   }
 
   componentDidUpdate(prevProps) {
+    var element = document.getElementById("Grid");
+    createSpinner({
+      target: element,
+    });
+
+    showSpinner(element);
+
     if (prevProps.settings !== this.props.settings) {
       const { settings } = this.props;
       switch (settings.type) {
@@ -132,8 +146,9 @@ class GridSelection extends Component {
 
         default:
           break;
-      }
+      }      
     }
+    hideSpinner(element)
   }
 
   clickHandler(args) {
@@ -148,7 +163,7 @@ class GridSelection extends Component {
   }
 
   footerSum(args) {
-    return <span>Total: {args.Sum} horas</span>;
+    return <span>Total: {args.Sum}</span>;
   }
 
   footerSumEuros(args) {
@@ -363,6 +378,21 @@ class GridSelection extends Component {
     args.element.insertBefore(div, args.element.childNodes[0]);
   }
 
+  templateHours(args) {
+    let value = args.hours;
+    if (args.hourTypeName === "Diario") {      
+      value = "";
+    }
+
+    return <div>{value}</div>;
+  }
+
+  excelQueryCellInfo(args) {
+    if (args.data.hourTypeId === 5 && args.data.hours === 0) {
+      args.data.hours = "";
+    }
+  }
+
   render() {
     return (
       <div className="control-pane">
@@ -387,6 +417,7 @@ class GridSelection extends Component {
               allowTextWrap={true}
               textWrapSettings={this.wrapSettings}
               beforePrint={this.beforePrint}
+              excelQueryCellInfo={this.excelQueryCellInfo}
             >
               <ColumnsDirective>
                 {this.renderClient()}
@@ -397,7 +428,7 @@ class GridSelection extends Component {
 
                 <ColumnDirective
                   field="professionName"
-                  headerText="Preofesión"
+                  headerText="Puesto"
                   width="100"
                 />
 
@@ -413,6 +444,7 @@ class GridSelection extends Component {
                   fotmat="N1"
                   textAlign="right"
                   editType="numericedit"
+                  template={this.templateHours}
                 />
                 <ColumnDirective
                   field="hourTypeName"

@@ -8,7 +8,7 @@
 
     public class DailySigning : BaseEntity
     {
-        public DateTime StartHour { get; set; }
+        public DateTime? StartHour { get; set; }
         public DateTime? EndHour { get; set; }
 
         public int UserHiringId { get; set; }

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SGDE.DataEFCoreSQL;
 
 namespace SGDE.DataEFCoreSQL.Migrations
 {
     [DbContext(typeof(EFContextSQL))]
-    partial class EFContextSQLModelSnapshot : ModelSnapshot
+    [Migration("20211101180126_Add_Fields_PriceNocturnal_And_PriceDaily")]
+    partial class Add_Fields_PriceNocturnal_And_PriceDaily
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -369,16 +371,10 @@ namespace SGDE.DataEFCoreSQL.Migrations
                     b.Property<DateTime?>("ModifiedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<decimal>("PriceDailySale")
-                        .HasColumnType("decimal(18,2)");
-
                     b.Property<decimal>("PriceHourSaleExtra")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal>("PriceHourSaleFestive")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal>("PriceHourSaleNocturnal")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal>("PriceHourSaleOrdinary")

@@ -13,7 +13,7 @@
         {
             get
             {
-                if (endHour == null)
+                if (startHour == null || endHour == null)
                     return null;
 
                 var dtStartHour = DateTime.ParseExact(startHour, "MM/dd/yyyy HH:mm", null);

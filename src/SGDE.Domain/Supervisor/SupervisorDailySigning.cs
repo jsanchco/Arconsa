@@ -116,26 +116,45 @@
 
                 foreach (var item in massiveSigningQueryViewModel.data)
                 {
-                    var hourStart = Convert.ToInt32(item.startHour.Substring(0, 2));
-                    var minuteStart = Convert.ToInt32(item.startHour.Substring(3, 2));
-                    var hourEnd = Convert.ToInt32(item.endHour.Substring(0, 2));
-                    var minuteEnd = Convert.ToInt32(item.endHour.Substring(3, 2));
-
-                    var dailySigning = new DailySigning
+                    DailySigning dailySigning;
+                    if (item.hourTypeId == 5)
                     {
-                        AddedDate = DateTime.Now,
-                        ModifiedDate = null,
-                        IPAddress = null,
+                        dailySigning = new DailySigning
+                        {
+                            AddedDate = DateTime.Now,
+                            ModifiedDate = null,
+                            IPAddress = null,
 
-                        StartHour = new DateTime(actualDay.Year, actualDay.Month, actualDay.Day, hourStart, minuteStart, 0),
-                        EndHour = hourStart <= hourEnd ? 
-                            new DateTime(actualDay.Year, actualDay.Month, actualDay.Day, hourEnd, minuteEnd, 0) :
-                            new DateTime(actualDay.Year, actualDay.Month, actualDay.Day, hourEnd, minuteEnd, 0).AddDays(1),
+                            StartHour = new DateTime(actualDay.Year, actualDay.Month, actualDay.Day),
+                            EndHour = new DateTime(actualDay.Year, actualDay.Month, actualDay.Day),
+                            UserHiringId = massiveSigningQueryViewModel.userHiringId,
+                            ProfessionId = massiveSigningQueryViewModel.professionId,
+                            HourTypeId = item.hourTypeId
+                        };
+                    }
+                    else
+                    {
+                        var hourStart = Convert.ToInt32(item.startHour.Substring(0, 2));
+                        var minuteStart = Convert.ToInt32(item.startHour.Substring(3, 2));
+                        var hourEnd = Convert.ToInt32(item.endHour.Substring(0, 2));
+                        var minuteEnd = Convert.ToInt32(item.endHour.Substring(3, 2));
 
-                        UserHiringId = massiveSigningQueryViewModel.userHiringId,
-                        ProfessionId = massiveSigningQueryViewModel.professionId,
-                        HourTypeId = item.hourTypeId
-                    };
+                        dailySigning = new DailySigning
+                        {
+                            AddedDate = DateTime.Now,
+                            ModifiedDate = null,
+                            IPAddress = null,
+
+                            StartHour = new DateTime(actualDay.Year, actualDay.Month, actualDay.Day, hourStart, minuteStart, 0),
+                            EndHour = hourStart <= hourEnd ?
+                                new DateTime(actualDay.Year, actualDay.Month, actualDay.Day, hourEnd, minuteEnd, 0) :
+                                new DateTime(actualDay.Year, actualDay.Month, actualDay.Day, hourEnd, minuteEnd, 0).AddDays(1),
+
+                            UserHiringId = massiveSigningQueryViewModel.userHiringId,
+                            ProfessionId = massiveSigningQueryViewModel.professionId,
+                            HourTypeId = item.hourTypeId
+                        };
+                    }
 
                     if (_dailySigningRepository.ValidateDalilySigning(dailySigning))
                     {

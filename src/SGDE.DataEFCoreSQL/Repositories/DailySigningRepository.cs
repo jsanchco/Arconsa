@@ -67,6 +67,7 @@
                 .OrderByDescending(x => x.StartHour)
                 .ToList();
             }
+
             var count = data.Count;
             return (skip != 0 || take != 0)
                 ? new QueryResult<DailySigning>
@@ -150,6 +151,9 @@
 
         public bool ValidateDalilySigning(DailySigning dailySigning)
         {
+            if (dailySigning.HourTypeId == 5)
+                return true;
+
             if (dailySigning.StartHour >= dailySigning.EndHour)
                 return false;
 

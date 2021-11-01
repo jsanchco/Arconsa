@@ -11,6 +11,8 @@
         public Decimal priceHourOrdinary { get; set; }
         public Decimal priceHourExtra { get; set; }
         public Decimal priceHourFestive { get; set; }
+        public Decimal priceHourNocturnal { get; set; }
+        public Decimal priceDaily { get; set; }
         public string startDate { get; set; }
         public string endDate { get; set; }
         public string observations { get; set; }

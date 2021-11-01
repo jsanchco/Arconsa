@@ -20,16 +20,14 @@
             var reportResultViewModel = new ReportResultViewModel
             {
                 userName = $"{dailySigning.UserHiring.User.Name} {dailySigning.UserHiring.User.Surname}",
-                //professionName = dailySigning.UserHiring.User.Profession?.Name,
-                //professionId = dailySigning.UserHiring.User.Profession?.Id,
                 professionName = dailySigning.Profession.Name,
                 professionId = dailySigning.ProfessionId,
                 workName = dailySigning.UserHiring.Work.Name,
                 clientName = dailySigning.UserHiring.Work.Client.Name,
-                hours = ((DateTime)dailySigning.EndHour - dailySigning.StartHour).TotalHours,
-                dateHour = dailySigning.StartHour.ToString("dd/MM/yyyy"),
-                priceHour = (decimal)((DateTime)dailySigning.EndHour - dailySigning.StartHour).TotalHours * GetPriceHourCost(dailySigning.UserHiring.User, dailySigning.ProfessionId, dailySigning.StartHour, dailySigning.HourTypeId),
-                priceHourSale = (decimal)((DateTime)dailySigning.EndHour - dailySigning.StartHour).TotalHours * GetPriceHourSale(dailySigning.UserHiring.Work.Client, (int)dailySigning.HourTypeId, (int)dailySigning.UserHiring.ProfessionId)
+                hours = ((DateTime)dailySigning.EndHour - (DateTime)dailySigning.StartHour).TotalHours,
+                dateHour = dailySigning.StartHour?.ToString("dd/MM/yyyy"),
+                priceHour = (decimal)((DateTime)dailySigning.EndHour - (DateTime)dailySigning.StartHour).TotalHours * GetPriceHourCost(dailySigning.UserHiring.User, dailySigning.ProfessionId, (DateTime)dailySigning.StartHour, dailySigning.HourTypeId),
+                priceHourSale = (decimal)((DateTime)dailySigning.EndHour - (DateTime)dailySigning.StartHour).TotalHours * GetPriceHourSale(dailySigning.UserHiring.Work.Client, (int)dailySigning.HourTypeId, (int)dailySigning.UserHiring.ProfessionId)
             };
 
             return reportResultViewModel;
@@ -48,10 +46,16 @@
                     hourTypeName = dailySigning.HourType?.Name,
                     workName = dailySigning.UserHiring.Work.Name,
                     clientName = dailySigning.UserHiring.Work.Client.Name,
-                    hours = ((DateTime)dailySigning.EndHour - dailySigning.StartHour).TotalHours,
-                    dateHour = dailySigning.StartHour.ToString("dd/MM/yyyy"),
-                    priceHour = (decimal)((DateTime)dailySigning.EndHour - dailySigning.StartHour).TotalHours * GetPriceHourCost(dailySigning.UserHiring.User, dailySigning.ProfessionId, dailySigning.StartHour, dailySigning.HourTypeId),
-                    priceHourSale = (decimal)((DateTime)dailySigning.EndHour - dailySigning.StartHour).TotalHours * GetPriceHourSale(dailySigning.UserHiring.Work.Client, dailySigning.HourTypeId, dailySigning.ProfessionId)
+                    hours = ((DateTime)dailySigning.EndHour - (DateTime)dailySigning.StartHour).TotalHours,
+                    dateHour = dailySigning.StartHour?.ToString("dd/MM/yyyy"),
+
+                    priceHour = dailySigning.HourTypeId != 5 ? 
+                        (decimal)((DateTime)dailySigning.EndHour - (DateTime)dailySigning.StartHour).TotalHours * GetPriceHourCost(dailySigning.UserHiring.User, dailySigning.ProfessionId, (DateTime)dailySigning.StartHour, dailySigning.HourTypeId) :
+                        GetPriceHourCost(dailySigning.UserHiring.User, dailySigning.ProfessionId, (DateTime)dailySigning.StartHour, dailySigning.HourTypeId),
+
+                    priceHourSale = dailySigning.HourTypeId != 5 ? 
+                        (decimal)((DateTime)dailySigning.EndHour - (DateTime)dailySigning.StartHour).TotalHours * GetPriceHourSale(dailySigning.UserHiring.Work.Client, dailySigning.HourTypeId, dailySigning.ProfessionId) :
+                        GetPriceHourSale(dailySigning.UserHiring.Work.Client, dailySigning.HourTypeId, dailySigning.ProfessionId)
                 };
                 return model;
             })
@@ -82,6 +86,10 @@
                     return costWorker.PriceHourExtra;
                 case 3:
                     return costWorker.PriceHourFestive;
+                case 4:
+                    return costWorker.PriceHourNocturnal;
+                case 5:
+                    return costWorker.PriceDaily;
 
                 default:
                     return 0;
@@ -108,6 +116,10 @@
                     return professionInClient.PriceHourSaleExtra;
                 case 3:
                     return professionInClient.PriceHourSaleFestive;
+                case 4:
+                    return professionInClient.PriceHourSaleNocturnal;
+                case 5:
+                    return professionInClient.PriceDailySale;
 
                 default:
                     return 0;

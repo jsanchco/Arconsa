@@ -366,7 +366,7 @@ class BasicData extends Component {
                         dataSource={this.state.msdDataSource} 
                         fields={this.fields}
                         value={this.state.userProfessions}
-                        placeholder="Selecciona profesión/es" 
+                        placeholder="Selecciona puesto/s" 
                         change={this.handleChangeProfessions}
                       />
                     </FormGroup>

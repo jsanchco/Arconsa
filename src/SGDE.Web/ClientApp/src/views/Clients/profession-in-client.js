@@ -89,7 +89,7 @@ class ProfessionInClient extends Component {
   }
 
   render() {
-    let title = ` Precios por Profesión [${this.props.clientName}]`;
+    let title = ` Precios por Puesto [${this.props.clientName}]`;
 
     return (
       <Fragment>
@@ -132,7 +132,7 @@ class ProfessionInClient extends Component {
                   />
                   <ColumnDirective
                     field="professionId"
-                    headerText="Profesión"
+                    headerText="Puesto"
                     width="100"
                     editType="dropdownedit"
                     foreignKeyValue="name"
@@ -180,7 +180,7 @@ class ProfessionInClient extends Component {
                       {
                         field: "priceHourSaleOrdinary",
                         headerText: "Ordinaria",
-                        width: "100",
+                        width: "70",
                         fotmat: "N1",
                         textAlign: "left",
                         editType: "numericedit",
@@ -189,7 +189,7 @@ class ProfessionInClient extends Component {
                       {
                         field: "priceHourSaleExtra",
                         headerText: "Extra",
-                        width: "100",
+                        width: "70",
                         fotmat: "N1",
                         textAlign: "left",
                         editType: "numericedit",
@@ -198,12 +198,30 @@ class ProfessionInClient extends Component {
                       {
                         field: "priceHourSaleFestive",
                         headerText: "Festivo",
-                        width: "100",
+                        width: "70",
                         fotmat: "N1",
                         textAlign: "left",
                         editType: "numericedit",
                         edit: this.numericParams
-                      }
+                      },
+                      {
+                        field: "priceHourSaleNocturnal",
+                        headerText: "Nocturna",
+                        width: "70",
+                        fotmat: "N1",
+                        textAlign: "left",
+                        editType: "numericedit",
+                        edit: this.numericParams
+                      },
+                      {
+                        field: "priceDailySale",
+                        headerText: "Diario",
+                        width: "70",
+                        fotmat: "N1",
+                        textAlign: "left",
+                        editType: "numericedit",
+                        edit: this.numericParams
+                      }                      
                     ]}
                   />
                   <ColumnDirective

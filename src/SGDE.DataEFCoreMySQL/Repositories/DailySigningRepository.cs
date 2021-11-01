@@ -147,16 +147,31 @@
 
         public bool ValidateDalilySigning(DailySigning dailySigning)
         {
+            if (dailySigning.HourTypeId == 5)
+                return true;
+
             if (dailySigning.StartHour >= dailySigning.EndHour)
                 return false;
 
-            if (_context.DailySigning.FirstOrDefault(x => x.StartHour <= dailySigning.StartHour && x.EndHour >= dailySigning.StartHour) != null)
+            if (_context.DailySigning.FirstOrDefault(x =>
+                x.StartHour < dailySigning.StartHour &&
+                x.EndHour > dailySigning.StartHour &&
+                x.Id != dailySigning.Id &&
+                x.UserHiringId == dailySigning.UserHiringId) != null)
                 return false;
 
-            if (_context.DailySigning.FirstOrDefault(x => x.StartHour <= dailySigning.EndHour && x.EndHour >= dailySigning.StartHour) != null)
+            if (_context.DailySigning.FirstOrDefault(x =>
+                x.StartHour < dailySigning.EndHour &&
+                x.EndHour > dailySigning.StartHour &&
+                x.Id != dailySigning.Id &&
+                x.UserHiringId == dailySigning.UserHiringId) != null)
                 return false;
 
-            if (_context.DailySigning.FirstOrDefault(x => x.StartHour <= dailySigning.StartHour && x.EndHour >= dailySigning.EndHour) != null)
+            if (_context.DailySigning.FirstOrDefault(x =>
+                x.StartHour < dailySigning.StartHour &&
+                x.EndHour > dailySigning.EndHour &&
+                x.Id != dailySigning.Id &&
+                x.UserHiringId == dailySigning.UserHiringId) != null)
                 return false;
 
             return true;

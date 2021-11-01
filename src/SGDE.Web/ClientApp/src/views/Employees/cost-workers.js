@@ -218,7 +218,7 @@ class CostWorkers extends Component {
                       {
                         field: "priceHourOrdinary",
                         headerText: "Ordinaria",
-                        width: "100",
+                        width: "70",
                         fotmat: "N2",
                         textAlign: "left",
                         editType: "numericedit",
@@ -227,7 +227,7 @@ class CostWorkers extends Component {
                       {
                         field: "priceHourExtra",
                         headerText: "Extra",
-                        width: "100",
+                        width: "70",
                         fotmat: "N2",
                         textAlign: "left",
                         editType: "numericedit",
@@ -236,12 +236,30 @@ class CostWorkers extends Component {
                       {
                         field: "priceHourFestive",
                         headerText: "Festivo",
-                        width: "100",
+                        width: "70",
                         fotmat: "N2",
                         textAlign: "left",
                         editType: "numericedit",
                         edit: this.numericParams,
                       },
+                      {
+                        field: "priceHourNocturnal",
+                        headerText: "Nocturno",
+                        width: "70",
+                        fotmat: "N2",
+                        textAlign: "left",
+                        editType: "numericedit",
+                        edit: this.numericParams,
+                      },
+                      {
+                        field: "priceDaily",
+                        headerText: "Diario",
+                        width: "70",
+                        fotmat: "N2",
+                        textAlign: "left",
+                        editType: "numericedit",
+                        edit: this.numericParams,
+                      }                                            
                     ]}
                   />
                   <ColumnDirective

@@ -408,6 +408,21 @@ class GridReportVarious extends Component {
             headerText="Venta Festivo"
             width="70"
           />
+          <ColumnDirective
+            field="totalHoursNocturnal"
+            headerText="Nocturna"
+            width="70"
+          />
+          <ColumnDirective
+            field="priceTotalHoursNocturnal"
+            headerText="Precio Nocturna"
+            width="70"
+          />
+          <ColumnDirective
+            field="priceTotalHoursSaleNocturnal"
+            headerText="Venta Festivo"
+            width="70"
+          />
         </ColumnsDirective>
 
         <AggregatesDirective>
@@ -492,16 +507,29 @@ class GridReportVarious extends Component {
               >
                 {" "}
               </AggregateColumnDirective>
-            </AggregateColumnsDirective>
-          </AggregateDirective>
-
-          <AggregateDirective>
-            <AggregateColumnsDirective>
               <AggregateColumnDirective
-                field="priceTotalHoursSaleFestive"
-                type="Count"
-                format="N"
-                footerTemplate={this.footerCount}
+                field="totalHoursNocturnal"
+                type="Sum"
+                format="N2"
+                footerTemplate={this.footerSum}
+              >
+                {" "}
+              </AggregateColumnDirective>
+
+              <AggregateColumnDirective
+                field="priceTotalHoursNocturnal"
+                type="Sum"
+                format="N2"
+                footerTemplate={this.footerSumEuros}
+              >
+                {" "}
+              </AggregateColumnDirective>
+
+              <AggregateColumnDirective
+                field="priceTotalHoursSaleNocturnal"
+                type="Sum"
+                format="N2"
+                footerTemplate={this.footerSumEuros}
               >
                 {" "}
               </AggregateColumnDirective>

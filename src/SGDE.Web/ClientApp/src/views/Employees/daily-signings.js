@@ -84,12 +84,12 @@ class DailySignings extends Component {
       // "Delete",
       "Update",
       "Cancel",
-      {
-        text: "Plantilla Automática",
-        tooltipText: "Plantilla para a generación de Fichajes Automática",
-        prefixIcon: "e-custom-icons e-details",
-        id: "Template",
-      },
+      // {
+      //   text: "Plantilla Automática",
+      //   tooltipText: "Plantilla para a generación de Fichajes Automática",
+      //   prefixIcon: "e-custom-icons e-details",
+      //   id: "Template",
+      // },
       {
         text: "Borrar Seleccionados",
         tooltipText: "Borrar registros seleccionados",
@@ -117,9 +117,12 @@ class DailySignings extends Component {
     this.toggleModal = this.toggleModal.bind(this);
     this.updateDailySignings = this.updateDailySignings.bind(this);
     this.beforePrint = this.beforePrint.bind(this);
+    this.dateTemplateStartHour = this.dateTemplateStartHour.bind(this);
+    this.dateTemplateEndHour = this.dateTemplateEndHour.bind(this);
+    this.dateTemplateTotalHours = this.dateTemplateTotalHours.bind(this);
 
     this.template = this.gridTemplate;
-    this.format = { type: "dateTime", format: "dd/MM/yyyy HH:mm" };
+    this.format = { type: "dateTime", format: "dd/MM/yyyy HH:mm" };    
 
     this.queryDailySignings = new Query().addParams("userId", props.userId);
     this.queryProfessions = {
@@ -293,7 +296,8 @@ class DailySignings extends Component {
 
   rowDataBound(args) {
     if (args.row) {
-      var startDate = new Date(getValue("startHour", args.data));
+      var dataStartHour = getValue("startHour", args.data);
+      var startDate = new Date(dataStartHour);
       switch (startDate.getDay()) {
         case 0:
         case 6:
@@ -303,14 +307,6 @@ class DailySignings extends Component {
         default:
           break;
       }
-
-      // if (getValue("startHour", args.data) < 30){
-      //   args.row.classList.add('below-30');
-      // } else if(getValue('Freight', args.data) < 80 ) {
-      //     args.row.classList.add('below-80');
-      // } else {
-      //     args.row.classList.add('above-80');
-      // }
     }
   }
 
@@ -322,6 +318,35 @@ class DailySignings extends Component {
     div.style.padding = "10px 0";
     div.style.fontSize = "25px";
     args.element.insertBefore(div, args.element.childNodes[0]);
+  }
+
+  dateTemplateStartHour(args) {
+    let value = args.startHour;
+    value = this.formatDate(value);
+    if (args.hourTypeId === 5 && value.endsWith(" 00:00")) {      
+      value = value.replace(" 00:00", "");
+    }
+
+    return <div>{value}</div>;
+  }
+
+  dateTemplateEndHour(args) {
+    let value = args.endHour;
+    value = this.formatDate(value);
+    if (args.hourTypeId === 5) {
+      value = "";
+    }
+
+    return <div>{value}</div>;
+  }
+
+  dateTemplateTotalHours(args) {
+    let value = args.totalHours;
+    if (args.hourTypeId === 5) {
+      value = "";
+    }
+
+    return <div>{value}</div>;
   }
 
   render() {
@@ -425,7 +450,7 @@ class DailySignings extends Component {
                     type="date"
                     format={this.format}
                     textAlign="Center"
-                    //editTemplate={this.startHourTemplate}
+                    template={this.dateTemplateStartHour}
                   />
                   <ColumnDirective
                     field="endHour"
@@ -435,7 +460,7 @@ class DailySignings extends Component {
                     type="date"
                     format={this.format}
                     textAlign="Center"
-                    //editTemplate={this.endHourTemplate}
+                    template={this.dateTemplateEndHour}
                   />
                   <ColumnDirective
                     field="hourTypeId"
@@ -455,6 +480,7 @@ class DailySignings extends Component {
                     width="100"
                     allowEditing={false}
                     textAlign="Right"
+                    template={this.dateTemplateTotalHours}
                   />
                 </ColumnsDirective>
                 <Inject services={[Page, Toolbar, Edit]} />

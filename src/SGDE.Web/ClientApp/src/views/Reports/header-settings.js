@@ -39,9 +39,13 @@ class HeaderSettings extends Component {
   }
 
   componentDidMount() {
-    this.element = document.getElementById("selection-report");
+    this.element = document.getElementById("Grid");
+    createSpinner({
+      target: this.element,
+    });
 
-    if (this.props.type === "workers") {
+    showSpinner(this.element);
+    if (this.props.type === "workers") {      
       getWorkers()
         .then((items) => {
           this.ddl.dataSource = items;
@@ -107,9 +111,6 @@ class HeaderSettings extends Component {
           type: "danger",
         });
       } else {
-        createSpinner({
-          target: this.element,
-        });
         showSpinner(this.element);
 
         this.props.updateReport(

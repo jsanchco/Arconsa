@@ -347,7 +347,7 @@ class Employees extends Component {
                     />
                     {/* <ColumnDirective
                       field="professionId"
-                      headerText="Profesión"
+                      headerText="Puesto"
                       width="100"
                       editType="dropdownedit"
                       foreignKeyValue="name"

@@ -41,6 +41,8 @@
                 PriceHourSaleOrdinary = newProfessionInClientViewModel.priceHourSaleOrdinary,
                 PriceHourSaleExtra = newProfessionInClientViewModel.priceHourSaleExtra,
                 PriceHourSaleFestive = newProfessionInClientViewModel.priceHourSaleFestive,
+                PriceHourSaleNocturnal = newProfessionInClientViewModel.priceHourSaleNocturnal,
+                PriceDailySale = newProfessionInClientViewModel.priceDailySale,
                 ClientId = newProfessionInClientViewModel.clientId,
                 ProfessionId = newProfessionInClientViewModel.professionId
             };
@@ -64,6 +66,8 @@
             professionInClient.PriceHourSaleOrdinary = professionInClientViewModel.priceHourSaleOrdinary;
             professionInClient.PriceHourSaleExtra = professionInClientViewModel.priceHourSaleExtra;
             professionInClient.PriceHourSaleFestive = professionInClientViewModel.priceHourSaleFestive;
+            professionInClient.PriceHourSaleNocturnal = professionInClientViewModel.priceHourSaleNocturnal;
+            professionInClient.PriceDailySale = professionInClientViewModel.priceDailySale;
             professionInClient.ClientId = professionInClientViewModel.clientId;
             professionInClient.ProfessionId = professionInClientViewModel.professionId;
 

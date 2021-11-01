@@ -8,13 +8,14 @@ import {
   FormGroup,
   Label,
   Row,
-  Col
+  Col,
 } from "reactstrap";
-import { 
-  sendMassiveSigning, 
-  getWorkers, 
-  getWorksByUserId, 
-  getProfessionsByUserId } from "../../services";
+import {
+  sendMassiveSigning,
+  getWorkers,
+  getWorksByUserId,
+  getProfessionsByUserId,
+} from "../../services";
 import { DatePickerComponent } from "@syncfusion/ej2-react-calendars";
 import { DropDownListComponent } from "@syncfusion/ej2-react-dropdowns";
 import { DialogComponent } from "@syncfusion/ej2-react-popups";
@@ -30,7 +31,7 @@ import {
   showSpinner,
   hideSpinner,
 } from "@syncfusion/ej2-popups";
-import { Query } from '@syncfusion/ej2-data';
+import { Query } from "@syncfusion/ej2-data";
 import { AppSwitch } from "@coreui/react";
 import { connect } from "react-redux";
 import ACTION_APPLICATION from "../../actions/applicationAction";
@@ -47,18 +48,23 @@ class Signings extends Component {
   grid = null;
 
   hoursRules = {
-    regex: ["^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$", "Hora mal formateada"],
-    required: true,
+    // regex: ["^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$", "Hora mal formateada"],
+    required: false,
   };
   hourTypeIdRules = { required: false };
 
   baseHours = [
     { id: 1, startHour: "08:00", endHour: "17:00", hourTypeId: 1, total: 9 },
   ];
+  baseHoursDaily = [
+    { id: 1, startHour: null, endHour: null, hourTypeId: 5, total: null },
+  ];
   hourTypes = [
     { id: 1, name: "Hora Ordinaria" },
     { id: 2, name: "Hora Extra" },
     { id: 3, name: "Hora Festivo" },
+    { id: 4, name: "Hora Nocturna" },
+    { id: 5, name: "Diario" },
   ];
 
   constructor(props) {
@@ -70,10 +76,10 @@ class Signings extends Component {
       hideConfirmDialog: false,
       includeSaturdays: false,
       includeSundays: false,
-      // ddlWorks: {
-      //   value: "",
-      //   dataSource: null,
-      // }
+      rowSelected: null,
+      dsGrid: null,
+      visibleColumns: true,
+      isDaily: false,
     };
 
     this.confirmButton = [
@@ -110,31 +116,39 @@ class Signings extends Component {
     this.templateSumHours = this.templateSumHours.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
-    this.handleSelectEmployee = this.handleSelectEmployee.bind(this)
+    this.handleSelectEmployee = this.handleSelectEmployee.bind(this);
+    this.rowSelected = this.rowSelected.bind(this);
+
+    this.changeHourType = { params: { change: this.changeHour.bind(this) } };
   }
 
   componentDidMount() {
-    getWorkers()
-    .then((items) => {
+    getWorkers().then((items) => {
       this.ddlEmployees.dataSource = items;
       this.searchDataEmployees = items;
     });
+    this.setState({ dsGrid: this.baseHours });
   }
 
-  handleFilteringEmployees(e)
-  {
-      let query = new Query();
-      query =
-        e.text !== "" ? query.where("name", "contains", e.text, true) : query;
-      e.updateData(this.searchDataEmployees, query);
+  rowSelected() {
+    const selectedRecords = this.grid.getSelectedRecords();
+    this.setState({
+      rowSelected: selectedRecords[0],
+    });
   }
 
-  handleFilteringWorks(e)
-  {
-      let query = new Query();
-      query =
-        e.text !== "" ? query.where("name", "contains", e.text, true) : query;
-      e.updateData(this.searchDataWorks, query);
+  handleFilteringEmployees(e) {
+    let query = new Query();
+    query =
+      e.text !== "" ? query.where("name", "contains", e.text, true) : query;
+    e.updateData(this.searchDataEmployees, query);
+  }
+
+  handleFilteringWorks(e) {
+    let query = new Query();
+    query =
+      e.text !== "" ? query.where("name", "contains", e.text, true) : query;
+    e.updateData(this.searchDataWorks, query);
   }
 
   handleSelectEmployee(args) {
@@ -144,30 +158,32 @@ class Signings extends Component {
     });
     showSpinner(element);
 
-    getWorksByUserId(args.itemData.id).then((items) => {
-      this.ddlWorks.value = "";
-      this.ddlWorks.text = null;
-      this.ddlWorks.dataSource = items;
-      this.searchDataWorks = items;
+    getWorksByUserId(args.itemData.id)
+      .then((items) => {
+        this.ddlWorks.value = "";
+        this.ddlWorks.text = null;
+        this.ddlWorks.dataSource = items;
+        this.searchDataWorks = items;
 
-      hideSpinner(element);
-    })
-    .catch((error) => {
-      hideSpinner(element);
-    });
+        hideSpinner(element);
+      })
+      .catch((error) => {
+        hideSpinner(element);
+      });
 
     showSpinner(element);
 
-    getProfessionsByUserId(args.itemData.id).then((items) => {
-      this.ddlProfessions.value = "";
-      this.ddlProfessions.text = null
-      this.ddlProfessions.dataSource = items
+    getProfessionsByUserId(args.itemData.id)
+      .then((items) => {
+        this.ddlProfessions.value = "";
+        this.ddlProfessions.text = null;
+        this.ddlProfessions.dataSource = items;
 
-      hideSpinner(element);
-    })
-    .catch((error) => {
-      hideSpinner(element);
-    });
+        hideSpinner(element);
+      })
+      .catch((error) => {
+        hideSpinner(element);
+      });
   }
 
   handleOnClickSave() {
@@ -215,6 +231,21 @@ class Signings extends Component {
     }
   }
 
+  changeHour(event) {
+    if (event.value === 5) {
+      this.grid.dataSource = this.baseHoursDaily;
+      this.grid.columns[2].visible = false;
+      this.grid.columns[3].visible = false;
+      this.grid.columns[4].visible = false;      
+    } else {
+      this.grid.dataSource = this.baseHours;
+      this.grid.columns[2].visible = true;
+      this.grid.columns[3].visible = true;
+      this.grid.columns[4].visible = true;
+    }
+    this.grid.refresh();
+  }
+
   dialogClose() {
     this.setState({
       hideConfirmDialog: false,
@@ -232,7 +263,7 @@ class Signings extends Component {
     const valueDtpEndDate = this.formatDate(this.dtpEndDate.value);
     const valueDdlProfessions = this.ddlProfessions.value;
     const valueDdlWorks = this.ddlWorks.value;
-  
+
     sendMassiveSigning({
       userHiringId: valueDdlWorks,
       professionId: valueDdlProfessions,
@@ -241,12 +272,13 @@ class Signings extends Component {
       data: this.grid.getCurrentViewRecords(),
       includeSaturdays: this.state.includeSaturdays,
       includeSundays: this.state.includeSundays,
-    }).then(() => {
-      hideSpinner(element);
     })
-    .catch((error) => {
-      hideSpinner(element);
-    });;
+      .then(() => {
+        hideSpinner(element);
+      })
+      .catch((error) => {
+        hideSpinner(element);
+      });
   }
 
   formatDate(args) {
@@ -268,7 +300,9 @@ class Signings extends Component {
   }
 
   templateSumHours(args) {
-    return <div>{this.sumHours(args.startHour, args.endHour)}</div>;
+    if (args.startHour != null && args.endHour != null) {
+      return <div>{this.sumHours(args.startHour, args.endHour)}</div>;
+    }
   }
 
   sumHours(startHour, endHour) {
@@ -388,13 +422,13 @@ class Signings extends Component {
                         ref={(g) => (this.ddlEmployees = g)}
                         filtering={this.handleFilteringEmployees.bind(this)}
                         allowFiltering={true}
-                        select={this.handleSelectEmployee.bind(this)} 
+                        select={this.handleSelectEmployee.bind(this)}
                       />
                     </FormGroup>
                     <FormGroup className="col-2" style={{ marginLeft: "10px" }}>
                       <Label for="works">Puesto</Label>
                       <DropDownListComponent
-                        id="proffesions"
+                        id="professions"
                         dataSource={null}
                         placeholder={`Selecciona Puesto`}
                         fields={this.fields}
@@ -461,7 +495,7 @@ class Signings extends Component {
                 </Row>
                 <Row>
                   <GridComponent
-                    dataSource={this.baseHours}
+                    dataSource={this.state.dsGrid}
                     locale="es"
                     toolbar={this.toolbarOptions}
                     style={{
@@ -472,6 +506,7 @@ class Signings extends Component {
                     }}
                     ref={(g) => (this.grid = g)}
                     editSettings={this.editSettings}
+                    rowSelected={this.rowSelected}
                   >
                     <ColumnsDirective>
                       <ColumnDirective
@@ -481,6 +516,17 @@ class Signings extends Component {
                         isPrimaryKey={true}
                         isIdentity={true}
                         visible={false}
+                      />
+                      <ColumnDirective
+                        field="hourTypeId"
+                        headerText="Tipo"
+                        width="100"
+                        editType="dropdownedit"
+                        foreignKeyValue="name"
+                        foreignKeyField="id"
+                        validationRules={this.hourTypeIdRules}
+                        dataSource={this.hourTypes}
+                        edit={this.changeHourType}
                       />
                       <ColumnDirective
                         field="startHour"
@@ -495,16 +541,6 @@ class Signings extends Component {
                         validationRules={this.hoursRules}
                       />
                       <ColumnDirective
-                        field="hourTypeId"
-                        headerText="Tipo"
-                        width="100"
-                        editType="dropdownedit"
-                        foreignKeyValue="name"
-                        foreignKeyField="id"
-                        validationRules={this.hourTypeIdRules}
-                        dataSource={this.hourTypes}
-                      />
-                      <ColumnDirective
                         field="total"
                         headerText="Total Horas"
                         width="100"
@@ -516,7 +552,10 @@ class Signings extends Component {
                   </GridComponent>
                 </Row>
                 <Row>
-                  <Col className="col-11" style={{ textAlign: "right", marginLeft: "70px" }}>
+                  <Col
+                    className="col-11"
+                    style={{ textAlign: "right", marginLeft: "70px" }}
+                  >
                     <Button color="primary" onClick={this.handleOnClickSave}>
                       Fichaje Masivo
                     </Button>

@@ -22,7 +22,7 @@ class DetailClient extends Component {
     this.headerText = [
       { text: "Datos Básicos" },
       { text: "Obras" },
-      { text: "Precios por Profesión" },
+      { text: "Precios por Puesto" },
       { text: "Facturas" },
     ];
 

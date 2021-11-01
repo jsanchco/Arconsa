@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SGDE.DataEFCoreSQL;
 
 namespace SGDE.DataEFCoreSQL.Migrations
 {
     [DbContext(typeof(EFContextSQL))]
-    partial class EFContextSQLModelSnapshot : ModelSnapshot
+    [Migration("20211031215613_Update_Field_StartDateSigning_To_Null")]
+    partial class Update_Field_StartDateSigning_To_Null
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -92,16 +94,10 @@ namespace SGDE.DataEFCoreSQL.Migrations
                     b.Property<string>("Observations")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("PriceDaily")
-                        .HasColumnType("decimal(18,2)");
-
                     b.Property<decimal>("PriceHourExtra")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal>("PriceHourFestive")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal>("PriceHourNocturnal")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal>("PriceHourOrdinary")
@@ -369,16 +365,10 @@ namespace SGDE.DataEFCoreSQL.Migrations
                     b.Property<DateTime?>("ModifiedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<decimal>("PriceDailySale")
-                        .HasColumnType("decimal(18,2)");
-
                     b.Property<decimal>("PriceHourSaleExtra")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal>("PriceHourSaleFestive")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal>("PriceHourSaleNocturnal")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal>("PriceHourSaleOrdinary")

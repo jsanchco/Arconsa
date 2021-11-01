@@ -49,6 +49,9 @@
                     totalHoursFestive = listReportResultViewModel
                                                 .Where(x => x.hourTypeId == 3)
                                                 .Select(x => x.hours).Sum(),
+                    totalHoursNocturnal = listReportResultViewModel
+                                                .Where(x => x.hourTypeId == 4)
+                                                .Select(x => x.hours).Sum(),
                     priceTotalHoursOrdinary = (double)listReportResultViewModel
                                                 .Where(x => x.hourTypeId == 1)
                                                 .Select(x => x.priceHour).Sum(),
@@ -67,6 +70,12 @@
                     priceTotalHoursSaleFestive = (double)listReportResultViewModel
                                                 .Where(x => x.hourTypeId == 3)
                                                 .Select(x => x.priceHourSale).Sum(),
+                    priceTotalHoursNocturnal = (double)listReportResultViewModel
+                                                .Where(x => x.hourTypeId == 4)
+                                                .Select(x => x.priceHour).Sum(),
+                    priceTotalHoursSaleNocturnal = (double)listReportResultViewModel
+                                                .Where(x => x.hourTypeId == 4)
+                                                .Select(x => x.priceHourSale).Sum()
                 });
             }
             return result;
@@ -92,6 +101,9 @@
                     totalHoursFestive = listReportResultViewModel
                                                 .Where(x => x.hourTypeId == 3)
                                                 .Select(x => x.hours).Sum(),
+                    totalHoursNocturnal = listReportResultViewModel
+                                                .Where(x => x.hourTypeId == 4)
+                                                .Select(x => x.hours).Sum(),
                     priceTotalHoursOrdinary = (double)listReportResultViewModel
                                                 .Where(x => x.hourTypeId == 1)
                                                 .Select(x => x.priceHour).Sum(),
@@ -110,6 +122,12 @@
                     priceTotalHoursSaleFestive = (double)listReportResultViewModel
                                                 .Where(x => x.hourTypeId == 3)
                                                 .Select(x => x.priceHourSale).Sum(),
+                    priceTotalHoursNocturnal = (double)listReportResultViewModel
+                                                .Where(x => x.hourTypeId == 4)
+                                                .Select(x => x.priceHour).Sum(),
+                    priceTotalHoursSaleNocturnal = (double)listReportResultViewModel
+                                                .Where(x => x.hourTypeId == 4)
+                                                .Select(x => x.priceHourSale).Sum()
                 });
             }
             return result;
@@ -134,6 +152,9 @@
                     totalHoursFestive = listReportResultViewModel
                                                 .Where(x => x.hourTypeId == 3)
                                                 .Select(x => x.hours).Sum(),
+                    totalHoursNocturnal = listReportResultViewModel
+                                                .Where(x => x.hourTypeId == 4)
+                                                .Select(x => x.hours).Sum(),
                     priceTotalHoursOrdinary = (double)listReportResultViewModel
                                                 .Where(x => x.hourTypeId == 1)
                                                 .Select(x => x.priceHour).Sum(),
@@ -152,6 +173,12 @@
                     priceTotalHoursSaleFestive = (double)listReportResultViewModel
                                                 .Where(x => x.hourTypeId == 3)
                                                 .Select(x => x.priceHourSale).Sum(),
+                    priceTotalHoursNocturnal = (double)listReportResultViewModel
+                                                .Where(x => x.hourTypeId == 4)
+                                                .Select(x => x.priceHour).Sum(),
+                    priceTotalHoursSaleNocturnal = (double)listReportResultViewModel
+                                                .Where(x => x.hourTypeId == 4)
+                                                .Select(x => x.priceHourSale).Sum()
                 });
             }
             return result;

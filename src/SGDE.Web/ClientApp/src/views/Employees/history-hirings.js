@@ -262,7 +262,7 @@ class HistoryHirings extends Component {
                   />
                   <ColumnDirective
                     field="professionName"
-                    headerText="Profesión"
+                    headerText="Puesto"
                     width="100"
                   />
                   <ColumnDirective
