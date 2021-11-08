@@ -10,7 +10,7 @@ import {
   Page,
 } from "@syncfusion/ej2-react-grids";
 import { DataManager, WebApiAdaptor, Query } from "@syncfusion/ej2-data";
-import { config, USERSHIRING, PROFESSIONS } from "../../constants";
+import { config, HISTORYHIRINGBYWORKID, PROFESSIONS } from "../../constants";
 import { L10n } from "@syncfusion/ej2-base";
 import data from "../../locales/locale.json";
 import { 
@@ -25,7 +25,7 @@ L10n.load(data);
 class AuthorizeCancelWorkers extends Component {
   usersHiring = new DataManager({
     adaptor: new WebApiAdaptor(),
-    url: `${config.URL_API}/${USERSHIRING}`,
+    url: `${config.URL_API}/${HISTORYHIRINGBYWORKID}`,
     headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }],
   });
 

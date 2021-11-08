@@ -107,6 +107,7 @@
                 .Include(x => x.Profession)
                 .Where(x => x.UserHiring.Work.Id == workId)
                 .OrderBy(x => x.StartHour)
+                .OrderBy(x => x.UserHiring.WorkId)
                 .ToList();
         }
 

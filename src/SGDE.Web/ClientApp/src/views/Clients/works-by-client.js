@@ -7,7 +7,8 @@ import {
   Inject,
   Page,
   ForeignKey,
-  Group
+  Group,
+  Resize
 } from "@syncfusion/ej2-react-grids";
 import { DataManager, WebApiAdaptor, Query } from "@syncfusion/ej2-data";
 import { config, WORKS, CLIENTS } from "../../constants";
@@ -169,6 +170,7 @@ class WorksByClient extends Component {
               ref={g => (this.grid = g)}
               selectionSettings={this.selectionSettings}
               query={this.query}
+              allowResizing={true}
             >
               <ColumnsDirective>
                 <ColumnDirective field="name" headerText="Nombre" width="100" />
@@ -227,7 +229,7 @@ class WorksByClient extends Component {
                 <ColumnDirective field="closeDate" visible={false} />
               </ColumnsDirective>
               <Inject
-                services={[Group, ForeignKey, Page]}
+                services={[Group, ForeignKey, Page, Resize ]}
               />
             </GridComponent>
           </Row>

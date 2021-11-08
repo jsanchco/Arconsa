@@ -29,6 +29,7 @@
             var historyHiringViewModel = new HistoryHiringViewModel
             {
                 userHiringId = dailySignings[0].UserHiring.Id,
+                userId = dailySignings[0].UserHiring.UserId,
                 dtStartDate = (DateTime)dailySignings[0].StartHour,
                 workId = dailySignings[0].UserHiring.WorkId,
                 workName = dailySignings[0].UserHiring.Work.Name,
@@ -48,6 +49,7 @@
                     historyHiringViewModel = new HistoryHiringViewModel
                     {
                         userHiringId = dailySigning.UserHiring.Id,
+                        userId = dailySigning.UserHiring.UserId,
                         dtStartDate = (DateTime)dailySigning.StartHour,
                         workId = dailySigning.UserHiring.WorkId,
                         workName = dailySigning.UserHiring.Work.Name,
@@ -63,7 +65,7 @@
                     historyHiringViewModel.dtEndDate = dailySigning.EndHour;
                 }
             }
-            if (historyHiringViewModel.inWork == true)
+            if (historyHiringViewModel.inWork == true && !historyHiringViewModel.dtEndDate.HasValue)
                 historyHiringViewModel.dtEndDate = null;
 
             listHistoryHiringViewModel.Add(historyHiringViewModel);
@@ -100,14 +102,14 @@
             var historyHiringViewModel = new HistoryHiringViewModel
             {
                 userHiringId = dailySignings[0].UserHiring.Id,
+                userId = dailySignings[0].UserHiring.Id,
                 dtStartDate = (DateTime)dailySignings[0].StartHour,
-                userId = dailySignings[0].UserHiring.UserId,
                 userName = $"{dailySignings[0].UserHiring.User.Name} {dailySignings[0].UserHiring.User.Surname}",
                 clientId = dailySignings[0].UserHiring.Work.Client.Id,
                 clientName = dailySignings[0].UserHiring.Work.Client.Name,
                 professionId = dailySignings[0].UserHiring.Profession.Id,
                 professionName = dailySignings[0].UserHiring.Profession.Name,
-                inWork = dailySignings[0].UserHiring.InWork
+                inWork = !dailySignings[0].UserHiring.Work.CloseDate.HasValue
             };
 
             foreach (var dailySigning in dailySignings)
@@ -126,7 +128,7 @@
                         clientName = dailySigning.UserHiring.Work.Client.Name,
                         professionId = dailySigning.UserHiring.Profession.Id,
                         professionName = dailySigning.UserHiring.Profession.Name,
-                        inWork = dailySigning.UserHiring.InWork
+                        inWork = !dailySigning.UserHiring.Work.CloseDate.HasValue
                     };
                 }
                 else
@@ -134,7 +136,7 @@
                     historyHiringViewModel.dtEndDate = dailySigning.EndHour;
                 }
             }
-            if (historyHiringViewModel.inWork == true)
+            if (historyHiringViewModel.inWork == true && !historyHiringViewModel.dtEndDate.HasValue)
                 historyHiringViewModel.dtEndDate = null;
 
             listHistoryHiringViewModel.Add(historyHiringViewModel);

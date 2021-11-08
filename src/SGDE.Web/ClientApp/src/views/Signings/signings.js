@@ -236,14 +236,17 @@ class Signings extends Component {
       this.grid.dataSource = this.baseHoursDaily;
       this.grid.columns[2].visible = false;
       this.grid.columns[3].visible = false;
-      this.grid.columns[4].visible = false;      
+      this.grid.columns[4].visible = false;  
+      this.grid.refresh();    
     } else {
-      this.grid.dataSource = this.baseHours;
-      this.grid.columns[2].visible = true;
-      this.grid.columns[3].visible = true;
-      this.grid.columns[4].visible = true;
+      if (this.grid.dataSource[0].hourTypeId === 5) {
+        this.grid.dataSource = this.baseHours;
+        this.grid.columns[2].visible = true;
+        this.grid.columns[3].visible = true;
+        this.grid.columns[4].visible = true;
+        this.grid.refresh();
+      }
     }
-    this.grid.refresh();
   }
 
   dialogClose() {
