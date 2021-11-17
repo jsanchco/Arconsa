@@ -26,11 +26,11 @@
                 startHour = dailySigning.StartHour?.ToString("MM/dd/yyyy HH:mm"),
                 endHour = dailySigning.EndHour?.ToString("MM/dd/yyyy HH:mm"),
                 userHiringId = dailySigning.UserHiringId,
-                userHiringName = $"{dailySigning.UserHiring.Work.Name} {dailySigning.UserHiring.StartDate.ToShortDateString()}",
+                userHiringName = $"{dailySigning.UserHiring?.Work.Name} {dailySigning.UserHiring?.StartDate.ToShortDateString()}",
                 hourTypeId = dailySigning.HourTypeId,
                 hourTypeName = dailySigning.HourType?.Name,
                 professionId = dailySigning.ProfessionId,
-                professionName = dailySigning.Profession.Name
+                professionName = dailySigning.Profession?.Name
             };
 
             return dailySigningViewModel;
@@ -49,12 +49,15 @@
 
                     startHour = dailySigning.StartHour?.ToString("MM/dd/yyyy HH:mm"),
                     endHour = dailySigning.EndHour?.ToString("MM/dd/yyyy HH:mm"),
+
+                    //startHour = dailySigning.StartHour?.ToString("MM/dd/yyyy HH:mm"),
+                    //endHour = dailySigning.EndHour?.ToString("MM/dd/yyyy HH:mm"),
                     userHiringId = dailySigning.UserHiringId,
-                    userHiringName = $"{dailySigning.UserHiring.Work.Name} {dailySigning.UserHiring.StartDate.ToShortDateString()}",
+                    userHiringName = $"{dailySigning.UserHiring?.Work.Name} {dailySigning.UserHiring?.StartDate.ToShortDateString()}",
                     hourTypeId = dailySigning.HourTypeId,
                     hourTypeName = dailySigning.HourType?.Name,
                     professionId = dailySigning.ProfessionId,
-                    professionName = dailySigning.Profession.Name
+                    professionName = dailySigning.Profession?.Name
                 };
                 return model;
             })

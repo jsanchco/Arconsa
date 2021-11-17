@@ -192,6 +192,14 @@ class DailySignings extends Component {
     return `${[day, month, date.getFullYear()].join("/")} ${hours}:${minutes}`;
   }
 
+  formatDateWithOutTime(args) {
+    var date = new Date(args);
+    var month = ("0" + (date.getMonth() + 1)).slice(-2);
+    var day = ("0" + date.getDate()).slice(-2);
+    
+    return `${[day, month, date.getFullYear()].join("/")}`;
+  }
+
   actionBegin(args) {
     if (args.requestType === "add" || args.requestType === "beginEdit") {
       this.grid.columns[1].edit.params.query.params = [];
@@ -322,11 +330,13 @@ class DailySignings extends Component {
 
   dateTemplateStartHour(args) {
     let value = args.startHour;
-    value = this.formatDate(value);
-    if (args.hourTypeId === 5 && value.endsWith(" 00:00")) {      
-      value = value.replace(" 00:00", "");
+    if (args.hourTypeId === 5) {      
+      value = this.formatDateWithOutTime(value);
     }
-
+    else {
+      value = this.formatDate(value);
+    }
+    
     return <div>{value}</div>;
   }
 

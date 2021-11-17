@@ -12,6 +12,7 @@ import {
 } from "reactstrap";
 import {
   sendMassiveSigning,
+  viewMassiveSigning,
   getWorkers,
   getWorksByUserId,
   getProfessionsByUserId,
@@ -46,6 +47,7 @@ class Signings extends Component {
   ddlProfessions = null;
   ddlWorks = null;
   grid = null;
+  dsGridResult = null;
 
   hoursRules = {
     // regex: ["^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$", "Hora mal formateada"],
@@ -78,6 +80,7 @@ class Signings extends Component {
       includeSundays: false,
       rowSelected: null,
       dsGrid: null,
+      dsGridResult: null,
       visibleColumns: true,
       isDaily: false,
     };
@@ -109,7 +112,9 @@ class Signings extends Component {
     this.hourTypeIdRules = { required: true };
 
     this.animationSettings = { effect: "None" };
+    this.handleOnClickView = this.handleOnClickView.bind(this);
     this.handleOnClickSave = this.handleOnClickSave.bind(this);
+    this.viewMassiveSigning = this.viewMassiveSigning.bind(this);
     this.sendMassiveSigning = this.sendMassiveSigning.bind(this);
     this.formatDate = this.formatDate.bind(this);
     this.sumHours = this.sumHours.bind(this);
@@ -118,8 +123,11 @@ class Signings extends Component {
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSelectEmployee = this.handleSelectEmployee.bind(this);
     this.rowSelected = this.rowSelected.bind(this);
+    this.actionBegin = this.actionBegin.bind(this);
+    this.formatDateEU = this.formatDateEU.bind(this);
 
     this.changeHourType = { params: { change: this.changeHour.bind(this) } };
+    this.format = { type: "dateTime", format: "dd/MM/yyyy HH:mm" };    
   }
 
   componentDidMount() {
@@ -186,7 +194,7 @@ class Signings extends Component {
       });
   }
 
-  handleOnClickSave() {
+  handleOnClickView() {
     const valueDtpStartDate = this.formatDate(this.dtpStartDate.value);
     const valueDtpEndDate = this.formatDate(this.dtpEndDate.value);
     const valueDdlEmployees = this.ddlEmployees.value;
@@ -211,6 +219,11 @@ class Signings extends Component {
       return;
     }
 
+    // this.setState({ hideConfirmDialog: true });
+    this.viewMassiveSigning();
+  }
+
+  handleOnClickSave() {
     this.setState({ hideConfirmDialog: true });
   }
 
@@ -236,8 +249,8 @@ class Signings extends Component {
       this.grid.dataSource = this.baseHoursDaily;
       this.grid.columns[2].visible = false;
       this.grid.columns[3].visible = false;
-      this.grid.columns[4].visible = false;  
-      this.grid.refresh();    
+      this.grid.columns[4].visible = false;
+      this.grid.refresh();
     } else {
       if (this.grid.dataSource[0].hourTypeId === 5) {
         this.grid.dataSource = this.baseHours;
@@ -253,6 +266,38 @@ class Signings extends Component {
     this.setState({
       hideConfirmDialog: false,
     });
+  }
+
+  viewMassiveSigning() {
+    const element = document.getElementById("target-signings");
+    createSpinner({
+      target: element,
+    });
+    showSpinner(element);
+
+    const valueDtpStartDate = this.formatDate(this.dtpStartDate.value);
+    const valueDtpEndDate = this.formatDate(this.dtpEndDate.value);
+    const valueDdlProfessions = this.ddlProfessions.value;
+    const valueDdlWorks = this.ddlWorks.value;
+
+    viewMassiveSigning({
+      userHiringId: valueDdlWorks,
+      professionId: valueDdlProfessions,
+      startSigning: valueDtpStartDate,
+      endSigning: valueDtpEndDate,
+      data: this.grid.getCurrentViewRecords(),
+      includeSaturdays: this.state.includeSaturdays,
+      includeSundays: this.state.includeSundays,
+    })
+      .then((result) => {
+        //this.setState( { dsGridResult: result } );
+        this.gridResult.dataSource = result;
+        this.gridResult.refresh();
+        hideSpinner(element);
+      })
+      .catch((error) => {
+        hideSpinner(element);
+      });
   }
 
   sendMassiveSigning() {
@@ -272,11 +317,11 @@ class Signings extends Component {
       professionId: valueDdlProfessions,
       startSigning: valueDtpStartDate,
       endSigning: valueDtpEndDate,
-      data: this.grid.getCurrentViewRecords(),
+      data: this.gridResult.getCurrentViewRecords(),
       includeSaturdays: this.state.includeSaturdays,
       includeSundays: this.state.includeSundays,
     })
-      .then(() => {
+      .then((result) => {
         hideSpinner(element);
       })
       .catch((error) => {
@@ -352,6 +397,55 @@ class Signings extends Component {
     return hours;
   }
 
+  dateTemplateTotalHours(args) {
+    let value = args.totalHours;
+    if (args.hourTypeId === 5) {
+      value = "";
+    }
+
+    return <div>{value}</div>;
+  }
+
+  formatDateEU(arg) {
+    if (arg instanceof Date) {
+      let day = arg.getDate();
+      if (day < 10) day = "0" + day;
+  
+      const month = arg.getMonth() + 1;
+      const year = arg.getFullYear();
+  
+      if (month < 10) {
+        return `0${month}/0${day}/${year}`;        
+      } else {
+        return `${month}/${day}/${year}`;
+      }
+    }
+
+    return arg;
+  }
+
+
+  actionBegin(args) {
+    if (args.requestType === "save" && args.data.hourTypeId === 5) {
+      args.data.startHour = new Date(args.data.startHour.getFullYear(), args.data.startHour.getMonth(), args.data.startHour.getDate());
+      args.data.endHour = null;
+      args.data.totalHours = null;
+
+      var t = this.formatDateEU(args.data.startHour);
+
+      this.gridResult.dataSource[args.rowIndex].startHour = this.formatDateEU(args.data.startHour);
+      this.gridResult.dataSource[args.rowIndex].endHour = null;
+    }
+    if (args.requestType === "save" && args.data.hourTypeId !== 5) {
+      const milliseconds = Math.abs(args.data.startHour - args.data.endHour);
+      const hours = milliseconds / 36e5;
+      args.data.totalHours = hours;
+
+      this.gridResult.dataSource[args.rowIndex].startHour = this.formatDateEU(args.data.startHour);
+      this.gridResult.dataSource[args.rowIndex].endHour = this.formatDateEU(args.data.endHour);
+    }
+  }
+  
   render() {
     return (
       <Fragment>
@@ -509,7 +603,6 @@ class Signings extends Component {
                     }}
                     ref={(g) => (this.grid = g)}
                     editSettings={this.editSettings}
-                    rowSelected={this.rowSelected}
                   >
                     <ColumnsDirective>
                       <ColumnDirective
@@ -551,6 +644,78 @@ class Signings extends Component {
                         template={this.templateSumHours}
                       />
                     </ColumnsDirective>
+                    <Inject services={[ForeignKey]} />
+                  </GridComponent>
+                </Row>
+                <Row>
+                  <Col
+                    className="col-11"
+                    style={{ textAlign: "right", marginLeft: "70px" }}
+                  >
+                    <Button color="primary" onClick={this.handleOnClickView}>
+                      Ver
+                    </Button>
+                  </Col>
+                </Row>
+                <Row>
+                  <GridComponent
+                    //dataSource={this.state.dsGridResult}
+                    dataSource={null}
+                    locale="es"
+                    toolbar={this.toolbarOptions}
+                    style={{
+                      marginLeft: 20,
+                      marginRight: 50,
+                      marginTop: 20,
+                      marginBottom: 20,
+                    }}
+                    ref={(gResult) => (this.gridResult = gResult)}
+                    editSettings={this.editSettings}
+                    actionBegin={this.actionBegin}
+                  >
+
+                    <ColumnsDirective>
+                      <ColumnDirective
+                        field="HourTypeId"
+                        headerText="Tipo"
+                        width="100"
+                        editType="dropdownedit"
+                        foreignKeyValue="name"
+                        foreignKeyField="id"
+                        validationRules={this.hourTypeIdRules}
+                        dataSource={this.hourTypes}
+                        // edit={this.changeHourType}
+                      />
+                      <ColumnDirective
+                        field="StartHour"
+                        headerText="Fecha Inicio"
+                        width="100"
+                        validationRules={this.hoursRules}
+                        editType="datetimepickeredit"
+                        type="date"
+                        format={this.format}
+                        textAlign="Center"
+                      />
+                      <ColumnDirective
+                        field="EndHour"
+                        headerText="Fecha Fin"
+                        width="100"
+                        validationRules={this.hoursRules}
+                        editType="datetimepickeredit"
+                        type="date"
+                        format={this.format}
+                        textAlign="Center"
+                      />
+                      <ColumnDirective
+                        field="total"
+                        headerText="Total Horas"
+                        width="100"
+                        allowEditing={false}
+                        textAlign="Center"
+                        template={this.dateTemplateTotalHours}
+                      />
+                    </ColumnsDirective>
+
                     <Inject services={[ForeignKey]} />
                   </GridComponent>
                 </Row>

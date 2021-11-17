@@ -113,12 +113,43 @@
             }
         }
 
-        [HttpPost("massivesigning")]
-        public object MassiveSigning([FromBody]MassiveSigningQueryViewModel massiveSigningQueryViewModel)
+        [HttpPost("viewmassivesigning")]
+        public object ViewMassiveSigning([FromBody] MassiveSigningQueryViewModel massiveSigningQueryViewModel)
         {
             try
             {
-                return _supervisor.MassiveSigning(massiveSigningQueryViewModel);
+                var t = _supervisor.ViewMassiveSigning1(massiveSigningQueryViewModel);
+                return _supervisor.ViewMassiveSigning1(massiveSigningQueryViewModel);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Exception: ");
+                return StatusCode(500, ex);
+            }
+        }
+
+
+        //[HttpPost("viewmassivesigning")]
+        //public object ViewMassiveSigning([FromBody]MassiveSigningQueryViewModel massiveSigningQueryViewModel)
+        //{
+        //    try
+        //    {
+        //        return _supervisor.ViewMassiveSigning(massiveSigningQueryViewModel);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _logger.LogError(ex, "Exception: ");
+        //        return StatusCode(500, ex);
+        //    }
+        //}
+
+        [HttpPost("sendmassivesigning")]
+        public object SendMassiveSigning([FromBody] MassiveSigningQueryViewModel massiveSigningQueryViewModel)
+        {
+            try
+            {
+                return Ok();
+                //return _supervisor.MassiveSigning(massiveSigningQueryViewModel);
             }
             catch (Exception ex)
             {

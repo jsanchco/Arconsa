@@ -7,7 +7,7 @@
 
     #endregion
 
-    public class DailySigningViewModel : BaseEntityViewModel
+    public class DailySigningViewModel  : BaseEntityViewModel
     {
         public double? totalHours
         {

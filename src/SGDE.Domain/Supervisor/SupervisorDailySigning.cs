@@ -171,6 +171,168 @@
             return result;
         }
 
+        public (List<DailySigningViewModel> dailiesSigningsViewModel, bool fails) ViewMassiveSigning(MassiveSigningQueryViewModel massiveSigningQueryViewModel)
+        {
+            //if (!ValidateDataMassiveSigning(massiveSigningQueryViewModel.data))
+            //    throw new Exception("Algunos periodos no están bien configurados");
+
+            var result = new List<DailySigning>();
+            var fail = false;
+
+            var actualDay = DateTime.ParseExact($"{massiveSigningQueryViewModel.startSigning}", "dd/MM/yyyy", null);
+            var endDay = DateTime.ParseExact($"{massiveSigningQueryViewModel.endSigning}", "dd/MM/yyyy", null);
+            while (actualDay <= endDay)
+            {
+                if ((actualDay.DayOfWeek == DayOfWeek.Saturday) && (!massiveSigningQueryViewModel.includeSaturdays))
+                {
+                    actualDay = actualDay.AddDays(1);
+                    continue;
+                }
+
+                if ((actualDay.DayOfWeek == DayOfWeek.Sunday) && (!massiveSigningQueryViewModel.includeSundays))
+                {
+                    actualDay = actualDay.AddDays(1);
+                    continue;
+                }
+
+                foreach (var item in massiveSigningQueryViewModel.data)
+                {
+                    DailySigning dailySigning;
+                    if (item.hourTypeId == 5)
+                    {
+                        dailySigning = new DailySigning
+                        {
+                            AddedDate = DateTime.Now,
+                            ModifiedDate = null,
+                            IPAddress = null,
+
+                            StartHour = new DateTime(actualDay.Year, actualDay.Month, actualDay.Day),
+                            EndHour = null,
+                            UserHiringId = massiveSigningQueryViewModel.userHiringId,
+                            ProfessionId = massiveSigningQueryViewModel.professionId,
+                            HourTypeId = item.hourTypeId
+                        };
+                    }
+                    else
+                    {
+                        var hourStart = Convert.ToInt32(item.startHour.Substring(0, 2));
+                        var minuteStart = Convert.ToInt32(item.startHour.Substring(3, 2));
+                        var hourEnd = Convert.ToInt32(item.endHour.Substring(0, 2));
+                        var minuteEnd = Convert.ToInt32(item.endHour.Substring(3, 2));
+
+                        dailySigning = new DailySigning
+                        {
+                            AddedDate = DateTime.Now,
+                            ModifiedDate = null,
+                            IPAddress = null,
+
+                            StartHour = new DateTime(actualDay.Year, actualDay.Month, actualDay.Day, hourStart, minuteStart, 0),
+                            EndHour = hourStart <= hourEnd ?
+                                new DateTime(actualDay.Year, actualDay.Month, actualDay.Day, hourEnd, minuteEnd, 0) :
+                                new DateTime(actualDay.Year, actualDay.Month, actualDay.Day, hourEnd, minuteEnd, 0).AddDays(1),
+
+                            UserHiringId = massiveSigningQueryViewModel.userHiringId,
+                            ProfessionId = massiveSigningQueryViewModel.professionId,
+                            HourTypeId = item.hourTypeId
+                        };
+                    }
+
+                    if (_dailySigningRepository.ValidateDalilySigning(dailySigning))
+                    {
+                        result.Add(dailySigning);
+                    }
+                    else
+                    {
+                        fail = true;
+                    }
+                }
+                actualDay = actualDay.AddDays(1);
+            }
+
+            return (DailySigningConverter.ConvertList(result), fail);
+        }
+
+        public (List<DailySigning> dailiesSignings, bool fails) ViewMassiveSigning1(MassiveSigningQueryViewModel massiveSigningQueryViewModel)
+        {
+            //if (!ValidateDataMassiveSigning(massiveSigningQueryViewModel.data))
+            //    throw new Exception("Algunos periodos no están bien configurados");
+
+            var result = new List<DailySigning>();
+            var fail = false;
+
+            var actualDay = DateTime.ParseExact($"{massiveSigningQueryViewModel.startSigning}", "dd/MM/yyyy", null);
+            var endDay = DateTime.ParseExact($"{massiveSigningQueryViewModel.endSigning}", "dd/MM/yyyy", null);
+            while (actualDay <= endDay)
+            {
+                if ((actualDay.DayOfWeek == DayOfWeek.Saturday) && (!massiveSigningQueryViewModel.includeSaturdays))
+                {
+                    actualDay = actualDay.AddDays(1);
+                    continue;
+                }
+
+                if ((actualDay.DayOfWeek == DayOfWeek.Sunday) && (!massiveSigningQueryViewModel.includeSundays))
+                {
+                    actualDay = actualDay.AddDays(1);
+                    continue;
+                }
+
+                foreach (var item in massiveSigningQueryViewModel.data)
+                {
+                    DailySigning dailySigning;
+                    if (item.hourTypeId == 5)
+                    {
+                        dailySigning = new DailySigning
+                        {
+                            AddedDate = DateTime.Now,
+                            ModifiedDate = null,
+                            IPAddress = null,
+
+                            StartHour = new DateTime(actualDay.Year, actualDay.Month, actualDay.Day),
+                            EndHour = null,
+                            UserHiringId = massiveSigningQueryViewModel.userHiringId,
+                            ProfessionId = massiveSigningQueryViewModel.professionId,
+                            HourTypeId = item.hourTypeId
+                        };
+                    }
+                    else
+                    {
+                        var hourStart = Convert.ToInt32(item.startHour.Substring(0, 2));
+                        var minuteStart = Convert.ToInt32(item.startHour.Substring(3, 2));
+                        var hourEnd = Convert.ToInt32(item.endHour.Substring(0, 2));
+                        var minuteEnd = Convert.ToInt32(item.endHour.Substring(3, 2));
+
+                        dailySigning = new DailySigning
+                        {
+                            AddedDate = DateTime.Now,
+                            ModifiedDate = null,
+                            IPAddress = null,
+
+                            StartHour = new DateTime(actualDay.Year, actualDay.Month, actualDay.Day, hourStart, minuteStart, 0),
+                            EndHour = hourStart <= hourEnd ?
+                                new DateTime(actualDay.Year, actualDay.Month, actualDay.Day, hourEnd, minuteEnd, 0) :
+                                new DateTime(actualDay.Year, actualDay.Month, actualDay.Day, hourEnd, minuteEnd, 0).AddDays(1),
+
+                            UserHiringId = massiveSigningQueryViewModel.userHiringId,
+                            ProfessionId = massiveSigningQueryViewModel.professionId,
+                            HourTypeId = item.hourTypeId
+                        };
+                    }
+
+                    if (_dailySigningRepository.ValidateDalilySigning(dailySigning))
+                    {
+                        result.Add(dailySigning);
+                    }
+                    else
+                    {
+                        fail = true;
+                    }
+                }
+                actualDay = actualDay.AddDays(1);
+            }
+
+            return (result, fail);
+        }
+
         public bool ValidateDataMassiveSigning(List<PeriodByHoursViewModel> data)
         {
             foreach (var item in data)

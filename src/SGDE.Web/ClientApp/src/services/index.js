@@ -15,7 +15,8 @@ import {
   SETTINGS,
   RESTOREPASSWORD,
   USERSHIRING,
-  MASSIVESIGNING,
+  VIEWMASSIVESIGNING,
+  SENDMASSIVESIGNING,
   REMOVEALLDAILYSIGNING,
   PRINTINVOICE,
   BILLPAYMENT,
@@ -677,7 +678,7 @@ export const getProfessionsByUserId = (userId) => {
 
 export const sendMassiveSigning = (data) => {
   return new Promise((resolve, reject) => {
-    const url = `${config.URL_API}/${MASSIVESIGNING}`;
+    const url = `${config.URL_API}/${SENDMASSIVESIGNING}`;
     fetch(url, {
       headers: {
         Accept: "text/plain",
@@ -718,6 +719,44 @@ export const sendMassiveSigning = (data) => {
               })
             );
             resolve(result);
+          }
+        }
+      })
+      .catch((error) => {
+        console.log("error ->", error);
+        reject();
+      });
+  });
+};
+
+export const viewMassiveSigning = (data) => {
+  return new Promise((resolve, reject) => {
+    const url = `${config.URL_API}/${VIEWMASSIVESIGNING}`;
+    fetch(url, {
+      headers: {
+        Accept: "text/plain",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`,
+      },
+      method: "POST",
+      body: JSON.stringify(data),
+    })
+      .then((data) => data.json())
+      .then((result) => {
+        if (result.Message) {
+          store.dispatch(
+            ACTION_APPLICATION.showMessage({
+              statusText: result.Message,
+              responseText: result.Message,
+              type: "danger",
+            })
+          );
+          reject();
+        } else {
+          if (result.Item2 === false) {
+            resolve(result.Item1);
+          } else {
+            resolve(result.Item2);
           }
         }
       })
