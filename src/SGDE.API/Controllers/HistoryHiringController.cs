@@ -48,7 +48,7 @@
         }
 
 
-        [HttpGet("getbyworkid")]
+        [HttpGet]
         public object GetByWorkId()
         {
             try
@@ -66,6 +66,25 @@
             {
                 _logger.LogError(ex, "Exception: ");
                 return StatusCode(500, ex);
+            }
+        }
+
+        [HttpPut]
+        public object Put([FromBody] HistoryHiringViewModel historyHiringViewModel)
+        {
+            try
+            {
+                if (_supervisor.UpdateHistoryInWork(historyHiringViewModel))
+                {
+                    return _supervisor.GetUserHiringById((int)historyHiringViewModel.userHiringId);
+                }
+
+                return null;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Exception: ");
+                return StatusCode(500, ex.Message);
             }
         }
 

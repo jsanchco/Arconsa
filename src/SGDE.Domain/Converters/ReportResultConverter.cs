@@ -46,7 +46,7 @@
                     hourTypeName = dailySigning.HourType?.Name,
                     workName = dailySigning.UserHiring.Work.Name,
                     clientName = dailySigning.UserHiring.Work.Client.Name,
-                    hours = ((DateTime)dailySigning.EndHour - (DateTime)dailySigning.StartHour).TotalHours,
+                    hours = dailySigning.HourTypeId != 5 ? ((DateTime)dailySigning.EndHour - (DateTime)dailySigning.StartHour).TotalHours : 0,
                     dateHour = dailySigning.StartHour?.ToString("dd/MM/yyyy"),
 
                     priceHour = dailySigning.HourTypeId != 5 ? 

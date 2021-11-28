@@ -120,7 +120,6 @@
             {
                 var queryString = Request.Query;
                 var userId = Convert.ToInt32(queryString["userId"]);
-                //userId = 4;
 
                 var professions = _supervisor.GetProfessionsByUserId(userId);
 

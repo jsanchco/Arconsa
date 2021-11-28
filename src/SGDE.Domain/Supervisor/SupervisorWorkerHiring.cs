@@ -47,7 +47,7 @@
                     id = worker.Id,
                     name = $"{worker.Name} {worker.Surname}",
                     dni = worker.Dni,
-                    //professionName = worker.Profession?.Name,
+                    //professionName = worker.UserProfessions.FirstOrDefault()?.Profession.Name,
                     workId = worker.WorkId,
                     workName = worker.Work?.Name,
                     state = state,
@@ -61,21 +61,24 @@
                     if (userHiring?.ProfessionId != null)
                     {
                         workerHiringViewModel.professionId = (int)userHiring.ProfessionId;
+                        workerHiringViewModel.professionName = userHiring.Profession.Name;
                     }
                     else
                     {
-                        //if (worker.ProfessionId != null)
-                        //{
-                        //    workerHiringViewModel.professionId = (int)worker.ProfessionId;
-                        //}                        
+                        if (worker.UserProfessions != null)
+                        {
+                            workerHiringViewModel.professionId = worker.UserProfessions.FirstOrDefault().ProfessionId;
+                            workerHiringViewModel.professionName = worker.UserProfessions.FirstOrDefault().Profession.Name;
+                        }
                     }                   
                 }
                 else
                 {
-                    //if (worker.ProfessionId != null)
-                    //{
-                    //    workerHiringViewModel.professionId = (int)worker.ProfessionId;
-                    //}
+                    if (worker.UserProfessions != null)
+                    {
+                        workerHiringViewModel.professionId = worker.UserProfessions.FirstOrDefault().ProfessionId;
+                        workerHiringViewModel.professionName = worker.UserProfessions.FirstOrDefault().Profession.Name;
+                    }
                 }
 
                 listWorkerHiringViewModel.Add(workerHiringViewModel);

@@ -106,6 +106,11 @@
 
         public List<ProfessionViewModel> GetProfessionsByUserId(int userId)
         {
+            if (userId == 0)
+            {
+                return ProfessionConverter.ConvertList(_professionRepository.GetAll());
+            }
+
             return _userProfessionRepository.GetAll(userId)
                 .Select(x => new ProfessionViewModel
                 {

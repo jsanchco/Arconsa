@@ -13,18 +13,15 @@
         {
             get
             {
-                if (startHour == null || endHour == null)
+                if (!startHour.HasValue || !endHour.HasValue)
                     return null;
 
-                var dtStartHour = DateTime.ParseExact(startHour, "MM/dd/yyyy HH:mm", null);
-                var dtEndHour = DateTime.ParseExact(endHour, "MM/dd/yyyy HH:mm", null);
-
-                return ((DateTime)dtEndHour - dtStartHour).TotalHours;
+                return (endHour.Value - startHour.Value).TotalHours;
             }
         }
 
-        public string startHour { get; set; }
-        public string endHour { get; set; }
+        public DateTime? startHour { get; set; }
+        public DateTime? endHour { get; set; }
         public int userHiringId { get; set; }
         public string userHiringName { get; set; }
         public int? hourTypeId { get; set; }

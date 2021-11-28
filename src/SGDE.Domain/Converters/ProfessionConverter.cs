@@ -24,7 +24,8 @@
                 iPAddress = profession.IPAddress,
 
                 name = profession.Name,
-                description = profession.Description
+                description = profession.Description,
+                users = profession.UserProfessions.Select(x => x.UserId).ToList()
             };
 
             return professionViewModel;
@@ -42,7 +43,8 @@
                         iPAddress = profession.IPAddress,
 
                         name = profession.Name,
-                        description = profession.Description
+                        description = profession.Description,
+                        users = profession.UserProfessions.Select(x => x.UserId).ToList()
                     };
                     return model;
                 })

@@ -85,6 +85,7 @@
         public List<Profession> GetAll()
         {
             return _context.Profession
+                .Include(x => x.UserProfessions)
                 .ToList();
         }
 

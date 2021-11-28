@@ -23,8 +23,8 @@
                 modifiedDate = dailySigning.ModifiedDate,
                 iPAddress = dailySigning.IPAddress,
 
-                startHour = dailySigning.StartHour?.ToString("MM/dd/yyyy HH:mm"),
-                endHour = dailySigning.EndHour?.ToString("MM/dd/yyyy HH:mm"),
+                startHour = dailySigning.StartHour,
+                endHour = dailySigning.EndHour,
                 userHiringId = dailySigning.UserHiringId,
                 userHiringName = $"{dailySigning.UserHiring?.Work.Name} {dailySigning.UserHiring?.StartDate.ToShortDateString()}",
                 hourTypeId = dailySigning.HourTypeId,
@@ -47,11 +47,9 @@
                     modifiedDate = dailySigning.ModifiedDate,
                     iPAddress = dailySigning.IPAddress,
 
-                    startHour = dailySigning.StartHour?.ToString("MM/dd/yyyy HH:mm"),
-                    endHour = dailySigning.EndHour?.ToString("MM/dd/yyyy HH:mm"),
+                    startHour = dailySigning.StartHour,
+                    endHour = dailySigning.EndHour,
 
-                    //startHour = dailySigning.StartHour?.ToString("MM/dd/yyyy HH:mm"),
-                    //endHour = dailySigning.EndHour?.ToString("MM/dd/yyyy HH:mm"),
                     userHiringId = dailySigning.UserHiringId,
                     userHiringName = $"{dailySigning.UserHiring?.Work.Name} {dailySigning.UserHiring?.StartDate.ToShortDateString()}",
                     hourTypeId = dailySigning.HourTypeId,

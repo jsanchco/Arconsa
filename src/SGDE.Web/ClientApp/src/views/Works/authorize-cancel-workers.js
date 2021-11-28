@@ -10,7 +10,7 @@ import {
   Page,
 } from "@syncfusion/ej2-react-grids";
 import { DataManager, WebApiAdaptor, Query } from "@syncfusion/ej2-data";
-import { config, HISTORYHIRINGBYWORKID, PROFESSIONS } from "../../constants";
+import { config, HISTORYHIRINGBYWORKID, PROFESSIONSBYUSER } from "../../constants";
 import { L10n } from "@syncfusion/ej2-base";
 import data from "../../locales/locale.json";
 import { 
@@ -31,7 +31,7 @@ class AuthorizeCancelWorkers extends Component {
 
   professions = new DataManager({
     adaptor: new WebApiAdaptor(),
-    url: `${config.URL_API}/${PROFESSIONS}`,
+    url: `${config.URL_API}/${PROFESSIONSBYUSER}`,
     headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }],
   });
   grid = null;
@@ -72,7 +72,8 @@ class AuthorizeCancelWorkers extends Component {
     this.template = this.gridTemplate;
     this.format = { type: "dateTime", format: "dd/MM/yyyy" };
 
-    this.query = new Query().addParams("workId", props.workId);
+    this.query = new Query()
+      .addParams("workId", props.workId);     
   }
 
   componentDidMount() {
@@ -196,6 +197,11 @@ class AuthorizeCancelWorkers extends Component {
   }
 
   actionBegin(args) {
+    if (args.requestType === "beginEdit") {
+      this.grid.columnModel[2].edit.params.query.params = [];
+      this.grid.columnModel[2].edit.params.query.addParams("userId", args.rowData.userId);
+    }
+
     if (args.requestType === "save") {
       let date = this.formatDate(args.data.startDate);
       args.data.startDate = date;

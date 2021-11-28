@@ -13,7 +13,7 @@ import {
 } from "@syncfusion/ej2-react-grids";
 import { DataManager, WebApiAdaptor, Query } from "@syncfusion/ej2-data";
 import { DialogComponent } from "@syncfusion/ej2-react-popups";
-import { config, WORKERSHIRING, PROFESSIONS } from "../../constants";
+import { config, WORKERSHIRING, PROFESSIONSBYUSERID } from "../../constants";
 import { L10n } from "@syncfusion/ej2-base";
 import data from "../../locales/locale.json";
 import { TOKEN_KEY, updateWorkersInWork } from "../../services";
@@ -31,7 +31,7 @@ class ModalWorkers extends Component {
 
   professions = new DataManager({
     adaptor: new WebApiAdaptor(),
-    url: `${config.URL_API}/${PROFESSIONS}`,
+    url: `${config.URL_API}/${PROFESSIONSBYUSERID}`,
     headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }]
   });
 
@@ -39,13 +39,15 @@ class ModalWorkers extends Component {
   selectedRowIndex = [];
   update = false;
   workSelected = null;
+  userSelected = null;
 
   constructor(props) {
     super(props);
 
     this.state = {
       workers: null,
-      hideConfirmDialog: false
+      hideConfirmDialog: false,
+      rowSelected: null
     };
 
     this._handleOnClickSave = this._handleOnClickSave.bind(this);
@@ -54,7 +56,7 @@ class ModalWorkers extends Component {
     this.onDataBound = this.onDataBound.bind(this);
     this.onRowDataBound = this.onRowDataBound.bind(this);
     this.rowSelected = this.rowSelected.bind(this);
-    this.onClickWorkersInWork = this.onClickWorkersInWork.bind(this);
+    this.onClickWorkersInWork = this.onClickWorkersInWork.bind(this);    
 
     this.selectionSettings = {
       checkboxMode: "ResetOnRowClick",
@@ -63,10 +65,21 @@ class ModalWorkers extends Component {
       mode: "Row"
     };
     this.pageSettings = { pageCount: 10, pageSize: 10 };
-    this.toolbarOptions = ["Search"];
-    // this.editSettings = {
-    //   allowEditing: true
-    // };
+    this.toolbarOptions = [
+      "Edit",
+      "Update",
+      "Cancel",
+      "Search"
+    ];
+    this.editSettings = {
+      allowEditing: true
+    };
+
+    this.queryProfessions = {
+      params: {
+        query: new Query().addParams("userId", null),
+      },
+    };
 
     this.confirmButton = [
       {
@@ -159,7 +172,14 @@ class ModalWorkers extends Component {
   }
 
   rowSelected() {
-    this.selectedRowIndex = this.grid.getSelectedRowIndexes();
+    const selectedRecords = this.grid.getSelectedRecords();
+    this.setState({ rowSelected: selectedRecords[0] });
+    
+    this.queryProfessions = {
+      params: {
+        query: new Query().addParams("userId", 3),
+      },
+    };
   }
 
   onClickWorkersInWork() {
@@ -286,6 +306,7 @@ class ModalWorkers extends Component {
                     foreignKeyField="id"
                     validationRules={this.professionIdRules}
                     dataSource={this.professions}
+                    edit={this.queryProfessions}
                   /> */}
                   <ColumnDirective
                     field="workName"

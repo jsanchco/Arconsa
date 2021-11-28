@@ -16,7 +16,7 @@ import {
 } from "@syncfusion/ej2-react-grids";
 // import { Tooltip } from "@syncfusion/ej2-popups";
 import { DataManager, WebApiAdaptor, Query } from "@syncfusion/ej2-data";
-import { config, USERS, PROFESSIONS, ROLES } from "../../constants";
+import { config, USERS, ROLES } from "../../constants";
 import { L10n } from "@syncfusion/ej2-base";
 import data from "../../locales/locale.json";
 import { connect } from "react-redux";
@@ -31,12 +31,6 @@ class Employees extends Component {
     url: `${config.URL_API}/${USERS}`,
     headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }],
   });
-
-  // professions = new DataManager({
-  //   adaptor: new WebApiAdaptor(),
-  //   url: `${config.URL_API}/${PROFESSIONS}`,
-  //   headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }],
-  // });
 
   roles = new DataManager({
     adaptor: new WebApiAdaptor(),

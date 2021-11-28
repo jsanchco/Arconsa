@@ -124,7 +124,7 @@ class Signings extends Component {
     this.handleSelectEmployee = this.handleSelectEmployee.bind(this);
     this.rowSelected = this.rowSelected.bind(this);
     this.actionBegin = this.actionBegin.bind(this);
-    this.formatDateEU = this.formatDateEU.bind(this);
+//    this.formatDateEU = this.formatDateEU.bind(this);
 
     this.changeHourType = { params: { change: this.changeHour.bind(this) } };
     this.format = { type: "dateTime", format: "dd/MM/yyyy HH:mm" };    
@@ -406,23 +406,23 @@ class Signings extends Component {
     return <div>{value}</div>;
   }
 
-  formatDateEU(arg) {
-    if (arg instanceof Date) {
-      let day = arg.getDate();
-      if (day < 10) day = "0" + day;
+  // formatDateEU(arg) {
+  //   if (arg instanceof Date) {
+  //     let day = arg.getDate();
+  //     if (day < 10) day = "0" + day;
   
-      const month = arg.getMonth() + 1;
-      const year = arg.getFullYear();
+  //     const month = arg.getMonth() + 1;
+  //     const year = arg.getFullYear();
   
-      if (month < 10) {
-        return `0${month}/0${day}/${year}`;        
-      } else {
-        return `${month}/${day}/${year}`;
-      }
-    }
+  //     if (month < 10) {
+  //       return `0${month}/0${day}/${year}`;        
+  //     } else {
+  //       return `${month}/${day}/${year}`;
+  //     }
+  //   }
 
-    return arg;
-  }
+  //   return arg;
+  // }
 
 
   actionBegin(args) {
@@ -431,18 +431,16 @@ class Signings extends Component {
       args.data.endHour = null;
       args.data.totalHours = null;
 
-      var t = this.formatDateEU(args.data.startHour);
-
-      this.gridResult.dataSource[args.rowIndex].startHour = this.formatDateEU(args.data.startHour);
-      this.gridResult.dataSource[args.rowIndex].endHour = null;
+      // this.gridResult.dataSource[args.rowIndex].startHour = args.data.startHour;
+      // this.gridResult.dataSource[args.rowIndex].endHour = null;
     }
     if (args.requestType === "save" && args.data.hourTypeId !== 5) {
       const milliseconds = Math.abs(args.data.startHour - args.data.endHour);
       const hours = milliseconds / 36e5;
       args.data.totalHours = hours;
 
-      this.gridResult.dataSource[args.rowIndex].startHour = this.formatDateEU(args.data.startHour);
-      this.gridResult.dataSource[args.rowIndex].endHour = this.formatDateEU(args.data.endHour);
+      // this.gridResult.dataSource[args.index].startHour = args.data.startHour;
+      // this.gridResult.dataSource[args.index].endHour = args.data.endHour;
     }
   }
   
@@ -676,7 +674,7 @@ class Signings extends Component {
 
                     <ColumnsDirective>
                       <ColumnDirective
-                        field="HourTypeId"
+                        field="hourTypeId"
                         headerText="Tipo"
                         width="100"
                         editType="dropdownedit"
@@ -687,7 +685,7 @@ class Signings extends Component {
                         // edit={this.changeHourType}
                       />
                       <ColumnDirective
-                        field="StartHour"
+                        field="startHour"
                         headerText="Fecha Inicio"
                         width="100"
                         validationRules={this.hoursRules}
@@ -697,7 +695,7 @@ class Signings extends Component {
                         textAlign="Center"
                       />
                       <ColumnDirective
-                        field="EndHour"
+                        field="endHour"
                         headerText="Fecha Fin"
                         width="100"
                         validationRules={this.hoursRules}

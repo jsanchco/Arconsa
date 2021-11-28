@@ -39,11 +39,8 @@
                 ModifiedDate = null,
                 IPAddress = newDailySigningViewModel.iPAddress,
 
-                StartHour = DateTime.ParseExact(newDailySigningViewModel.startHour, "dd/MM/yyyy HH:mm", null),
-
-                EndHour = string.IsNullOrEmpty(newDailySigningViewModel.endHour)
-                ? null :
-                (DateTime?)DateTime.ParseExact(newDailySigningViewModel.endHour, "dd/MM/yyyy HH:mm", null),
+                StartHour = newDailySigningViewModel.startHour,
+                EndHour = newDailySigningViewModel.endHour,
 
                 UserHiringId = newDailySigningViewModel.userHiringId,
                 ProfessionId = newDailySigningViewModel.professionId,
@@ -70,11 +67,8 @@
             dailySigning.ModifiedDate = DateTime.Now;
             dailySigning.IPAddress = dailySigningViewModel.iPAddress;
 
-            dailySigning.StartHour = DateTime.ParseExact(dailySigningViewModel.startHour, "dd/MM/yyyy HH:mm", null);
-
-            dailySigning.EndHour = string.IsNullOrEmpty(dailySigningViewModel.endHour)
-                ? null
-                : (DateTime?)DateTime.ParseExact(dailySigningViewModel.endHour, "dd/MM/yyyy HH:mm", null);
+            dailySigning.StartHour = dailySigningViewModel.startHour;
+            dailySigning.EndHour = dailySigningViewModel.endHour;
 
             dailySigning.UserHiringId = dailySigningViewModel.userHiringId;
             dailySigning.ProfessionId = dailySigningViewModel.professionId;
@@ -93,79 +87,65 @@
 
         public bool MassiveSigning(MassiveSigningQueryViewModel massiveSigningQueryViewModel)
         {
-            //if (!ValidateDataMassiveSigning(massiveSigningQueryViewModel.data))
-            //    throw new Exception("Algunos periodos no están bien configurados");
+            foreach (var transform in massiveSigningQueryViewModel.data)
+            {
+                transform.startHour = transform.startHour?.ToLocalTime();
+                transform.endHour = transform.endHour?.ToLocalTime();
+            }
+
+            massiveSigningQueryViewModel.data = massiveSigningQueryViewModel.data.OrderBy(x => x.startHour).ToList();
+            if (!ValidateDataMassiveSigning(massiveSigningQueryViewModel.data))
+                throw new Exception("Algunos periodos no están bien configurados");
 
             var result = true;
-
-            var actualDay = DateTime.ParseExact($"{massiveSigningQueryViewModel.startSigning}", "dd/MM/yyyy", null);
-            var endDay = DateTime.ParseExact($"{massiveSigningQueryViewModel.endSigning}", "dd/MM/yyyy", null);
-            while (actualDay <= endDay)
+            foreach (var item in massiveSigningQueryViewModel.data)
             {
-                if ((actualDay.DayOfWeek == DayOfWeek.Saturday) && (!massiveSigningQueryViewModel.includeSaturdays))
+                DailySigning dailySigning;
+                if (item.hourTypeId == 5)
                 {
-                    actualDay = actualDay.AddDays(1);
-                    continue;
+                    dailySigning = new DailySigning
+                    {
+                        AddedDate = DateTime.Now,
+                        ModifiedDate = null,
+                        IPAddress = null,
+
+                        StartHour = item.startHour,
+                        EndHour = item.endHour,
+                        UserHiringId = massiveSigningQueryViewModel.userHiringId,
+                        ProfessionId = massiveSigningQueryViewModel.professionId,
+                        HourTypeId = item.hourTypeId
+                    };
+                }
+                else
+                {
+                    var hourStart = item.startHour.Value.Hour;
+                    var minuteStart = item.startHour.Value.Minute;
+                    var hourEnd = item.endHour.Value.Hour;
+                    var minuteEnd = item.endHour.Value.Minute;
+
+                    dailySigning = new DailySigning
+                    {
+                        AddedDate = DateTime.Now,
+                        ModifiedDate = null,
+                        IPAddress = null,
+
+                        StartHour = new DateTime(item.startHour.Value.Year, item.startHour.Value.Month, item.startHour.Value.Day, hourStart, minuteStart, 0),
+                        EndHour = new DateTime(item.endHour.Value.Year, item.endHour.Value.Month, item.endHour.Value.Day, hourEnd, minuteEnd, 0),
+
+                        UserHiringId = massiveSigningQueryViewModel.userHiringId,
+                        ProfessionId = massiveSigningQueryViewModel.professionId,
+                        HourTypeId = item.hourTypeId
+                    };
                 }
 
-                if ((actualDay.DayOfWeek == DayOfWeek.Sunday) && (!massiveSigningQueryViewModel.includeSundays))
+                if (_dailySigningRepository.ValidateDalilySigning(dailySigning))
                 {
-                    actualDay = actualDay.AddDays(1);
-                    continue;
+                    _dailySigningRepository.Add(dailySigning);
                 }
-
-                foreach (var item in massiveSigningQueryViewModel.data)
+                else
                 {
-                    DailySigning dailySigning;
-                    if (item.hourTypeId == 5)
-                    {
-                        dailySigning = new DailySigning
-                        {
-                            AddedDate = DateTime.Now,
-                            ModifiedDate = null,
-                            IPAddress = null,
-
-                            StartHour = new DateTime(actualDay.Year, actualDay.Month, actualDay.Day),
-                            EndHour = new DateTime(actualDay.Year, actualDay.Month, actualDay.Day),
-                            UserHiringId = massiveSigningQueryViewModel.userHiringId,
-                            ProfessionId = massiveSigningQueryViewModel.professionId,
-                            HourTypeId = item.hourTypeId
-                        };
-                    }
-                    else
-                    {
-                        var hourStart = Convert.ToInt32(item.startHour.Substring(0, 2));
-                        var minuteStart = Convert.ToInt32(item.startHour.Substring(3, 2));
-                        var hourEnd = Convert.ToInt32(item.endHour.Substring(0, 2));
-                        var minuteEnd = Convert.ToInt32(item.endHour.Substring(3, 2));
-
-                        dailySigning = new DailySigning
-                        {
-                            AddedDate = DateTime.Now,
-                            ModifiedDate = null,
-                            IPAddress = null,
-
-                            StartHour = new DateTime(actualDay.Year, actualDay.Month, actualDay.Day, hourStart, minuteStart, 0),
-                            EndHour = hourStart <= hourEnd ?
-                                new DateTime(actualDay.Year, actualDay.Month, actualDay.Day, hourEnd, minuteEnd, 0) :
-                                new DateTime(actualDay.Year, actualDay.Month, actualDay.Day, hourEnd, minuteEnd, 0).AddDays(1),
-
-                            UserHiringId = massiveSigningQueryViewModel.userHiringId,
-                            ProfessionId = massiveSigningQueryViewModel.professionId,
-                            HourTypeId = item.hourTypeId
-                        };
-                    }
-
-                    if (_dailySigningRepository.ValidateDalilySigning(dailySigning))
-                    {
-                        _dailySigningRepository.Add(dailySigning);
-                    }
-                    else
-                    {
-                        result = false;
-                    }
+                    result = false;
                 }
-                actualDay = actualDay.AddDays(1);
             }
 
             return result;
@@ -173,9 +153,6 @@
 
         public (List<DailySigningViewModel> dailiesSigningsViewModel, bool fails) ViewMassiveSigning(MassiveSigningQueryViewModel massiveSigningQueryViewModel)
         {
-            //if (!ValidateDataMassiveSigning(massiveSigningQueryViewModel.data))
-            //    throw new Exception("Algunos periodos no están bien configurados");
-
             var result = new List<DailySigning>();
             var fail = false;
 
@@ -215,10 +192,10 @@
                     }
                     else
                     {
-                        var hourStart = Convert.ToInt32(item.startHour.Substring(0, 2));
-                        var minuteStart = Convert.ToInt32(item.startHour.Substring(3, 2));
-                        var hourEnd = Convert.ToInt32(item.endHour.Substring(0, 2));
-                        var minuteEnd = Convert.ToInt32(item.endHour.Substring(3, 2));
+                        var hourStart = item.startHour.Value.Hour;
+                        var minuteStart = item.startHour.Value.Minute;
+                        var hourEnd = item.endHour.Value.Hour;
+                        var minuteEnd = item.endHour.Value.Minute;
 
                         dailySigning = new DailySigning
                         {
@@ -252,104 +229,24 @@
             return (DailySigningConverter.ConvertList(result), fail);
         }
 
-        public (List<DailySigning> dailiesSignings, bool fails) ViewMassiveSigning1(MassiveSigningQueryViewModel massiveSigningQueryViewModel)
-        {
-            //if (!ValidateDataMassiveSigning(massiveSigningQueryViewModel.data))
-            //    throw new Exception("Algunos periodos no están bien configurados");
-
-            var result = new List<DailySigning>();
-            var fail = false;
-
-            var actualDay = DateTime.ParseExact($"{massiveSigningQueryViewModel.startSigning}", "dd/MM/yyyy", null);
-            var endDay = DateTime.ParseExact($"{massiveSigningQueryViewModel.endSigning}", "dd/MM/yyyy", null);
-            while (actualDay <= endDay)
-            {
-                if ((actualDay.DayOfWeek == DayOfWeek.Saturday) && (!massiveSigningQueryViewModel.includeSaturdays))
-                {
-                    actualDay = actualDay.AddDays(1);
-                    continue;
-                }
-
-                if ((actualDay.DayOfWeek == DayOfWeek.Sunday) && (!massiveSigningQueryViewModel.includeSundays))
-                {
-                    actualDay = actualDay.AddDays(1);
-                    continue;
-                }
-
-                foreach (var item in massiveSigningQueryViewModel.data)
-                {
-                    DailySigning dailySigning;
-                    if (item.hourTypeId == 5)
-                    {
-                        dailySigning = new DailySigning
-                        {
-                            AddedDate = DateTime.Now,
-                            ModifiedDate = null,
-                            IPAddress = null,
-
-                            StartHour = new DateTime(actualDay.Year, actualDay.Month, actualDay.Day),
-                            EndHour = null,
-                            UserHiringId = massiveSigningQueryViewModel.userHiringId,
-                            ProfessionId = massiveSigningQueryViewModel.professionId,
-                            HourTypeId = item.hourTypeId
-                        };
-                    }
-                    else
-                    {
-                        var hourStart = Convert.ToInt32(item.startHour.Substring(0, 2));
-                        var minuteStart = Convert.ToInt32(item.startHour.Substring(3, 2));
-                        var hourEnd = Convert.ToInt32(item.endHour.Substring(0, 2));
-                        var minuteEnd = Convert.ToInt32(item.endHour.Substring(3, 2));
-
-                        dailySigning = new DailySigning
-                        {
-                            AddedDate = DateTime.Now,
-                            ModifiedDate = null,
-                            IPAddress = null,
-
-                            StartHour = new DateTime(actualDay.Year, actualDay.Month, actualDay.Day, hourStart, minuteStart, 0),
-                            EndHour = hourStart <= hourEnd ?
-                                new DateTime(actualDay.Year, actualDay.Month, actualDay.Day, hourEnd, minuteEnd, 0) :
-                                new DateTime(actualDay.Year, actualDay.Month, actualDay.Day, hourEnd, minuteEnd, 0).AddDays(1),
-
-                            UserHiringId = massiveSigningQueryViewModel.userHiringId,
-                            ProfessionId = massiveSigningQueryViewModel.professionId,
-                            HourTypeId = item.hourTypeId
-                        };
-                    }
-
-                    if (_dailySigningRepository.ValidateDalilySigning(dailySigning))
-                    {
-                        result.Add(dailySigning);
-                    }
-                    else
-                    {
-                        fail = true;
-                    }
-                }
-                actualDay = actualDay.AddDays(1);
-            }
-
-            return (result, fail);
-        }
-
         public bool ValidateDataMassiveSigning(List<PeriodByHoursViewModel> data)
         {
-            foreach (var item in data)
+            for (var i=0; i<data.Count; i++)
             {
-                foreach (var itemCompare in data)
+                var item = data[i];
+                for (var j=0; j<data.Count; j++)
                 {
+                    var itemCompare = data[j];
                     if (item == itemCompare)
                         continue;
 
-                    var numItemStart = Convert.ToInt32(item.startHour.Replace(":", ""));
-                    var numItemEnd = Convert.ToInt32(item.endHour.Replace(":", ""));
-                    var numItemCompareStart = Convert.ToInt32(itemCompare.startHour.Replace(":", ""));
-                    var numItemCompareEnd = Convert.ToInt32(itemCompare.endHour.Replace(":", ""));
+                    if (!item.endHour.HasValue)
+                        item.endHour = new DateTime(item.startHour.Value.Year, item.startHour.Value.Month, item.startHour.Value.Day, 23, 59, 0);
+                    if (!itemCompare.endHour.HasValue)
+                        itemCompare.endHour = new DateTime(itemCompare.startHour.Value.Year, itemCompare.startHour.Value.Month, itemCompare.startHour.Value.Day, 23, 59, 0);
 
-                    if (numItemCompareStart > numItemStart && numItemCompareStart < numItemEnd)
-                        return false;
-                    if (numItemCompareEnd > numItemStart && numItemCompareEnd < numItemEnd)
+                    if (itemCompare.startHour >= item.startHour && itemCompare.startHour <= item.endHour ||
+                        itemCompare.endHour <= item.startHour && itemCompare.endHour >= item.endHour)
                         return false;
                 }
             }

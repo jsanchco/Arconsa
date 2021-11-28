@@ -102,7 +102,7 @@
             var historyHiringViewModel = new HistoryHiringViewModel
             {
                 userHiringId = dailySignings[0].UserHiring.Id,
-                userId = dailySignings[0].UserHiring.Id,
+                userId = dailySignings[0].UserHiring.UserId,
                 dtStartDate = (DateTime)dailySignings[0].StartHour,
                 userName = $"{dailySignings[0].UserHiring.User.Name} {dailySignings[0].UserHiring.User.Surname}",
                 clientId = dailySignings[0].UserHiring.Work.Client.Id,
@@ -126,8 +126,12 @@
                         userName = $"{dailySigning.UserHiring.User.Name} {dailySigning.UserHiring.User.Surname}",
                         clientId = dailySigning.UserHiring.Work.Client.Id,
                         clientName = dailySigning.UserHiring.Work.Client.Name,
-                        professionId = dailySigning.UserHiring.Profession.Id,
-                        professionName = dailySigning.UserHiring.Profession.Name,
+
+                        professionId = dailySigning.UserHiring.Profession == null ? 
+                            0 : 
+                            dailySigning.UserHiring.Profession.Id,
+
+                        professionName = dailySigning.UserHiring.Profession?.Name,
                         inWork = !dailySigning.UserHiring.Work.CloseDate.HasValue
                     };
                 }
@@ -161,22 +165,9 @@
             var userHiring = _userHiringRepository.GetById(historyHiringViewModel.userHiringId);
             if (userHiring == null) return false;
 
-            userHiring.InWork = historyHiringViewModel.inWork;
-            if (historyHiringViewModel.inWork == true)
-            {
-                var usersHirings = _userHiringRepository.GetByUserAndInWork(userHiring.UserId, historyHiringViewModel.inWork);
-                foreach (var hiring in usersHirings)
-                {
-                    if (hiring.Id == historyHiringViewModel.userHiringId)
-                        continue;
-
-                    if (hiring.InWork == false)
-                        continue;
-
-                    hiring.InWork = false;
-                    _userHiringRepository.Update(hiring);
-                }
-            }
+            userHiring.ProfessionId = historyHiringViewModel.professionId;
+            userHiring.StartDate = historyHiringViewModel.dtStartDate;
+            userHiring.EndDate = historyHiringViewModel.dtEndDate;
 
             return _userHiringRepository.Update(userHiring);
         }
