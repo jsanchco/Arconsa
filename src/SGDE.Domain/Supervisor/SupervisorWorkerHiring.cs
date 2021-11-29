@@ -16,6 +16,13 @@
 
     public partial class Supervisor
     {
+        public WorkerHiringViewModel GetWorkerHiring(WorkerHiringViewModel workerHiringViewModel)
+        {
+            workerHiringViewModel.professionName = GetProfessionById(workerHiringViewModel.professionId).name;
+
+            return workerHiringViewModel;
+        }
+
         public QueryResult<WorkerHiringViewModel> GetAllWorkerHiring(int skip = 0, int take = 0, string filter = null, int workId = 0)
         {
             var workersInUsers = _userRepository.GetUsersByRole(new List<int> { 3 });

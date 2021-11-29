@@ -3,6 +3,7 @@
     #region Using
 
     using SGDE.Domain.Entities;
+    using System.Linq;
 
     #endregion
 
@@ -49,6 +50,17 @@
             //    System.Diagnostics.Debug.WriteLine($"[{cont}]dailySigning [{dailySigning.Id}] de {dailySignings.Count}");
             //    cont++;
             //}
+
+            //var userHirings = _userHiringRepository.GetAll().Data;
+            //var data = userHirings.Where(x => x.ProfessionId == null);
+            //foreach (var item in data)
+            //{
+            //    var profession = _userProfessionRepository.GetAll(item.UserId).FirstOrDefault();
+            //    item.ProfessionId = profession.ProfessionId;
+
+            //    _userHiringRepository.Update(item);
+            //}
+
         }
     }
 }

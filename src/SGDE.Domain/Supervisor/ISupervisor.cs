@@ -161,6 +161,7 @@ namespace SGDE.Domain.Supervisor
 
         #region WorkerHiring
 
+        WorkerHiringViewModel GetWorkerHiring(WorkerHiringViewModel workerHiringViewModel);
         QueryResult<WorkerHiringViewModel> GetAllWorkerHiring(int skip = 0, int take = 0, string filter = null, int workId = 0);
 
         #endregion

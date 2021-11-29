@@ -280,6 +280,7 @@
                         var user = _context.User
                             .Include(x => x.UserHirings)
                             .Include(x => x.Work)
+                            .Include(x => x.UserProfessions)
                             .FirstOrDefault(x => x.Id == userId);
                         if (user == null)
                             throw new Exception("No existe este trabajador");
@@ -296,6 +297,7 @@
                                 EndDate = null,
                                 WorkId = workId,
                                 UserId = userId,
+                                ProfessionId = user.UserProfessions.FirstOrDefault()?.ProfessionId
                             });
                             //if (result == true)
                             //    result = IsProfessionInClient(user.ProfessionId, 0, work.ClientId);
@@ -322,6 +324,7 @@
                                     EndDate = null,
                                     WorkId = workId,
                                     UserId = userId,
+                                    ProfessionId = user.UserProfessions.FirstOrDefault()?.ProfessionId
                                 });
                                 //if (result == true)
                                 //    result = IsProfessionInClient(user.ProfessionId, 0, work.ClientId);

@@ -6,6 +6,7 @@
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Logging;
+    using SGDE.Domain.ViewModels;
     using System;
 
     #endregion
@@ -43,6 +44,22 @@
             {
                 _logger.LogError(ex, "Exception: ");
                 return StatusCode(500, ex);
+            }
+        }
+
+        [HttpPut]
+        public object Put([FromBody] WorkerHiringViewModel workerHiringViewModel)
+        {
+            try
+            {
+                var result = _supervisor.GetWorkerHiring(workerHiringViewModel);
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Exception: ");
+                return StatusCode(500, ex.Message);
             }
         }
     }

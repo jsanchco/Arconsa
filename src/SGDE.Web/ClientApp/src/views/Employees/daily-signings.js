@@ -125,10 +125,16 @@ class DailySignings extends Component {
     this.format = { type: "dateTime", format: "dd/MM/yyyy HH:mm" };    
 
     this.queryDailySignings = new Query().addParams("userId", props.userId);
-    this.queryProfessions = {
+    this.editProfessions = {
       params: {
         query: new Query().addParams("userId", props.userId),
-      },
+        popupWidth: "auto"
+      }
+    };
+    this.editWorks = {
+      params: {
+        popupWidth: "auto"
+      }
     };
 
     this.animationSettings = { effect: "None" };
@@ -158,6 +164,10 @@ class DailySignings extends Component {
         buttonModel: { content: "No" },
       },
     ];
+  }
+
+  beforeOpen(args) {
+    console.log("Hola");
   }
 
   gridTemplate(args) {
@@ -432,6 +442,7 @@ class DailySignings extends Component {
                     dataSource={this.userHirings}
                     foreignKeyValue="name"
                     foreignKeyField="id"
+                    edit={this.editWorks}
                   />
                   <ColumnDirective
                     field="professionId"
@@ -441,7 +452,7 @@ class DailySignings extends Component {
                     foreignKeyValue="name"
                     foreignKeyField="id"
                     dataSource={this.professions}
-                    edit={this.queryProfessions}
+                    edit={this.editProfessions}
                     allowFiltering={true}
                   />
                   <ColumnDirective

@@ -13,7 +13,7 @@ import {
 } from "@syncfusion/ej2-react-grids";
 import { DataManager, WebApiAdaptor, Query } from "@syncfusion/ej2-data";
 import { DialogComponent } from "@syncfusion/ej2-react-popups";
-import { config, WORKERSHIRING, PROFESSIONSBYUSERID } from "../../constants";
+import { config, WORKERSHIRING, PROFESSIONSBYUSER } from "../../constants";
 import { L10n } from "@syncfusion/ej2-base";
 import data from "../../locales/locale.json";
 import { TOKEN_KEY, updateWorkersInWork } from "../../services";
@@ -31,7 +31,7 @@ class ModalWorkers extends Component {
 
   professions = new DataManager({
     adaptor: new WebApiAdaptor(),
-    url: `${config.URL_API}/${PROFESSIONSBYUSERID}`,
+    url: `${config.URL_API}/${PROFESSIONSBYUSER}`,
     headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }]
   });
 
@@ -46,12 +46,12 @@ class ModalWorkers extends Component {
 
     this.state = {
       workers: null,
-      hideConfirmDialog: false,
-      rowSelected: null
+      hideConfirmDialog: false
     };
 
     this._handleOnClickSave = this._handleOnClickSave.bind(this);
     this.dialogClose = this.dialogClose.bind(this);
+    this.actionBegin = this.actionBegin.bind(this);
     this.actionFailure = this.actionFailure.bind(this);
     this.onDataBound = this.onDataBound.bind(this);
     this.onRowDataBound = this.onRowDataBound.bind(this);
@@ -73,12 +73,6 @@ class ModalWorkers extends Component {
     ];
     this.editSettings = {
       allowEditing: true
-    };
-
-    this.queryProfessions = {
-      params: {
-        query: new Query().addParams("userId", null),
-      },
     };
 
     this.confirmButton = [
@@ -111,6 +105,13 @@ class ModalWorkers extends Component {
     this.setState({
       hideConfirmDialog: false
     });
+  }
+
+  actionBegin(args) {
+    // if (args.requestType === "beginEdit") {
+    //   this.grid.columnModel[3].edit.params.query.params = [];
+    //   this.grid.columnModel[3].edit.params.query.addParams("userId", args.rowData.id);
+    // }
   }
 
   actionFailure(args) {
@@ -172,14 +173,7 @@ class ModalWorkers extends Component {
   }
 
   rowSelected() {
-    const selectedRecords = this.grid.getSelectedRecords();
-    this.setState({ rowSelected: selectedRecords[0] });
-    
-    this.queryProfessions = {
-      params: {
-        query: new Query().addParams("userId", 3),
-      },
-    };
+    this.selectedRowIndex = this.grid.getSelectedRowIndexes();
   }
 
   onClickWorkersInWork() {
@@ -264,6 +258,7 @@ class ModalWorkers extends Component {
                 locale="es-US"
                 // allowPaging={true}
                 // pageSettings={this.pageSettings}
+                actionBegin={this.actionBegin}
                 actionFailure={this.actionFailure}
                 toolbar={this.toolbarOptions}
                 style={{
@@ -280,7 +275,7 @@ class ModalWorkers extends Component {
                 rowDataBound={this.onRowDataBound}
                 rowSelected={this.rowSelected}
                 headerCellInfo={this.headerCellInfo}
-                editSettings={this.editSettings}
+                // editSettings={this.editSettings}
               >
                 <ColumnsDirective>
                   <ColumnDirective
@@ -296,6 +291,7 @@ class ModalWorkers extends Component {
                     field="name"
                     headerText="Nombre"
                     width="100"
+                    allowEditing={false}
                   />
                   {/* <ColumnDirective
                     field="professionId"
@@ -306,12 +302,12 @@ class ModalWorkers extends Component {
                     foreignKeyField="id"
                     validationRules={this.professionIdRules}
                     dataSource={this.professions}
-                    edit={this.queryProfessions}
                   /> */}
                   <ColumnDirective
                     field="workName"
                     headerText="Obra Asignada"
                     width="100"
+                    allowEditing={false}
                   />
                   <ColumnDirective
                     field="state"
@@ -319,6 +315,7 @@ class ModalWorkers extends Component {
                     width="100"
                     textAlign="Center"
                     template={this.stateTemplate}
+                    allowEditing={false}
                   />
                 </ColumnsDirective>
                 <Inject services={[ForeignKey, Page, Toolbar]} />
