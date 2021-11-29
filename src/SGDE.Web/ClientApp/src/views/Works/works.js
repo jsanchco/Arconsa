@@ -141,6 +141,12 @@ class Works extends Component {
       "showCloseWorks",
       this.state.showCloseWorks
     );
+
+    this.editClients = {
+      params: {
+        popupWidth: "auto"
+      }
+    };
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -542,6 +548,7 @@ class Works extends Component {
                       foreignKeyField="id"
                       validationRules={this.clientIdRules}
                       dataSource={this.clients}
+                      edit={this.editClients}
                     />
                     <ColumnDirective
                       field="closeDate"
