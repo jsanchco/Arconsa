@@ -2,15 +2,10 @@
 {
     #region Using
 
-    using System;
-    using System.Collections.Generic;
-    using System.Threading;
-    using System.Threading.Tasks;
-    using Converters;
-    using Entities;
-    using ViewModels;
     using Domain.Helpers;
+    using System.Collections.Generic;
     using System.Linq;
+    using ViewModels;
 
     #endregion
 
@@ -36,7 +31,7 @@
                         Searcher.RemoveAccentsWithNormalization(x.Name.ToLower()).Contains(filter) ||
                         Searcher.RemoveAccentsWithNormalization(x.Observations?.ToLower()).Contains(filter) ||
                         Searcher.RemoveAccentsWithNormalization(x.PhoneNumber?.ToLower()).Contains(filter) ||
-                        Searcher.RemoveAccentsWithNormalization(x.Surname.ToLower()).Contains(filter) ||
+                        Searcher.RemoveAccentsWithNormalization(x.Surname?.ToLower()).Contains(filter) ||
                         Searcher.RemoveAccentsWithNormalization(x.Username?.ToLower()).Contains(filter) ||
                         Searcher.RemoveAccentsWithNormalization(x.Role.Name.ToLower()).Contains(filter) ||
                         Searcher.RemoveAccentsWithNormalization(string.Join(',', x.UserProfessions?.Select(y => y.Profession.Name.ToLower()))).Contains(filter) ||
@@ -77,7 +72,7 @@
                             workerHiringViewModel.professionId = worker.UserProfessions.FirstOrDefault().ProfessionId;
                             workerHiringViewModel.professionName = worker.UserProfessions.FirstOrDefault().Profession.Name;
                         }
-                    }                   
+                    }
                 }
                 else
                 {

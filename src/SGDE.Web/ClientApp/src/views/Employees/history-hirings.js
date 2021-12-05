@@ -190,7 +190,7 @@ class HistoryHirings extends Component {
               <i className="icon-layers"></i> Historial de Contratación
             </div>
             <div className="card-body"></div>
-            <Row>
+            {/* <Row>
               <Col
                 xs="9"
                 style={{
@@ -206,7 +206,7 @@ class HistoryHirings extends Component {
                   ]}
                 />
               </Col>
-            </Row>
+            </Row> */}
             <Row>
               <GridComponent
                 dataSource={this.userHirings}
@@ -226,9 +226,9 @@ class HistoryHirings extends Component {
                 toolbar={this.toolbarOptions}
                 rowSelected={this.rowSelected}
                 textWrapSettings={this.wrapSettings}
-                contextMenuItems={this.contextMenuItems}
-                contextMenuOpen={this.contextMenuOpen}
-                contextMenuClick={this.contextMenuClick}
+                // contextMenuItems={this.contextMenuItems}
+                // contextMenuOpen={this.contextMenuOpen}
+                // contextMenuClick={this.contextMenuClick}
                 beforePrint={this.beforePrint}
                 toolbarClick={this.toolbarClick}
                 printComplete={this.printComplete}
@@ -265,7 +265,7 @@ class HistoryHirings extends Component {
                     headerText="Puesto"
                     width="100"
                   />
-                  <ColumnDirective
+                  {/* <ColumnDirective
                     field="inWork"
                     headerText="Estado"
                     template={this.inWorkTemplate}
@@ -278,9 +278,13 @@ class HistoryHirings extends Component {
                     textAlign="Center"
                     width="100"
                     visible={false}
-                  />
+                  /> */}
                 </ColumnsDirective>
-                <Inject services={[Page, Toolbar, ContextMenu]} />
+                <Inject services={[
+                  Page, 
+                  Toolbar, 
+                  // // ContextMenu
+                  ]} />
               </GridComponent>
             </Row>
           </div>

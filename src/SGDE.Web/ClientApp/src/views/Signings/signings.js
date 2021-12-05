@@ -26,6 +26,11 @@ import {
   GridComponent,
   Inject,
   ForeignKey,
+  Aggregate,
+  AggregateColumnsDirective,
+  AggregateColumnDirective,
+  AggregateDirective,
+  AggregatesDirective,
 } from "@syncfusion/ej2-react-grids";
 import {
   createSpinner,
@@ -124,10 +129,11 @@ class Signings extends Component {
     this.handleSelectEmployee = this.handleSelectEmployee.bind(this);
     this.rowSelected = this.rowSelected.bind(this);
     this.actionBegin = this.actionBegin.bind(this);
-//    this.formatDateEU = this.formatDateEU.bind(this);
+    this.footerSumHours = this.footerSumHours.bind(this);
+    //    this.formatDateEU = this.formatDateEU.bind(this);
 
     this.changeHourType = { params: { change: this.changeHour.bind(this) } };
-    this.format = { type: "dateTime", format: "dd/MM/yyyy HH:mm" };    
+    this.format = { type: "dateTime", format: "dd/MM/yyyy HH:mm" };
   }
 
   componentDidMount() {
@@ -410,12 +416,12 @@ class Signings extends Component {
   //   if (arg instanceof Date) {
   //     let day = arg.getDate();
   //     if (day < 10) day = "0" + day;
-  
+
   //     const month = arg.getMonth() + 1;
   //     const year = arg.getFullYear();
-  
+
   //     if (month < 10) {
-  //       return `0${month}/0${day}/${year}`;        
+  //       return `0${month}/0${day}/${year}`;
   //     } else {
   //       return `${month}/${day}/${year}`;
   //     }
@@ -424,10 +430,13 @@ class Signings extends Component {
   //   return arg;
   // }
 
-
   actionBegin(args) {
     if (args.requestType === "save" && args.data.hourTypeId === 5) {
-      args.data.startHour = new Date(args.data.startHour.getFullYear(), args.data.startHour.getMonth(), args.data.startHour.getDate());
+      args.data.startHour = new Date(
+        args.data.startHour.getFullYear(),
+        args.data.startHour.getMonth(),
+        args.data.startHour.getDate()
+      );
       args.data.endHour = null;
       args.data.totalHours = null;
 
@@ -443,7 +452,11 @@ class Signings extends Component {
       // this.gridResult.dataSource[args.index].endHour = args.data.endHour;
     }
   }
-  
+
+  footerSumHours(args) {
+    return <span>Total: {args.Sum} horas</span>;
+  }
+
   render() {
     return (
       <Fragment>
@@ -518,6 +531,7 @@ class Signings extends Component {
                         filtering={this.handleFilteringEmployees.bind(this)}
                         allowFiltering={true}
                         select={this.handleSelectEmployee.bind(this)}
+                        popupWidth="auto"
                       />
                     </FormGroup>
                     <FormGroup className="col-2" style={{ marginLeft: "10px" }}>
@@ -528,6 +542,7 @@ class Signings extends Component {
                         placeholder={`Selecciona Puesto`}
                         fields={this.fields}
                         ref={(g) => (this.ddlProfessions = g)}
+                        popupWidth="auto"
                       />
                     </FormGroup>
                     <FormGroup className="col-3" style={{ marginLeft: "10px" }}>
@@ -540,6 +555,7 @@ class Signings extends Component {
                         ref={(g) => (this.ddlWorks = g)}
                         filtering={this.handleFilteringWorks.bind(this)}
                         allowFiltering={true}
+                        popupWidth="auto"
                       />
                     </FormGroup>
                   </Form>
@@ -671,7 +687,6 @@ class Signings extends Component {
                     editSettings={this.editSettings}
                     actionBegin={this.actionBegin}
                   >
-
                     <ColumnsDirective>
                       <ColumnDirective
                         field="hourTypeId"
@@ -705,7 +720,7 @@ class Signings extends Component {
                         textAlign="Center"
                       />
                       <ColumnDirective
-                        field="total"
+                        field="totalHours"
                         headerText="Total Horas"
                         width="100"
                         allowEditing={false}
@@ -714,7 +729,22 @@ class Signings extends Component {
                       />
                     </ColumnsDirective>
 
-                    <Inject services={[ForeignKey]} />
+                    <AggregatesDirective>
+                      <AggregateDirective>
+                        <AggregateColumnsDirective>
+                          <AggregateColumnDirective
+                            field="totalHours"
+                            type="Sum"
+                            format="N2"
+                            footerTemplate={this.footerSumHours}
+                          >
+                            {" "}
+                          </AggregateColumnDirective>
+                        </AggregateColumnsDirective>
+                      </AggregateDirective>
+                    </AggregatesDirective>
+
+                    <Inject services={[ForeignKey, Aggregate]} />
                   </GridComponent>
                 </Row>
                 <Row>

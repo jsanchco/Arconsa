@@ -202,19 +202,19 @@ class AuthorizeCancelWorkers extends Component {
       this.grid.columnModel[2].edit.params.query.addParams("userId", args.rowData.userId);
     }
 
-    if (args.requestType === "save") {
-      let date = this.formatDate(args.data.startDate);
-      args.data.startDate = date;
+    // if (args.requestType === "save") {
+    //   let date = this.formatDate(args.data.startDate);
+    //   args.data.startDate = date;
 
-      if (
-        args.data.endDate !== null &&
-        args.data.endDate !== "" &&
-        args.data.endDate !== undefined
-      ) {
-        date = this.formatDate(args.data.endDate);
-        args.data.endDate = date;
-      }
-    }
+    //   if (
+    //     args.data.endDate !== null &&
+    //     args.data.endDate !== "" &&
+    //     args.data.endDate !== undefined
+    //   ) {
+    //     date = this.formatDate(args.data.endDate);
+    //     args.data.endDate = date;
+    //   }
+    // }
   }
 
   actionFailure(args) {
@@ -280,7 +280,7 @@ class AuthorizeCancelWorkers extends Component {
               {title}
             </div>
             <div className="card-body"></div>
-            <Row>
+            {/* <Row>
               <Col
                 xs="9"
                 style={{
@@ -296,7 +296,7 @@ class AuthorizeCancelWorkers extends Component {
                   ]}
                 />
               </Col>
-            </Row>
+            </Row> */}
             <Row>
               <GridComponent
                 dataSource={this.usersHiring}
@@ -321,9 +321,9 @@ class AuthorizeCancelWorkers extends Component {
                 beforePrint={this.beforePrint}
                 printComplete={this.printComplete}
                 toolbarClick={this.toolbarClick}
-                contextMenuItems={this.contextMenuItems}
-                contextMenuOpen={this.contextMenuOpen}
-                contextMenuClick={this.contextMenuClick}
+                // contextMenuItems={this.contextMenuItems}
+                // contextMenuOpen={this.contextMenuOpen}
+                // contextMenuClick={this.contextMenuClick}
               >
                 <ColumnsDirective>
                   <ColumnDirective
@@ -351,7 +351,7 @@ class AuthorizeCancelWorkers extends Component {
                     dataSource={this.professions}
                   />
                   <ColumnDirective
-                    field="startDate"
+                    field="dtStartDate"
                     headerText="Fecha Inicio"
                     width="100"
                     type="date"
@@ -359,14 +359,14 @@ class AuthorizeCancelWorkers extends Component {
                     editType="datepickeredit"
                   />
                   <ColumnDirective
-                    field="endDate"
+                    field="dtEndDate"
                     headerText="Fecha Fin"
                     width="100"
                     type="date"
                     format={this.format}
                     editType="datepickeredit"
                   />
-                  <ColumnDirective
+                  {/* <ColumnDirective
                     field="inWork"
                     headerText="Estado"
                     template={this.inWorkTemplate}
@@ -379,7 +379,7 @@ class AuthorizeCancelWorkers extends Component {
                     textAlign="Center"
                     width="100"
                     visible={false}
-                  />
+                  /> */}
                 </ColumnsDirective>
                 <Inject services={[Page, Toolbar, Edit]} />
               </GridComponent>
