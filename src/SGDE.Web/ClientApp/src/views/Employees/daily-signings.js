@@ -219,19 +219,19 @@ class DailySignings extends Component {
       );
     }
 
-    if (args.requestType === "save") {
-      let date = this.formatDate(args.data.startHour);
-      args.data.startHour = date;
+    // if (args.requestType === "save") {
+    //   let date = this.formatDate(args.data.startHour);
+    //   args.data.startHour = date;
 
-      if (
-        args.data.endHour !== null &&
-        args.data.endHour !== "" &&
-        args.data.endHour !== undefined
-      ) {
-        date = this.formatDate(args.data.endHour);
-        args.data.endHour = date;
-      }
-    }
+    //   if (
+    //     args.data.endHour !== null &&
+    //     args.data.endHour !== "" &&
+    //     args.data.endHour !== undefined
+    //   ) {
+    //     date = this.formatDate(args.data.endHour);
+    //     args.data.endHour = date;
+    //   }
+    // }
   }
 
   actionFailure(args) {
@@ -464,6 +464,18 @@ class DailySignings extends Component {
                     visible={false}
                   />
                   <ColumnDirective
+                    field="hourTypeId"
+                    headerText="Tipo de Hora"
+                    width="100"
+                    editType="dropdownedit"
+                    validationRules={this.hourTypeIdRules}
+                    textAlign="Center"
+                    dataSource={this.hourTypes}
+                    foreignKeyValue="name"
+                    foreignKeyField="id"
+                    defaultValue={1}
+                  />                  
+                  <ColumnDirective
                     field="startHour"
                     headerText="Hora Inicio"
                     width="100"
@@ -482,18 +494,6 @@ class DailySignings extends Component {
                     format={this.format}
                     textAlign="Center"
                     template={this.dateTemplateEndHour}
-                  />
-                  <ColumnDirective
-                    field="hourTypeId"
-                    headerText="Tipo de Hora"
-                    width="100"
-                    editType="dropdownedit"
-                    validationRules={this.hourTypeIdRules}
-                    textAlign="Center"
-                    dataSource={this.hourTypes}
-                    foreignKeyValue="name"
-                    foreignKeyField="id"
-                    defaultValue={1}
                   />
                   <ColumnDirective
                     field="totalHours"

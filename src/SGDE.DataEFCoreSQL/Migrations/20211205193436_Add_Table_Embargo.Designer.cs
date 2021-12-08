@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SGDE.DataEFCoreSQL;
 
 namespace SGDE.DataEFCoreSQL.Migrations
 {
     [DbContext(typeof(EFContextSQL))]
-    partial class EFContextSQLModelSnapshot : ModelSnapshot
+    [Migration("20211205193436_Add_Table_Embargo")]
+    partial class Add_Table_Embargo
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -183,42 +185,6 @@ namespace SGDE.DataEFCoreSQL.Migrations
                     b.ToTable("DailySigning");
                 });
 
-            modelBuilder.Entity("SGDE.Domain.Entities.DetailEmbargo", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime?>("AddedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<DateTime>("DatePay")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("EmbargoId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("IPAddress")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("ModifiedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Observations")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("EmbargoId")
-                        .HasName("IFK_Embargo_DetailEmbargo");
-
-                    b.ToTable("DetailEmbargo");
-                });
-
             modelBuilder.Entity("SGDE.Domain.Entities.DetailInvoice", b =>
                 {
                     b.Property<int>("Id")
@@ -268,19 +234,16 @@ namespace SGDE.DataEFCoreSQL.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("AccountNumber")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime?>("AddedDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("EndDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("IPAddress")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Identifier")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("IssuingEntity")
@@ -291,12 +254,6 @@ namespace SGDE.DataEFCoreSQL.Migrations
 
                     b.Property<DateTime?>("NotificationDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("Observations")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("Paid")
-                        .HasColumnType("bit");
 
                     b.Property<DateTime?>("StartDate")
                         .HasColumnType("datetime2");
@@ -1016,16 +973,6 @@ namespace SGDE.DataEFCoreSQL.Migrations
                     b.HasOne("SGDE.Domain.Entities.Work", null)
                         .WithMany("DailySignings")
                         .HasForeignKey("WorkId");
-                });
-
-            modelBuilder.Entity("SGDE.Domain.Entities.DetailEmbargo", b =>
-                {
-                    b.HasOne("SGDE.Domain.Entities.Embargo", "Embargo")
-                        .WithMany("DetailEmbargos")
-                        .HasForeignKey("EmbargoId")
-                        .HasConstraintName("FK__DetailEmbargo__EmbargoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("SGDE.Domain.Entities.DetailInvoice", b =>

@@ -57,6 +57,8 @@ namespace SGDE.Tests
             var invoiceRepositoryMock = new Mock<IInvoiceRepository>();
             var detailInvoiceRepositoryMock = new Mock<IDetailInvoiceRepository>();
             var userProfessionRepository = new Mock<IUserProfessionRepository>();
+            var embargoRepository = new Mock<IEmbargoRepository>();
+            var detailEmbargoRepository = new Mock<IDetailEmbargoRepository>();
 
             _supervisor = new Supervisor(
                 userRepositoryMock.Object,
@@ -77,7 +79,9 @@ namespace SGDE.Tests
                 costWorkerRepositoryMock.Object, 
                 invoiceRepositoryMock.Object, 
                 detailInvoiceRepositoryMock.Object,
-                userProfessionRepository.Object);
+                userProfessionRepository.Object,
+                embargoRepository.Object,
+                detailEmbargoRepository.Object);
         }
 
         [TestMethod]

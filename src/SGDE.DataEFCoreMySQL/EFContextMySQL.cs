@@ -36,6 +36,8 @@ namespace SGDE.DataEFCoreMySQL
         public virtual DbSet<Invoice> Invoice { get; set; }
         public virtual DbSet<DetailInvoice> DetailInvoice { get; set; }
         public virtual DbSet<UserProfession> UserProfession { get; set; }
+        public virtual DbSet<Embargo> Embargo { get; set; }
+        public virtual DbSet<DetailEmbargo> DetailEmbargo { get; set; }
 
         public static long InstanceCount;
 
@@ -64,6 +66,8 @@ namespace SGDE.DataEFCoreMySQL
             new InvoiceConfiguration(modelBuilder.Entity<Invoice>());
             new DetailInvoiceConfiguration(modelBuilder.Entity<DetailInvoice>());
             new UserProfessionConfiguration(modelBuilder.Entity<UserProfession>());
+            new EmbargoConfiguration(modelBuilder.Entity<Embargo>());
+            new DetailEmbargoConfiguration(modelBuilder.Entity<DetailEmbargo>());
         }
 
         public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<EFContextMySQL>

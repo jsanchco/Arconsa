@@ -43,5 +43,6 @@ namespace SGDE.Domain.ViewModels
         public string workName { get; set; }
         public int? clientId { get; set; }
         public string clientName { get; set; }
+        public bool hasEmbargosPending { get; set; }
     }
 }

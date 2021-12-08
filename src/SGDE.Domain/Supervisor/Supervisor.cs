@@ -6,6 +6,8 @@ namespace SGDE.Domain.Supervisor
     using Microsoft.Extensions.Options;
     using Helpers;
     using Repositories;
+    using SGDE.Domain.Entities;
+    using SGDE.Domain.ViewModels;
 
     #endregion
 
@@ -30,6 +32,8 @@ namespace SGDE.Domain.Supervisor
         private readonly IInvoiceRepository _invoiceRepository;
         private readonly IDetailInvoiceRepository _detailInvoiceRepository;
         private readonly IUserProfessionRepository _userProfessionRepository;
+        private readonly IEmbargoRepository _embargoRepository;
+        private readonly IDetailEmbargoRepository _detailEmbargoRepository;
 
         public Supervisor()
         {
@@ -54,7 +58,9 @@ namespace SGDE.Domain.Supervisor
             ICostWorkerRepository costWorkerRepository,
             IInvoiceRepository invoiceRepository,
             IDetailInvoiceRepository detailInvoiceRepository,
-            IUserProfessionRepository userProfessionRepository)
+            IUserProfessionRepository userProfessionRepository,
+            IEmbargoRepository embargoRepository,
+            IDetailEmbargoRepository detailEmbargoRepository)
         {
             _userRepository = userRepository;
             _professionRepository = professionRepository;
@@ -75,6 +81,8 @@ namespace SGDE.Domain.Supervisor
             _invoiceRepository = invoiceRepository;
             _detailInvoiceRepository = detailInvoiceRepository;
             _userProfessionRepository = userProfessionRepository;
+            _embargoRepository = embargoRepository;
+            _detailEmbargoRepository = detailEmbargoRepository;
         }
     }
 }

@@ -44,7 +44,9 @@
                         .AddScoped<ICostWorkerRepository, DataEFCoreSQL.Repositories.CostWorkerRepository>()
                         .AddScoped<IInvoiceRepository, DataEFCoreSQL.Repositories.InvoiceRepository>()
                         .AddScoped<IDetailInvoiceRepository, DataEFCoreSQL.Repositories.DetailInvoiceRepository>()
-                        .AddScoped<IUserProfessionRepository, DataEFCoreSQL.Repositories.UserProfessionRepository>();
+                        .AddScoped<IUserProfessionRepository, DataEFCoreSQL.Repositories.UserProfessionRepository>()
+                        .AddScoped<IEmbargoRepository, DataEFCoreSQL.Repositories.EmbargoRepository>()
+                        .AddScoped<IDetailEmbargoRepository, DataEFCoreSQL.Repositories.DetailEmbargoRepository>();
                     break;
                 case "MySQL":
                     services
@@ -66,7 +68,9 @@
                         .AddScoped<ICostWorkerRepository, DataEFCoreMySQL.Repositories.CostWorkerRepository>()
                         .AddScoped<IInvoiceRepository, DataEFCoreMySQL.Repositories.InvoiceRepository>()
                         .AddScoped<IDetailInvoiceRepository, DataEFCoreMySQL.Repositories.DetailInvoiceRepository>()
-                        .AddScoped<IUserProfessionRepository, DataEFCoreMySQL.Repositories.UserProfessionRepository>();
+                        .AddScoped<IUserProfessionRepository, DataEFCoreMySQL.Repositories.UserProfessionRepository>()
+                        .AddScoped<IEmbargoRepository, DataEFCoreMySQL.Repositories.EmbargoRepository>()
+                        .AddScoped<IDetailEmbargoRepository, DataEFCoreMySQL.Repositories.DetailEmbargoRepository>();
                     break;
 
                 default:
@@ -88,7 +92,9 @@
                         .AddScoped<ICostWorkerRepository, DataEFCoreMySQL.Repositories.CostWorkerRepository>()
                         .AddScoped<IInvoiceRepository, DataEFCoreMySQL.Repositories.InvoiceRepository>()
                         .AddScoped<IDetailInvoiceRepository, DataEFCoreMySQL.Repositories.DetailInvoiceRepository>()
-                        .AddScoped<IUserProfessionRepository, DataEFCoreSQL.Repositories.UserProfessionRepository>();
+                        .AddScoped<IUserProfessionRepository, DataEFCoreSQL.Repositories.UserProfessionRepository>()
+                        .AddScoped<IEmbargoRepository, DataEFCoreSQL.Repositories.EmbargoRepository>()
+                        .AddScoped<IDetailEmbargoRepository, DataEFCoreSQL.Repositories.DetailEmbargoRepository>();
                     break;
             }
 

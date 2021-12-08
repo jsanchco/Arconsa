@@ -42,5 +42,6 @@
         public virtual ICollection<UserHiring> UserHirings { get; set; } = new HashSet<UserHiring>();
         public virtual ICollection<DailySigning> DailySignings { get; set; } = new HashSet<DailySigning>();
         public virtual ICollection<CostWorker> CostWorkers { get; set; } = new HashSet<CostWorker>();
+        public virtual ICollection<Embargo> Embargos { get; set; } = new HashSet<Embargo>();
     }
 }

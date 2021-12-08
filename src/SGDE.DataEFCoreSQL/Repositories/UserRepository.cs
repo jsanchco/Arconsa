@@ -118,6 +118,7 @@
                             .Include(x => x.Role)
                             .Include(x => x.Client)
                             .Include(x => x.Work)
+                            .Include(x => x.Embargos)
                             .Include(x => x.UserProfessions)
                             .ThenInclude(y => y.Profession)
                             .ToList();
@@ -128,6 +129,7 @@
                             .Include(x => x.Role)
                             .Include(x => x.Client)
                             .Include(x => x.Work)
+                            .Include(x => x.Embargos)
                             .Include(x => x.UserProfessions)
                             .ThenInclude(y => y.Profession)
                             .Where(x => roles.Contains(x.RoleId))

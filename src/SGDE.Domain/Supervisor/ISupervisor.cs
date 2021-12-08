@@ -269,6 +269,27 @@ namespace SGDE.Domain.Supervisor
 
         #endregion
 
+        #region Embargo
+
+        QueryResult<EmbargoViewModel> GetAllEmbargo(int skip = 0, int take = 0, int userId = 0);
+        EmbargoViewModel GetEmbargoById(int id);
+        EmbargoViewModel AddEmbargo(EmbargoViewModel newEmbargo);
+        bool UpdateEmbargo(EmbargoViewModel embargo);
+        bool DeleteEmbargo(int id);
+
+        #endregion
+
+        #region DetailEmbargo
+
+        QueryResult<DetailEmbargoViewModel> GetAllDetailEmbargo(int skip = 0, int take = 0, int embargoId = 0);
+        DetailEmbargoViewModel GetDetailEmbargoById(int id);
+        DetailEmbargoViewModel AddDetailEmbargo(DetailEmbargoViewModel newDetailEmbargo);
+        bool UpdateDetailEmbargo(DetailEmbargoViewModel detailEmbargoViewModel);
+        bool DeleteDetailEmbargo(int id);
+
+        #endregion
+
+
         void Update();
     }
 }
