@@ -34,6 +34,7 @@ namespace SGDE.Domain.Supervisor
         private readonly IUserProfessionRepository _userProfessionRepository;
         private readonly IEmbargoRepository _embargoRepository;
         private readonly IDetailEmbargoRepository _detailEmbargoRepository;
+        public readonly ISSHiringRepository _sSHiringRepository;
 
         public Supervisor()
         {
@@ -60,7 +61,8 @@ namespace SGDE.Domain.Supervisor
             IDetailInvoiceRepository detailInvoiceRepository,
             IUserProfessionRepository userProfessionRepository,
             IEmbargoRepository embargoRepository,
-            IDetailEmbargoRepository detailEmbargoRepository)
+            IDetailEmbargoRepository detailEmbargoRepository,
+            ISSHiringRepository sSHiringRepository)
         {
             _userRepository = userRepository;
             _professionRepository = professionRepository;
@@ -83,6 +85,7 @@ namespace SGDE.Domain.Supervisor
             _userProfessionRepository = userProfessionRepository;
             _embargoRepository = embargoRepository;
             _detailEmbargoRepository = detailEmbargoRepository;
+            _sSHiringRepository = sSHiringRepository;
         }
     }
 }

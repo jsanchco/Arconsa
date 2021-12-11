@@ -38,6 +38,7 @@ namespace SGDE.DataEFCoreMySQL
         public virtual DbSet<UserProfession> UserProfession { get; set; }
         public virtual DbSet<Embargo> Embargo { get; set; }
         public virtual DbSet<DetailEmbargo> DetailEmbargo { get; set; }
+        public virtual DbSet<SSHiring> SSHiring { get; set; }
 
         public static long InstanceCount;
 
@@ -68,6 +69,7 @@ namespace SGDE.DataEFCoreMySQL
             new UserProfessionConfiguration(modelBuilder.Entity<UserProfession>());
             new EmbargoConfiguration(modelBuilder.Entity<Embargo>());
             new DetailEmbargoConfiguration(modelBuilder.Entity<DetailEmbargo>());
+            new SSHiringConfiguration(modelBuilder.Entity<SSHiring>());
         }
 
         public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<EFContextMySQL>

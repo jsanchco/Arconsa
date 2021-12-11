@@ -289,6 +289,15 @@ namespace SGDE.Domain.Supervisor
 
         #endregion
 
+        #region SSHiring
+
+        QueryResult<SSHiringViewModel> GetAllSSHiring(int skip = 0, int take = 0, int userId = 0);
+        SSHiringViewModel GetSSHiringById(int id);
+        SSHiringViewModel AddSSHiring(SSHiringViewModel newSSHiringViewModel);
+        bool UpdateSSHiring(SSHiringViewModel sSHiringViewModel);
+        bool DeleteSSHiring(int id);
+
+        #endregion
 
         void Update();
     }

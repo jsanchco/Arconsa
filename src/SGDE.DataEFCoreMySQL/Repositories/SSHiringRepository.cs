@@ -6,13 +6,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace SGDE.DataEFCoreSQL.Repositories
+namespace SGDE.DataEFCoreMySQL.Repositories
 {
-    public class EmbargoRepository : IEmbargoRepository, IDisposable
+    public class SSHiringRepository : ISSHiringRepository, IDisposable
     {
-        private readonly EFContextSQL _context;
+        private readonly EFContextMySQL _context;
 
-        public EmbargoRepository(EFContextSQL context)
+        public SSHiringRepository(EFContextMySQL context)
         {
             _context = context;
         }
@@ -31,29 +31,27 @@ namespace SGDE.DataEFCoreSQL.Repositories
             }
         }
 
-        private bool EmbargoExists(int id)
+        private bool SSHiringExists(int id)
         {
             return GetById(id) != null;
         }
 
-        public QueryResult<Embargo> GetAll(int skip = 0, int take = 0, int userId = 0)
+        public QueryResult<SSHiring> GetAll(int skip = 0, int take = 0, int userId = 0)
         {
-            List<Embargo> data = new List<Embargo>();
+            List<SSHiring> data = new List<SSHiring>();
 
             if (userId == 0)
             {
-                data = _context.Embargo
+                data = _context.SSHiring
                     .Include(x => x.User)
-                    .Include(x => x.DetailEmbargos)
                     .OrderByDescending(x => x.StartDate)
                     .ToList();
             }
 
             if (userId != 0)
             {
-                data = _context.Embargo
+                data = _context.SSHiring
                     .Include(x => x.User)
-                    .Include(x => x.DetailEmbargos)
                     .Where(x => x.UserId == userId)
                     .OrderByDescending(x => x.StartDate)
                     .ToList();
@@ -61,50 +59,49 @@ namespace SGDE.DataEFCoreSQL.Repositories
 
             var count = data.Count;
             return (skip != 0 || take != 0)
-                ? new QueryResult<Embargo>
+                ? new QueryResult<SSHiring>
                 {
                     Data = data.Skip(skip).Take(take).ToList(),
                     Count = count
                 }
-                : new QueryResult<Embargo>
+                : new QueryResult<SSHiring>
                 {
                     Data = data.Skip(0).Take(count).ToList(),
                     Count = count
                 };
         }
 
-        public Embargo GetById(int id)
+        public SSHiring GetById(int id)
         {
-            return _context.Embargo
+            return _context.SSHiring
                 .Include(x => x.User)
-                .Include(x => x.DetailEmbargos)
                 .FirstOrDefault(x => x.Id == id);
         }
 
-        public Embargo Add(Embargo newEmbargo)
+        public SSHiring Add(SSHiring newSSHiring)
         {
-            _context.Embargo.Add(newEmbargo);
+            _context.SSHiring.Add(newSSHiring);
             _context.SaveChanges();
-            return newEmbargo;
+            return newSSHiring;
         }
 
-        public bool Update(Embargo embargo)
+        public bool Update(SSHiring sSHiring)
         {
-            if (!EmbargoExists(embargo.Id))
+            if (!SSHiringExists(sSHiring.Id))
                 return false;
 
-            _context.Embargo.Update(embargo);
+            _context.SSHiring.Update(sSHiring);
             _context.SaveChanges();
             return true;
         }
 
         public bool Delete(int id)
         {
-            if (!EmbargoExists(id))
+            if (!SSHiringExists(id))
                 return false;
 
-            var toRemove = _context.Embargo.Find(id);
-            _context.Embargo.Remove(toRemove);
+            var toRemove = _context.SSHiring.Find(id);
+            _context.SSHiring.Remove(toRemove);
             _context.SaveChanges();
             return true;
         }
