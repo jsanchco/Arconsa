@@ -16,7 +16,7 @@ import { DataManager, WebApiAdaptor, Query } from "@syncfusion/ej2-data";
 import { config, EMBARGOS, DETAILSEMBARGO } from "../../constants";
 import { L10n } from "@syncfusion/ej2-base";
 import data from "../../locales/locale.json";
-import { TOKEN_KEY } from "../../services";
+import { TOKEN_KEY, getUser } from "../../services";
 
 L10n.load(data);
 
@@ -49,6 +49,9 @@ class Embargos extends Component {
 
     this.state = {
       rowSelected: null,
+      user: {
+        fullname: null
+      }      
     };
 
     this.toolbarOptions = [
@@ -73,6 +76,7 @@ class Embargos extends Component {
     this.dataBound = this.dataBound.bind(this);
     this.clickHandlerEmbargos = this.clickHandlerEmbargos.bind(this);
     this.rowSelectedEmbargos = this.rowSelectedEmbargos.bind(this);
+    this.beforePrint = this.beforePrint.bind(this);
 
     this.format = { type: "dateTime", format: "dd/MM/yyyy" };
     this.queryEmbargos = new Query().addParams("userId", props.userId);
@@ -142,6 +146,16 @@ class Embargos extends Component {
     this.expandGridRow = null;
     this.rowSelectedEmbargos = null;
     this.rowSelectedDetailsEmbargo = null;
+  }
+
+  componentDidMount() {
+    getUser(this.props.userId).then((result) => {
+      this.setState({
+        user: {
+          fullname: result.fullname,
+        },
+      });
+    });
   }
 
   rowSelectedEmbargos() {
@@ -249,6 +263,16 @@ class Embargos extends Component {
     }
   }
 
+  beforePrint(args) {
+    var div = document.createElement("Div");
+    div.innerHTML = this.state.user.fullname;
+    div.style.textAlign = "center";
+    div.style.color = "red";
+    div.style.padding = "10px 0";
+    div.style.fontSize = "25px";
+    args.element.insertBefore(div, args.element.childNodes[0]);
+  }  
+
   render() {
     return (
       <Fragment>
@@ -284,7 +308,8 @@ class Embargos extends Component {
                 dataBound={this.dataBound}
                 // toolbarClick={this.clickHandlerEmbargos}
                 rowSelected={this.rowSelectedEmbargos}
-                allowResizing={true}
+                allowResizing={true}          
+                beforePrint={this.beforePrint}      
               >
                 <ColumnsDirective>
                   <ColumnDirective

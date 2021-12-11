@@ -21,7 +21,7 @@ import {
 } from "../../constants";
 import { loadCldr, L10n } from "@syncfusion/ej2-base";
 import data from "../../locales/locale.json";
-import { TOKEN_KEY } from "../../services";
+import { TOKEN_KEY, getUser } from "../../services";
 import ModalMassiveSigning from "../Modals/modal-massive-signing";
 import { DialogComponent } from "@syncfusion/ej2-react-popups";
 import { removeAllDailySigning } from "../../services";
@@ -76,6 +76,9 @@ class DailySignings extends Component {
       rowSelected: null,
       modal: false,
       hideConfirmDialog: false,
+      user: {
+        fullname: ""
+      }      
     };
 
     this.toolbarOptions = [
@@ -164,6 +167,16 @@ class DailySignings extends Component {
         buttonModel: { content: "No" },
       },
     ];
+  }
+
+  componentDidMount() {
+    getUser(this.props.userId).then((result) => {
+      this.setState({
+        user: {
+          fullname: result.fullname,
+        },
+      });
+    });
   }
 
   gridTemplate(args) {

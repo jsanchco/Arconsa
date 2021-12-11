@@ -78,6 +78,10 @@ namespace SGDE.Domain.Supervisor
 
         public bool DeleteEmbargo(int id)
         {
+            var embargo = _embargoRepository.GetById(id);
+            if (embargo.DetailEmbargos?.Count > 0)
+                throw new Exception("Imposible borrar este Embargo (tiene detalles asociados)");
+
             return _embargoRepository.Delete(id);
         }
     }

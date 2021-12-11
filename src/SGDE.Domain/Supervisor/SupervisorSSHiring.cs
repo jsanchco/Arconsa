@@ -39,6 +39,8 @@ namespace SGDE.Domain.Supervisor
                 UserId = newSSHiringViewModel.userId
             };
 
+            ValidateSSHiring(sSHiring);
+
             _sSHiringRepository.Add(sSHiring);
 
             return GetSSHiringById(sSHiring.Id);
@@ -61,6 +63,8 @@ namespace SGDE.Domain.Supervisor
             sSHiring.Observations = sSHiringViewModel.observations;
             sSHiring.UserId = sSHiringViewModel.userId;
 
+            ValidateSSHiring(sSHiring);
+
             return _sSHiringRepository.Update(sSHiring);
         }
 
@@ -68,5 +72,15 @@ namespace SGDE.Domain.Supervisor
         {
             return _sSHiringRepository.Delete(id);
         }
+
+        #region Auxiliary Methods
+
+        private void ValidateSSHiring(SSHiring sSHiring)
+        {
+            if (sSHiring.EndDate.HasValue && sSHiring.EndDate.Value < sSHiring.StartDate)
+                throw new Exception($"La fecha de final de un contrato no puede se menor que la de inicio");
+        }
+
+        #endregion
     }
 }

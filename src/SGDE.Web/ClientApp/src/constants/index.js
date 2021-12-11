@@ -38,6 +38,7 @@ export const PROFESSIONSBYUSER = "api/CostWorkers/getprofessionsbyuser";
 export const PROFESSIONSBYUSERID = "api/CostWorkers/getprofessionsbyuserid";
 export const EMBARGOS = "api/Embargos";
 export const DETAILSEMBARGO = "api/DetailsEmbargo";
+export const SSHIRINGS = "api/sshirings";
 export const COMPANY_DATA = "COMPANY_DATA";
 
 

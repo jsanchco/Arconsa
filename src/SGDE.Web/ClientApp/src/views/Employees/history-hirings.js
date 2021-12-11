@@ -1,11 +1,10 @@
 import React, { Component, Fragment } from "react";
-import { Row, Col } from "reactstrap";
+import { Row } from "reactstrap";
 import {
   ColumnDirective,
   ColumnsDirective,
   GridComponent,
   Inject,
-  ContextMenu,
   Page,
   Toolbar,
 } from "@syncfusion/ej2-react-grids";
@@ -18,7 +17,6 @@ import {
   getUser,
   updateUserHiringInWorkByUser
 } from "../../services";
-import Legend from "../../components/legend";
 
 L10n.load(data);
 
