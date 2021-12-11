@@ -77,7 +77,8 @@
                         workId = user.WorkId,
                         workName = user.Work?.Name,
                         clientId = user.ClientId,
-                        clientName = user.Client?.Name
+                        clientName = user.Client?.Name,
+                        hasEmbargosPending = user.Embargos.Any(x => x.Paid == false)
                     };
                     return model;
                 })

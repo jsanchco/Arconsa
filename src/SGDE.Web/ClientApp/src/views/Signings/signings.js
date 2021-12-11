@@ -41,7 +41,7 @@ import { Query } from "@syncfusion/ej2-data";
 import { AppSwitch } from "@coreui/react";
 import { connect } from "react-redux";
 import ACTION_APPLICATION from "../../actions/applicationAction";
-import { L10n } from "@syncfusion/ej2-base";
+import { L10n, getValue } from "@syncfusion/ej2-base";
 import data from "../../locales/locale.json";
 
 L10n.load(data);
@@ -107,6 +107,20 @@ class Signings extends Component {
     ];
 
     this.toolbarOptions = ["Add", "Edit", "Delete", "Update", "Cancel"];
+    this.toolbarOptionsGridResult = [ 
+      "Add", 
+      "Edit", 
+      {
+        text: "Borrar Seleccionados",
+        tooltipText: "Borrar registros seleccionados",
+        prefixIcon: "e-custom-icons e-remove",
+        id: "RemoveAll",
+      }, 
+   // "Delete", 
+      "Update", 
+      "Cancel"
+    ];
+
     this.editSettings = {
       showDeleteConfirmDialog: true,
       allowEditing: true,
@@ -117,6 +131,7 @@ class Signings extends Component {
     this.hourTypeIdRules = { required: true };
 
     this.animationSettings = { effect: "None" };
+
     this.handleOnClickView = this.handleOnClickView.bind(this);
     this.handleOnClickSave = this.handleOnClickSave.bind(this);
     this.viewMassiveSigning = this.viewMassiveSigning.bind(this);
@@ -129,8 +144,10 @@ class Signings extends Component {
     this.handleSelectEmployee = this.handleSelectEmployee.bind(this);
     this.rowSelected = this.rowSelected.bind(this);
     this.actionBegin = this.actionBegin.bind(this);
+    this.actionComplete = this.actionComplete.bind(this);
     this.footerSumHours = this.footerSumHours.bind(this);
-    //    this.formatDateEU = this.formatDateEU.bind(this);
+    this.rowDataBoundGridResult = this.rowDataBoundGridResult.bind(this);
+    this.clickHandlerGridResult = this.clickHandlerGridResult.bind(this);
 
     this.changeHourType = { params: { change: this.changeHour.bind(this) } };
     this.format = { type: "dateTime", format: "dd/MM/yyyy HH:mm" };
@@ -271,6 +288,12 @@ class Signings extends Component {
   dialogClose() {
     this.setState({
       hideConfirmDialog: false,
+    });
+  }
+
+  dialogCloseDeleteAll() {
+    this.setState({
+      hideConfirmDialogDeleteAll: false,
     });
   }
 
@@ -431,6 +454,11 @@ class Signings extends Component {
   // }
 
   actionBegin(args) {
+    if (args.requestType === "add") {
+      let values = this.gridResult.dataSource.map((a) => a.id);
+      args.data.id = Math.max(...values) + 1;
+    }
+
     if (args.requestType === "save" && args.data.hourTypeId === 5) {
       args.data.startHour = new Date(
         args.data.startHour.getFullYear(),
@@ -447,14 +475,74 @@ class Signings extends Component {
       const milliseconds = Math.abs(args.data.startHour - args.data.endHour);
       const hours = milliseconds / 36e5;
       args.data.totalHours = hours;
-
+    
       // this.gridResult.dataSource[args.index].startHour = args.data.startHour;
       // this.gridResult.dataSource[args.index].endHour = args.data.endHour;
     }
   }
 
+  actionComplete(args) {
+    if (args.requestType === "save") {
+      this.gridResult.dataSource.sort(function(a,b){
+        let aDate;
+        if (a.startHour instanceof Date) {
+          aDate = a.startHour;
+        } else {
+          aDate = new Date(a.startHour);
+        }
+        let bDate;
+        if (b.startHour instanceof Date) {
+          bDate = a.startHour;
+        } else {
+          bDate = new Date(b.startHour);
+        }
+        return aDate - bDate;
+      });
+      this.gridResult.refresh();
+    }
+  }
+
   footerSumHours(args) {
     return <span>Total: {args.Sum} horas</span>;
+  }
+
+  rowDataBoundGridResult(args) {
+    if (args.row) {
+      var dataStartHour = getValue("startHour", args.data);
+      var startDate = new Date(dataStartHour);
+      switch (startDate.getDay()) {
+        case 0:
+        case 6:
+          args.row.classList.add("color-green");
+          break;
+
+        default:
+          break;
+      }
+    }
+  }
+
+  clickHandlerGridResult(args) {
+    if (args.item.id === "RemoveAll") {
+      const selectedRecords = this.gridResult.getSelectedRecords();
+      if (Array.isArray(selectedRecords) && selectedRecords.length > 0) {
+        let values = selectedRecords.map((a) => a.id);
+        let newDataSource = [];
+        for (let index = 0; index < this.gridResult.dataSource.length; index++) {
+          if (!values.includes(this.gridResult.dataSource[index].id)) {
+            newDataSource.push(this.gridResult.dataSource[index]);
+          }
+        }
+        this.gridResult.dataSource = newDataSource;
+        this.gridResult.refresh();
+      } else {
+        this.props.showMessage({
+          statusText: "Debes seleccionar al menos un registro",
+          responseText: "Debes seleccionar al menos un registro",
+          type: "danger",
+        });
+      }
+    }
   }
 
   render() {
@@ -676,7 +764,7 @@ class Signings extends Component {
                     //dataSource={this.state.dsGridResult}
                     dataSource={null}
                     locale="es"
-                    toolbar={this.toolbarOptions}
+                    toolbar={this.toolbarOptionsGridResult}
                     style={{
                       marginLeft: 20,
                       marginRight: 50,
@@ -686,8 +774,15 @@ class Signings extends Component {
                     ref={(gResult) => (this.gridResult = gResult)}
                     editSettings={this.editSettings}
                     actionBegin={this.actionBegin}
+                    actionComplete={this.actionComplete}
+                    rowDataBound={this.rowDataBoundGridResult}
+                    toolbarClick={this.clickHandlerGridResult}
                   >
                     <ColumnsDirective>
+                      <ColumnDirective
+                        type="checkbox"
+                        width="50"
+                      ></ColumnDirective>
                       <ColumnDirective
                         field="hourTypeId"
                         headerText="Tipo"

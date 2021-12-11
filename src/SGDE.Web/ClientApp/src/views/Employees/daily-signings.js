@@ -166,10 +166,6 @@ class DailySignings extends Component {
     ];
   }
 
-  beforeOpen(args) {
-    console.log("Hola");
-  }
-
   gridTemplate(args) {
     if (args.file !== null && args.file !== "") {
       return (

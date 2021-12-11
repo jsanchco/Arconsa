@@ -153,6 +153,7 @@
 
         public (List<DailySigningViewModel> dailiesSigningsViewModel, bool fails) ViewMassiveSigning(MassiveSigningQueryViewModel massiveSigningQueryViewModel)
         {
+            var id = 1;
             var result = new List<DailySigning>();
             var fail = false;
 
@@ -216,11 +217,14 @@
 
                     if (_dailySigningRepository.ValidateDalilySigning(dailySigning))
                     {
+                        dailySigning.Id = id;
                         result.Add(dailySigning);
+
+                        id++;
                     }
                     else
                     {
-                        fail = true;
+                        throw new Exception("Fichajes mal configurados. Revisa que entre los días configurados existan fichajes ya realizados");
                     }
                 }
                 actualDay = actualDay.AddDays(1);

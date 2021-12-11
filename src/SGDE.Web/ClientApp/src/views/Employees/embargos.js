@@ -10,6 +10,7 @@ import {
   DetailRow,
   Aggregate,
   parentsUntil,
+  Resize
 } from "@syncfusion/ej2-react-grids";
 import { DataManager, WebApiAdaptor, Query } from "@syncfusion/ej2-data";
 import { config, EMBARGOS, DETAILSEMBARGO } from "../../constants";
@@ -283,6 +284,7 @@ class Embargos extends Component {
                 dataBound={this.dataBound}
                 // toolbarClick={this.clickHandlerEmbargos}
                 rowSelected={this.rowSelectedEmbargos}
+                allowResizing={true}
               >
                 <ColumnsDirective>
                   <ColumnDirective
@@ -362,7 +364,7 @@ class Embargos extends Component {
                     visible={false}
                   />
                 </ColumnsDirective>
-                <Inject services={[Toolbar, Edit, DetailRow, Aggregate]} />
+                <Inject services={[Toolbar, Edit, DetailRow, Aggregate, Resize]} />
               </GridComponent>
             </Row>
           </div>

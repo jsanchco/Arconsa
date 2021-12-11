@@ -75,13 +75,13 @@ class Employees extends Component {
       allowDeleting: true,
       newRowPosition: "Top",
     };
-    this.pageSettings = { 
-      pageCount: 10, 
-      pageSize: 10, 
-      currentPage: props.currentPageEmployees 
+    this.pageSettings = {
+      pageCount: 10,
+      pageSize: 10,
+      currentPage: props.currentPageEmployees,
     };
-    this.searchSettings = { 
-      key: props.currentSearchEmployees
+    this.searchSettings = {
+      key: props.currentSearchEmployees,
     };
     this.actionFailure = this.actionFailure.bind(this);
     this.actionComplete = this.actionComplete.bind(this);
@@ -92,6 +92,7 @@ class Employees extends Component {
     this.template = this.gridTemplate.bind(this);
     // this.tooltip = this.tooltip.bind(this);
     this.dataBound = this.dataBound.bind(this);
+    this.hasEmbargo =this.hasEmbargo.bind(this);
 
     this.format = { type: "dateTime", format: "dd/MM/yyyy" };
 
@@ -103,33 +104,26 @@ class Employees extends Component {
     this.props.setCurrentSearchEmployees(this.grid.searchSettings.key);
   }
 
+  hasEmbargo(args) {
+    if (args.hasEmbargosPending) {
+      return (<span id={"user-" + args.id} title="Tiene embargo(s) pendiente(s)" className="dot-small-red"></span>);
+    }
+    return null;
+  }
+
   gridTemplate(args) {
-    // let color = "";
-    // switch (args.state) {
-    //   case 0:
-    //     color = "dot-small-green";
-    //     break;
-    //   case 1:
-    //     color = "dot-small-red";
-    //     break;
-
-    //   default:
-    //     color = "dot-small-green";
-    //     break;
-    // }
-
     if (args.photo !== null && args.photo !== "") {
       const src = "data:image/png;base64," + args.photo;
       return (
         <div className="image">
-          {/* <span id={"user-" + args.id} className={color}></span> */}
+          {this.hasEmbargo(args)}
           <img src={src} alt={args.name} width="100px" height="100px" />
         </div>
       );
     } else {
       return (
         <div className="image">
-          {/* <span id={"user-" + args.id} className={color}></span> */}
+          {this.hasEmbargo(args)}
           <img
             src={"assets/img/avatars/user_no_photo.png"}
             alt={args.name}
@@ -242,7 +236,9 @@ class Employees extends Component {
       <Fragment>
         <Breadcrumb>
           {/*eslint-disable-next-line*/}
-          <BreadcrumbItem><a href="#">Inicio</a></BreadcrumbItem>
+          <BreadcrumbItem>
+            <a href="#">Inicio</a>
+          </BreadcrumbItem>
           {/* eslint-disable-next-line*/}
           <BreadcrumbItem active>Trabajadores</BreadcrumbItem>
         </Breadcrumb>
@@ -262,7 +258,7 @@ class Employees extends Component {
                   locale="es"
                   allowPaging={true}
                   pageSettings={this.pageSettings}
-                  searchSettings={this.searchSettings} 
+                  searchSettings={this.searchSettings}
                   toolbar={this.toolbarOptions}
                   toolbarClick={this.clickHandler}
                   editSettings={this.editSettings}
@@ -390,14 +386,18 @@ const mapStateToProps = (state) => {
   return {
     errorApplication: state.applicationReducer.error,
     currentPageEmployees: state.applicationReducer.currentPageEmployees,
-    currentSearchEmployees: state.applicationReducer.currentSearchEmployees
+    currentSearchEmployees: state.applicationReducer.currentSearchEmployees,
   };
 };
 
 const mapDispatchToProps = (dispatch) => ({
   showMessage: (message) => dispatch(ACTION_APPLICATION.showMessage(message)),
-  setCurrentPageEmployees: (currentPageEmployees) => dispatch(ACTION_APPLICATION.setCurrentPageEmployees(currentPageEmployees)),
-  setCurrentSearchEmployees: (currentSearchEmployees) => dispatch(ACTION_APPLICATION.setCurrentSearchEmployees(currentSearchEmployees))
+  setCurrentPageEmployees: (currentPageEmployees) =>
+    dispatch(ACTION_APPLICATION.setCurrentPageEmployees(currentPageEmployees)),
+  setCurrentSearchEmployees: (currentSearchEmployees) =>
+    dispatch(
+      ACTION_APPLICATION.setCurrentSearchEmployees(currentSearchEmployees)
+    ),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Employees);
