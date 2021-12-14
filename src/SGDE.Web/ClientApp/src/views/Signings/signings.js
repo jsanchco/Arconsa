@@ -468,8 +468,9 @@ class Signings extends Component {
       args.data.endHour = null;
       args.data.totalHours = null;
 
-      // this.gridResult.dataSource[args.rowIndex].startHour = args.data.startHour;
-      // this.gridResult.dataSource[args.rowIndex].endHour = null;
+      // this.gridResult.dataSource[args.index].startHour = args.data.startHour;
+      // this.gridResult.dataSource[args.index].endHour = null;
+      // this.gridResult.dataSource[args.index].hourTypeId = args.data.hourTypeId;
     }
     if (args.requestType === "save" && args.data.hourTypeId !== 5) {
       const milliseconds = Math.abs(args.data.startHour - args.data.endHour);
@@ -478,28 +479,29 @@ class Signings extends Component {
     
       // this.gridResult.dataSource[args.index].startHour = args.data.startHour;
       // this.gridResult.dataSource[args.index].endHour = args.data.endHour;
+      // this.gridResult.dataSource[args.index].hourTypeId = args.data.hourTypeId;
     }
   }
 
   actionComplete(args) {
-    if (args.requestType === "save") {
-      this.gridResult.dataSource.sort(function(a,b){
-        let aDate;
-        if (a.startHour instanceof Date) {
-          aDate = a.startHour;
-        } else {
-          aDate = new Date(a.startHour);
-        }
-        let bDate;
-        if (b.startHour instanceof Date) {
-          bDate = a.startHour;
-        } else {
-          bDate = new Date(b.startHour);
-        }
-        return aDate - bDate;
-      });
-      this.gridResult.refresh();
-    }
+    // if (args.requestType === "save") {
+    //   this.gridResult.dataSource.sort(function(a,b){
+    //     let aDate;
+    //     if (a.startHour instanceof Date) {
+    //       aDate = a.startHour;
+    //     } else {
+    //       aDate = new Date(a.startHour);
+    //     }
+    //     let bDate;
+    //     if (b.startHour instanceof Date) {
+    //       bDate = a.startHour;
+    //     } else {
+    //       bDate = new Date(b.startHour);
+    //     }
+    //     return bDate - aDate;
+    //   });
+      //this.gridResult.refresh();
+    // }
   }
 
   footerSumHours(args) {

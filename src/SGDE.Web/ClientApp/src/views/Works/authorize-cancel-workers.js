@@ -18,7 +18,6 @@ import {
   getUser, 
   updateUserHiringInWorkByUser
  } from "../../services";
-import Legend from "../../components/legend";
 
 L10n.load(data);
 

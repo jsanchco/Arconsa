@@ -3,6 +3,7 @@
     #region Using
 
     using SGDE.Domain.Entities;
+    using System.Collections.Generic;
     using System.Linq;
 
     #endregion
@@ -61,6 +62,19 @@
             //    _userHiringRepository.Update(item);
             //}
 
+            //foreach (var user in _userRepository.GetAll(0, 0, null, null, new List<int> { 3 }).Data)
+            //{
+            //    var firstDailySigning = _dailySigningRepository.GetAll(userId: user.Id).Data.OrderBy(x => x.StartHour).FirstOrDefault();
+            //    if (firstDailySigning == null)
+            //        continue;
+
+            //    _sSHiringRepository.Add(new SSHiring
+            //    {
+            //        AddedDate = System.DateTime.Now,
+            //        StartDate = firstDailySigning.StartHour.Value,
+            //        UserId = user.Id
+            //    });
+            //}
         }
     }
 }

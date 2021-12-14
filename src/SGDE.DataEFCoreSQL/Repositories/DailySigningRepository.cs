@@ -93,7 +93,7 @@
                 .Include(x => x.Profession)
                 .Include(r => r.UserHiring)
                 .ThenInclude(s => s.Profession)
-                .Where(x => x.UserHiring.User.Id == userId)
+                .Where(x => x.UserHiring.UserId == userId)
                 .OrderBy(x => x.StartHour)
                 .ToList();
         }
@@ -109,9 +109,9 @@
                 .Include(x => x.Profession)
                 .Include(r => r.UserHiring)
                 .ThenInclude(s => s.Profession)
-                .Where(x => x.UserHiring.Work.Id == workId)
-                .OrderBy(x => x.StartHour)
-                .OrderBy(x => x.UserHiring.WorkId)
+                .Where(x => x.UserHiring.WorkId == workId)
+                .OrderByDescending(x => x.StartHour)
+                .OrderBy(x => x.UserHiring.UserId)            
                 .ToList();
         }
 
