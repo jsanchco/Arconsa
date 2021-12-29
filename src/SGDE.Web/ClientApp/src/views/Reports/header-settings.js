@@ -210,6 +210,7 @@ class HeaderSettings extends Component {
             ref={(g) => (this.ddl = g)}
             filtering={this._handleFiltering.bind(this)}
             allowFiltering={true}
+            popupWidth="auto"
           />
         </FormGroup>
         <Button
