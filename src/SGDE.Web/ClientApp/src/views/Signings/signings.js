@@ -31,6 +31,7 @@ import {
   AggregateColumnDirective,
   AggregateDirective,
   AggregatesDirective,
+  Sort
 } from "@syncfusion/ej2-react-grids";
 import {
   createSpinner,
@@ -459,49 +460,57 @@ class Signings extends Component {
       args.data.id = Math.max(...values) + 1;
     }
 
+    // if (args.requestType === "save" && args.data.hourTypeId === 5) {
+    //   args.data.startHour = new Date(
+    //     args.data.startHour.getFullYear(),
+    //     args.data.startHour.getMonth(),
+    //     args.data.startHour.getDate()
+    //   );
+    //   args.data.endHour = null;
+    //   args.data.totalHours = null;
+
+    //   // this.gridResult.dataSource[args.index].startHour = args.data.startHour;
+    //   // this.gridResult.dataSource[args.index].endHour = null;
+    //   // this.gridResult.dataSource[args.index].hourTypeId = args.data.hourTypeId;
+    // }
+    // if (args.requestType === "save" && args.data.hourTypeId !== 5) {
+    //   // const milliseconds = Math.abs(args.data.startHour - args.data.endHour);
+    //   // const hours = milliseconds / 36e5;
+    //   // args.data.totalHours = hours;
+    
+    //   this.gridResult.dataSource[args.data.id - 1].startHour = args.data.startHour;
+    //   this.gridResult.dataSource[args.data.id - 1].endHour = args.data.endHour;
+    //   this.gridResult.dataSource[args.data.id - 1].hourTypeId = args.data.hourTypeId;
+    // }
+  }
+
+  actionComplete(args) {
     if (args.requestType === "save" && args.data.hourTypeId === 5) {
       args.data.startHour = new Date(
         args.data.startHour.getFullYear(),
         args.data.startHour.getMonth(),
         args.data.startHour.getDate()
       );
-      args.data.endHour = null;
-      args.data.totalHours = null;
 
-      // this.gridResult.dataSource[args.index].startHour = args.data.startHour;
-      // this.gridResult.dataSource[args.index].endHour = null;
-      // this.gridResult.dataSource[args.index].hourTypeId = args.data.hourTypeId;
+      let record = this.gridResult.dataSource.find(x => x.id === args.data.id);
+      if (record != null) {
+        record.startHour = args.data.startHour;
+        record.endHour = null;
+      }
     }
     if (args.requestType === "save" && args.data.hourTypeId !== 5) {
-      const milliseconds = Math.abs(args.data.startHour - args.data.endHour);
-      const hours = milliseconds / 36e5;
-      args.data.totalHours = hours;
-    
-      // this.gridResult.dataSource[args.index].startHour = args.data.startHour;
-      // this.gridResult.dataSource[args.index].endHour = args.data.endHour;
-      // this.gridResult.dataSource[args.index].hourTypeId = args.data.hourTypeId;
-    }
-  }
+      let record = this.gridResult.dataSource.find(x => x.id === args.data.id);
+      if (record != null) {
+        record.startHour = args.data.startHour;
+        record.endHour = args.data.endHour;
 
-  actionComplete(args) {
-    // if (args.requestType === "save") {
-    //   this.gridResult.dataSource.sort(function(a,b){
-    //     let aDate;
-    //     if (a.startHour instanceof Date) {
-    //       aDate = a.startHour;
-    //     } else {
-    //       aDate = new Date(a.startHour);
-    //     }
-    //     let bDate;
-    //     if (b.startHour instanceof Date) {
-    //       bDate = a.startHour;
-    //     } else {
-    //       bDate = new Date(b.startHour);
-    //     }
-    //     return bDate - aDate;
-    //   });
-      //this.gridResult.refresh();
-    // }
+        const milliseconds = Math.abs(record.endHour - record.startHour);
+        record.totalHours = milliseconds / 36e5;
+      }
+    }
+    if (args.requestType === "save") {
+      this.gridResult.sortColumn("startHour", "Ascending");
+    }
   }
 
   footerSumHours(args) {
@@ -766,6 +775,7 @@ class Signings extends Component {
                     //dataSource={this.state.dsGridResult}
                     dataSource={null}
                     locale="es"
+                    allowSorting={true}
                     toolbar={this.toolbarOptionsGridResult}
                     style={{
                       marginLeft: 20,
@@ -841,7 +851,7 @@ class Signings extends Component {
                       </AggregateDirective>
                     </AggregatesDirective>
 
-                    <Inject services={[ForeignKey, Aggregate]} />
+                    <Inject services={[ForeignKey, Aggregate, Sort]} />
                   </GridComponent>
                 </Row>
                 <Row>
