@@ -167,7 +167,10 @@ class GridSelection extends Component {
   }
 
   footerSumEuros(args) {
-    return <span>Total: {args.Sum}€</span>;
+    let amount = Number(args.Sum);
+    amount = Math.round((amount + Number.EPSILON) * 100) / 100;
+
+    return <span>Total: {amount}€</span>;
   }
 
   renderWorker() {
