@@ -19,8 +19,7 @@
         Task<User> AddAsync(User newUser, CancellationToken ct = default(CancellationToken));
         Task<bool> UpdateAsync(User user, CancellationToken ct = default(CancellationToken));
         Task<bool> DeleteAsync(int id, CancellationToken ct = default(CancellationToken));
-
-        QueryResult<User> GetAll(int skip = 0, int take = 0, string orderBy = null, string filter = null, List<int> roles = null);
+        QueryResult<User> GetAll(int skip = 0, int take = 0, string orderBy = null, string filter = null, List<int> roles = null, bool showAllEmployees = true);
         List<User> GetUsersByRole(List<int> roles);
         User GetById(int id);
         User Add(User newUser);

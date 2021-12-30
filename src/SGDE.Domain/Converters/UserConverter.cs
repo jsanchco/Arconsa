@@ -42,7 +42,8 @@
                 workName = user.Work?.Name,
                 clientId = user.ClientId,
                 clientName = user.Client?.Name,
-                hasEmbargosPending = user.Embargos.Any(x => x.Paid == false)
+                hasEmbargosPending = user.Embargos.Any(x => x.Paid == false),
+                isActuallyWorking = user.SSHirings.Any(x => x.StartDate != null && x.EndDate == null)
             };
 
             return userViewModel;
@@ -78,7 +79,8 @@
                         workName = user.Work?.Name,
                         clientId = user.ClientId,
                         clientName = user.Client?.Name,
-                        hasEmbargosPending = user.Embargos.Any(x => x.Paid == false)
+                        hasEmbargosPending = user.Embargos.Any(x => x.Paid == false),
+                        isActuallyWorking = user.SSHirings.Any(x => x.EndDate == null)
                     };
                     return model;
                 })

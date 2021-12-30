@@ -108,7 +108,13 @@
             return true;
         }
 
-        public QueryResult<User> GetAll(int skip = 0, int take = 0, string orderBy = null, string filter = null, List<int> roles = null)
+        public QueryResult<User> GetAll(
+            int skip = 0,
+            int take = 0,
+            string orderBy = null,
+            string filter = null,
+            List<int> roles = null,
+            bool showAllEmployees = true)
         {
             List<User> data;
 
@@ -125,15 +131,28 @@
             }
             else
             {
-                data = _context.User
-                            .Include(x => x.Role)
-                            .Include(x => x.Client)
-                            .Include(x => x.Work)
-                            .Include(x => x.Embargos)
-                            .Include(x => x.UserProfessions)
-                            .ThenInclude(y => y.Profession)
-                            .Where(x => roles.Contains(x.RoleId))
-                            .ToList();
+                data = showAllEmployees
+                    ? _context.User
+                                .Include(x => x.Role)
+                                .Include(x => x.Client)
+                                .Include(x => x.Work)
+                                .Include(x => x.Embargos)
+                                .Include(x => x.UserProfessions)
+                                .ThenInclude(y => y.Profession)
+                                .Include(x => x.SSHirings)
+                                .Where(x => roles.Contains(x.RoleId))
+                                .ToList()
+                    : _context.User
+                                .Include(x => x.Role)
+                                .Include(x => x.Client)
+                                .Include(x => x.Work)
+                                .Include(x => x.Embargos)
+                                .Include(x => x.UserProfessions)
+                                .ThenInclude(y => y.Profession)
+                                .Include(x => x.SSHirings)
+                                .Where(x => roles.Contains(x.RoleId) &&
+                                       (!x.SSHirings.Any(y => y.EndDate == null) && x.SSHirings.Count > 0))
+                                .ToList();
             }
 
             if (!string.IsNullOrEmpty(filter))
@@ -200,6 +219,7 @@
                 .Include(x => x.Work)
                 .Include(x => x.UserProfessions)
                 .ThenInclude(y => y.Profession)
+                .Include(x => x.SSHirings)
                 .Where(x => roles.Contains(x.RoleId))
                 .ToList();
         }
@@ -213,6 +233,7 @@
                 .Include(x => x.UserHirings)
                 .Include(x => x.UserProfessions)
                 .ThenInclude(y => y.Profession)
+                .Include(x => x.SSHirings)
                 .FirstOrDefault(x => x.Id == id);
         }
 

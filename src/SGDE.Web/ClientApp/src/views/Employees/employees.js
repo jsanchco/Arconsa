@@ -1,5 +1,13 @@
 import React, { Component, Fragment } from "react";
-import { Breadcrumb, BreadcrumbItem, Container, Row } from "reactstrap";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  Container,
+  Row,
+  Col,
+  FormGroup,
+  Label
+} from "reactstrap";
 // import { getValue } from "@syncfusion/ej2-base";
 import {
   ColumnDirective,
@@ -22,6 +30,7 @@ import data from "../../locales/locale.json";
 import { connect } from "react-redux";
 import ACTION_APPLICATION from "../../actions/applicationAction";
 import { TOKEN_KEY } from "../../services";
+import { AppSwitch } from "@coreui/react";
 
 L10n.load(data);
 
@@ -51,6 +60,7 @@ class Employees extends Component {
       professions: null,
       roles: null,
       rowSelected: null,
+      showAllEmployees: true
     };
 
     this.toolbarOptions = [
@@ -92,11 +102,17 @@ class Employees extends Component {
     this.template = this.gridTemplate.bind(this);
     // this.tooltip = this.tooltip.bind(this);
     this.dataBound = this.dataBound.bind(this);
-    this.hasEmbargo =this.hasEmbargo.bind(this);
+    this.hasEmbargo = this.hasEmbargo.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this);
 
     this.format = { type: "dateTime", format: "dd/MM/yyyy" };
 
-    this.query = new Query().addParams("roles", [3]);
+    this.query = new Query()
+      .addParams("roles", [3])
+      .addParams(
+        "showAllEmployees",
+        this.state.showAllEmployees
+      );
   }
 
   dataBound() {
@@ -106,7 +122,13 @@ class Employees extends Component {
 
   hasEmbargo(args) {
     if (args.hasEmbargosPending) {
-      return (<span id={"user-" + args.id} title="Tiene embargo(s) pendiente(s)" className="dot-small-red"></span>);
+      return (
+        <span
+          id={"user-" + args.id}
+          title="Tiene embargo(s) pendiente(s)"
+          className="dot-small-red"
+        ></span>
+      );
     }
     return null;
   }
@@ -231,6 +253,39 @@ class Employees extends Component {
   //   }
   // }
 
+  handleInputChange(event) {
+    const target = event.target;
+    const name = target.name;
+
+    if (name === "allEmployees") {
+      this.setState({
+        showAllEmployees: !target.checked,
+      });
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.showAllEmployees !== this.state.showAllEmployees) {
+      console.log("showAllEmployees -> ", this.state.showAllEmployees);
+      this.grid.query = new Query()
+        .addParams("roles", [3])
+        .addParams(
+          "showAllEmployees",
+          this.state.showAllEmployees
+        );
+      this.grid.refresh();
+    }
+
+    // if (this.enablePersistence === true) {
+    //   this.enablePersistence = false;
+    //   var stateGrid = window.localStorage.getItem("gridWorks");
+    //   if (stateGrid !== null && stateGrid !== undefined) {
+    //     var model = JSON.parse(stateGrid);
+    //     this.grid.setProperties(model);
+    //   }
+    // }
+  }
+
   render() {
     return (
       <Fragment>
@@ -250,6 +305,41 @@ class Employees extends Component {
                 <i className="icon-list"></i> Trabajadores
               </div>
               <div className="card-body"></div>
+
+              <div
+                style={{
+                  marginLeft: "35px",
+                  marginTop: "-20px",
+                  marginBottom: "30px",
+                }}
+              >
+                <Row>
+                  <Col xs="9">
+                  </Col>
+                  <Col xs="3">
+                    <FormGroup style={{ marginTop: -20 }}>
+                      <Label
+                        htmlFor="allEmployees"
+                        style={{ verticalAlign: "bottom" }}
+                      >
+                        Mostrar todos los trabajadores&nbsp;
+                      </Label>
+                      <AppSwitch
+                        className={"mx-1 mt-4"}
+                        variant={"pill"}
+                        color={"primary"}
+                        label
+                        id="allEmployees"
+                        name="allEmployees"
+                        placeholder="Mostrar todos los trabajadores"
+                        onChange={this.handleInputChange}
+                        dataOn="No"
+                        dataOff="Si"
+                      />
+                    </FormGroup>
+                  </Col>
+                </Row>
+              </div>
 
               <Row>
                 <GridComponent

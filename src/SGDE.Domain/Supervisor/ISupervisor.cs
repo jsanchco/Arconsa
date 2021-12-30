@@ -22,8 +22,7 @@ namespace SGDE.Domain.Supervisor
         Task<UserViewModel> AddUserAsync(UserViewModel newUserViewModel, CancellationToken ct = default(CancellationToken));
         Task<bool> UpdateUserAsync(UserViewModel userViewModel, CancellationToken ct = default(CancellationToken));
         Task<bool> DeleteUserAsync(int id, CancellationToken ct = default(CancellationToken));
-
-        QueryResult<UserViewModel> GetAllUsers(int skip = 0, int take = 0, string orderBy= null, string filter = null, List<int> roles = null);
+        QueryResult<UserViewModel> GetAllUsers(int skip = 0, int take = 0, string orderBy= null, string filter = null, List<int> roles = null, bool showAllEmployees = true);
         UserViewModel GetUserById(int id);
         UserViewModel AddUser(UserViewModel newUserViewModel);
         bool UpdateUser(UserViewModel userViewModel);

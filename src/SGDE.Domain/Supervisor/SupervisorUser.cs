@@ -88,9 +88,15 @@ namespace SGDE.Domain.Supervisor
             return await _userRepository.DeleteAsync(id, ct);
         }
 
-        public QueryResult<UserViewModel> GetAllUsers(int skip = 0, int take = 0, string orderBy = null, string filter = null, List<int> roles = null)
+        public QueryResult<UserViewModel> GetAllUsers(
+            int skip = 0, 
+            int take = 0, 
+            string orderBy = null, 
+            string filter = null, 
+            List<int> roles = null, 
+            bool showAllEmployees = true)
         {
-            var queryResult = _userRepository.GetAll(skip, take, orderBy, filter, roles);
+            var queryResult = _userRepository.GetAll(skip, take, orderBy, filter, roles, showAllEmployees);
             var data = UserConverter.ConvertList(queryResult.Data);
             foreach(var item in data)
             {

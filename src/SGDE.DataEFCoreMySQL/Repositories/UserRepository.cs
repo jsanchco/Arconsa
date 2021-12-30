@@ -102,7 +102,13 @@
             return true;
         }
 
-        public QueryResult<User> GetAll(int skip = 0, int take = 0, string orderBy = null, string filter = null, List<int> roles = null)
+        public QueryResult<User> GetAll(
+            int skip = 0, 
+            int take = 0, 
+            string orderBy = null, 
+            string filter = null, 
+            List<int> roles = null,
+            bool showAllEmployees = true)
         {
             List<User> data;
 
@@ -122,9 +128,12 @@
                             .Include(x => x.Role)
                             .Include(x => x.Client)
                             .Include(x => x.Work)
+                            .Include(x => x.Embargos)
                             .Include(x => x.UserProfessions)
                             .ThenInclude(y => y.Profession)
-                            .Where(x => roles.Contains(x.RoleId))
+                            .Include(x => x.SSHirings)
+                            .Where(x => roles.Contains(x.RoleId) &&
+                                   x.SSHirings.Any(y => y.StartDate != null && y.EndDate == null) != showAllEmployees)
                             .ToList();
             }
 
