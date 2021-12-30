@@ -69,7 +69,8 @@ class GridInvoice extends Component {
         tooltipText: "Anular Factura",
         prefixIcon: "e-custom-icons e-empty",
         id: "CancelInvoice",
-      }
+      },
+      "Search"
     ];
     if (props.showViewInvoice === true) {
       this.toolbarOptions.push({
