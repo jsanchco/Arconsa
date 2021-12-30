@@ -58,7 +58,9 @@ class WorksByClient extends Component {
     this.openTemplate = this.openTemplate.bind(this);
     this.dateTemplate = this.dateTemplate.bind(this);
 
-    this.query = new Query().addParams("clientId", props.clientId);
+    this.query = new Query()
+      .addParams("clientId", props.clientId)
+      .addParams("showCloseWorks", true);
   }
 
   openTemplate(args) {
