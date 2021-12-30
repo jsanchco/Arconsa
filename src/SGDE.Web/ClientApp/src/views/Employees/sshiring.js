@@ -203,7 +203,7 @@ class SSHirings extends Component {
                   />
                   <ColumnDirective
                     field="observations"
-                    headerText="Obsercaciones"
+                    headerText="Observaciones"
                     width="200"
                   />
                   <ColumnDirective
