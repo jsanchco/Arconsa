@@ -118,6 +118,8 @@
                 inWork = !dailySignings[0].UserHiring.EndDate.HasValue
             };
 
+            //PrintDailySignings(dailySignings);
+
             foreach (var dailySigning in dailySignings)
             {
                 if (dailySigning.UserHiring.UserId != historyHiringViewModel.userId)
@@ -134,8 +136,8 @@
                         clientId = dailySigning.UserHiring.Work.Client.Id,
                         clientName = dailySigning.UserHiring.Work.Client.Name,
 
-                        professionId = dailySigning.UserHiring.Profession == null ? 
-                            0 : 
+                        professionId = dailySigning.UserHiring.Profession == null ?
+                            0 :
                             dailySigning.UserHiring.Profession.Id,
 
                         professionName = dailySigning.UserHiring.Profession?.Name,
@@ -180,6 +182,17 @@
             userHiring.InWork = !historyHiringViewModel.dtEndDate.HasValue;
 
             return _userHiringRepository.Update(userHiring);
+        }
+
+        private void PrintDailySignings(List<DailySigning> dailySignings)
+        {
+            foreach (var dailySigning in dailySignings)
+            {
+                if (dailySigning.EndHour.HasValue)
+                    System.Diagnostics.Debug.WriteLine($"{dailySigning.UserHiring.User.Name};{dailySigning.UserHiring.Id};{dailySigning.StartHour.Value:dd/MM/yyyy HHH:mm};{dailySigning.EndHour.Value:dd/MM/yyyy HHH:mm};");
+                else
+                    System.Diagnostics.Debug.WriteLine($"{dailySigning.UserHiring.User.Name};{dailySigning.UserHiring.Id};{dailySigning.StartHour.Value:dd/MM/yyyy HHH:mm};NULL");
+            }
         }
     }
 }
