@@ -65,7 +65,9 @@
                 }
                 else
                 {
-                    historyHiringViewModel.dtEndDate = dailySigning.EndHour;
+                    historyHiringViewModel.dtEndDate = dailySigning.HourTypeId != 5 ?
+                        historyHiringViewModel.dtEndDate = dailySigning.EndHour :
+                        historyHiringViewModel.dtEndDate = dailySigning.StartHour;
                 }
             }
             if (historyHiringViewModel.inWork == true && !historyHiringViewModel.dtEndDate.HasValue)
@@ -148,7 +150,9 @@
                 }
                 else
                 {
-                    historyHiringViewModel.dtEndDate = dailySigning.EndHour;
+                    historyHiringViewModel.dtEndDate = dailySigning.HourTypeId != 5 ?
+                        historyHiringViewModel.dtEndDate = dailySigning.EndHour :
+                        historyHiringViewModel.dtEndDate = dailySigning.StartHour;
                 }
             }
             if (historyHiringViewModel.inWork == true && !historyHiringViewModel.dtEndDate.HasValue)
