@@ -131,12 +131,12 @@ class DailySignings extends Component {
     this.editProfessions = {
       params: {
         query: new Query().addParams("userId", props.userId),
-        idth: "auto"
+        popupWidth: "auto"
       }
     };
     this.editWorks = {
       params: {
-        idth: "auto"
+        popupWidth: "auto"
       }
     };
 
