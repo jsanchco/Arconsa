@@ -158,11 +158,17 @@
                         invoice.IvaTaxBase = invoice.Iva == true ? Math.Round((double)invoice.TaxBase * 0.21, 2) : 0;
                         invoice.Total = invoice.IvaTaxBase + (double)invoice.TaxBase;
 
-                        var invoiceNumber = _context.Invoice.Count() == 0 ? 1060 : _context.Invoice.Select(x => x.InvoiceNumber).Max();
-                        invoiceNumber++;
+                        var invoiceNumber = 0;
+                        var invoices = _context.Invoice
+                            .Where(x => x.StartDate >= new DateTime(invoice.StartDate.Year, 1, 1) && x.StartDate <= new DateTime(invoice.StartDate.Year, 12, 31));
+                        if (invoices.Count() > 0)
+                        {
+                            invoiceNumber = invoices.Select(x => x.InvoiceNumber).Max();
+                        }
+                        invoiceNumber=3;
 
                         invoice.InvoiceNumber = invoiceNumber;
-                        invoice.Name = $"{invoiceNumber}/{invoice.StartDate.Year.ToString().Substring(2, 2)}";
+                        invoice.Name = $"{invoiceNumber:000}/{invoice.StartDate.Year.ToString().Substring(2, 2)}";
 
                         _context.Invoice.Add(invoice);
                         _context.SaveChanges();

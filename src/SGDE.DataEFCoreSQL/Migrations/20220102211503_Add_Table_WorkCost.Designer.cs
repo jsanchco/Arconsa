@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SGDE.DataEFCoreSQL;
 
 namespace SGDE.DataEFCoreSQL.Migrations
 {
     [DbContext(typeof(EFContextSQL))]
-    partial class EFContextSQLModelSnapshot : ModelSnapshot
+    [Migration("20220102211503_Add_Table_WorkCost")]
+    partial class Add_Table_WorkCost
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1026,9 +1028,6 @@ namespace SGDE.DataEFCoreSQL.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("NumberInvoice")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Provider")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<double>("TaxBase")

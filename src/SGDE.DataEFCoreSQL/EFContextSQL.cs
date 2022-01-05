@@ -3,13 +3,10 @@ namespace SGDE.DataEFCoreSQL
 {
     #region Using
 
-    using System.Threading;
+    using Configurations;
     using Domain.Entities;
     using Microsoft.EntityFrameworkCore;
-    using Configurations;
-    using Microsoft.EntityFrameworkCore.Design;
-    using Microsoft.Extensions.Configuration;
-    using System.IO;
+    using System.Threading;
 
     #endregion
 
@@ -39,6 +36,7 @@ namespace SGDE.DataEFCoreSQL
         public virtual DbSet<Embargo> Embargo { get; set; }
         public virtual DbSet<DetailEmbargo> DetailEmbargo { get; set; }
         public virtual DbSet<SSHiring> SSHiring { get; set; }
+        public virtual DbSet<WorkCost> WorkCost { get; set; }
 
         public static long InstanceCount;
 
@@ -70,6 +68,7 @@ namespace SGDE.DataEFCoreSQL
             new EmbargoConfiguration(modelBuilder.Entity<Embargo>());
             new DetailEmbargoConfiguration(modelBuilder.Entity<DetailEmbargo>());
             new SSHiringConfiguration(modelBuilder.Entity<SSHiring>());
+            new WorkCostConfiguration(modelBuilder.Entity<WorkCost>());
         }
 
         //public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<EFContextSQL>

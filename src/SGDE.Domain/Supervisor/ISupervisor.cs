@@ -298,6 +298,16 @@ namespace SGDE.Domain.Supervisor
 
         #endregion
 
+        #region WorkCost
+
+        List<WorkCostViewModel> GetAllWorkCost(int workId);
+        WorkCostViewModel GetWorkCostById(int id);
+        WorkCostViewModel AddWorkCost(WorkCostViewModel newWorkCostViewModel);
+        bool UpdateWorkCost(WorkCostViewModel workCostViewModel);
+        bool DeleteWorkCost(int id);
+
+        #endregion
+
         void Update();
     }
 }

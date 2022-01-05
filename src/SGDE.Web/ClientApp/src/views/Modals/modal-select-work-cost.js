@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
 import "./modal-select.css";
 
-class ModalSelectFile extends Component {
+class ModalSelectWorkCost extends Component {
   constructor(props) {
     super(props);
 
@@ -23,7 +23,7 @@ class ModalSelectFile extends Component {
       filename;
 
     reader.onloadend = () => {
-      let newFileName = this.props.rowSelected.typeDocumentName
+      let newFileName = this.props.rowSelected.fileName
         .split(" ")
         .join("");
       newFileName = newFileName.split(".").join("");
@@ -37,7 +37,7 @@ class ModalSelectFile extends Component {
       newFileName = newFileName.split(">").join("");
       newFileName = newFileName.split("|").join("");
       newFileName = newFileName.toLowerCase();
-      newFileName = `${newFileName}_${this.props.rowSelected.userId}.${extension}`;
+      newFileName = `${newFileName}.${extension}`;
       this.setState({
         file: file,
         fileName: newFileName,
@@ -60,9 +60,7 @@ class ModalSelectFile extends Component {
       this.props.rowSelected !== null &&
       this.props.rowSelected !== undefined
     ) {
-      title = (this.props.rowSelected.typeDocumentName !== null &&  this.props.rowSelected.typeDocumentName !== undefined) ?
-        `Selecciona ${this.props.rowSelected.typeDocumentName}` :
-        `Selecciona archivo`;
+      title = `Selecciona archivo`;
     }
 
     return (
@@ -99,13 +97,13 @@ class ModalSelectFile extends Component {
   }
 }
 
-ModalSelectFile.propTypes = {
+ModalSelectWorkCost.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   toggle: PropTypes.func.isRequired,
   updateDocument: PropTypes.func,
-  userId: PropTypes.number.isRequired,
+  workId: PropTypes.number.isRequired,
   type: PropTypes.string.isRequired,
   rowSelected: PropTypes.object
 };
 
-export default ModalSelectFile;
+export default ModalSelectWorkCost;

@@ -47,7 +47,8 @@
                         .AddScoped<IUserProfessionRepository, DataEFCoreSQL.Repositories.UserProfessionRepository>()
                         .AddScoped<IEmbargoRepository, DataEFCoreSQL.Repositories.EmbargoRepository>()
                         .AddScoped<IDetailEmbargoRepository, DataEFCoreSQL.Repositories.DetailEmbargoRepository>()
-                        .AddScoped<ISSHiringRepository, DataEFCoreSQL.Repositories.SSHiringRepository>();
+                        .AddScoped<ISSHiringRepository, DataEFCoreSQL.Repositories.SSHiringRepository>()
+                        .AddScoped<IWorkCostRepository, DataEFCoreSQL.Repositories.WorkCostRepository>();
                     break;
                 case "MySQL":
                     services
@@ -72,7 +73,8 @@
                         .AddScoped<IUserProfessionRepository, DataEFCoreMySQL.Repositories.UserProfessionRepository>()
                         .AddScoped<IEmbargoRepository, DataEFCoreMySQL.Repositories.EmbargoRepository>()
                         .AddScoped<IDetailEmbargoRepository, DataEFCoreMySQL.Repositories.DetailEmbargoRepository>()
-                        .AddScoped<ISSHiringRepository, DataEFCoreMySQL.Repositories.SSHiringRepository>();
+                        .AddScoped<ISSHiringRepository, DataEFCoreMySQL.Repositories.SSHiringRepository>()
+                        .AddScoped<IWorkCostRepository, DataEFCoreMySQL.Repositories.WorkCostRepository>();
                     break;
 
                 default:
@@ -97,7 +99,8 @@
                         .AddScoped<IUserProfessionRepository, DataEFCoreSQL.Repositories.UserProfessionRepository>()
                         .AddScoped<IEmbargoRepository, DataEFCoreSQL.Repositories.EmbargoRepository>()
                         .AddScoped<IDetailEmbargoRepository, DataEFCoreSQL.Repositories.DetailEmbargoRepository>()
-                        .AddScoped<ISSHiringRepository, DataEFCoreSQL.Repositories.SSHiringRepository>();
+                        .AddScoped<ISSHiringRepository, DataEFCoreSQL.Repositories.SSHiringRepository>()
+                        .AddScoped<IWorkCostRepository, DataEFCoreSQL.Repositories.WorkCostRepository>();
                     break;
             }
 

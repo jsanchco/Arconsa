@@ -539,6 +539,7 @@ class GridSelection extends Component {
                     </AggregateColumnDirective>
                   </AggregateColumnsDirective>
                 </AggregateDirective>
+                
               </AggregatesDirective>
 
               <Inject

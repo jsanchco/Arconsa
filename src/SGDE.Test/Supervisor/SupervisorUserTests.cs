@@ -60,6 +60,7 @@ namespace SGDE.Tests
             var embargoRepository = new Mock<IEmbargoRepository>();
             var detailEmbargoRepository = new Mock<IDetailEmbargoRepository>();
             var sSHiringRepository = new Mock<ISSHiringRepository>();
+            var workCostRepository = new Mock<IWorkCostRepository>();
 
             _supervisor = new Supervisor(
                 userRepositoryMock.Object,
@@ -83,7 +84,8 @@ namespace SGDE.Tests
                 userProfessionRepository.Object,
                 embargoRepository.Object,
                 detailEmbargoRepository.Object,
-                sSHiringRepository.Object);
+                sSHiringRepository.Object,
+                workCostRepository.Object);
         }
 
         [TestMethod]
