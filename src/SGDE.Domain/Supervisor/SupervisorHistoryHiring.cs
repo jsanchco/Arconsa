@@ -181,8 +181,8 @@
             if (userHiring == null) return false;
 
             userHiring.ProfessionId = historyHiringViewModel.professionId;
-            userHiring.StartDate = historyHiringViewModel.dtStartDate.ToLocalTime();
-            userHiring.EndDate = historyHiringViewModel.dtEndDate?.ToLocalTime();
+            userHiring.StartDate = historyHiringViewModel.dtStartDate;
+            userHiring.EndDate = historyHiringViewModel.dtEndDate;
             userHiring.InWork = !historyHiringViewModel.dtEndDate.HasValue;
 
             return _userHiringRepository.Update(userHiring);

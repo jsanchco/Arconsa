@@ -460,6 +460,26 @@ class Signings extends Component {
       args.data.id = Math.max(...values) + 1;
     }
 
+    if (args.requestType === "save") {
+      var cols = this.gridResult.columns;
+      for (var i = 0; i < cols.length; i++) {
+        if (cols[i].type === "date") {
+          var date = args.data[cols[i].field];
+          if (date !== null) {
+            args.data[cols[i].field] = new Date(
+              Date.UTC(
+                date.getFullYear(),
+                date.getMonth(),
+                date.getDate(),
+                date.getHours(),
+                date.getMilliseconds()
+              )
+            );
+          }
+        }
+      }
+    }    
+
     // if (args.requestType === "save" && args.data.hourTypeId === 5) {
     //   args.data.startHour = new Date(
     //     args.data.startHour.getFullYear(),

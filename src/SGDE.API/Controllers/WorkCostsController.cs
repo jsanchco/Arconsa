@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using SGDE.Domain.Supervisor;
 using SGDE.Domain.ViewModels;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace SGDE.API.Controllers
@@ -100,6 +101,28 @@ namespace SGDE.API.Controllers
             {
                 _logger.LogError(ex, "Exception: ");
                 return StatusCode(500, ex);
+            }
+        }
+
+        [HttpDelete("removeall")]
+        public object RemoveAll([FromBody] List<int> listRemove)
+        {
+            try
+            {
+                var result = true;
+                foreach (var item in listRemove)
+                {
+                    if (!_supervisor.DeleteWorkCost(item))
+                    {
+                        result = false;
+                    }
+                }
+                return result;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Exception: ");
+                return StatusCode(500, ex.Message);
             }
         }
     }

@@ -29,7 +29,6 @@ namespace SGDE.Domain.Supervisor
                 ModifiedDate = null,
                 IPAddress = newWorkCostViewModel.iPAddress,
 
-                //Date = newWorkCostViewModel.date.ToLocalTime(),
                 Date = newWorkCostViewModel.date,
                 Description = newWorkCostViewModel.description,
                 File = newWorkCostViewModel.file,

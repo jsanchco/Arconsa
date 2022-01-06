@@ -87,12 +87,6 @@
 
         public bool MassiveSigning(MassiveSigningQueryViewModel massiveSigningQueryViewModel)
         {
-            foreach (var transform in massiveSigningQueryViewModel.data)
-            {
-                transform.startHour = transform.startHour?.ToLocalTime();
-                transform.endHour = transform.endHour?.ToLocalTime();
-            }
-
             massiveSigningQueryViewModel.data = massiveSigningQueryViewModel.data.OrderBy(x => x.startHour).ToList();
             if (!ValidateDataMassiveSigning(massiveSigningQueryViewModel.data))
                 throw new Exception("Algunos periodos no están bien configurados");

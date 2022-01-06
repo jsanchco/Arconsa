@@ -26,6 +26,9 @@ import {
   saveByteArray,
 } from "../../services";
 import ModalSelectWorkCost from "../Modals/modal-select-work-cost";
+import { DialogComponent } from "@syncfusion/ej2-react-popups";
+import { removeAllWorkCosts } from "../../services";
+import "../Modals/modal-worker.css";
 
 L10n.load(data);
 
@@ -33,7 +36,7 @@ class WorkCosts extends Component {
   workcosts = new DataManager({
     adaptor: new WebApiAdaptor(),
     url: `${config.URL_API}/${WORKCOSTS}`,
-    headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }]
+    headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }],
   });
 
   numericParams = {
@@ -57,7 +60,13 @@ class WorkCosts extends Component {
     this.toolbarOptions = [
       "Add",
       "Edit",
-      "Delete",
+      //   "Delete",
+      {
+        text: "Borrar Seleccionados",
+        tooltipText: "Borrar registros seleccionados",
+        prefixIcon: "e-custom-icons e-remove",
+        id: "RemoveAll",
+      },
       "Update",
       "Cancel",
       {
@@ -84,7 +93,7 @@ class WorkCosts extends Component {
     this.pageSettings = { pageCount: 10, pageSize: 10 };
     this.actionFailure = this.actionFailure.bind(this);
     this.actionComplete = this.actionComplete.bind(this);
-    this.actionBegin = this.actionBegin.bind(this)
+    this.actionBegin = this.actionBegin.bind(this);
     this.clickHandler = this.clickHandler.bind(this);
     this.toggleModal = this.toggleModal.bind(this);
     this.updateDocument = this.updateDocument.bind(this);
@@ -94,6 +103,36 @@ class WorkCosts extends Component {
     this.beforePrint = this.beforePrint.bind(this);
     this.templateFile = this.templateFile.bind(this);
     this.templateHasFile = this.templateHasFile.bind(this);
+    this.updateWorkCosts = this.updateWorkCosts.bind(this);
+    this.dialogClose = this.dialogClose.bind(this);
+
+    this.animationSettings = { effect: "None" };
+    this.confirmButton = [
+      {
+        click: () => {
+          const selectedRecords = this.grid.getSelectedRecords();
+          if (Array.isArray(selectedRecords) && selectedRecords.length > 0) {
+            let result = selectedRecords.map((a) => a.id);
+            removeAllWorkCosts(result)
+              .then(() => {
+                this.setState({ hideConfirmDialog: false });
+                this.updateWorkCosts();
+              })
+              .catch(() => {
+                this.setState({ hideConfirmDialog: false });
+                this.updateWorkCosts();
+              });
+          }
+        },
+        buttonModel: { content: "Si", isPrimary: true },
+      },
+      {
+        click: () => {
+          this.setState({ hideConfirmDialog: false });
+        },
+        buttonModel: { content: "No" },
+      },
+    ];
 
     this.query = new Query().addParams("workId", props.workId);
 
@@ -101,6 +140,10 @@ class WorkCosts extends Component {
 
     this.selectionSettings = {
       checkboxMode: "ResetOnRowClick",
+    };
+
+    this.state = {
+      hideConfirmDialog: false,
     };
   }
 
@@ -126,6 +169,16 @@ class WorkCosts extends Component {
     } else {
       return <div>No</div>;
     }
+  }
+
+  updateWorkCosts() {
+    this.grid.refresh();
+  }
+
+  dialogClose() {
+    this.setState({
+      hideConfirmDialog: false,
+    });
   }
 
   clickHandler(args) {
@@ -156,6 +209,10 @@ class WorkCosts extends Component {
         });
       }
     }
+
+    if (args.item.id === "RemoveAll") {
+      this.setState({ hideConfirmDialog: true });
+    }
   }
 
   toggleModal() {
@@ -178,13 +235,21 @@ class WorkCosts extends Component {
 
   actionBegin(args) {
     if (args.requestType === "save") {
-        var cols = this.grid.columns;   
-        for (var i = 0; i < cols.length; i++) {  
-            if (cols[i].type === "date") {  
-                var date = args.data[cols[i].field];  
-                args.data[cols[i].field] = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMilliseconds()));  
-            }  
-        }          
+      var cols = this.grid.columns;
+      for (var i = 0; i < cols.length; i++) {
+        if (cols[i].type === "date") {
+          var date = args.data[cols[i].field];
+          args.data[cols[i].field] = new Date(
+            Date.UTC(
+              date.getFullYear(),
+              date.getMonth(),
+              date.getDate(),
+              date.getHours(),
+              date.getMilliseconds()
+            )
+          );
+        }
+      }
     }
   }
 
@@ -275,7 +340,7 @@ class WorkCosts extends Component {
   footerSumEuros(args) {
     var title = args.Sum;
     if (typeof title !== "string") {
-        title = title.toString();
+      title = title.toString();
     }
 
     title = title.replace(",", ".");
@@ -293,6 +358,20 @@ class WorkCosts extends Component {
   render() {
     return (
       <Fragment>
+        <DialogComponent
+          id="confirmDialogRemoveAll"
+          header="Eliminar Todos"
+          visible={this.state.hideConfirmDialog}
+          showCloseIcon={true}
+          animationSettings={this.animationSettings}
+          width="500px"
+          content="¿Estás seguro de eliminar estos gastos?"
+          ref={(dialog) => (this.confirmDialogInstance = dialog)}
+          target="#target-work-costs"
+          buttons={this.confirmButton}
+          close={this.dialogClose.bind(this)}
+        ></DialogComponent>
+
         <ModalSelectWorkCost
           isOpen={this.state.modal}
           toggle={this.toggleModal}
@@ -301,7 +380,7 @@ class WorkCosts extends Component {
           rowSelected={this.state.rowSelected}
           type="document"
         />
-        <div className="animated fadeIn">
+        <div className="animated fadeIn" id="target-work-costs">
           <div
             className="card"
             style={{ marginRight: "60px", marginTop: "20px" }}
