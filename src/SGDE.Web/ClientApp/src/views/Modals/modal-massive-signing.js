@@ -406,7 +406,7 @@ ModalMassiveSigning.propTypes = {
   toggle: PropTypes.func.isRequired,
   // userId: PropTypes.number.isRequired,
   showMessage: PropTypes.func.isRequired,
-  updateDailySignings: PropTypes.func.isRequired,
+  // updateDailySignings: PropTypes.func.isRequired,
 };
 
 export default ModalMassiveSigning;

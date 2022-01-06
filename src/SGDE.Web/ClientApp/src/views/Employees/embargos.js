@@ -10,7 +10,7 @@ import {
   DetailRow,
   Aggregate,
   parentsUntil,
-  Resize
+  Resize,
 } from "@syncfusion/ej2-react-grids";
 import { DataManager, WebApiAdaptor, Query } from "@syncfusion/ej2-data";
 import { config, EMBARGOS, DETAILSEMBARGO } from "../../constants";
@@ -50,8 +50,8 @@ class Embargos extends Component {
     this.state = {
       rowSelected: null,
       user: {
-        fullname: null
-      }      
+        fullname: null,
+      },
     };
 
     this.toolbarOptions = [
@@ -70,6 +70,7 @@ class Embargos extends Component {
       newRowPosition: "Top",
     };
     this.actionFailure = this.actionFailure.bind(this);
+    this.actionBegin = this.actionBegin.bind(this);
     this.actionComplete = this.actionComplete.bind(this);
     this.gridDetailsEmbargoActionComplete =
       this.gridDetailsEmbargoActionComplete.bind(this);
@@ -198,6 +199,26 @@ class Embargos extends Component {
     });
   }
 
+  actionBegin(args) {
+    if (args.requestType === "save") {
+      var cols = this.gridEmbargos.columns;
+      for (var i = 0; i < cols.length; i++) {
+        if (cols[i].type === "date") {
+          var date = args.data[cols[i].field];
+          args.data[cols[i].field] = new Date(
+            Date.UTC(
+              date.getFullYear(),
+              date.getMonth(),
+              date.getDate(),
+              date.getHours(),
+              date.getMilliseconds()
+            )
+          );
+        }
+      }
+    }
+  }
+
   actionComplete(args) {
     if (args.requestType === "save") {
       this.props.showMessage({
@@ -250,6 +271,18 @@ class Embargos extends Component {
     if (args.requestType === "add") {
       args.data.embargoId = this.parentDetails.parentKeyFieldValue;
     }
+    
+    if (args.requestType === "save") {
+      var date = args.data.datePay;
+      args.data.datePay = new Date(
+        Date.UTC(
+          date.getFullYear(),
+          date.getMonth(),
+          date.getDate(),
+          date.getHours(),
+          date.getMilliseconds()
+        ));
+    }
   }
 
   footerSumAmount(args) {
@@ -271,7 +304,7 @@ class Embargos extends Component {
     div.style.padding = "10px 0";
     div.style.fontSize = "25px";
     args.element.insertBefore(div, args.element.childNodes[0]);
-  }  
+  }
 
   render() {
     return (
@@ -299,6 +332,7 @@ class Embargos extends Component {
                 }}
                 actionFailure={this.actionFailure}
                 actionComplete={this.actionComplete}
+                actionBegin={this.actionBegin}
                 allowGrouping={false}
                 ref={(g) => (this.gridEmbargos = g)}
                 query={this.queryEmbargos}
@@ -308,8 +342,8 @@ class Embargos extends Component {
                 dataBound={this.dataBound}
                 // toolbarClick={this.clickHandlerEmbargos}
                 rowSelected={this.rowSelectedEmbargos}
-                allowResizing={true}          
-                beforePrint={this.beforePrint}      
+                allowResizing={true}
+                beforePrint={this.beforePrint}
               >
                 <ColumnsDirective>
                   <ColumnDirective
@@ -389,7 +423,9 @@ class Embargos extends Component {
                     visible={false}
                   />
                 </ColumnsDirective>
-                <Inject services={[Toolbar, Edit, DetailRow, Aggregate, Resize]} />
+                <Inject
+                  services={[Toolbar, Edit, DetailRow, Aggregate, Resize]}
+                />
               </GridComponent>
             </Row>
           </div>

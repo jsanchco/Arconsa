@@ -29,7 +29,8 @@ namespace SGDE.Domain.Supervisor
                 ModifiedDate = null,
                 IPAddress = newWorkCostViewModel.iPAddress,
 
-                Date = newWorkCostViewModel.date.ToLocalTime(),
+                //Date = newWorkCostViewModel.date.ToLocalTime(),
+                Date = newWorkCostViewModel.date,
                 Description = newWorkCostViewModel.description,
                 File = newWorkCostViewModel.file,
                 TypeFile = newWorkCostViewModel.typeFile,
@@ -58,7 +59,7 @@ namespace SGDE.Domain.Supervisor
             workCost.ModifiedDate = DateTime.Now;
             workCost.IPAddress = workCostViewModel.iPAddress;
 
-            workCost.Date = workCostViewModel.date.ToLocalTime();
+            workCost.Date = workCostViewModel.date;
             workCost.Description = workCostViewModel.description;
             workCost.File = workCostViewModel.file;
             workCost.TypeFile = workCostViewModel.typeFile;

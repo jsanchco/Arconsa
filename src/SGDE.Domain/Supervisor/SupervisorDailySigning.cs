@@ -39,8 +39,8 @@
                 ModifiedDate = null,
                 IPAddress = newDailySigningViewModel.iPAddress,
 
-                StartHour = newDailySigningViewModel.startHour?.ToLocalTime(),
-                EndHour = newDailySigningViewModel.endHour?.ToLocalTime(),
+                StartHour = newDailySigningViewModel.startHour,
+                EndHour = newDailySigningViewModel.endHour,
 
                 UserHiringId = newDailySigningViewModel.userHiringId,
                 ProfessionId = newDailySigningViewModel.professionId,
@@ -67,8 +67,8 @@
             dailySigning.ModifiedDate = DateTime.Now;
             dailySigning.IPAddress = dailySigningViewModel.iPAddress;
 
-            dailySigning.StartHour = dailySigningViewModel.startHour?.ToLocalTime();
-            dailySigning.EndHour = dailySigningViewModel.endHour?.ToLocalTime();
+            dailySigning.StartHour = dailySigningViewModel.startHour;
+            dailySigning.EndHour = dailySigningViewModel.endHour;
 
             dailySigning.UserHiringId = dailySigningViewModel.userHiringId;
             dailySigning.ProfessionId = dailySigningViewModel.professionId;

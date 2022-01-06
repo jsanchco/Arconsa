@@ -36,9 +36,9 @@ namespace SGDE.Domain.Supervisor
                 Identifier = newEmbargo.identifier,
                 IssuingEntity = newEmbargo.issuingEntity,
                 AccountNumber = newEmbargo.accountNumber,
-                NotificationDate = newEmbargo.notificationDate?.ToLocalTime(),
-                StartDate = newEmbargo.startDate?.ToLocalTime(),
-                EndDate = newEmbargo.endDate?.ToLocalTime(),
+                NotificationDate = newEmbargo.notificationDate,
+                StartDate = newEmbargo.startDate,
+                EndDate = newEmbargo.endDate,
                 Observations = newEmbargo.observations,
                 Total = newEmbargo.total,
                 Paid = newEmbargo.paid,
@@ -65,9 +65,9 @@ namespace SGDE.Domain.Supervisor
             embargo.Identifier = embargoViewModel.identifier;
             embargo.IssuingEntity = embargoViewModel.issuingEntity;
             embargo.AccountNumber = embargoViewModel.accountNumber;
-            embargo.NotificationDate = embargoViewModel.notificationDate?.ToLocalTime();
-            embargo.StartDate = embargoViewModel.startDate?.ToLocalTime();
-            embargo.EndDate = embargoViewModel.endDate?.ToLocalTime();
+            embargo.NotificationDate = embargoViewModel.notificationDate;
+            embargo.StartDate = embargoViewModel.startDate;
+            embargo.EndDate = embargoViewModel.endDate;
             embargo.Observations = embargoViewModel.observations;
             embargo.Total = embargoViewModel.total;
             embargo.Paid = embargoViewModel.paid;

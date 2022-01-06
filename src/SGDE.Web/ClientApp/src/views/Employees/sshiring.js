@@ -43,7 +43,7 @@ class SSHirings extends Component {
       rowSelected: null,
       user: {
         fullname: null,
-      },      
+      },
     };
 
     this.toolbarOptions = [
@@ -62,6 +62,7 @@ class SSHirings extends Component {
       newRowPosition: "Top",
     };
     this.pageSettings = { pageCount: 10, pageSize: 10 };
+    this.actionBegin = this.actionBegin.bind(this);
     this.actionFailure = this.actionFailure.bind(this);
     this.actionComplete = this.actionComplete.bind(this);
     this.actionBegin = this.actionBegin.bind(this);
@@ -94,9 +95,29 @@ class SSHirings extends Component {
     div.style.padding = "10px 0";
     div.style.fontSize = "25px";
     args.element.insertBefore(div, args.element.childNodes[0]);
-  }  
+  }
 
-  actionBegin(args) {}
+  actionBegin(args) {
+    if (args.requestType === "save") {
+      var cols = this.grid.columns;
+      for (var i = 0; i < cols.length; i++) {
+        if (cols[i].type === "date") {
+          var date = args.data[cols[i].field];
+          if (date !== null) {
+            args.data[cols[i].field] = new Date(
+              Date.UTC(
+                date.getFullYear(),
+                date.getMonth(),
+                date.getDate(),
+                date.getHours(),
+                date.getMilliseconds()
+              )
+            );
+          }
+        }
+      }
+    }
+  }
 
   actionFailure(args) {
     let error = Array.isArray(args) ? args[0].error : args.error;
@@ -132,8 +153,7 @@ class SSHirings extends Component {
     this.setState({ rowSelected: selectedRecords[0] });
   }
 
-  rowDataBound(args) {
-  }
+  rowDataBound(args) {}
 
   render() {
     return (
@@ -210,7 +230,7 @@ class SSHirings extends Component {
                     field="userId"
                     visible={false}
                     defaultValue={this.props.userId}
-                  />                  
+                  />
                 </ColumnsDirective>
                 <Inject services={[Page, Toolbar, Edit]} />
               </GridComponent>

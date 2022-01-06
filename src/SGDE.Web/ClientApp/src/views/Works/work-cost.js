@@ -33,7 +33,7 @@ class WorkCosts extends Component {
   workcosts = new DataManager({
     adaptor: new WebApiAdaptor(),
     url: `${config.URL_API}/${WORKCOSTS}`,
-    headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }],
+    headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }]
   });
 
   numericParams = {
@@ -84,6 +84,7 @@ class WorkCosts extends Component {
     this.pageSettings = { pageCount: 10, pageSize: 10 };
     this.actionFailure = this.actionFailure.bind(this);
     this.actionComplete = this.actionComplete.bind(this);
+    this.actionBegin = this.actionBegin.bind(this)
     this.clickHandler = this.clickHandler.bind(this);
     this.toggleModal = this.toggleModal.bind(this);
     this.updateDocument = this.updateDocument.bind(this);
@@ -175,6 +176,18 @@ class WorkCosts extends Component {
     });
   }
 
+  actionBegin(args) {
+    if (args.requestType === "save") {
+        var cols = this.grid.columns;   
+        for (var i = 0; i < cols.length; i++) {  
+            if (cols[i].type === "date") {  
+                var date = args.data[cols[i].field];  
+                args.data[cols[i].field] = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMilliseconds()));  
+            }  
+        }          
+    }
+  }
+
   actionComplete(args) {
     if (args.requestType === "save") {
       this.props.showMessage({
@@ -260,7 +273,11 @@ class WorkCosts extends Component {
   }
 
   footerSumEuros(args) {
-    let title = args.Sum;
+    var title = args.Sum;
+    if (typeof title !== "string") {
+        title = title.toString();
+    }
+
     title = title.replace(",", ".");
     const index = title.lastIndexOf(".");
     if (index >= 0) {
@@ -310,6 +327,7 @@ class WorkCosts extends Component {
                 }}
                 actionFailure={this.actionFailure}
                 actionComplete={this.actionComplete}
+                actionBegin={this.actionBegin}
                 ref={(g) => (this.grid = g)}
                 query={this.query}
                 selectionSettings={this.selectionSettings}

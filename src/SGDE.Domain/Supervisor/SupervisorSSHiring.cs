@@ -33,8 +33,8 @@ namespace SGDE.Domain.Supervisor
                 ModifiedDate = null,
                 IPAddress = newSSHiringViewModel.iPAddress,
 
-                StartDate = newSSHiringViewModel.startDate.ToLocalTime(),
-                EndDate = newSSHiringViewModel.endDate?.ToLocalTime(),
+                StartDate = newSSHiringViewModel.startDate,
+                EndDate = newSSHiringViewModel.endDate,
                 Observations = newSSHiringViewModel.observations,
                 UserId = newSSHiringViewModel.userId
             };
@@ -58,8 +58,8 @@ namespace SGDE.Domain.Supervisor
             sSHiring.ModifiedDate = DateTime.Now;
             sSHiring.IPAddress = sSHiringViewModel.iPAddress;
 
-            sSHiring.StartDate = sSHiringViewModel.startDate.ToLocalTime();
-            sSHiring.EndDate = sSHiringViewModel.endDate?.ToLocalTime();
+            sSHiring.StartDate = sSHiringViewModel.startDate;
+            sSHiring.EndDate = sSHiringViewModel.endDate;
             sSHiring.Observations = sSHiringViewModel.observations;
             sSHiring.UserId = sSHiringViewModel.userId;
 

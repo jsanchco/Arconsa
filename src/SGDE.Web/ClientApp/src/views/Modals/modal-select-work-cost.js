@@ -101,7 +101,7 @@ ModalSelectWorkCost.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   toggle: PropTypes.func.isRequired,
   updateDocument: PropTypes.func,
-  workId: PropTypes.number.isRequired,
+  workId: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
   rowSelected: PropTypes.object
 };

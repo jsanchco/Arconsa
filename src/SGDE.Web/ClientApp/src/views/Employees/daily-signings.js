@@ -77,8 +77,8 @@ class DailySignings extends Component {
       modal: false,
       hideConfirmDialog: false,
       user: {
-        fullname: ""
-      }      
+        fullname: "",
+      },
     };
 
     this.toolbarOptions = [
@@ -125,19 +125,19 @@ class DailySignings extends Component {
     this.dateTemplateTotalHours = this.dateTemplateTotalHours.bind(this);
 
     this.template = this.gridTemplate;
-    this.format = { type: "dateTime", format: "dd/MM/yyyy HH:mm" };    
+    this.format = { type: "dateTime", format: "dd/MM/yyyy HH:mm" };
 
     this.queryDailySignings = new Query().addParams("userId", props.userId);
     this.editProfessions = {
       params: {
         query: new Query().addParams("userId", props.userId),
-        popupWidth: "auto"
-      }
+        popupWidth: "auto",
+      },
     };
     this.editWorks = {
       params: {
-        popupWidth: "auto"
-      }
+        popupWidth: "auto",
+      },
     };
 
     this.animationSettings = { effect: "None" };
@@ -215,7 +215,7 @@ class DailySignings extends Component {
     var date = new Date(args);
     var month = ("0" + (date.getMonth() + 1)).slice(-2);
     var day = ("0" + date.getDate()).slice(-2);
-    
+
     return `${[day, month, date.getFullYear()].join("/")}`;
   }
 
@@ -228,19 +228,25 @@ class DailySignings extends Component {
       );
     }
 
-    // if (args.requestType === "save") {
-    //   let date = this.formatDate(args.data.startHour);
-    //   args.data.startHour = date;
-
-    //   if (
-    //     args.data.endHour !== null &&
-    //     args.data.endHour !== "" &&
-    //     args.data.endHour !== undefined
-    //   ) {
-    //     date = this.formatDate(args.data.endHour);
-    //     args.data.endHour = date;
-    //   }
-    // }
+    if (args.requestType === "save") {
+      var cols = this.grid.columns;
+      for (var i = 0; i < cols.length; i++) {
+        if (cols[i].type === "date") {
+          var date = args.data[cols[i].field];
+          if (date !== null) {
+            args.data[cols[i].field] = new Date(
+              Date.UTC(
+                date.getFullYear(),
+                date.getMonth(),
+                date.getDate(),
+                date.getHours(),
+                date.getMilliseconds()
+              )
+            );
+          }
+        }
+      }
+    }
   }
 
   actionFailure(args) {
@@ -349,13 +355,12 @@ class DailySignings extends Component {
 
   dateTemplateStartHour(args) {
     let value = args.startHour;
-    if (args.hourTypeId === 5) {      
+    if (args.hourTypeId === 5) {
       value = this.formatDateWithOutTime(value);
-    }
-    else {
+    } else {
       value = this.formatDate(value);
     }
-    
+
     return <div>{value}</div>;
   }
 
@@ -483,7 +488,7 @@ class DailySignings extends Component {
                     foreignKeyValue="name"
                     foreignKeyField="id"
                     defaultValue={1}
-                  />                  
+                  />
                   <ColumnDirective
                     field="startHour"
                     headerText="Hora Inicio"
