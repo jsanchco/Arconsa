@@ -48,7 +48,8 @@
                         .AddScoped<IEmbargoRepository, DataEFCoreSQL.Repositories.EmbargoRepository>()
                         .AddScoped<IDetailEmbargoRepository, DataEFCoreSQL.Repositories.DetailEmbargoRepository>()
                         .AddScoped<ISSHiringRepository, DataEFCoreSQL.Repositories.SSHiringRepository>()
-                        .AddScoped<IWorkCostRepository, DataEFCoreSQL.Repositories.WorkCostRepository>();
+                        .AddScoped<IWorkCostRepository, DataEFCoreSQL.Repositories.WorkCostRepository>()
+                        .AddScoped<IWorkBudgetRepository, DataEFCoreSQL.Repositories.WorkBudgetRepository>();
                     break;
                 case "MySQL":
                     services
@@ -74,7 +75,8 @@
                         .AddScoped<IEmbargoRepository, DataEFCoreMySQL.Repositories.EmbargoRepository>()
                         .AddScoped<IDetailEmbargoRepository, DataEFCoreMySQL.Repositories.DetailEmbargoRepository>()
                         .AddScoped<ISSHiringRepository, DataEFCoreMySQL.Repositories.SSHiringRepository>()
-                        .AddScoped<IWorkCostRepository, DataEFCoreMySQL.Repositories.WorkCostRepository>();
+                        .AddScoped<IWorkCostRepository, DataEFCoreMySQL.Repositories.WorkCostRepository>()
+                        .AddScoped<IWorkBudgetRepository, DataEFCoreMySQL.Repositories.WorkBudgetRepository>();
                     break;
 
                 default:
@@ -100,7 +102,8 @@
                         .AddScoped<IEmbargoRepository, DataEFCoreSQL.Repositories.EmbargoRepository>()
                         .AddScoped<IDetailEmbargoRepository, DataEFCoreSQL.Repositories.DetailEmbargoRepository>()
                         .AddScoped<ISSHiringRepository, DataEFCoreSQL.Repositories.SSHiringRepository>()
-                        .AddScoped<IWorkCostRepository, DataEFCoreSQL.Repositories.WorkCostRepository>();
+                        .AddScoped<IWorkCostRepository, DataEFCoreSQL.Repositories.WorkCostRepository>()
+                        .AddScoped<IWorkBudgetRepository, DataEFCoreSQL.Repositories.WorkBudgetRepository>();
                     break;
             }
 

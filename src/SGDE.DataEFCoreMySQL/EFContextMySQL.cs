@@ -40,6 +40,8 @@ namespace SGDE.DataEFCoreMySQL
         public virtual DbSet<DetailEmbargo> DetailEmbargo { get; set; }
         public virtual DbSet<SSHiring> SSHiring { get; set; }
         public virtual DbSet<WorkCost> WorkCost { get; set; }
+        public virtual DbSet<WorkBudget> WorkBudget { get; set; }
+
 
         public static long InstanceCount;
 
@@ -72,6 +74,7 @@ namespace SGDE.DataEFCoreMySQL
             new DetailEmbargoConfiguration(modelBuilder.Entity<DetailEmbargo>());
             new SSHiringConfiguration(modelBuilder.Entity<SSHiring>());
             new WorkCostConfiguration(modelBuilder.Entity<WorkCost>());
+            new WorkBudgetConfiguration(modelBuilder.Entity<WorkBudget>());
         }
 
         public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<EFContextMySQL>
