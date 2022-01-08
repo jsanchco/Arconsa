@@ -8,12 +8,18 @@ import {
   Inject,
   Toolbar,
   Page,
+  Aggregate,
+  AggregateColumnsDirective,
+  AggregateColumnDirective,
+  AggregateDirective,
+  AggregatesDirective,
 } from "@syncfusion/ej2-react-grids";
 import { DataManager, WebApiAdaptor, Query } from "@syncfusion/ej2-data";
 import { config, WORKBUDGETS } from "../../constants";
 import { L10n } from "@syncfusion/ej2-base";
 import data from "../../locales/locale.json";
 import { TOKEN_KEY } from "../../services";
+import { AccordionActionSettings } from "@syncfusion/ej2-navigations";
 
 L10n.load(data);
 
@@ -34,6 +40,13 @@ class WorkBudgets extends Component {
 
   grid = null;
 
+  typeRules = { required: true };
+  editType = {
+    params: {
+      popupWidth: "auto",
+    },
+  };
+
   constructor(props) {
     super(props);
 
@@ -43,7 +56,7 @@ class WorkBudgets extends Component {
 
     this.toolbarOptions = [
       "Add",
-      "Edit",
+      // "Edit",
       "Delete",
       "Update",
       "Cancel",
@@ -51,7 +64,7 @@ class WorkBudgets extends Component {
     ];
     this.editSettings = {
       showDeleteConfirmDialog: true,
-      allowEditing: true,
+      // allowEditing: true,
       allowAdding: true,
       allowDeleting: true,
       newRowPosition: "Top",
@@ -61,25 +74,53 @@ class WorkBudgets extends Component {
     this.actionComplete = this.actionComplete.bind(this);
     this.actionBegin = this.actionBegin.bind(this);
     this.beforePrint = this.beforePrint.bind(this);
+    this.footerSumEuros = this.footerSumEuros.bind(this);
+    this.customAggregateTotalContract = this.customAggregateTotalContract.bind(this);
 
     this.query = new Query().addParams("workId", props.workId);
 
     this.format = { type: "dateTime", format: "dd/MM/yyyy" };
+
+    this.typeBudgets = [
+      { id: "Version X" },
+      { id: "Definitivo" },
+      { id: "Complementario X" },
+    ];
   }
 
   actionFailure(args) {
     let error = Array.isArray(args) ? args[0].error : args.error;
+    let message = null;
     if (Array.isArray(error)) {
       error = error[0].error;
+      message = JSON.parse(error.responseText);
     }
-    this.props.showMessage({
-      statusText: error.statusText,
-      responseText: error.responseText,
-      type: "danger",
-    });
+    if (
+      message !== null &&
+      message.Message !== null &&
+      message.Message !== ""
+    ) {
+      this.props.showMessage({
+        statusText: error.statusText,
+        responseText: message.Message,
+        type: "danger",
+      });
+    } else {
+      this.props.showMessage({
+        statusText: error.statusText,
+        responseText: error.responseText,
+        type: "danger",
+      });
+    }
   }
 
   actionBegin(args) {
+    if (args.requestType === "add") {
+      if (this.grid.getCurrentViewRecords().length !== 0) {
+        args.data.reference = this.grid.getCurrentViewRecords()[0].reference;
+      }
+    }
+
     if (args.requestType === "save") {
       var cols = this.grid.columns;
       for (var i = 0; i < cols.length; i++) {
@@ -143,6 +184,31 @@ class WorkBudgets extends Component {
     // }
   }
 
+  customAggregateTotalContract(args) {
+    const values = args.result.filter((item) => (item.type === "Definitivo" || item.type === "Complementario X"));
+    var sum = values.map(item => item.totalContract).reduce((prev, next) => prev + next);
+
+    return sum;
+  }
+
+  footerSumEuros(args) {
+    var title = args.Custom;
+    if (typeof title !== "string") {
+      title = title.toString();
+    }
+
+    title = title.replace(",", ".");
+    const index = title.lastIndexOf(".");
+    if (index >= 0) {
+      title = `${title.substring(0, index)},${title.substring(
+        index + 1,
+        title.length
+      )}`;
+    }
+
+    return <span>Total (D + CX): {title}€</span>;
+  }
+
   render() {
     return (
       <Fragment>
@@ -186,7 +252,17 @@ class WorkBudgets extends Component {
                     isIdentity={true}
                     visible={false}
                   />
-                  <ColumnDirective field="type" headerText="Tipo" width="70" />
+                  <ColumnDirective
+                    field="type"
+                    headerText="Tipo"
+                    width="70"
+                    editType="dropdownedit"
+                    foreignKeyValue="id"
+                    foreignKeyField="id"
+                    validationRules={this.typeRules}
+                    dataSource={new DataManager(this.typeBudgets)}
+                    edit={this.editType}
+                  />
                   <ColumnDirective
                     field="date"
                     headerText="Fecha"
@@ -211,6 +287,7 @@ class WorkBudgets extends Component {
                     headerText="Total Contrato"
                     width="100"
                     editType="numericedit"
+                    textAlign="right"
                     edit={this.numericParams}
                   />
                   <ColumnDirective
@@ -220,7 +297,22 @@ class WorkBudgets extends Component {
                   />
                 </ColumnsDirective>
 
-                <Inject services={[Page, Toolbar, Edit]} />
+                <AggregatesDirective>
+                  <AggregateDirective>
+                    <AggregateColumnsDirective>
+                      <AggregateColumnDirective
+                        field="totalContract"
+                        type='Custom'
+                        customAggregate ={this.customAggregateTotalContract}
+                        footerTemplate={this.footerSumEuros}
+                      >
+                        {" "}
+                      </AggregateColumnDirective>
+                    </AggregateColumnsDirective>
+                  </AggregateDirective>
+                </AggregatesDirective>
+
+                <Inject services={[Page, Toolbar, Edit, Aggregate]} />
               </GridComponent>
             </Row>
           </div>

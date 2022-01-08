@@ -23,6 +23,8 @@ namespace SGDE.Domain.Supervisor
 
         public WorkBudgetViewModel AddWorkBudget(WorkBudgetViewModel newWorkBudgetViewModel)
         {
+            CheckAdd(newWorkBudgetViewModel);
+
             var workBudget = new WorkBudget
             {
                 AddedDate = DateTime.Now,
@@ -59,47 +61,97 @@ namespace SGDE.Domain.Supervisor
             workBudget.Reference = workBudgetViewModel.reference;
             workBudget.TotalContract = workBudgetViewModel.totalContract;
             workBudget.Type = workBudgetViewModel.type;
-
-            workBudget.Name = GetNameBudget(workBudgetViewModel, false);
+            workBudget.Name = workBudgetViewModel.name;
 
             return _workBudgetRepository.Update(workBudget);
         }
 
         public bool DeleteWorkBudget(int id)
         {
+            CheckDelete(id);
+
             return _workBudgetRepository.Delete(id);
         }
 
         #region Auxiliary methods
 
-        private string GetNameBudget(WorkBudgetViewModel workBudget, bool isAdd = true)
+        private string GetNameBudget(WorkBudgetViewModel workBudget)
         {
             if (workBudget.type == "Version X")
             {
                 var workBudgets = GetAllWorkBudget(workBudget.workId);
                 workBudgets = workBudgets.Where(x => x.type == "Version X").ToList();
 
-                return isAdd ?
-                    $"{workBudget.reference}_V{workBudgets.Count + 1}" :
-                    $"{workBudget.reference}_V{workBudgets.Count}";
+                return $"{workBudget.reference}_V{workBudgets.Count + 1}";
             }
 
             if (workBudget.type == "Definitivo")
             {
-                return $"{workBudget.reference}_D";
+                var workBudgets = GetAllWorkBudget(workBudget.workId);
+
+                return $"{workBudgets.Last().name}.D";
             }
 
-            if (workBudget.type == "Anexo X")
+            if (workBudget.type == "Complementario X")
             {
                 var workBudgets = GetAllWorkBudget(workBudget.workId);
-                workBudgets = workBudgets.Where(x => x.type == "Anexo X").ToList();
+                var workBudgetsComplementarios = workBudgets.Where(x => x.type == "Complementario X");
+                var budgetDefinitivo = workBudgets.FirstOrDefault(x => x.type == "Definitivo");
 
-                return isAdd ?
-                    $"{workBudget.reference}_A{workBudgets.Count + 1}" :
-                    $"{workBudget.reference}_A{workBudgets.Count}";
+                return $"{budgetDefinitivo.name}.C{workBudgetsComplementarios.Count() + 1}";
             }
 
             return null;
+        }
+
+        private void CheckAdd(WorkBudgetViewModel workBudget)
+        {
+            var workBudgets = GetAllWorkBudget(workBudget.workId);
+            if (workBudgets?.Count > 0 &&
+                workBudgets[workBudgets.Count - 1].date > workBudget.date)
+            {
+                throw new Exception("Hay presupuestos con fecha mayor");
+            }
+
+            if (workBudget.type == "Complementario X")
+            {
+                if (!workBudgets.Any(x => x.type == "Definitivo"))
+                {
+                    throw new Exception("No puede haber un Complementario sin tener un Presupuesto Definitivo");
+                }
+            }
+
+            if (workBudget.type == "Definitivo")
+            {
+                if (workBudgets.Any(x => x.type == "Definitivo"))
+                {
+                    throw new Exception("No puede haber mas de un Presupuesto Definitivo");
+                }
+            }
+
+            if (workBudget.type == "Version X")
+            {
+                if (workBudgets.Any(x => x.type == "Definitivo"))
+                {
+                    throw new Exception("No puede haber mas de una Version de un Presupuesto teniendo un Presupuesto Definitivo");
+                }
+            }
+
+            return;            
+        }
+
+        private void CheckDelete(int id)
+        {
+            var workBudget = GetWorkBudgetById(id);
+            var workBudgets = GetAllWorkBudget(workBudget.workId);
+
+            if (workBudgets.Count() == 0)
+                return;
+
+            if (workBudget.id != workBudgets.Last().id)
+            {
+                throw new Exception("No se puede borrar este Presupuesto, debes primero eliminar el(los) últimos");
+            }
         }
 
         #endregion
