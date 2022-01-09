@@ -318,6 +318,16 @@ namespace SGDE.Domain.Supervisor
 
         #endregion
 
+        #region IndirectCost
+
+        QueryResult<IndirectCostViewModel> GetAllIndirectCost(int skip = 0, int take = 0);
+        IndirectCostViewModel GetIndirectCostById(int id);
+        IndirectCostViewModel AddIndirectCost(IndirectCostViewModel newIndirectCostViewModel);
+        bool UpdateIndirectCost(IndirectCostViewModel indirectCostViewModel);
+        bool DeleteIndirectCost(int id);
+
+        #endregion
+
         void Update();
     }
 }

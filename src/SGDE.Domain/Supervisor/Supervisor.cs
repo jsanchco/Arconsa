@@ -4,6 +4,7 @@ namespace SGDE.Domain.Supervisor
     #region Using
 
     using Repositories;
+    using SGDE.Domain.Helpers;
     using SGDE.Domain.ViewModels;
     using System.Collections.Generic;
 
@@ -35,6 +36,7 @@ namespace SGDE.Domain.Supervisor
         public readonly ISSHiringRepository _sSHiringRepository;
         public readonly IWorkCostRepository _workCostRepository;
         public readonly IWorkBudgetRepository _workBudgetRepository;
+        public readonly IIndirectCostRepository _indirectCostRepository;
 
         public Supervisor()
         {
@@ -64,7 +66,8 @@ namespace SGDE.Domain.Supervisor
             IDetailEmbargoRepository detailEmbargoRepository,
             ISSHiringRepository sSHiringRepository,
             IWorkCostRepository workCostRepository,
-            IWorkBudgetRepository workBudgetRepository)
+            IWorkBudgetRepository workBudgetRepository,
+            IIndirectCostRepository indirectCostRepository)
         {
             _userRepository = userRepository;
             _professionRepository = professionRepository;
@@ -90,6 +93,7 @@ namespace SGDE.Domain.Supervisor
             _sSHiringRepository = sSHiringRepository;
             _workCostRepository = workCostRepository;
             _workBudgetRepository = workBudgetRepository;
+            _indirectCostRepository = indirectCostRepository;
         }
     }
 }

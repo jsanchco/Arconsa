@@ -49,7 +49,8 @@
                         .AddScoped<IDetailEmbargoRepository, DataEFCoreSQL.Repositories.DetailEmbargoRepository>()
                         .AddScoped<ISSHiringRepository, DataEFCoreSQL.Repositories.SSHiringRepository>()
                         .AddScoped<IWorkCostRepository, DataEFCoreSQL.Repositories.WorkCostRepository>()
-                        .AddScoped<IWorkBudgetRepository, DataEFCoreSQL.Repositories.WorkBudgetRepository>();
+                        .AddScoped<IWorkBudgetRepository, DataEFCoreSQL.Repositories.WorkBudgetRepository>()
+                        .AddScoped<IIndirectCostRepository, DataEFCoreSQL.Repositories.IndirectCostRepository>();
                     break;
                 case "MySQL":
                     services
@@ -76,7 +77,8 @@
                         .AddScoped<IDetailEmbargoRepository, DataEFCoreMySQL.Repositories.DetailEmbargoRepository>()
                         .AddScoped<ISSHiringRepository, DataEFCoreMySQL.Repositories.SSHiringRepository>()
                         .AddScoped<IWorkCostRepository, DataEFCoreMySQL.Repositories.WorkCostRepository>()
-                        .AddScoped<IWorkBudgetRepository, DataEFCoreMySQL.Repositories.WorkBudgetRepository>();
+                        .AddScoped<IWorkBudgetRepository, DataEFCoreMySQL.Repositories.WorkBudgetRepository>()
+                        .AddScoped<IIndirectCostRepository, DataEFCoreMySQL.Repositories.IndirectCostRepository>();
                     break;
 
                 default:
@@ -103,7 +105,8 @@
                         .AddScoped<IDetailEmbargoRepository, DataEFCoreSQL.Repositories.DetailEmbargoRepository>()
                         .AddScoped<ISSHiringRepository, DataEFCoreSQL.Repositories.SSHiringRepository>()
                         .AddScoped<IWorkCostRepository, DataEFCoreSQL.Repositories.WorkCostRepository>()
-                        .AddScoped<IWorkBudgetRepository, DataEFCoreSQL.Repositories.WorkBudgetRepository>();
+                        .AddScoped<IWorkBudgetRepository, DataEFCoreSQL.Repositories.WorkBudgetRepository>()
+                        .AddScoped<IIndirectCostRepository, DataEFCoreSQL.Repositories.IndirectCostRepository>();
                     break;
             }
 

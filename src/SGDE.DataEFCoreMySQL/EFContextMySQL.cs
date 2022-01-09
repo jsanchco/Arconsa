@@ -41,6 +41,7 @@ namespace SGDE.DataEFCoreMySQL
         public virtual DbSet<SSHiring> SSHiring { get; set; }
         public virtual DbSet<WorkCost> WorkCost { get; set; }
         public virtual DbSet<WorkBudget> WorkBudget { get; set; }
+        public virtual DbSet<IndirectCost> IndirectCost { get; set; }
 
 
         public static long InstanceCount;
@@ -75,6 +76,7 @@ namespace SGDE.DataEFCoreMySQL
             new SSHiringConfiguration(modelBuilder.Entity<SSHiring>());
             new WorkCostConfiguration(modelBuilder.Entity<WorkCost>());
             new WorkBudgetConfiguration(modelBuilder.Entity<WorkBudget>());
+            new IndirectCostConfiguration(modelBuilder.Entity<IndirectCost>());
         }
 
         public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<EFContextMySQL>
