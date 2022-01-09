@@ -20,17 +20,9 @@ class DetailWork extends Component {
 
     this.state = {};
 
-    // this.headerText = [
-    //   { text: "Datos Básicos" },
-    //   { text: "Presupuestos" },
-    //   { text: "Gastos" },
-    //   { text: "Altas/Bajas de Trabajadores" },
-    //   { text: "Facturas" },
-    // ];
-
     this.headerText = [
       { text: "Datos Básicos" },
-      //{ text: "Presupuestos" },
+      { text: "Presupuestos" },
       { text: "Gastos" },
       { text: "Altas/Bajas de Trabajadores" },
       { text: "Facturas" },
@@ -159,21 +151,21 @@ class DetailWork extends Component {
                       header={this.headerText[0]}
                       content={this.contentTemplateBasicDataWork}
                     />
-                    {/* <TabItemDirective
-                      header={this.headerText[1]}
-                      content={this.contentTemplateWorkBudgets}
-                    /> */}
                     <TabItemDirective
                       header={this.headerText[1]}
-                      content={this.contentTemplateWorkCosts}
+                      content={this.contentTemplateWorkBudgets}
                     />
                     <TabItemDirective
                       header={this.headerText[2]}
+                      content={this.contentTemplateWorkCosts}
+                    />
+                    <TabItemDirective
+                      header={this.headerText[3]}
                       content={this.contentTemplateAuthorizeCancelWorkers}
                     />
                     {user.roleId === 1 ? (
                       <TabItemDirective
-                        header={this.headerText[3]}
+                        header={this.headerText[4]}
                         content={this.contentTemplateInvoicesWork}
                       />
                     ) : null}
