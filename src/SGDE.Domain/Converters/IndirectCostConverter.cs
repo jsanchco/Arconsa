@@ -25,7 +25,11 @@
 
                 date = indirectCost.Date,
                 description = indirectCost.Description,
-                accountNumber = indirectCost.AccountNumber
+                accountNumber = indirectCost.AccountNumber,
+                amount = indirectCost.Amount,
+                year = indirectCost.Date.Year,
+                month = indirectCost.Date.Month,
+                key = indirectCost.Key
             };
 
             return indirectCostViewModel;
@@ -44,7 +48,11 @@
 
                     date = indirectCost.Date,
                     description = indirectCost.Description,
-                    accountNumber = indirectCost.AccountNumber
+                    accountNumber = indirectCost.AccountNumber,
+                    amount = indirectCost.Amount,
+                    year = indirectCost.Date.Year,
+                    month = indirectCost.Date.Month,
+                    key = indirectCost.Key
                 };
                 return model;
             })

@@ -42,9 +42,11 @@
 
         public QueryResult<IndirectCost> GetAll(int skip = 0, int take = 0)
         {
-            var data = _context.IndirectCost.ToList();
+            var data = _context.IndirectCost
+                 .ToList()
+                 .OrderByDescending(x => x.Key);
 
-            var count = data.Count;
+            var count = data.Count();
             return (skip != 0 || take != 0)
                 ? new QueryResult<IndirectCost>
                 {

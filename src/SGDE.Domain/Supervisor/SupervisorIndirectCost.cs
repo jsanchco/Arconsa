@@ -33,7 +33,7 @@ namespace SGDE.Domain.Supervisor
                 ModifiedDate = null,
                 IPAddress = newIndirectCostViewModel.iPAddress,
 
-                Date = newIndirectCostViewModel.date,
+                Date = new DateTime(newIndirectCostViewModel.year, newIndirectCostViewModel.month, 1),
                 Description = newIndirectCostViewModel.description,
                 AccountNumber = newIndirectCostViewModel.accountNumber,
                 Amount = newIndirectCostViewModel.amount
@@ -55,7 +55,7 @@ namespace SGDE.Domain.Supervisor
             indirectCost.ModifiedDate = DateTime.Now;
             indirectCost.IPAddress = indirectCostViewModel.iPAddress;
 
-            indirectCost.Date = indirectCostViewModel.date;
+            indirectCost.Date = new DateTime(indirectCostViewModel.year, indirectCostViewModel.month, 1);
             indirectCost.Description = indirectCostViewModel.description;
             indirectCost.AccountNumber = indirectCostViewModel.accountNumber;
             indirectCost.Amount = indirectCostViewModel.amount;

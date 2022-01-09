@@ -18,13 +18,22 @@ export default {
     },
     {
       name: "Configuración",
-      url: "/settings",
       icon: "icon-settings",
       children: [
         {
-          name: "Datos de la Empresa",
-          url: "/settings/companydata",
-          icon: "icon-note"
+          name: "Adecua",
+          children: [
+            {
+              name: "Datos de la Empresa",
+              url: "/settings/company/companydata",
+              icon: "icon-note"
+            },
+            {
+              name: "Gastos Indirectos",
+              url: "/settings/company/indirect-costs",
+              icon: "icon-note"
+            }         
+          ]
         },
         {
           name: "Roles",

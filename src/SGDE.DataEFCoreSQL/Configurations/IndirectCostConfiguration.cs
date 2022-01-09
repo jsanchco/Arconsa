@@ -16,8 +16,8 @@
 
             entity.HasKey(x => x.Id);
             entity.Property(x => x.Id).ValueGeneratedOnAdd();
-            entity.Ignore(x => x.Year);
-            entity.Ignore(x => x.Month);
+            //entity.Ignore(x => x.Year);
+            //entity.Ignore(x => x.Month);
             entity.Ignore(x => x.Key);
         }
     }

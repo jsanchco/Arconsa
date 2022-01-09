@@ -12,14 +12,14 @@ import {
   Button,
 } from "reactstrap";
 import { connect } from "react-redux";
-import ACTION_APPLICATION from "../../actions/applicationAction";
+import ACTION_APPLICATION from "../../../actions/applicationAction";
 import {
   createSpinner,
   showSpinner,
   hideSpinner,
 } from "@syncfusion/ej2-popups";
-import { getSettings, updateSettings } from "../../services";
-import { COMPANY_DATA } from "../../constants";
+import { getSettings, updateSettings } from "../../../services";
+import { COMPANY_DATA } from "../../../constants";
 
 class CompanyData extends Component {
   constructor(props) {
@@ -108,7 +108,7 @@ class CompanyData extends Component {
     return (
       <div id="container">
         <Fragment>
-          <Breadcrumb class>
+          <Breadcrumb>
             {/*eslint-disable-next-line*/}
             <BreadcrumbItem><a href="#">Inicio</a></BreadcrumbItem>
             {/* eslint-disable-next-line*/}

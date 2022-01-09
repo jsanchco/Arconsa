@@ -19,7 +19,6 @@ import { config, WORKBUDGETS } from "../../constants";
 import { L10n } from "@syncfusion/ej2-base";
 import data from "../../locales/locale.json";
 import { TOKEN_KEY } from "../../services";
-import { AccordionActionSettings } from "@syncfusion/ej2-navigations";
 
 L10n.load(data);
 

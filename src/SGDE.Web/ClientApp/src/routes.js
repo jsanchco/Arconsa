@@ -42,7 +42,8 @@ const Employees = React.lazy(() => import('./views/Employees/employees'));
 const DetailEmployee = React.lazy(() => import('./views/Employees/detail-employee'));
 const BasicData = React.lazy(() => import('./views/Employees/basic-data'));
 
-const CompanyData = React.lazy(() => import('./views/Settings/company-data'));
+const CompanyData = React.lazy(() => import('./views/Settings/company/company-data'));
+const IndirectCosts = React.lazy(() => import('./views/Settings/company/indirect-costs'));
 const Roles = React.lazy(() => import('./views/Settings/roles'));
 const Professions = React.lazy(() => import('./views/Settings/professions'));
 const TypesDocument = React.lazy(() => import('./views/Settings/types-document'));
@@ -116,7 +117,8 @@ const routes = [
   { path: '/employees/employees', exact: true, name: 'Trabajadores', component: Employees },
   { path: '/employees/detailemployee/:id', exact: true, name: 'Detalle Trabajador', component: DetailEmployee },
   { path: '/employees/basicdata', exact: true, name: 'Datos Básicos', component: BasicData },
-  { path: '/settings/companydata', exact: true, name: 'Datos de Empresa', component: CompanyData },
+  { path: '/settings/company/companydata', exact: true, name: 'Datos de Empresa', component: CompanyData },
+  { path: '/settings/company/indirect-costs', exact: true, name: 'Gastos Indirectos', component: IndirectCosts },
   { path: '/settings/roles', exact: true, name: 'Roles', component: Roles },
   { path: '/settings/professions', exact: true, name: 'Puestos de Trabajo', component: Professions },
   { path: '/settings/typesdocument', exact: true, name: 'Tipos de Documento', component: TypesDocument },
