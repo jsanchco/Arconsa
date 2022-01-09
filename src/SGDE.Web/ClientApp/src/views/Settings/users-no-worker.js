@@ -83,7 +83,9 @@ class UsersNoWorker extends Component {
 
     this.template = this.gridTemplate;
 
-    this.query = new Query().addParams("roles", [1, 2]);
+    this.query = new Query()
+      .addParams("roles", [1, 2])
+      .addParams("showAllEmployees", true);
   }
 
   gridTemplate(args) {
@@ -269,7 +271,7 @@ class UsersNoWorker extends Component {
                       headerText="Teléfono"
                       width="100"
                     />
-                    <ColumnDirective
+                    {/* <ColumnDirective
                       field="professionId"
                       headerText="Puesto"
                       width="100"
@@ -278,7 +280,7 @@ class UsersNoWorker extends Component {
                       foreignKeyField="id"
                       validationRules={this.professionIdRules}
                       dataSource={this.professions}
-                    />
+                    /> */}
 
                     {this.renderColumnRole()}
                   </ColumnsDirective>
