@@ -111,5 +111,21 @@ namespace SGDE.API.Controllers
                 return StatusCode(500, ex);
             }
         }
+
+        [HttpPost]
+        [Route("addindirectcosts")]
+        public object AddIndirectCosts([FromBody] IndirectCostCopyDataViewModel indirectCostCopyDataViewModel)
+        {
+            try
+            {
+                var result = _supervisor.AddIndirectCosts(indirectCostCopyDataViewModel);
+                return result;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Exception: ");
+                return StatusCode(500, ex);
+            }
+        }
     }
 }

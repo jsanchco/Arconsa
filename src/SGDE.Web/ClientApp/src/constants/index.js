@@ -43,6 +43,7 @@ export const WORKCOSTS = "api/workcosts";
 export const REMOVEALLWORKCOSTS = "api/workcosts/removeall";
 export const WORKBUDGETS = "api/workbudgets";
 export const COMPANY_INDIRECTCOSTS = "api/indirectCosts";
+export const COMPANY_ADD_INDIRECTCOSTS = "api/indirectCosts/addindirectcosts";
 export const COMPANY_DATA = "COMPANY_DATA";
 
 const dev = {

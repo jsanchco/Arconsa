@@ -25,7 +25,8 @@ import {
   HISTORYHIRINGUPDATEINWORK,
   PROFESSIONSBYUSER,
   WORKCOSTS,
-  REMOVEALLWORKCOSTS
+  REMOVEALLWORKCOSTS,
+  COMPANY_ADD_INDIRECTCOSTS
 } from "../constants";
 import store from "../store/store";
 import ACTION_AUTHENTICATION from "../actions/authenticationAction";
@@ -1406,6 +1407,59 @@ export const getProfessionsByUser = (userId) => {
       .then((data) => data.json())
       .then((result) => {
         resolve(result.Items);
+      })
+      .catch((error) => {
+        console.log("error ->", error);
+        reject();
+      });
+  });
+};
+
+export const addIndirectCosts = (data) => {
+  return new Promise((resolve, reject) => {
+    const url = `${config.URL_API}/${COMPANY_ADD_INDIRECTCOSTS}`;
+    fetch(url, {
+      headers: {
+        Accept: "text/plain",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`,
+      },
+      method: "POST",
+      body: JSON.stringify(data),
+    })
+      .then((data) => data.json())
+      .then((result) => {
+        if (result.Message) {
+          store.dispatch(
+            ACTION_APPLICATION.showMessage({
+              statusText: result.Message,
+              responseText: result.Message,
+              type: "danger",
+            })
+          );
+          reject();
+        } else {
+          if (result === true) {
+            store.dispatch(
+              ACTION_APPLICATION.showMessage({
+                statusText: "Costos indirectos guardados correctamente",
+                responseText: "Costos indirectos guardados correctamente",
+                type: "success",
+              })
+            );
+            resolve(result);
+          } else {
+            store.dispatch(
+              ACTION_APPLICATION.showMessage({
+                statusText: "No se han podido generar correctamente los costos indirectos",
+                responseText:
+                  "No se han podido generar correctamente los costos indirectos",
+                type: "danger",
+              })
+            );
+            resolve(result);
+          }
+        }
       })
       .catch((error) => {
         console.log("error ->", error);

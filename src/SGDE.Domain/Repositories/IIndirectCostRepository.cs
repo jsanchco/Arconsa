@@ -1,5 +1,7 @@
 ﻿using SGDE.Domain.Entities;
 using SGDE.Domain.Helpers;
+using System;
+using System.Collections.Generic;
 
 namespace SGDE.Domain.Repositories
 {
@@ -10,5 +12,6 @@ namespace SGDE.Domain.Repositories
         IndirectCost Add(IndirectCost newIndirectCost);
         bool Update(IndirectCost indirectCost);
         bool Delete(int id);
+        List<IndirectCost> GetAllInDate(DateTime date);
     }
 }

@@ -325,6 +325,7 @@ namespace SGDE.Domain.Supervisor
         IndirectCostViewModel AddIndirectCost(IndirectCostViewModel newIndirectCostViewModel);
         bool UpdateIndirectCost(IndirectCostViewModel indirectCostViewModel);
         bool DeleteIndirectCost(int id);
+        bool AddIndirectCosts(IndirectCostCopyDataViewModel indirectCostCopyDataViewModel);
 
         #endregion
 

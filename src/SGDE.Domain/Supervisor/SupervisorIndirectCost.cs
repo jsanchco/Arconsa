@@ -67,5 +67,37 @@ namespace SGDE.Domain.Supervisor
         {
             return _indirectCostRepository.Delete(id);
         }
+
+        public bool AddIndirectCosts(IndirectCostCopyDataViewModel indirectCostCopyDataViewModel)
+        {
+            var date = new DateTime(
+                indirectCostCopyDataViewModel.YearOld,
+                indirectCostCopyDataViewModel.MonthOld,
+                1);
+
+            var indirectCosts = _indirectCostRepository.GetAllInDate(date);
+            if (indirectCosts.Count == 0)
+                throw new Exception("No existen costos para los datos seleccionados");
+
+            var result = true;
+            foreach (var indirectCost in indirectCosts)
+            {
+                var newIndirectCost = new IndirectCost
+                {
+                    Date = new DateTime(
+                    indirectCostCopyDataViewModel.YearNew,
+                    indirectCostCopyDataViewModel.MonthNew,
+                    1),
+                    AccountNumber = indirectCost.AccountNumber,
+                    Amount = indirectCost.Amount,
+                    Description = indirectCost.Description                    
+                };
+                var resultAdd = _indirectCostRepository.Add(newIndirectCost);
+                if (resultAdd == null && result)
+                    result = false;
+            }
+
+            return result;
+        }
     }
 }

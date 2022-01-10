@@ -92,5 +92,12 @@
             _context.SaveChanges();
             return true;
         }
+
+        public List<IndirectCost> GetAllInDate(DateTime date)
+        {
+            return _context.IndirectCost
+                .Where(x => x.Date == date)
+                .ToList();
+        }
     }
 }

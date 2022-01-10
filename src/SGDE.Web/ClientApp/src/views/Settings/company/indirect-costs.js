@@ -16,13 +16,14 @@ import {
   AggregateDirective,
   AggregatesDirective,
 } from "@syncfusion/ej2-react-grids";
-import { DataManager, WebApiAdaptor, Query } from "@syncfusion/ej2-data";
+import { DataManager, WebApiAdaptor } from "@syncfusion/ej2-data";
 import { config, COMPANY_INDIRECTCOSTS } from "../../../constants";
 import { L10n } from "@syncfusion/ej2-base";
 import data from "../../../locales/locale.json";
 import { connect } from "react-redux";
 import ACTION_APPLICATION from "../../../actions/applicationAction";
-import { TOKEN_KEY } from "../../../services";
+import { TOKEN_KEY, addIndirectCosts } from "../../../services";
+import ModalSelectYearMonth from "../../Modals/modal-select-year-month";
 
 L10n.load(data);
 
@@ -42,9 +43,22 @@ class IndirectCosts extends Component {
 
     this.state = {
       rowSelected: null,
+      modal: false,
     };
 
-    this.toolbarOptions = ["Add", "Edit", "Delete", "Update", "Cancel"];
+    this.toolbarOptions = [
+      "Add",
+      "Edit",
+      "Delete",
+      "Update",
+      "Cancel",
+      {
+        text: "Copiar mes",
+        tooltipText: "Copiar mes",
+        prefixIcon: "e-custom-icons e-file-workers",
+        id: "copyMonth",
+      },
+    ];
     this.editSettings = {
       showDeleteConfirmDialog: true,
       allowEditing: true,
@@ -52,11 +66,14 @@ class IndirectCosts extends Component {
       allowDeleting: true,
       newRowPosition: "Top",
     };
-    this.pageSettings = { pageCount: 10, pageSize: 10 };
+    this.pageSettings = { pageCount: 10, pageSize: 50 };
     this.actionFailure = this.actionFailure.bind(this);
     this.actionComplete = this.actionComplete.bind(this);
     this.actionBegin = this.actionBegin.bind(this);
     this.rowSelected = this.rowSelected.bind(this);
+    this.toggleModal = this.toggleModal.bind(this);
+    this.updateInidrectCosts = this.updateInidrectCosts.bind(this);
+    this.clickHandler = this.clickHandler.bind(this);
 
     this.editYear = {
       params: {
@@ -96,7 +113,7 @@ class IndirectCosts extends Component {
     };
 
     this.groupOptions = {
-      columns: ["key"]
+      columns: ["key"],
     };
   }
 
@@ -178,9 +195,36 @@ class IndirectCosts extends Component {
     return <span>Total: {title}€</span>;
   }
 
+  clickHandler(args) {
+    if (args.item.id === "copyMonth") {
+      this.setState({
+        modal: !this.state.modal,
+      });
+    }
+  }
+
+  toggleModal() {
+    this.setState({
+      modal: !this.state.modal,
+    });
+  }
+
+  updateInidrectCosts(yearOld, monthOld, yearNew, monthNew) {
+    addIndirectCosts({ yearOld, monthOld, yearNew, monthNew }).then(() => {
+      this.grid.refresh();
+    });
+  }
+
   render() {
     return (
       <Fragment>
+        <ModalSelectYearMonth
+          isOpen={this.state.modal}
+          toggle={this.toggleModal}
+          updateInidrectCosts={this.updateInidrectCosts}
+          showMessage={this.props.showMessage}
+        />
+
         <Breadcrumb>
           {/*eslint-disable-next-line*/}
           <BreadcrumbItem>
@@ -202,9 +246,10 @@ class IndirectCosts extends Component {
                   dataSource={this.indirectCosts}
                   locale="es-US"
                   allowPaging={true}
-                  // pageSettings={this.pageSettings}
+                  pageSettings={this.pageSettings}
                   toolbar={this.toolbarOptions}
                   editSettings={this.editSettings}
+                  toolbarClick={this.clickHandler}
                   style={{
                     marginLeft: 30,
                     marginRight: 30,
@@ -250,12 +295,12 @@ class IndirectCosts extends Component {
                     <ColumnDirective
                       field="accountNumber"
                       headerText="Nº Cuenta"
-                      width="100"
+                      width="70"
                     />
                     <ColumnDirective
                       field="description"
                       headerText="Descripción"
-                      width="100"
+                      width="150"
                     />
                     <ColumnDirective
                       field="amount"
@@ -298,7 +343,7 @@ class IndirectCosts extends Component {
                     services={[
                       ForeignKey,
                       Group,
-                      // Page,
+                      Page,
                       Toolbar,
                       Edit,
                       Aggregate,
