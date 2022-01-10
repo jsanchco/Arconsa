@@ -110,13 +110,13 @@ class Works extends Component {
       allowDeleting: true,
       newRowPosition: "Top",
     };
-    this.pageSettings = { 
-      pageCount: 10, 
-      pageSize: 10, 
-      currentPage: props.currentPageWorks 
+    this.pageSettings = {
+      pageCount: 10,
+      pageSize: 10,
+      currentPage: props.currentPageWorks,
     };
-    this.searchSettings = { 
-      key: props.currentSearchWorks
+    this.searchSettings = {
+      key: props.currentSearchWorks,
     };
     this.actionFailure = this.actionFailure.bind(this);
     this.actionComplete = this.actionComplete.bind(this);
@@ -144,9 +144,11 @@ class Works extends Component {
 
     this.editClients = {
       params: {
-        popupWidth: "auto"
-      }
+        popupWidth: "auto",
+      },
     };
+
+    this.typeWork = [{ id: "HO" }, { id: "PA" }, { id: "MA" }];
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -392,7 +394,9 @@ class Works extends Component {
       <Fragment>
         <Breadcrumb>
           {/*eslint-disable-next-line*/}
-          <BreadcrumbItem><a href="#">Inicio</a></BreadcrumbItem>
+          <BreadcrumbItem>
+            <a href="#">Inicio</a>
+          </BreadcrumbItem>
           {/* eslint-disable-next-line*/}
           <BreadcrumbItem active>Obras</BreadcrumbItem>
         </Breadcrumb>
@@ -471,7 +475,7 @@ class Works extends Component {
                   locale="es"
                   allowPaging={true}
                   pageSettings={this.pageSettings}
-                  searchSettings={this.searchSettings} 
+                  searchSettings={this.searchSettings}
                   toolbar={this.toolbarOptions}
                   toolbarClick={this.clickHandler}
                   editSettings={this.editSettings}
@@ -527,10 +531,19 @@ class Works extends Component {
                   headerText="Duración Estimada"
                   width="100"
                 /> */}
-                    <ColumnDirective
+                    {/* <ColumnDirective
                       field="worksToRealize"
                       headerText="Tipo"
                       width="50"
+                    /> */}
+                    <ColumnDirective
+                      field="worksToRealize"
+                      headerText="Tipo"
+                      width="70"
+                      editType="dropdownedit"
+                      foreignKeyValue="id"
+                      foreignKeyField="id"
+                      dataSource={new DataManager(this.typeWork)}
                     />
                     <ColumnDirective
                       field="numberPersonsRequested"
@@ -596,14 +609,16 @@ Works.propTypes = {};
 const mapStateToProps = (state) => {
   return {
     currentPageWorks: state.applicationReducer.currentPageWorks,
-    currentSearchWorks: state.applicationReducer.currentSearchWorks
+    currentSearchWorks: state.applicationReducer.currentSearchWorks,
   };
 };
 
 const mapDispatchToProps = (dispatch) => ({
   showMessage: (message) => dispatch(ACTION_APPLICATION.showMessage(message)),
-  setCurrentPageWorks: (currentPageWorks) => dispatch(ACTION_APPLICATION.setCurrentPageWorks(currentPageWorks)),
-  setCurrentSearchWorks: (currentSearchWorks) => dispatch(ACTION_APPLICATION.setCurrentSearchWorks(currentSearchWorks))
+  setCurrentPageWorks: (currentPageWorks) =>
+    dispatch(ACTION_APPLICATION.setCurrentPageWorks(currentPageWorks)),
+  setCurrentSearchWorks: (currentSearchWorks) =>
+    dispatch(ACTION_APPLICATION.setCurrentSearchWorks(currentSearchWorks)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Works);

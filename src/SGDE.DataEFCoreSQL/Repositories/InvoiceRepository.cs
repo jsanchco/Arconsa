@@ -50,7 +50,9 @@
                     .Include(x => x.Work)
                     .ThenInclude(x => x.Client)
                     .Include(x => x.InvoiceToCancel)
-                    .OrderByDescending(x => x.InvoiceNumber)
+                    .ToList()
+                    .OrderByDescending(x => x.KeyOrder)
+                    //.OrderByDescending(x => x.InvoiceNumber)
                     .ToList();
             }
 
@@ -61,7 +63,9 @@
                     .ThenInclude(x => x.Client)
                     .Include(x => x.InvoiceToCancel)
                     .Where(x => x.WorkId == workId)
-                    .OrderByDescending(x => x.InvoiceNumber)
+                    .ToList()
+                    .OrderByDescending(x => x.KeyOrder)
+                    //.OrderByDescending(x => x.InvoiceNumber)
                     .ToList();
             }
 
@@ -72,7 +76,9 @@
                     .ThenInclude(x => x.Client)
                     .Include(x => x.InvoiceToCancel)
                     .Where(x => x.Work.ClientId == clientId)
-                    .OrderByDescending(x => x.InvoiceNumber)
+                    .ToList()
+                    .OrderByDescending(x => x.KeyOrder)
+                    //.OrderByDescending(x => x.InvoiceNumber)
                     .ToList();
             }
 
@@ -145,9 +151,10 @@
                 {
                     try
                     {
+                        Work work = null;
                         if (invoice.WorkId != null)
                         {
-                            var work = _context.Work.FirstOrDefault(x => x.Id == invoice.WorkId);
+                            work = _context.Work.FirstOrDefault(x => x.Id == invoice.WorkId);
                             invoice.Iva = work != null ? !work.PassiveSubject : true;
                         }
                         else
@@ -165,10 +172,12 @@
                         {
                             invoiceNumber = invoices.Select(x => x.InvoiceNumber).Max();
                         }
-                        invoiceNumber=3;
+                        invoiceNumber++;
 
                         invoice.InvoiceNumber = invoiceNumber;
-                        invoice.Name = $"{invoiceNumber:000}/{invoice.StartDate.Year.ToString().Substring(2, 2)}";
+                        invoice.Name = work != null
+                            ? $"{work.WorksToRealize}{invoiceNumber:0000}_{invoice.StartDate.Year.ToString().Substring(2, 2)}"
+                            : $"{invoiceNumber:0000}_{invoice.StartDate.Year.ToString().Substring(2, 2)}";
 
                         _context.Invoice.Add(invoice);
                         _context.SaveChanges();
