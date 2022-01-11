@@ -167,7 +167,7 @@
 
                         var invoiceNumber = 0;
                         var invoices = _context.Invoice
-                            .Where(x => x.StartDate >= new DateTime(invoice.StartDate.Year, 1, 1) && x.StartDate <= new DateTime(invoice.StartDate.Year, 12, 31));
+                            .Where(x => x.IssueDate >= new DateTime(invoice.IssueDate.Year, 1, 1) && x.IssueDate <= new DateTime(invoice.IssueDate.Year, 12, 31));
                         if (invoices.Count() > 0)
                         {
                             invoiceNumber = invoices.Select(x => x.InvoiceNumber).Max();
@@ -177,7 +177,7 @@
                         invoice.InvoiceNumber = invoiceNumber;
                         invoice.Name = work != null
                             ? $"{work.WorksToRealize}{invoiceNumber:0000}_{invoice.IssueDate.Year.ToString().Substring(2, 2)}"
-                            : $"{invoiceNumber:0000}_{invoice.StartDate.Year.ToString().Substring(2, 2)}";
+                            : $"{invoiceNumber:0000}_{invoice.IssueDate.Year.ToString().Substring(2, 2)}";
 
                         _context.Invoice.Add(invoice);
                         _context.SaveChanges();
