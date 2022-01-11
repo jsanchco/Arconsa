@@ -176,7 +176,7 @@
 
                         invoice.InvoiceNumber = invoiceNumber;
                         invoice.Name = work != null
-                            ? $"{work.WorksToRealize}{invoiceNumber:0000}_{invoice.StartDate.Year.ToString().Substring(2, 2)}"
+                            ? $"{work.WorksToRealize}{invoiceNumber:0000}_{invoice.IssueDate.Year.ToString().Substring(2, 2)}"
                             : $"{invoiceNumber:0000}_{invoice.StartDate.Year.ToString().Substring(2, 2)}";
 
                         _context.Invoice.Add(invoice);
