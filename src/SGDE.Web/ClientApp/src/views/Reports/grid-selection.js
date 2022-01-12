@@ -163,12 +163,21 @@ class GridSelection extends Component {
   }
 
   footerSum(args) {
-    return <span>Total: {args.Sum}</span>;
+    let amount = args.Sum.toString().replace("$", "").replace(".00", "");
+
+    return <span>Total: {amount}</span>;
+    //return <span>Total: {args.Sum}</span>;
   }
 
   footerSumEuros(args) {
     let amount = Number(args.Sum);
     amount = Math.round((amount + Number.EPSILON) * 100) / 100;
+
+    if (isNaN(amount)) {
+      amount = args.Sum.replace(",", "").replace("$", "");
+      amount = Number(amount);
+      amount = Math.round((amount + Number.EPSILON) * 100) / 100;
+    }
 
     return <span>Total: {amount}€</span>;
   }

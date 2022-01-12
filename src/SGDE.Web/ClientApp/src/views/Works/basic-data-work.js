@@ -325,6 +325,17 @@ class BasicDataWork extends Component {
               </FormGroup>
             </Col>
           </Row>
+          {/* <Row>
+            <Col xs="4">
+              <FormGroup>
+                <Label htmlFor="totalContract">Total Contrato</Label>
+                <br></br><br></br>
+                <Label htmlFor="totalContract">Presupuesto Definitivo ... 56435,77€</Label>
+                <br></br>
+                <Label htmlFor="totalContract">XXXXXXXXXXXXXXXXXXXXXX ... 35,88€</Label>
+              </FormGroup>
+            </Col>
+          </Row> */}
           <Row>
             <Col xs="12" style={{ marginTop: "20px", textAlign: "right" }}>
               <div className="form-actions">

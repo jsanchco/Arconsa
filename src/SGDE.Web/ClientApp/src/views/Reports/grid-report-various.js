@@ -179,12 +179,24 @@ class GridReportVarious extends Component {
   }
 
   footerSum(args) {
-    return <span>Total: {args.Sum} horas</span>;
+    let amount = args.Sum.toString().replace("$", "").replace(".00", "");
+
+    return <span>Total: {amount}</span>;
+    //return <span>Total: {args.Sum} horas</span>;
   }
 
   footerSumEuros(args) {
     // return <span>Total: {args.Sum.toFixed(2)}€</span>;
-    return <span>Total: {args.Sum}€</span>;
+    let amount = Number(args.Sum);
+    amount = Math.round((amount + Number.EPSILON) * 100) / 100;
+
+    if (isNaN(amount)) {
+      amount = args.Sum.replace(",", "").replace("$", "");
+      amount = Number(amount);
+      amount = Math.round((amount + Number.EPSILON) * 100) / 100;
+    }
+
+    return <span>Total: {amount}€</span>;
   }
 
   formatDate(args) {
