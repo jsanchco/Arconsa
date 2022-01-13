@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react";
-import { Row, Col } from "reactstrap";
+import { Row } from "reactstrap";
 import {
   ColumnDirective,
   ColumnsDirective,
@@ -33,12 +33,12 @@ class AuthorizeCancelWorkers extends Component {
     url: `${config.URL_API}/${PROFESSIONSBYUSER}`,
     headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }],
   });
+
   grid = null;
   contextMenuItems = [
     { text: "En Obra", target: ".e-content", id: "inWork" },
     { text: "Fuera de Obra", target: ".e-content", id: "outWork" },
   ];
-
 
   professionIdRules = { required: false };
 

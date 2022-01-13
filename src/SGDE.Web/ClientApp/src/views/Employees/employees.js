@@ -292,7 +292,7 @@ class Employees extends Component {
         <Breadcrumb>
           {/*eslint-disable-next-line*/}
           <BreadcrumbItem>
-            <a href="#">Inicio</a>
+            <a href="/#">Inicio</a>
           </BreadcrumbItem>
           {/* eslint-disable-next-line*/}
           <BreadcrumbItem active>Trabajadores</BreadcrumbItem>
@@ -314,9 +314,9 @@ class Employees extends Component {
                 }}
               >
                 <Row>
-                  <Col xs="9">
+                  <Col xs="8">
                   </Col>
-                  <Col xs="3">
+                  <Col xs="4">
                     <FormGroup style={{ marginTop: -20 }}>
                       <Label
                         htmlFor="allEmployees"

@@ -228,7 +228,7 @@ class IndirectCosts extends Component {
         <Breadcrumb>
           {/*eslint-disable-next-line*/}
           <BreadcrumbItem>
-            <a href="#">Inicio</a>
+            <a href="/#">Inicio</a>
           </BreadcrumbItem>
           {/* eslint-disable-next-line*/}
           <BreadcrumbItem active>Gestión de Usuarios</BreadcrumbItem>

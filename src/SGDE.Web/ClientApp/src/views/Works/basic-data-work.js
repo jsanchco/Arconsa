@@ -236,7 +236,7 @@ class BasicDataWork extends Component {
                   id="estimatedDuration"
                   name="estimatedDuration"
                   placeholder="tiempo estimado"
-                  value={this.state.estimatedDuration}
+                  value={this.state.estimatedDuration || ""}
                   onChange={this.handleInputChange}
                 />
               </FormGroup>
@@ -250,7 +250,7 @@ class BasicDataWork extends Component {
                   placeholder="fecha de apertura"
                   required
                   format="dd/MM/yyyy"
-                  value={this.state.openDate}
+                  value={this.state.openDate || ""}
                   onChange={this.handleInputChange}
                 />
               </FormGroup>
@@ -263,7 +263,7 @@ class BasicDataWork extends Component {
                   name="closeDate"
                   placeholder="fecha de cierre"
                   format="dd/MM/yyyy"
-                  value={this.state.closeDate}
+                  value={this.state.closeDate || ""}
                   onChange={this.handleInputChange}
                 />
               </FormGroup>
@@ -300,7 +300,7 @@ class BasicDataWork extends Component {
                   format="N2"
                   id="totalContract"
                   name="totalContract"
-                  value={this.state.totalContract}
+                  value={this.state.totalContract || ""}
                   placeholder="total contrato"
                   change={this.handleChangeTotalContract}
                   ref={(g) => (this.ntbTotalContract = g)}
@@ -314,7 +314,7 @@ class BasicDataWork extends Component {
                   format="p2"
                   id="percentageRetention"
                   name="percentageRetention"
-                  value={this.state.percentageRetention}
+                  value={this.state.percentageRetention || ""}
                   min={0}
                   max={1}
                   step={0.01}

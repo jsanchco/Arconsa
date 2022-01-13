@@ -179,7 +179,7 @@ class GridSelection extends Component {
       amount = Math.round((amount + Number.EPSILON) * 100) / 100;
     }
 
-    return <span>Total: {amount}€</span>;
+    return <span style={{ textAlign: "left" }}>Total: {amount}€</span>;
   }
 
   renderWorker() {

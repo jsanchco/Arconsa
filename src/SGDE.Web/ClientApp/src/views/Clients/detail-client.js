@@ -98,7 +98,7 @@ class DetailClient extends Component {
 
     return (
       <Fragment>
-        <Breadcrumb class>
+        <Breadcrumb>
           {/*eslint-disable-next-line*/}
           <BreadcrumbItem><a href="#">Inicio</a></BreadcrumbItem>
           {/* eslint-disable-next-line*/}

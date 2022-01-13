@@ -98,7 +98,7 @@ class ModalSelectWorkCost extends Component {
 }
 
 ModalSelectWorkCost.propTypes = {
-  isOpen: PropTypes.bool.isRequired,
+  // isOpen: PropTypes.bool.isRequired,
   toggle: PropTypes.func.isRequired,
   updateDocument: PropTypes.func,
   workId: PropTypes.string.isRequired,

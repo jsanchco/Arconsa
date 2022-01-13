@@ -12,7 +12,7 @@ import {
   AppSidebarForm,
   AppSidebarHeader,
   AppSidebarMinimizer,
-  AppSidebarNav2 as AppSidebarNav
+  AppSidebarNav2 as AppSidebarNav,
 } from "@coreui/react";
 // sidebar nav config
 import navigation from "../../_nav";
@@ -31,8 +31,8 @@ const DefaultHeader = React.lazy(() => import("./DefaultHeader"));
 class DefaultLayout extends Component {
   componentDidUpdate(prevProps) {
     if (
-      this.props.messageApplication != null &&
-      prevProps.messageApplication !== this.props.messageApplication
+      this.props.messageapplication != null &&
+      prevProps.messageapplication !== this.props.messageapplication
     ) {
       this.showMessage();
     }
@@ -49,15 +49,15 @@ class DefaultLayout extends Component {
 
   showMessage() {
     let message;
-    if (this.props.messageApplication.type === "danger") {
-      if (this.props.messageApplication.responseText !== undefined) {
-        message = this.props.messageApplication.responseText.toString();
+    if (this.props.messageapplication.type === "danger") {
+      if (this.props.messageapplication.responseText !== undefined) {
+        message = this.props.messageapplication.responseText.toString();
       } else {
         message = "ERROR en la petición";
       }
     } else {
-      if (this.props.messageApplication.responseText !== undefined) {
-        message = this.props.messageApplication.responseText.toString();
+      if (this.props.messageapplication.responseText !== undefined) {
+        message = this.props.messageapplication.responseText.toString();
       } else {
         message = "ERROR en la petición";
       }
@@ -68,27 +68,28 @@ class DefaultLayout extends Component {
 
     store.addNotification({
       message: message,
-      type: this.props.messageApplication.type,
+      type: this.props.messageapplication.type,
       container: "bottom-center",
       animationIn: ["animated", "fadeIn"],
       animationOut: ["animated", "fadeOut"],
       dismiss: {
         duration: 5000,
-        showIcon: true
+        showIcon: true,
       },
-      width: 800
+      width: 800,
     });
   }
 
   renderAppSidebarNav() {
     const user = JSON.parse(localStorage.getItem("user"));
-    
+
     switch (user.roleId) {
       case 1:
         return (
           <AppSidebarNav
             navConfig={navigation1}
-            {...this.props}
+            location={this.props.location}
+            // {...this.props}
             router={router}
           />
         );
@@ -96,7 +97,8 @@ class DefaultLayout extends Component {
         return (
           <AppSidebarNav
             navConfig={navigation2}
-            {...this.props}
+            location={this.props.location}
+            // {...this.props}
             router={router}
           />
         );
@@ -104,7 +106,8 @@ class DefaultLayout extends Component {
         return (
           <AppSidebarNav
             navConfig={navigation3}
-            {...this.props}
+            location={this.props.location}
+            // {...this.props}
             router={router}
           />
         );
@@ -113,7 +116,8 @@ class DefaultLayout extends Component {
         return (
           <AppSidebarNav
             navConfig={navigation}
-            {...this.props}
+            location={this.props.location}
+            // {...this.props}
             router={router}
           />
         );
@@ -127,7 +131,10 @@ class DefaultLayout extends Component {
         <div className="app">
           <AppHeader fixed>
             <Suspense fallback={this.loading()}>
-              <DefaultHeader onLogout={e => this.signOut(e)} history={this.props.history} />
+              <DefaultHeader
+                onLogout={(e) => this.signOut(e)}
+                history={this.props.history}
+              />
             </Suspense>
           </AppHeader>
           <div className="app-body">
@@ -135,7 +142,6 @@ class DefaultLayout extends Component {
               <AppSidebarHeader />
               <AppSidebarForm />
               <Suspense>
-
                 {this.renderAppSidebarNav()}
 
                 {/* <AppSidebarNav
@@ -150,22 +156,22 @@ class DefaultLayout extends Component {
             <main className="main">
               {/* <AppBreadcrumb appRoutes={routes} router={router} /> */}
               {/* <Container fluid> */}
-                <Suspense fallback={this.loading()}>
-                  <Switch>
-                    {routes.map((route, idx) => {
-                      return route.component ? (
-                        <Route
-                          key={idx}
-                          path={route.path}
-                          exact={route.exact}
-                          name={route.name}
-                          render={props => <route.component {...props} />}
-                        />
-                      ) : null;
-                    })}
-                    <Redirect from="/" to="/dashboard" />
-                  </Switch>
-                </Suspense>
+              <Suspense fallback={this.loading()}>
+                <Switch>
+                  {routes.map((route, idx) => {
+                    return route.component ? (
+                      <Route
+                        key={idx}
+                        path={route.path}
+                        exact={route.exact}
+                        name={route.name}
+                        render={(props) => <route.component {...props} />}
+                      />
+                    ) : null;
+                  })}
+                  <Redirect from="/" to="/dashboard" />
+                </Switch>
+              </Suspense>
               {/* </Container> */}
             </main>
             <AppAside fixed>
@@ -185,9 +191,9 @@ class DefaultLayout extends Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
-    messageApplication: state.applicationReducer.message
+    messageapplication: state.applicationReducer.message,
   };
 };
 

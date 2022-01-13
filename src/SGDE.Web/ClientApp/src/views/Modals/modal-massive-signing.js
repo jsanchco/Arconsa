@@ -404,9 +404,9 @@ class ModalMassiveSigning extends Component {
 ModalMassiveSigning.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   toggle: PropTypes.func.isRequired,
-  userId: PropTypes.number.isRequired,
+  // userId: PropTypes.number.isRequired,
   showMessage: PropTypes.func.isRequired,
-  updateDailySignings: PropTypes.func.isRequired,
+  // updateDailySignings: PropTypes.func.isRequired,
 };
 
 export default ModalMassiveSigning;

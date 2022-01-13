@@ -107,7 +107,7 @@ ModalSelectImage.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   toggle: PropTypes.func.isRequired,
   updatePhoto: PropTypes.func,
-  userId: PropTypes.number.isRequired,
+  // userId: PropTypes.number.isRequired,
   type: PropTypes.string.isRequired
 };
 
