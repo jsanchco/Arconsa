@@ -103,7 +103,7 @@ ModalSelectFile.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   toggle: PropTypes.func.isRequired,
   updateDocument: PropTypes.func,
-  userId: PropTypes.number.isRequired,
+  //userId: PropTypes.number.isRequired,
   type: PropTypes.string.isRequired,
   rowSelected: PropTypes.object
 };

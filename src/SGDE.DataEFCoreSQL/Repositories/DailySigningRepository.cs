@@ -230,6 +230,7 @@
                 .Include(x => x.HourType)
                 .Include(x => x.Profession)
                 .Where(x => x.StartHour >= dtStart && x.EndHour <= dtEnd && x.UserHiring.WorkId == workId)
+                .OrderBy(x => x.StartHour)
                 .ToList();
 
         }
@@ -254,6 +255,7 @@
                 .Include(x => x.HourType)
                 .Include(x => x.Profession)
                 .Where(x => x.StartHour >= dtStart && x.EndHour <= dtEnd && x.UserHiring.Work.ClientId == clientId)
+                .OrderBy(x => x.StartHour)
                 .ToList();
         }
     }
