@@ -43,6 +43,7 @@ class WorkBudgets extends Component {
   editType = {
     params: {
       popupWidth: "auto",
+      sortOrder: "None"
     },
   };
 
@@ -185,7 +186,10 @@ class WorkBudgets extends Component {
 
   customAggregateTotalContract(args) {
     const values = args.result.filter((item) => (item.type === "Definitivo" || item.type === "Complementario X"));
-    var sum = values.map(item => item.totalContract).reduce((prev, next) => prev + next);
+    let sum  = 0;
+    if (values.length > 0) {
+      sum = values.map(item => item.totalContract).reduce((prev, next) => prev + next);
+    }
 
     return sum;
   }
@@ -288,6 +292,7 @@ class WorkBudgets extends Component {
                     editType="numericedit"
                     textAlign="right"
                     edit={this.numericParams}
+                    validationRules={this.typeRules}
                   />
                   <ColumnDirective
                     field="workId"

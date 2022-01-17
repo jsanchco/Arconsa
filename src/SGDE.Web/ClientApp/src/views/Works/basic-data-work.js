@@ -1,5 +1,13 @@
 import React, { Component } from "react";
-import { Form, Col, FormGroup, Input, Label, Row, Button, Table, Badge } from "reactstrap";
+import {
+  Form,
+  Col,
+  FormGroup,
+  Input,
+  Label,
+  Row,
+  Button
+} from "reactstrap";
 import { AppSwitch } from "@coreui/react";
 import { DatePickerComponent } from "@syncfusion/ej2-react-calendars";
 import { NumericTextBoxComponent } from "@syncfusion/ej2-react-inputs";
@@ -147,6 +155,10 @@ class BasicDataWork extends Component {
       .catch(() => {
         hideSpinner(element);
       });
+  }
+
+  renderTotalContratc() {
+
   }
 
   render() {
@@ -327,58 +339,42 @@ class BasicDataWork extends Component {
           </Row>
           <Row>
             <Col xs="4">
-            <Table responsive size="sm">
-                  <thead>
+              <Row>
+                <Col xs="5" style={{ marginRight: "-30px" }}>
+                  <b>Presupuesto Definitivo</b>
+                </Col>
+                <Col xs="2" style={{ marginRight: "-50px" }}>
+                  <b>...</b>
+                </Col>
+                <Col xs="4" style={{ marginLeft: "-30px", textAlign: "right" }}>
+                  <b>1889.403,59</b>
+                </Col>
+              </Row>
+              <Row>
+                <Col xs="5" style={{ marginRight: "-30px" }}>
+                  <b>Complementario 1</b>
+                </Col>
+                <Col xs="2" style={{ marginRight: "-50px" }}>
+                  <b>...</b>
+                </Col>
+                <Col xs="4"  style={{ marginLeft: "-30px", textAlign: "right" }}>
+                  <b>189.403,59</b>
+                </Col>
+              </Row>
+              {/* <Table responsive size="sm">
+                <thead>
                   <tr>
                     <th>Presupuesto Definitivo</th>
                     <th>...</th>
                     <th>889.403,59</th>
-                    <th>889.403,59</th>
-                  </tr>
-                  </thead>
-                  <tbody>
-                  <tr>
-                    <td>Carwyn Fachtna</td>
-                    <td>2012/01/01</td>
-                    <td>Member</td>
-                    <td>
-                      <Badge color="success">Active</Badge>
-                    </td>
                   </tr>
                   <tr>
-                    <td>Nehemiah Tatius</td>
-                    <td>2012/02/01</td>
-                    <td>Staff</td>
-                    <td>
-                      <Badge color="danger">Banned</Badge>
-                    </td>
+                    <th>Complementario 1</th>
+                    <th>...</th>
+                    <th>89.403,59</th>
                   </tr>
-                  <tr>
-                    <td>Ebbe Gemariah</td>
-                    <td>2012/02/01</td>
-                    <td>Admin</td>
-                    <td>
-                      <Badge color="secondary">Inactive</Badge>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Eustorgios Amulius</td>
-                    <td>2012/03/01</td>
-                    <td>Member</td>
-                    <td>
-                      <Badge color="warning">Pending</Badge>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Leopold Gáspár</td>
-                    <td>2012/01/21</td>
-                    <td>Staff</td>
-                    <td>
-                      <Badge color="success">Active</Badge>
-                    </td>
-                  </tr>
-                  </tbody>
-                </Table>
+                </thead>
+              </Table> */}
             </Col>
           </Row>
           <Row>
