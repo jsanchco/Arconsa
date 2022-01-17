@@ -153,7 +153,7 @@
             if (invoiceParent.InvoiceToCancelId != null)
                 throw new Exception("No de puede anular una Factura ya Anulada");
 
-            var invoiceNumber = _invoiceRepository.CountInvoicesInYear(invoiceParent.IssueDate.Year);
+            var invoiceNumber = _invoiceRepository.CountInvoicesInYear(DateTime.Now.Year);
 
             var newInvoice = new Invoice
             {
