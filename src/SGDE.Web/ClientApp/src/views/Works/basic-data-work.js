@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Form, Col, FormGroup, Input, Label, Row, Button } from "reactstrap";
+import { Form, Col, FormGroup, Input, Label, Row, Button, Table, Badge } from "reactstrap";
 import { AppSwitch } from "@coreui/react";
 import { DatePickerComponent } from "@syncfusion/ej2-react-calendars";
 import { NumericTextBoxComponent } from "@syncfusion/ej2-react-inputs";
@@ -236,7 +236,7 @@ class BasicDataWork extends Component {
                   id="estimatedDuration"
                   name="estimatedDuration"
                   placeholder="tiempo estimado"
-                  value={this.state.estimatedDuration || ""}
+                  value={this.state.estimatedDuration}
                   onChange={this.handleInputChange}
                 />
               </FormGroup>
@@ -250,7 +250,7 @@ class BasicDataWork extends Component {
                   placeholder="fecha de apertura"
                   required
                   format="dd/MM/yyyy"
-                  value={this.state.openDate || ""}
+                  value={this.state.openDate}
                   onChange={this.handleInputChange}
                 />
               </FormGroup>
@@ -263,7 +263,7 @@ class BasicDataWork extends Component {
                   name="closeDate"
                   placeholder="fecha de cierre"
                   format="dd/MM/yyyy"
-                  value={this.state.closeDate || ""}
+                  value={this.state.closeDate}
                   onChange={this.handleInputChange}
                 />
               </FormGroup>
@@ -300,7 +300,7 @@ class BasicDataWork extends Component {
                   format="N2"
                   id="totalContract"
                   name="totalContract"
-                  value={this.state.totalContract || ""}
+                  value={this.state.totalContract}
                   placeholder="total contrato"
                   change={this.handleChangeTotalContract}
                   ref={(g) => (this.ntbTotalContract = g)}
@@ -314,7 +314,7 @@ class BasicDataWork extends Component {
                   format="p2"
                   id="percentageRetention"
                   name="percentageRetention"
-                  value={this.state.percentageRetention || ""}
+                  value={this.state.percentageRetention}
                   min={0}
                   max={1}
                   step={0.01}
@@ -325,17 +325,62 @@ class BasicDataWork extends Component {
               </FormGroup>
             </Col>
           </Row>
-          {/* <Row>
+          <Row>
             <Col xs="4">
-              <FormGroup>
-                <Label htmlFor="totalContract">Total Contrato</Label>
-                <br></br><br></br>
-                <Label htmlFor="totalContract">Presupuesto Definitivo ... 56435,77€</Label>
-                <br></br>
-                <Label htmlFor="totalContract">XXXXXXXXXXXXXXXXXXXXXX ... 35,88€</Label>
-              </FormGroup>
+            <Table responsive size="sm">
+                  <thead>
+                  <tr>
+                    <th>Username</th>
+                    <th>Date registered</th>
+                    <th>Role</th>
+                    <th>Status</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr>
+                    <td>Carwyn Fachtna</td>
+                    <td>2012/01/01</td>
+                    <td>Member</td>
+                    <td>
+                      <Badge color="success">Active</Badge>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Nehemiah Tatius</td>
+                    <td>2012/02/01</td>
+                    <td>Staff</td>
+                    <td>
+                      <Badge color="danger">Banned</Badge>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Ebbe Gemariah</td>
+                    <td>2012/02/01</td>
+                    <td>Admin</td>
+                    <td>
+                      <Badge color="secondary">Inactive</Badge>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Eustorgios Amulius</td>
+                    <td>2012/03/01</td>
+                    <td>Member</td>
+                    <td>
+                      <Badge color="warning">Pending</Badge>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Leopold Gáspár</td>
+                    <td>2012/01/21</td>
+                    <td>Staff</td>
+                    <td>
+                      <Badge color="success">Active</Badge>
+                    </td>
+                  </tr>
+                  </tbody>
+                </Table>
             </Col>
-          </Row> */}
+          </Row>
           <Row>
             <Col xs="12" style={{ marginTop: "20px", textAlign: "right" }}>
               <div className="form-actions">
