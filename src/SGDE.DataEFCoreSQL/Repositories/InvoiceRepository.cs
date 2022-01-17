@@ -165,14 +165,7 @@
                         invoice.IvaTaxBase = invoice.Iva == true ? Math.Round((double)invoice.TaxBase * 0.21, 2) : 0;
                         invoice.Total = invoice.IvaTaxBase + (double)invoice.TaxBase;
 
-                        var invoiceNumber = 0;
-                        var invoices = _context.Invoice
-                            .Where(x => x.IssueDate >= new DateTime(invoice.IssueDate.Year, 1, 1) && x.IssueDate <= new DateTime(invoice.IssueDate.Year, 12, 31));
-                        if (invoices.Count() > 0)
-                        {
-                            invoiceNumber = invoices.Select(x => x.InvoiceNumber).Max();
-                        }
-                        invoiceNumber++;
+                        var invoiceNumber = CountInvoicesInYear(invoice.IssueDate.Year);
 
                         invoice.InvoiceNumber = invoiceNumber;
                         invoice.Name = work != null
@@ -364,6 +357,20 @@
         public int CountInvoices()
         {
             return _context.Invoice.Count();
+        }
+
+        public int CountInvoicesInYear(int year)
+        {
+            var invoiceNumber = 0;
+            var invoices = _context.Invoice
+                .Where(x => x.IssueDate >= new DateTime(year, 1, 1) && x.IssueDate <= new DateTime(year, 12, 31));
+            if (invoices.Count() > 0)
+            {
+                invoiceNumber = invoices.Select(x => x.InvoiceNumber).Max();
+            }
+            invoiceNumber++;
+
+            return invoiceNumber;
         }
     }
 }
