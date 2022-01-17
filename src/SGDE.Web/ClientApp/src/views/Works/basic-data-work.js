@@ -330,10 +330,10 @@ class BasicDataWork extends Component {
             <Table responsive size="sm">
                   <thead>
                   <tr>
-                    <th>Username</th>
-                    <th>Date registered</th>
-                    <th>Role</th>
-                    <th>Status</th>
+                    <th>Presupuesto Definitivo</th>
+                    <th>...</th>
+                    <th>889.403,59</th>
+                    <th>889.403,59</th>
                   </tr>
                   </thead>
                   <tbody>
