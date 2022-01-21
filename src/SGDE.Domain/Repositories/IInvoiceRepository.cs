@@ -16,6 +16,7 @@
         bool Update(Invoice invoice);
         bool Delete(int id);
         int CountInvoices();
+        int CountInvoicesInYear(int year);
 
         int? CheckInvoice(Invoice newInvoice);
     }
