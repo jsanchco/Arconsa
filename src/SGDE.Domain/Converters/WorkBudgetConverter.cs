@@ -23,6 +23,10 @@ namespace SGDE.Domain.Converters
                 name = workBudget.Name,
                 reference = workBudget.Reference,
                 type = workBudget.Type,
+                typeFile = workBudget.TypeFile,
+                fileName = workBudget.FileName,
+                file = workBudget.File,
+                nameInWork = workBudget.NameInWork,
                 totalContract = workBudget.TotalContract,
                 
                 workId = workBudget.WorkId,
@@ -47,6 +51,10 @@ namespace SGDE.Domain.Converters
                     name = workBudget.Name,
                     reference = workBudget.Reference,
                     type = workBudget.Type,
+                    typeFile = workBudget.TypeFile,
+                    fileName = workBudget.FileName,
+                    file = workBudget.File,
+                    nameInWork = workBudget.NameInWork,
                     totalContract = workBudget.TotalContract,
 
                     workId = workBudget.WorkId,

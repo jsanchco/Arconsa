@@ -25,6 +25,7 @@ import {
   HISTORYHIRINGUPDATEINWORK,
   PROFESSIONSBYUSER,
   WORKCOSTS,
+  WORKBUDGETS
   REMOVEALLWORKCOSTS,
   COMPANY_ADD_INDIRECTCOSTS
 } from "../constants";
@@ -447,6 +448,55 @@ export const updateDocument = (document) => {
 export const updateDocumentInWorkCost = (document) => {
   return new Promise((resolve, reject) => {
     const url = `${config.URL_API}/${WORKCOSTS}`;
+    fetch(url, {
+      headers: {
+        Accept: "text/plain",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`,
+      },
+      method: "PUT",
+      body: JSON.stringify(document),
+    })
+      .then((data) => data.json())
+      .then((result) => {
+        if (result.Message) {
+          console.log("error ->", result.Message);
+          store.dispatch(
+            ACTION_APPLICATION.showMessage({
+              statusText: result.Message,
+              responseText: result.Message,
+              type: "danger",
+            })
+          );
+          reject();
+        } else {
+          store.dispatch(
+            ACTION_APPLICATION.showMessage({
+              statusText: "200",
+              responseText: "Operación realizada con éxito",
+              type: "success",
+            })
+          );
+          resolve();
+        }
+      })
+      .catch((error) => {
+        console.log("error ->", error);
+        store.dispatch(
+          ACTION_APPLICATION.showMessage({
+            statusText: error,
+            responseText: error,
+            type: "danger",
+          })
+        );
+        reject();
+      });
+  });
+};
+
+export const updateDocumentInWorkBudget = (document) => {
+  return new Promise((resolve, reject) => {
+    const url = `${config.URL_API}/${WORKBUDGETS}`;
     fetch(url, {
       headers: {
         Accept: "text/plain",

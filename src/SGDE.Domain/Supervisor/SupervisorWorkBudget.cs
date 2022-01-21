@@ -36,9 +36,12 @@ namespace SGDE.Domain.Supervisor
                 Reference = newWorkBudgetViewModel.reference,
                 TotalContract = newWorkBudgetViewModel.totalContract,
                 Type = newWorkBudgetViewModel.type,
-
-                Name = GetNameBudget(newWorkBudgetViewModel)
+                TypeFile = newWorkBudgetViewModel.typeFile,
+                FileName = newWorkBudgetViewModel.fileName,
+                File = newWorkBudgetViewModel.file
             };
+
+            UpdateFieldsInBudget(newWorkBudgetViewModel, workBudget);
 
             _workBudgetRepository.Add(workBudget);
             return newWorkBudgetViewModel;
@@ -62,6 +65,9 @@ namespace SGDE.Domain.Supervisor
             workBudget.TotalContract = workBudgetViewModel.totalContract;
             workBudget.Type = workBudgetViewModel.type;
             workBudget.Name = workBudgetViewModel.name;
+            workBudget.TypeFile = workBudgetViewModel.typeFile;
+            workBudget.FileName = workBudgetViewModel.fileName;
+            workBudget.File = workBudgetViewModel.file;
 
             return _workBudgetRepository.Update(workBudget);
         }
@@ -75,33 +81,34 @@ namespace SGDE.Domain.Supervisor
 
         #region Auxiliary methods
 
-        private string GetNameBudget(WorkBudgetViewModel workBudget)
+        private void UpdateFieldsInBudget(WorkBudgetViewModel workBudgetViewModel, WorkBudget workBudget)
         {
-            if (workBudget.type == "Version X")
+            if (workBudgetViewModel.type == "Version X")
             {
-                var workBudgets = GetAllWorkBudget(workBudget.workId);
+                var workBudgets = GetAllWorkBudget(workBudgetViewModel.workId);
                 workBudgets = workBudgets.Where(x => x.type == "Version X").ToList();
 
-                return $"{workBudget.reference}_V{workBudgets.Count + 1}";
+                workBudget.Name = $"{workBudgetViewModel.reference}_V{workBudgets.Count + 1}";
+                workBudget.NameInWork = $"Version {workBudgets.Count + 1}";
             }
 
-            if (workBudget.type == "Definitivo")
+            if (workBudgetViewModel.type == "Definitivo")
             {
-                var workBudgets = GetAllWorkBudget(workBudget.workId);
+                var workBudgets = GetAllWorkBudget(workBudgetViewModel.workId);
 
-                return $"{workBudgets.Last().name}.D";
+                workBudget.Name = $"{workBudgets.Last().name}.D";
+                workBudget.NameInWork = $"Presupuesto Definitivo";
             }
 
-            if (workBudget.type == "Complementario X")
+            if (workBudgetViewModel.type == "Complementario X")
             {
-                var workBudgets = GetAllWorkBudget(workBudget.workId);
+                var workBudgets = GetAllWorkBudget(workBudgetViewModel.workId);
                 var workBudgetsComplementarios = workBudgets.Where(x => x.type == "Complementario X");
                 var budgetDefinitivo = workBudgets.FirstOrDefault(x => x.type == "Definitivo");
 
-                return $"{budgetDefinitivo.name}.C{workBudgetsComplementarios.Count() + 1}";
+                workBudget.Name = $"{budgetDefinitivo.name}.C{workBudgetsComplementarios.Count() + 1}";
+                workBudget.NameInWork = $"Complementario {workBudgetsComplementarios.Count() + 1}";
             }
-
-            return null;
         }
 
         private void CheckAdd(WorkBudgetViewModel workBudget)
