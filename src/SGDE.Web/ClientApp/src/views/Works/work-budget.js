@@ -48,6 +48,7 @@ class WorkBudgets extends Component {
   editType = {
     params: {
       popupWidth: "auto",
+      sortOrder: "None"
     },
   };
 
@@ -417,6 +418,7 @@ class WorkBudgets extends Component {
                     editType="numericedit"
                     textAlign="right"
                     edit={this.numericParams}
+                    validationRules={this.typeRules}
                   />
                   <ColumnDirective
                     field="fileName"

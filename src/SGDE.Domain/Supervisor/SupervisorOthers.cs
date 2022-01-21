@@ -3,6 +3,7 @@
     #region Using
 
     using SGDE.Domain.Entities;
+    using SGDE.Domain.ViewModels;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -75,35 +76,55 @@
             //        UserId = user.Id
             //    });
             //}
-            _indirectCostRepository.Add(new IndirectCost { AccountNumber = "62100001", Description = "ALQUILERES DE MAQUINARIA", Amount = 0, Date = new System.DateTime(2021, 1, 1) });
-            _indirectCostRepository.Add(new IndirectCost { AccountNumber = "62100003", Description = "ALQUILER IMPRESORA", Amount = 0, Date = new System.DateTime(2021, 1, 1) });
-            _indirectCostRepository.Add(new IndirectCost { AccountNumber = "62200000", Description = "REPARACIONES Y CONSERVACIÓN", Amount = 0, Date = new System.DateTime(2021, 1, 1) });
-            _indirectCostRepository.Add(new IndirectCost { AccountNumber = "62300000", Description = "SERVICIOS PROFESIONALES INDEP.", Amount = 0, Date = new System.DateTime(2021, 1, 1) });
-            _indirectCostRepository.Add(new IndirectCost { AccountNumber = "62300001", Description = "ASESORAMIENTO LABORAL", Amount = 0, Date = new System.DateTime(2021, 1, 1) });
-            _indirectCostRepository.Add(new IndirectCost { AccountNumber = "62300002", Description = "HONORARIOS DIRECCIÓN DE OBRA", Amount = 0, Date = new System.DateTime(2021, 1, 1) });
-            _indirectCostRepository.Add(new IndirectCost { AccountNumber = "62300003", Description = "SERVICIOS PRESTADOS ARQUITECTO", Amount = 0, Date = new System.DateTime(2021, 1, 1) });
-            _indirectCostRepository.Add(new IndirectCost { AccountNumber = "62500000", Description = "PRIMAS DE SEGUROS", Amount = 0, Date = new System.DateTime(2021, 1, 1) });
-            _indirectCostRepository.Add(new IndirectCost { AccountNumber = "62600000", Description = "SERVICIOS BANCARIOS Y SIMILARE", Amount = 0, Date = new System.DateTime(2021, 1, 1) });
-            _indirectCostRepository.Add(new IndirectCost { AccountNumber = "62600001", Description = "COMISIONES BANCARIAS CONFIRMIN", Amount = 0, Date = new System.DateTime(2021, 1, 1) });
-            _indirectCostRepository.Add(new IndirectCost { AccountNumber = "62800001", Description = "GASTOS DE GASOLINA Y GASOIL", Amount = 0, Date = new System.DateTime(2021, 1, 1) });
-            _indirectCostRepository.Add(new IndirectCost { AccountNumber = "62900000", Description = "OTROS SERVICIOS", Amount = 0, Date = new System.DateTime(2021, 1, 1) });
-            _indirectCostRepository.Add(new IndirectCost { AccountNumber = "62900001", Description = "PEAJES Y PARKING", Amount = 0, Date = new System.DateTime(2021, 1, 1) });
-            _indirectCostRepository.Add(new IndirectCost { AccountNumber = "62900002", Description = "COMIDAS Y DIETAS", Amount = 0, Date = new System.DateTime(2021, 1, 1) });
-            _indirectCostRepository.Add(new IndirectCost { AccountNumber = "62900003", Description = "DOMINIO DE CORREOS E-MAIL", Amount = 0, Date = new System.DateTime(2021, 1, 1) });
-            _indirectCostRepository.Add(new IndirectCost { AccountNumber = "62900004", Description = "SUSCRIPCIÓN AZURE 1", Amount = 0, Date = new System.DateTime(2021, 1, 1) });
-            _indirectCostRepository.Add(new IndirectCost { AccountNumber = "62900005", Description = "GASTOS DE REPRESENTACION", Amount = 0, Date = new System.DateTime(2021, 1, 1) });
-            _indirectCostRepository.Add(new IndirectCost { AccountNumber = "62900006", Description = "GASTOS IMPRESORA", Amount = 0, Date = new System.DateTime(2021, 1, 1) });
-            _indirectCostRepository.Add(new IndirectCost { AccountNumber = "62900007", Description = "SUPCRIPCION PLATAFORMAS OBRAS", Amount = 0, Date = new System.DateTime(2021, 1, 1) });
-            _indirectCostRepository.Add(new IndirectCost { AccountNumber = "62900008", Description = "GASTOS DE LIMPIEZA", Amount = 0, Date = new System.DateTime(2021, 1, 1) });
-            _indirectCostRepository.Add(new IndirectCost { AccountNumber = "63100000", Description = "OTROS TRIBUTOS", Amount = 0, Date = new System.DateTime(2021, 1, 1) });
-            _indirectCostRepository.Add(new IndirectCost { AccountNumber = "64000000", Description = "SUELDOS Y SALARIOS", Amount = 0, Date = new System.DateTime(2021, 1, 1) });
-            _indirectCostRepository.Add(new IndirectCost { AccountNumber = "64200000", Description = "SEGURIDAD SOCIAL A CARGO DE LA", Amount = 0, Date = new System.DateTime(2021, 1, 1) });
-            _indirectCostRepository.Add(new IndirectCost { AccountNumber = "64200000", Description = "SEGURIDAD SOCIAL A CARGO DE LA ARQUINSA", Amount = 0, Date = new System.DateTime(2021, 1, 1) });
-            _indirectCostRepository.Add(new IndirectCost { AccountNumber = "66500000", Description = "INT. DTO EFE. ENT. CRÉDITO GR.", Amount = 0, Date = new System.DateTime(2021, 1, 1) });
-            _indirectCostRepository.Add(new IndirectCost { AccountNumber = "66900000", Description = "OTROS GASTOS FINANCIEROS", Amount = 0, Date = new System.DateTime(2021, 1, 1) });
-            _indirectCostRepository.Add(new IndirectCost { AccountNumber = "67800000", Description = "GASTOS EXCEPCIONALES", Amount = 0, Date = new System.DateTime(2021, 1, 1) });
-            _indirectCostRepository.Add(new IndirectCost { AccountNumber = "67800001", Description = "RECARGOS SEGURIDAD SOCIAL", Amount = 0, Date = new System.DateTime(2021, 1, 1) });
+            //_indirectCostRepository.Add(new IndirectCost { AccountNumber = "62100001", Description = "ALQUILERES DE MAQUINARIA", Amount = 0, Date = new System.DateTime(2021, 1, 1) });
+            //_indirectCostRepository.Add(new IndirectCost { AccountNumber = "62100003", Description = "ALQUILER IMPRESORA", Amount = 0, Date = new System.DateTime(2021, 1, 1) });
+            //_indirectCostRepository.Add(new IndirectCost { AccountNumber = "62200000", Description = "REPARACIONES Y CONSERVACIÓN", Amount = 0, Date = new System.DateTime(2021, 1, 1) });
+            //_indirectCostRepository.Add(new IndirectCost { AccountNumber = "62300000", Description = "SERVICIOS PROFESIONALES INDEP.", Amount = 0, Date = new System.DateTime(2021, 1, 1) });
+            //_indirectCostRepository.Add(new IndirectCost { AccountNumber = "62300001", Description = "ASESORAMIENTO LABORAL", Amount = 0, Date = new System.DateTime(2021, 1, 1) });
+            //_indirectCostRepository.Add(new IndirectCost { AccountNumber = "62300002", Description = "HONORARIOS DIRECCIÓN DE OBRA", Amount = 0, Date = new System.DateTime(2021, 1, 1) });
+            //_indirectCostRepository.Add(new IndirectCost { AccountNumber = "62300003", Description = "SERVICIOS PRESTADOS ARQUITECTO", Amount = 0, Date = new System.DateTime(2021, 1, 1) });
+            //_indirectCostRepository.Add(new IndirectCost { AccountNumber = "62500000", Description = "PRIMAS DE SEGUROS", Amount = 0, Date = new System.DateTime(2021, 1, 1) });
+            //_indirectCostRepository.Add(new IndirectCost { AccountNumber = "62600000", Description = "SERVICIOS BANCARIOS Y SIMILARE", Amount = 0, Date = new System.DateTime(2021, 1, 1) });
+            //_indirectCostRepository.Add(new IndirectCost { AccountNumber = "62600001", Description = "COMISIONES BANCARIAS CONFIRMIN", Amount = 0, Date = new System.DateTime(2021, 1, 1) });
+            //_indirectCostRepository.Add(new IndirectCost { AccountNumber = "62800001", Description = "GASTOS DE GASOLINA Y GASOIL", Amount = 0, Date = new System.DateTime(2021, 1, 1) });
+            //_indirectCostRepository.Add(new IndirectCost { AccountNumber = "62900000", Description = "OTROS SERVICIOS", Amount = 0, Date = new System.DateTime(2021, 1, 1) });
+            //_indirectCostRepository.Add(new IndirectCost { AccountNumber = "62900001", Description = "PEAJES Y PARKING", Amount = 0, Date = new System.DateTime(2021, 1, 1) });
+            //_indirectCostRepository.Add(new IndirectCost { AccountNumber = "62900002", Description = "COMIDAS Y DIETAS", Amount = 0, Date = new System.DateTime(2021, 1, 1) });
+            //_indirectCostRepository.Add(new IndirectCost { AccountNumber = "62900003", Description = "DOMINIO DE CORREOS E-MAIL", Amount = 0, Date = new System.DateTime(2021, 1, 1) });
+            //_indirectCostRepository.Add(new IndirectCost { AccountNumber = "62900004", Description = "SUSCRIPCIÓN AZURE 1", Amount = 0, Date = new System.DateTime(2021, 1, 1) });
+            //_indirectCostRepository.Add(new IndirectCost { AccountNumber = "62900005", Description = "GASTOS DE REPRESENTACION", Amount = 0, Date = new System.DateTime(2021, 1, 1) });
+            //_indirectCostRepository.Add(new IndirectCost { AccountNumber = "62900006", Description = "GASTOS IMPRESORA", Amount = 0, Date = new System.DateTime(2021, 1, 1) });
+            //_indirectCostRepository.Add(new IndirectCost { AccountNumber = "62900007", Description = "SUPCRIPCION PLATAFORMAS OBRAS", Amount = 0, Date = new System.DateTime(2021, 1, 1) });
+            //_indirectCostRepository.Add(new IndirectCost { AccountNumber = "62900008", Description = "GASTOS DE LIMPIEZA", Amount = 0, Date = new System.DateTime(2021, 1, 1) });
+            //_indirectCostRepository.Add(new IndirectCost { AccountNumber = "63100000", Description = "OTROS TRIBUTOS", Amount = 0, Date = new System.DateTime(2021, 1, 1) });
+            //_indirectCostRepository.Add(new IndirectCost { AccountNumber = "64000000", Description = "SUELDOS Y SALARIOS", Amount = 0, Date = new System.DateTime(2021, 1, 1) });
+            //_indirectCostRepository.Add(new IndirectCost { AccountNumber = "64200000", Description = "SEGURIDAD SOCIAL A CARGO DE LA", Amount = 0, Date = new System.DateTime(2021, 1, 1) });
+            //_indirectCostRepository.Add(new IndirectCost { AccountNumber = "64200000", Description = "SEGURIDAD SOCIAL A CARGO DE LA ARQUINSA", Amount = 0, Date = new System.DateTime(2021, 1, 1) });
+            //_indirectCostRepository.Add(new IndirectCost { AccountNumber = "66500000", Description = "INT. DTO EFE. ENT. CRÉDITO GR.", Amount = 0, Date = new System.DateTime(2021, 1, 1) });
+            //_indirectCostRepository.Add(new IndirectCost { AccountNumber = "66900000", Description = "OTROS GASTOS FINANCIEROS", Amount = 0, Date = new System.DateTime(2021, 1, 1) });
+            //_indirectCostRepository.Add(new IndirectCost { AccountNumber = "67800000", Description = "GASTOS EXCEPCIONALES", Amount = 0, Date = new System.DateTime(2021, 1, 1) });
+            //_indirectCostRepository.Add(new IndirectCost { AccountNumber = "67800001", Description = "RECARGOS SEGURIDAD SOCIAL", Amount = 0, Date = new System.DateTime(2021, 1, 1) });
 
+            var works = _workRepository.GetAll().Data;
+            foreach (var work in works)
+            {
+                AddWorkBudget(new WorkBudgetViewModel
+                {
+                    date = work.OpenDate,
+                    reference = "",
+                    type = "Version X",
+                    workId = work.Id,
+                    totalContract = (double)work.TotalContract
+                });
+                AddWorkBudget(new WorkBudgetViewModel
+                {
+                    date = work.OpenDate,
+                    reference = "",
+                    type = "Definitivo",
+                    workId = work.Id,
+                    totalContract = (double)work.TotalContract
+                });
+            }
         }
     }
 }

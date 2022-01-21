@@ -140,6 +140,13 @@ class DailySignings extends Component {
       },
     };
 
+    this.editTypeHours = {
+      params: {
+        sortOrder: "none"
+      },
+    };
+
+
     this.animationSettings = { effect: "None" };
     this.confirmButton = [
       {
@@ -488,6 +495,7 @@ class DailySignings extends Component {
                     foreignKeyValue="name"
                     foreignKeyField="id"
                     defaultValue={1}
+                    edit={this.editTypeHours}
                   />
                   <ColumnDirective
                     field="startHour"

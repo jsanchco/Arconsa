@@ -31,7 +31,7 @@ import {
   AggregateColumnDirective,
   AggregateDirective,
   AggregatesDirective,
-  Sort
+  Sort,
 } from "@syncfusion/ej2-react-grids";
 import {
   createSpinner,
@@ -108,18 +108,18 @@ class Signings extends Component {
     ];
 
     this.toolbarOptions = ["Add", "Edit", "Delete", "Update", "Cancel"];
-    this.toolbarOptionsGridResult = [ 
-      "Add", 
-      "Edit", 
+    this.toolbarOptionsGridResult = [
+      "Add",
+      "Edit",
       {
         text: "Borrar Seleccionados",
         tooltipText: "Borrar registros seleccionados",
         prefixIcon: "e-custom-icons e-remove",
         id: "RemoveAll",
-      }, 
-   // "Delete", 
-      "Update", 
-      "Cancel"
+      },
+      // "Delete",
+      "Update",
+      "Cancel",
     ];
 
     this.editSettings = {
@@ -150,7 +150,9 @@ class Signings extends Component {
     this.rowDataBoundGridResult = this.rowDataBoundGridResult.bind(this);
     this.clickHandlerGridResult = this.clickHandlerGridResult.bind(this);
 
-    this.changeHourType = { params: { change: this.changeHour.bind(this) } };
+    this.changeHourType = {
+      params: { change: this.changeHour.bind(this), sortOrder: "none" },
+    };
     this.format = { type: "dateTime", format: "dd/MM/yyyy HH:mm" };
   }
 
@@ -478,7 +480,7 @@ class Signings extends Component {
           }
         }
       }
-    }    
+    }
 
     // if (args.requestType === "save" && args.data.hourTypeId === 5) {
     //   args.data.startHour = new Date(
@@ -497,7 +499,7 @@ class Signings extends Component {
     //   // const milliseconds = Math.abs(args.data.startHour - args.data.endHour);
     //   // const hours = milliseconds / 36e5;
     //   // args.data.totalHours = hours;
-    
+
     //   this.gridResult.dataSource[args.data.id - 1].startHour = args.data.startHour;
     //   this.gridResult.dataSource[args.data.id - 1].endHour = args.data.endHour;
     //   this.gridResult.dataSource[args.data.id - 1].hourTypeId = args.data.hourTypeId;
@@ -512,14 +514,18 @@ class Signings extends Component {
         args.data.startHour.getDate()
       );
 
-      let record = this.gridResult.dataSource.find(x => x.id === args.data.id);
+      let record = this.gridResult.dataSource.find(
+        (x) => x.id === args.data.id
+      );
       if (record != null) {
         record.startHour = args.data.startHour;
         record.endHour = null;
       }
     }
     if (args.requestType === "save" && args.data.hourTypeId !== 5) {
-      let record = this.gridResult.dataSource.find(x => x.id === args.data.id);
+      let record = this.gridResult.dataSource.find(
+        (x) => x.id === args.data.id
+      );
       if (record != null) {
         record.startHour = args.data.startHour;
         record.endHour = args.data.endHour;
@@ -559,7 +565,11 @@ class Signings extends Component {
       if (Array.isArray(selectedRecords) && selectedRecords.length > 0) {
         let values = selectedRecords.map((a) => a.id);
         let newDataSource = [];
-        for (let index = 0; index < this.gridResult.dataSource.length; index++) {
+        for (
+          let index = 0;
+          index < this.gridResult.dataSource.length;
+          index++
+        ) {
           if (!values.includes(this.gridResult.dataSource[index].id)) {
             newDataSource.push(this.gridResult.dataSource[index]);
           }
