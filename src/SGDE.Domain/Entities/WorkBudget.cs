@@ -9,7 +9,6 @@ namespace SGDE.Domain.Entities
         public string Name { get; set; }
         public string Type { get; set; }
         public string NameInWork { get; set; }
-        public string FileName { get; set; }
         public string TypeFile { get; set; }
         public byte[] File { get; set; }
         public double TotalContract { get; set; }

@@ -10,7 +10,6 @@ namespace SGDE.Domain.ViewModels
         public string type { get; set; }
         public string nameInWork { get; set; }
         public double totalContract { get; set; }
-        public string fileName { get; set; }
         public string typeFile { get; set; }
         public byte[] file { get; set; }
         public bool hasFile => file != null;

@@ -37,7 +37,6 @@ namespace SGDE.Domain.Supervisor
                 TotalContract = newWorkBudgetViewModel.totalContract,
                 Type = newWorkBudgetViewModel.type,
                 TypeFile = newWorkBudgetViewModel.typeFile,
-                FileName = newWorkBudgetViewModel.fileName,
                 File = newWorkBudgetViewModel.file
             };
 
@@ -66,7 +65,6 @@ namespace SGDE.Domain.Supervisor
             workBudget.Type = workBudgetViewModel.type;
             workBudget.Name = workBudgetViewModel.name;
             workBudget.TypeFile = workBudgetViewModel.typeFile;
-            workBudget.FileName = workBudgetViewModel.fileName;
             workBudget.File = workBudgetViewModel.file;
 
             return _workBudgetRepository.Update(workBudget);

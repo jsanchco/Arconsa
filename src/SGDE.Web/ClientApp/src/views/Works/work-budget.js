@@ -24,6 +24,7 @@ import {
   base64ToArrayBuffer,
   saveByteArray,
 } from "../../services";
+import ModalSelectWorkBudget from "../Modals/modal-select-work-budget";
 
 L10n.load(data);
 
@@ -48,7 +49,7 @@ class WorkBudgets extends Component {
   editType = {
     params: {
       popupWidth: "auto",
-      sortOrder: "None"
+      sortOrder: "None",
     },
   };
 
@@ -74,7 +75,7 @@ class WorkBudgets extends Component {
       },
       {
         text: "Descargar Archivo(s)",
-        tooltipText: "Descargar Archivo(s)",
+        tooltipText: "Descargar Archivo",
         prefixIcon: "e-custom-icons e-file-download",
         id: "DownloadFile",
       },
@@ -197,9 +198,6 @@ class WorkBudgets extends Component {
 
   printComplete(args) {
     for (var i = 0; i < this.columns.length; i++) {
-      if (this.columns[i].field === "fileName") {
-        this.columns[i].visible = false;
-      }
       if (this.columns[i].field === "hasFile") {
         this.columns[i].visible = true;
       }
@@ -207,9 +205,21 @@ class WorkBudgets extends Component {
   }
 
   customAggregateTotalContract(args) {
-    const values = args.result.filter(
-      (item) => item.type === "Definitivo" || item.type === "Complementario X"
-    );
+    let values = null;
+    if (args.result != null) {
+      values = args.result.filter(
+        (item) => item.type === "Definitivo" || item.type === "Complementario X"
+      );
+    } else if (Array.isArray(args)) {
+      values = args.filter(
+        (item) => item.type === "Definitivo" || item.type === "Complementario X"
+      );
+    }
+
+    if (values == null || values.length === 0) {
+      return 0;
+    }
+
     var sum = values
       .map((item) => item.totalContract)
       .reduce((prev, next) => prev + next);
@@ -287,10 +297,6 @@ class WorkBudgets extends Component {
         });
       }
     }
-
-    if (args.item.id === "RemoveAll") {
-      this.setState({ hideConfirmDialog: true });
-    }
   }
 
   toggleModal() {
@@ -304,7 +310,7 @@ class WorkBudgets extends Component {
     let remove = args.fileUrl.indexOf("base64,") + 7;
 
     documentSelected.file = args.fileUrl.substring(remove);
-    documentSelected.fileName = args.fileName;
+    documentSelected.fileName = args.name;
     documentSelected.typeFile = args.file.type;
 
     updateDocumentInWorkBudget(documentSelected).then(() => {
@@ -320,7 +326,7 @@ class WorkBudgets extends Component {
       selectedRecords.forEach((document) => {
         if (document.file !== null && document.file !== undefined) {
           const fileArr = base64ToArrayBuffer(document.file);
-          saveByteArray(document.fileName, fileArr, document.typeFile);
+          saveByteArray(document.name, fileArr, document.typeFile);
         } else {
           error =
             "Algunos de los registros seleccionados no tienen el archivo subido";
@@ -340,6 +346,14 @@ class WorkBudgets extends Component {
   render() {
     return (
       <Fragment>
+        <ModalSelectWorkBudget
+          isOpen={this.state.modal}
+          toggle={this.toggleModal}
+          updateDocument={this.updateDocument}
+          workId={this.props.workId}
+          rowSelected={this.state.rowSelected}
+          type="document"
+        />
         <div className="animated fadeIn" id="target-work-costs">
           <div
             className="card"
@@ -422,11 +436,6 @@ class WorkBudgets extends Component {
                   />
                   <ColumnDirective
                     field="fileName"
-                    headerText="Nombre del Documento"
-                    visible={false}
-                  />
-                  <ColumnDirective
-                    field="fileName"
                     headerText="Archivo"
                     width="100"
                     template={this.templateFile}
@@ -434,16 +443,16 @@ class WorkBudgets extends Component {
                     allowEditing={false}
                   />
                   <ColumnDirective
-                    field="workId"
-                    defaultValue={this.props.workId}
-                    visible={false}
-                  />
-                  <ColumnDirective
                     field="hasFile"
                     headerText="Presupuesto Adjunto"
                     width="100"
                     visible={false}
                     template={this.templateHasFile}
+                  />
+                  <ColumnDirective
+                    field="workId"
+                    defaultValue={this.props.workId}
+                    visible={false}
                   />
                 </ColumnsDirective>
 
