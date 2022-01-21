@@ -18,8 +18,12 @@ import { DataManager, WebApiAdaptor, Query } from "@syncfusion/ej2-data";
 import { config, WORKBUDGETS } from "../../constants";
 import { L10n } from "@syncfusion/ej2-base";
 import data from "../../locales/locale.json";
-import { TOKEN_KEY } from "../../services";
-import { AccordionActionSettings } from "@syncfusion/ej2-navigations";
+import {
+  TOKEN_KEY,
+  updateDocumentInWorkBudget,
+  base64ToArrayBuffer,
+  saveByteArray,
+} from "../../services";
 
 L10n.load(data);
 
@@ -51,6 +55,7 @@ class WorkBudgets extends Component {
     super(props);
 
     this.state = {
+      modal: false,
       rowSelected: null,
     };
 
@@ -60,6 +65,18 @@ class WorkBudgets extends Component {
       "Delete",
       "Update",
       "Cancel",
+      {
+        text: "Subir Archivo",
+        tooltipText: "Subir Archivo",
+        prefixIcon: "e-custom-icons e-file-upload",
+        id: "UploadFile",
+      },
+      {
+        text: "Descargar Archivo(s)",
+        tooltipText: "Descargar Archivo(s)",
+        prefixIcon: "e-custom-icons e-file-download",
+        id: "DownloadFile",
+      },
       "Print",
     ];
     this.editSettings = {
@@ -75,7 +92,14 @@ class WorkBudgets extends Component {
     this.actionBegin = this.actionBegin.bind(this);
     this.beforePrint = this.beforePrint.bind(this);
     this.footerSumEuros = this.footerSumEuros.bind(this);
-    this.customAggregateTotalContract = this.customAggregateTotalContract.bind(this);
+    this.templateFile = this.templateFile.bind(this);
+    this.templateHasFile = this.templateHasFile.bind(this);
+    this.customAggregateTotalContract =
+      this.customAggregateTotalContract.bind(this);
+    this.clickHandler = this.clickHandler.bind(this);
+    this.toggleModal = this.toggleModal.bind(this);
+    this.updateDocument = this.updateDocument.bind(this);
+    this.downloadDocuments = this.downloadDocuments.bind(this);
 
     this.query = new Query().addParams("workId", props.workId);
 
@@ -171,22 +195,23 @@ class WorkBudgets extends Component {
   }
 
   printComplete(args) {
-    // for (var i = 0; i < this.columns.length; i++) {
-    //   if (this.columns[i].field === "fileName") {
-    //     this.columns[i].visible = false;
-    //   }
-    //   if (this.columns[i].id === "selection") {
-    //     this.columns[i].visible = false;
-    //   }
-    //   if (this.columns[i].field === "hasFile") {
-    //     this.columns[i].visible = true;
-    //   }
-    // }
+    for (var i = 0; i < this.columns.length; i++) {
+      if (this.columns[i].field === "fileName") {
+        this.columns[i].visible = false;
+      }
+      if (this.columns[i].field === "hasFile") {
+        this.columns[i].visible = true;
+      }
+    }
   }
 
   customAggregateTotalContract(args) {
-    const values = args.result.filter((item) => (item.type === "Definitivo" || item.type === "Complementario X"));
-    var sum = values.map(item => item.totalContract).reduce((prev, next) => prev + next);
+    const values = args.result.filter(
+      (item) => item.type === "Definitivo" || item.type === "Complementario X"
+    );
+    var sum = values
+      .map((item) => item.totalContract)
+      .reduce((prev, next) => prev + next);
 
     return sum;
   }
@@ -209,6 +234,108 @@ class WorkBudgets extends Component {
     return <span>Total (D + CX): {title}€</span>;
   }
 
+  templateFile(args) {
+    if (args.file !== null && args.file !== "") {
+      return (
+        <div>
+          <span className="dot-green"></span>
+        </div>
+      );
+    } else {
+      return (
+        <div>
+          <span className="dot-red"></span>
+        </div>
+      );
+    }
+  }
+
+  templateHasFile(args) {
+    if (args.hasFile) {
+      return <div>Si</div>;
+    } else {
+      return <div>No</div>;
+    }
+  }
+
+  clickHandler(args) {
+    if (args.item.id === "UploadFile") {
+      const selectedRecords = this.grid.getSelectedRecords();
+      if (Array.isArray(selectedRecords) && selectedRecords.length === 1) {
+        this.setState({ rowSelected: selectedRecords[0] });
+        this.toggleModal();
+      } else {
+        this.setState({ rowSelected: null });
+        this.props.showMessage({
+          statusText: "Debes seleccionar un solo registro",
+          responseText: "Debes seleccionar un solo registro",
+          type: "danger",
+        });
+      }
+    }
+
+    if (args.item.id === "DownloadFile") {
+      const selectedRecords = this.grid.getSelectedRecords();
+      if (Array.isArray(selectedRecords) && selectedRecords.length > 0) {
+        this.downloadDocuments();
+      } else {
+        this.props.showMessage({
+          statusText: "Debes seleccionar uno o más de un registro",
+          responseText: "Debes seleccionar uno o más de un registro",
+          type: "danger",
+        });
+      }
+    }
+
+    if (args.item.id === "RemoveAll") {
+      this.setState({ hideConfirmDialog: true });
+    }
+  }
+
+  toggleModal() {
+    this.setState({
+      modal: !this.state.modal,
+    });
+  }
+
+  updateDocument(args) {
+    const documentSelected = this.state.rowSelected;
+    let remove = args.fileUrl.indexOf("base64,") + 7;
+
+    documentSelected.file = args.fileUrl.substring(remove);
+    documentSelected.fileName = args.fileName;
+    documentSelected.typeFile = args.file.type;
+
+    updateDocumentInWorkBudget(documentSelected).then(() => {
+      this.grid.setRowData(this.state.rowSelected.id, documentSelected);
+    });
+  }
+
+  downloadDocuments() {
+    const selectedRecords = this.grid.getSelectedRecords();
+    let error = null;
+
+    if (Array.isArray(selectedRecords) && selectedRecords.length > 0) {
+      selectedRecords.forEach((document) => {
+        if (document.file !== null && document.file !== undefined) {
+          const fileArr = base64ToArrayBuffer(document.file);
+          saveByteArray(document.fileName, fileArr, document.typeFile);
+        } else {
+          error =
+            "Algunos de los registros seleccionados no tienen el archivo subido";
+        }
+      });
+    }
+
+    if (error !== null) {
+      this.props.showMessage({
+        statusText: error,
+        responseText: error,
+        type: "warning",
+      });
+    }
+  }
+
   render() {
     return (
       <Fragment>
@@ -228,6 +355,7 @@ class WorkBudgets extends Component {
                 allowPaging={true}
                 pageSettings={this.pageSettings}
                 toolbar={this.toolbarOptions}
+                toolbarClick={this.clickHandler}
                 editSettings={this.editSettings}
                 style={{
                   marginLeft: 30,
@@ -291,9 +419,29 @@ class WorkBudgets extends Component {
                     edit={this.numericParams}
                   />
                   <ColumnDirective
+                    field="fileName"
+                    headerText="Nombre del Documento"
+                    visible={false}
+                  />
+                  <ColumnDirective
+                    field="fileName"
+                    headerText="Archivo"
+                    width="100"
+                    template={this.templateFile}
+                    textAlign="Center"
+                    allowEditing={false}
+                  />
+                  <ColumnDirective
                     field="workId"
                     defaultValue={this.props.workId}
                     visible={false}
+                  />
+                  <ColumnDirective
+                    field="hasFile"
+                    headerText="Presupuesto Adjunto"
+                    width="100"
+                    visible={false}
+                    template={this.templateHasFile}
                   />
                 </ColumnsDirective>
 
@@ -302,8 +450,8 @@ class WorkBudgets extends Component {
                     <AggregateColumnsDirective>
                       <AggregateColumnDirective
                         field="totalContract"
-                        type='Custom'
-                        customAggregate ={this.customAggregateTotalContract}
+                        type="Custom"
+                        customAggregate={this.customAggregateTotalContract}
                         footerTemplate={this.footerSumEuros}
                       >
                         {" "}
