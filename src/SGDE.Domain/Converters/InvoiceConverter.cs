@@ -41,7 +41,9 @@
                 userName = invoice.UserId == null ? null : $"{invoice.User.Name} {invoice.User.Surname}",
                 invoiceToCancelId = invoice.InvoiceToCancelId,
                 invoiceToCancelName = invoice.InvoiceToCancel?.Name,
-                detailInvoice = DetailInvoiceConverter.ConvertList(invoice.DetailsInvoice)
+                detailInvoice = DetailInvoiceConverter.ConvertList(invoice.DetailsInvoice),
+                workBudgetId = invoice.WorkBudgetId,
+                workBudgetName = invoice.WorkBudget?.Name
             };
             if (invoice.Iva == true)
             {
@@ -84,7 +86,9 @@
                     userId = invoice.UserId,
                     userName = invoice.UserId == null ? null : $"{invoice.User.Name} {invoice.User.Surname}",
                     invoiceToCancelId = invoice.InvoiceToCancelId,
-                    invoiceToCancelName = invoice.InvoiceToCancel?.Name
+                    invoiceToCancelName = invoice.InvoiceToCancel?.Name,
+                    workBudgetId = invoice.WorkBudgetId,
+                    workBudgetName = invoice.WorkBudget?.Name
                 };
                 if (invoice.Iva == true)
                 {

@@ -62,10 +62,14 @@ class BasicDataWork extends Component {
   updateFromInvoiceToOrigin() {
     if (this.state.invoiceToOrigin) {
       this.ntbPercentageRetention.enabled = true;
-      this.ntbTotalContract.enabled = true;
+      if (this.ntbTotalContract) {
+        this.ntbTotalContract.enabled = true;
+      }
     } else {
       this.ntbPercentageRetention.enabled = false;
-      this.ntbTotalContract.enabled = false;
+      if (this.ntbTotalContract) {
+        this.ntbTotalContract.enabled = false;
+      }
     }
   }
 
@@ -157,36 +161,27 @@ class BasicDataWork extends Component {
       return null;
     }
 
-    // return (
-    //   <Fragment>
-    //     <Row> {
-    //       for (var i=0; i < this.state.workBudgets; i++ ) {
+    var budgets = [];
+    for (var i = 0; i < this.state.workBudgets.length; i++) {
+      const workBubget = this.state.workBudgets[i];
+      budgets.push(
+        <Fragment>
+          <Row>
+            <Col xs="5" style={{ marginRight: "-30px" }}>
+              <b>{workBubget.Item1}</b>
+            </Col>
+            <Col xs="2" style={{ marginRight: "-50px" }}>
+              <b>...</b>
+            </Col>
+            <Col xs="4" style={{ marginLeft: "-30px", textAlign: "right" }}>
+              <b>{workBubget.Item2}€</b>
+            </Col>
+          </Row>
+        </Fragment>
+      );
+    }
 
-    //       }
-    //     }
-    //       <Col xs="5" style={{ marginRight: "-30px" }}>
-    //         <b>Presupuesto Definitivo</b>
-    //       </Col>
-    //       <Col xs="2" style={{ marginRight: "-50px" }}>
-    //         <b>...</b>
-    //       </Col>
-    //       <Col xs="4" style={{ marginLeft: "-30px", textAlign: "right" }}>
-    //         <b>1889.403,59</b>
-    //       </Col>
-    //     </Row>
-    //     <Row>
-    //       <Col xs="5" style={{ marginRight: "-30px" }}>
-    //         <b>Complementario 1</b>
-    //       </Col>
-    //       <Col xs="2" style={{ marginRight: "-50px" }}>
-    //         <b>...</b>
-    //       </Col>
-    //       <Col xs="4" style={{ marginLeft: "-30px", textAlign: "right" }}>
-    //         <b>189.403,59</b>
-    //       </Col>
-    //     </Row>
-    //   </Fragment>
-    // );
+    return budgets;
   }
 
   render() {
@@ -335,20 +330,6 @@ class BasicDataWork extends Component {
             </Col>
             <Col xs="4">
               <FormGroup>
-                <Label htmlFor="totalContract">Total Contrato</Label>
-                <NumericTextBoxComponent
-                  format="N2"
-                  id="totalContract"
-                  name="totalContract"
-                  value={this.state.totalContract}
-                  placeholder="total contrato"
-                  change={this.handleChangeTotalContract}
-                  ref={(g) => (this.ntbTotalContract = g)}
-                />
-              </FormGroup>
-            </Col>
-            <Col xs="4">
-              <FormGroup>
                 <Label htmlFor="percentageRetention">Retención</Label>
                 <NumericTextBoxComponent
                   format="p2"
@@ -364,45 +345,37 @@ class BasicDataWork extends Component {
                 />
               </FormGroup>
             </Col>
+            {/* <Col xs="4">
+              <FormGroup>
+                <Label htmlFor="totalContract" style={{ fontSize: "Medium" }}>
+                  <b>Total Contrato</b>
+                </Label>
+                {this.renderTotalContratc()}
+                <NumericTextBoxComponent
+                  format="N2"
+                  id="totalContract"
+                  name="totalContract"
+                  value={this.state.totalContract}
+                  placeholder="total contrato"
+                  change={this.handleChangeTotalContract}
+                  ref={(g) => (this.ntbTotalContract = g)}
+                />
+              </FormGroup>
+            </Col> */}
           </Row>
           <Row>
+            <Col xs="12"><hr></hr></Col>
+          </Row>
+          <Row>
+            <Col xs="4"></Col>
             <Col xs="4">
-              <Row>
-                <Col xs="5" style={{ marginRight: "-30px" }}>
-                  <b>Presupuesto Definitivo</b>
-                </Col>
-                <Col xs="2" style={{ marginRight: "-50px" }}>
-                  <b>...</b>
-                </Col>
-                <Col xs="4" style={{ marginLeft: "-30px", textAlign: "right" }}>
-                  <b>1889.403,59</b>
-                </Col>
-              </Row>
-              <Row>
-                <Col xs="5" style={{ marginRight: "-30px" }}>
-                  <b>Complementario 1</b>
-                </Col>
-                <Col xs="2" style={{ marginRight: "-50px" }}>
-                  <b>...</b>
-                </Col>
-                <Col xs="4" style={{ marginLeft: "-30px", textAlign: "right" }}>
-                  <b>189.403,59</b>
-                </Col>
-              </Row>
-              {/* <Table responsive size="sm">
-                <thead>
-                  <tr>
-                    <th>Presupuesto Definitivo</th>
-                    <th>...</th>
-                    <th>889.403,59</th>
-                  </tr>
-                  <tr>
-                    <th>Complementario 1</th>
-                    <th>...</th>
-                    <th>89.403,59</th>
-                  </tr>
-                </thead>
-              </Table> */}
+              <br></br>
+              <FormGroup>
+                <Label htmlFor="totalContract" style={{ fontSize: "Medium" }}>
+                  <b>Total Contrato</b>
+                </Label>
+                {this.renderTotalContratc()}
+              </FormGroup>
             </Col>
           </Row>
           <Row>

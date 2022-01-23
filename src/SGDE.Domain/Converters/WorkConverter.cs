@@ -40,7 +40,9 @@
 
                 clientId = work.ClientId,
                 clientName = work.Client.Name,
-                workBudgets = work.WorkBudgets.Select(x => (x.NameInWork, x.TotalContract)).ToList()
+                workBudgets = work.WorkBudgets
+                    .Where(x => x.Type == "Definitivo" || x.Type == "Complementario X")
+                    .Select(x => (name: x.NameInWork, value: x.TotalContract)).ToList()
             };
 
             return workViewModel;

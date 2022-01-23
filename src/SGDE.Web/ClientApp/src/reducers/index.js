@@ -10,7 +10,9 @@ export const INITIAL_STATE = {
     currentPageWorks: 1,
     currentSearchWorks: "",
     currentPageClients: 1,
-    currentSearchClients: "",  
+    currentSearchClients: "",
+    currentPageInvoices: 1,
+    currentSearchInvoices: "",  
   },
   authentication: {
     user: null, 

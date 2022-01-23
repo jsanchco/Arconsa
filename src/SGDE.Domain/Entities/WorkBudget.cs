@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace SGDE.Domain.Entities
 {
@@ -15,5 +16,7 @@ namespace SGDE.Domain.Entities
 
         public int WorkId { get; set; }
         public virtual Work Work { get; set; }
+
+        public virtual ICollection<Invoice> Invoices { get; set; } = new HashSet<Invoice>();
     }
 }

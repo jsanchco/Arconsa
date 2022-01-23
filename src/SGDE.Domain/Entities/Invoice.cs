@@ -32,6 +32,8 @@
         public virtual User User { get; set; }
         public int? InvoiceToCancelId { get; set; }
         public virtual Invoice InvoiceToCancel { get; set; }
+        public int? WorkBudgetId { get; set; }
+        public virtual WorkBudget WorkBudget { get; set; }
 
         public virtual ICollection<DetailInvoice> DetailsInvoice { get; set; } = new HashSet<DetailInvoice>();
         public virtual ICollection<Invoice> Invoices { get; set; } = new HashSet<Invoice>();

@@ -224,6 +224,8 @@ class WorkBudgets extends Component {
       .map((item) => item.totalContract)
       .reduce((prev, next) => prev + next);
 
+    sum = Math.round((sum + Number.EPSILON) * 100) / 100;
+
     return sum;
   }
 

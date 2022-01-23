@@ -113,6 +113,8 @@
                     .ThenInclude(x => x.DetailsInvoice)
                     .Include(x => x.InvoiceToCancel)
                     .ThenInclude(x => x.Client)
+                    .Include(x => x.Work)
+                    .ThenInclude(x => x.WorkBudgets)
                     .Include(x => x.DetailsInvoice)
                 .FirstOrDefault(x => x.Id == id);
         }

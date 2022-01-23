@@ -29,6 +29,9 @@
 
             entity.HasIndex(x => x.InvoiceToCancelId).HasName("IFK_Invoice_Invoice");
             entity.HasOne(u => u.InvoiceToCancel).WithMany(a => a.Invoices).HasForeignKey(a => a.InvoiceToCancelId).HasConstraintName("FK__Invoice__InvoiceToCancelId");
+
+            entity.HasIndex(x => x.WorkBudgetId).HasName("IFK_WorkBudget_Invoice");
+            entity.HasOne(u => u.WorkBudget).WithMany(a => a.Invoices).HasForeignKey(a => a.WorkBudgetId).HasConstraintName("FK__Invoice__WorkBudgetId");
         }
     }
 }

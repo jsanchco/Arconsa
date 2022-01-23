@@ -83,6 +83,11 @@ export default {
       icon: "cui-file"
     },
     {
+      name: "Facturas New",
+      url: "/invoices/Invoices",
+      icon: "cui-file"
+    },
+    {
       name: "Informes",
       url: "/reports",
       icon: "icon-info",

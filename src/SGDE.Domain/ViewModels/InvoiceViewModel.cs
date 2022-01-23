@@ -30,6 +30,8 @@
         public string userName { get; set; }
         public int? invoiceToCancelId { get; set; }
         public string invoiceToCancelName { get; set; }
+        public int? workBudgetId { get; set; }
+        public string workBudgetName { get; set; }
 
         public List<DetailInvoiceViewModel> detailInvoice { get; set; }
     }
