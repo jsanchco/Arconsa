@@ -39,7 +39,8 @@
                 passiveSubject = work.PassiveSubject,
 
                 clientId = work.ClientId,
-                clientName = work.Client.Name
+                clientName = work.Client.Name,
+                workBudgets = work.WorkBudgets.Select(x => (x.NameInWork, x.TotalContract)).ToList()
             };
 
             return workViewModel;
@@ -77,6 +78,11 @@
                 return model;
             })
                 .ToList();
+        }
+
+        private static List<(string, double)> GetWorkBudgets(ICollection<WorkBudget> workBudgets)
+        {
+            return workBudgets.Select(x => (x.NameInWork, x.TotalContract)).ToList();
         }
     }
 }

@@ -1,13 +1,5 @@
-import React, { Component } from "react";
-import {
-  Form,
-  Col,
-  FormGroup,
-  Input,
-  Label,
-  Row,
-  Button
-} from "reactstrap";
+import React, { Component, Fragment } from "react";
+import { Form, Col, FormGroup, Input, Label, Row, Button } from "reactstrap";
 import { AppSwitch } from "@coreui/react";
 import { DatePickerComponent } from "@syncfusion/ej2-react-calendars";
 import { NumericTextBoxComponent } from "@syncfusion/ej2-react-inputs";
@@ -39,6 +31,7 @@ class BasicDataWork extends Component {
         percentageRetention: result.percentageRetention,
         open: result.open,
         clientId: result.clientId,
+        workBudgets: result.workBudgets,
       });
     });
 
@@ -50,6 +43,7 @@ class BasicDataWork extends Component {
     this.handleChangePercentageRetention =
       this.handleChangePercentageRetention.bind(this);
     this.updateFromInvoiceToOrigin = this.updateFromInvoiceToOrigin.bind(this);
+    this.renderTotalContratc = this.renderTotalContratc.bind(this);
 
     this.ntbTotalContract = null;
     this.ntbPercentageRetention = null;
@@ -138,6 +132,7 @@ class BasicDataWork extends Component {
       percentageRetention: this.state.percentageRetention,
       open: this.state.open,
       clientId: this.state.clientId,
+      workBudgets: this.state.workBudgets,
     };
   }
 
@@ -158,7 +153,40 @@ class BasicDataWork extends Component {
   }
 
   renderTotalContratc() {
+    if (this.state.workBudgets == null) {
+      return null;
+    }
 
+    // return (
+    //   <Fragment>
+    //     <Row> {
+    //       for (var i=0; i < this.state.workBudgets; i++ ) {
+
+    //       }
+    //     }
+    //       <Col xs="5" style={{ marginRight: "-30px" }}>
+    //         <b>Presupuesto Definitivo</b>
+    //       </Col>
+    //       <Col xs="2" style={{ marginRight: "-50px" }}>
+    //         <b>...</b>
+    //       </Col>
+    //       <Col xs="4" style={{ marginLeft: "-30px", textAlign: "right" }}>
+    //         <b>1889.403,59</b>
+    //       </Col>
+    //     </Row>
+    //     <Row>
+    //       <Col xs="5" style={{ marginRight: "-30px" }}>
+    //         <b>Complementario 1</b>
+    //       </Col>
+    //       <Col xs="2" style={{ marginRight: "-50px" }}>
+    //         <b>...</b>
+    //       </Col>
+    //       <Col xs="4" style={{ marginLeft: "-30px", textAlign: "right" }}>
+    //         <b>189.403,59</b>
+    //       </Col>
+    //     </Row>
+    //   </Fragment>
+    // );
   }
 
   render() {
@@ -357,7 +385,7 @@ class BasicDataWork extends Component {
                 <Col xs="2" style={{ marginRight: "-50px" }}>
                   <b>...</b>
                 </Col>
-                <Col xs="4"  style={{ marginLeft: "-30px", textAlign: "right" }}>
+                <Col xs="4" style={{ marginLeft: "-30px", textAlign: "right" }}>
                   <b>189.403,59</b>
                 </Col>
               </Row>
