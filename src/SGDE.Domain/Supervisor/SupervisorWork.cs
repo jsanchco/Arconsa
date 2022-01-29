@@ -171,10 +171,19 @@
             return _workRepository.Delete(id);
         }
 
+        public List<WorkViewModel> GetAllWorkLite(string filter = null, int clientId = 0)
+        {
+            return WorkConverter.ConvertListLite(_workRepository.GetAllLite(filter, clientId));
+        }
+
+        #region Auxiliary Methods
+
         private void AddUserToList(List<UserViewModel> listUserViewModel, UserViewModel userViewModel)
         {
             if (!listUserViewModel.Contains(userViewModel))
                 listUserViewModel.Add(userViewModel);
         }
+
+        #endregion
     }
 }

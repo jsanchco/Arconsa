@@ -157,7 +157,40 @@
             _context.Work.Remove(toRemove);
             _context.SaveChanges();
             return true;
+        }
 
+        public List<Work> GetAllLite(string filter = null, int clientId = 0)
+        {
+            List<Work> data;
+
+            if (clientId != 0)
+            {
+                data =  _context.Work
+                    .Where(x => x.ClientId == clientId)
+                    .Select(x => new Work
+                    {
+                        Id = x.Id,
+                        Name = x.Name
+                    }).ToList();
+            }
+            else
+            {
+                data = _context.Work
+                    .Select(x => new Work
+                    {
+                        Id = x.Id,
+                        Name = x.Name
+                    }).ToList();
+            }
+
+            if (filter != null)
+            {
+                data = data.Where(x =>
+                        Searcher.RemoveAccentsWithNormalization(x.Name.ToLower()).Contains(filter))
+                    .ToList();
+            }
+
+            return data;
         }
     }
 }

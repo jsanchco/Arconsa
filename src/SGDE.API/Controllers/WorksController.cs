@@ -133,5 +133,19 @@ namespace SGDE.API.Controllers
                 return StatusCode(500, ex);
             }
         }
+
+        [HttpGet("getallworkslite")]
+        public object GetAllWorksLite(int clientId = 0)
+        {
+            try
+            {
+                return _supervisor.GetAllWorkLite(null, clientId);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Exception: ");
+                return StatusCode(500, ex);
+            }
+        }
     }
 }

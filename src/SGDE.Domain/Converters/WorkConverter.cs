@@ -82,6 +82,20 @@
                 .ToList();
         }
 
+        public static List<WorkViewModel> ConvertListLite(IEnumerable<Work> works)
+        {
+            return works?.Select(work =>
+            {
+                var model = new WorkViewModel
+                {
+                    id = work.Id,
+                    name = work.Name
+                };
+                return model;
+            })
+                .ToList();
+        }
+
         private static List<(string, double)> GetWorkBudgets(ICollection<WorkBudget> workBudgets)
         {
             return workBudgets.Select(x => (x.NameInWork, x.TotalContract)).ToList();

@@ -4,6 +4,7 @@
 
     using Entities;
     using SGDE.Domain.Helpers;
+    using System;
     using System.Collections.Generic;
 
     #endregion
@@ -18,8 +19,8 @@
         bool Update(DailySigning dailySigning);
         bool Delete(int id);
         bool ValidateDalilySigning(DailySigning dailySigning);
-        List<DailySigning> GetByUserId(string startDate, string endDate, int userId);
-        List<DailySigning> GetByWorkId(string startDate, string endDate, int workId);
-        List<DailySigning> GetByClientId(string startDate, string endDate, int clientId);
+        List<DailySigning> GetByUserId(DateTime startDate, DateTime endDate, int userId);
+        List<DailySigning> GetByWorkId(DateTime startDate, DateTime endDate, int workId);
+        List<DailySigning> GetByClientId(DateTime startDate, DateTime endDate, int clientId);
     }
 }

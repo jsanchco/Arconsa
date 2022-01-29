@@ -364,14 +364,24 @@ class BasicDataWork extends Component {
             </Col> */}
           </Row>
           <Row>
-            <Col xs="12"><hr></hr></Col>
+            <Col xs="12">
+              <hr></hr>
+            </Col>
           </Row>
           <Row>
-            <Col xs="4"></Col>
-            <Col xs="4">
+            <Col xs="3"></Col>
+            <Col xs="5">
               <br></br>
               <FormGroup>
-                <Label htmlFor="totalContract" style={{ fontSize: "Medium" }}>
+                <Label
+                  htmlFor="totalContract"
+                  style={{
+                    fontSize: "Medium",
+                    textAlign: "Center",
+                    display: "block",
+                    marginRight: "140px"
+                  }}
+                >
                   <b>Total Contrato</b>
                 </Label>
                 {this.renderTotalContratc()}

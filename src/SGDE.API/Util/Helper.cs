@@ -33,5 +33,31 @@
 
             return null;
         }
+
+        public static string getSearchLite(string filter)
+        {
+            if (filter != null)
+            {
+                var newfiltersplits = filter;
+                var filtersplits = newfiltersplits.Split('(', ')', ' ');
+                var filterfield = filtersplits[1];
+
+                if (filtersplits.Length == 5)
+                {
+                    if (filtersplits[1].EndsWith("tolower"))
+                    {
+                        filterfield = filter.Split('(', ')', '\'')[2];
+                    }
+                }
+                else
+                {
+                    return null;
+                }    
+
+                return Searcher.RemoveAccentsWithNormalization(filterfield);
+            }
+
+            return null;
+        }
     }
 }

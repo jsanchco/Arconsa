@@ -16,6 +16,7 @@
     {
         private readonly EFContextSQL _context;
 
+        private int test => string.IsNullOrEmpty("") ? 0 : 1;
         public ClientRepository(EFContextSQL context)
         {
             _context = context;
@@ -114,6 +115,25 @@
             _context.Client.Remove(toRemove);
             _context.SaveChanges();
             return true;
+        }
+
+        public List<Client> GetAllLite(string filter = null)
+        {
+            var data = _context.Client
+                .Select(x => new Client
+                {
+                    Id = x.Id,
+                    Name = x.Name
+                }).ToList();
+
+            if (filter != null)
+            {
+                data = data.Where(x =>
+                        Searcher.RemoveAccentsWithNormalization(x.Name.ToLower()).Contains(filter))
+                    .ToList();
+            }
+
+            return data;
         }
     }
 }

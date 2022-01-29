@@ -72,7 +72,7 @@ class AuthorizeCancelWorkers extends Component {
     this.format = { type: "dateTime", format: "dd/MM/yyyy" };
 
     this.query = new Query()
-      .addParams("workId", props.workId);     
+      .addParams("workId", props.workId); 
   }
 
   componentDidMount() {

@@ -46,8 +46,8 @@
 
                 var reportViewModel = new ReportQueryViewModel
                 {
-                    startDate = startDate,
-                    endDate = endDate,
+                    startDate = DateTime.Parse(startDate),
+                    endDate = DateTime.Parse(endDate),
                     workerId = workerId,
                     workId = workId,
                     clientId = clientId
@@ -94,8 +94,8 @@
 
                 var reportAllViewModel = new ReportQueryAllViewModel
                 {
-                    startDate = startDate,
-                    endDate = endDate,
+                    startDate = DateTime.Parse(startDate),
+                    endDate = DateTime.Parse(endDate),
                     workers = workers,
                     works = works,
                     clients = clients

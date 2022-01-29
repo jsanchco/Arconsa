@@ -8,14 +8,17 @@ import {
   Inject,
   Toolbar,
   Page,
+  Resize,
 } from "@syncfusion/ej2-react-grids";
 import { DataManager, WebApiAdaptor } from "@syncfusion/ej2-data";
-import { config, INVOICES } from "../../constants";
+import { config, INVOICES, CLIENTSLITE, WORKSLITE } from "../../constants";
 import { L10n } from "@syncfusion/ej2-base";
 import data from "../../locales/locale.json";
 import { connect } from "react-redux";
 import ACTION_APPLICATION from "../../actions/applicationAction";
 import { TOKEN_KEY } from "../../services";
+import { Query } from "@syncfusion/ej2-data";
+import { DropDownList } from "@syncfusion/ej2-dropdowns";
 
 L10n.load(data);
 
@@ -26,7 +29,22 @@ class Invoices extends Component {
     headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }],
   });
 
+  clients = new DataManager({
+    adaptor: new WebApiAdaptor(),
+    url: `${config.URL_API}/${CLIENTSLITE}`,
+    headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }],
+  });
+
+  works = new DataManager({
+    adaptor: new WebApiAdaptor(),
+    url: `${config.URL_API}/${WORKSLITE}`,
+    headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }],
+  });
+
   grid = null;
+
+  requeridIdRules = { required: true };
+
   wrapSettings = { wrapMode: "Content" };
 
   constructor(props) {
@@ -35,6 +53,11 @@ class Invoices extends Component {
     this.state = {
       rowSelected: null,
     };
+
+    this.clientsElem = null;
+    this.clientsObj = null;
+    this.worksElem = null;
+    this.worksObj = null;    
 
     this.toolbarOptions = [
       "Add",
@@ -73,6 +96,83 @@ class Invoices extends Component {
         validateDecimalOnType: true,
       },
     };
+    this.editClients = {      
+      create: () => {
+        this.clientsElem = document.createElement("input");
+        return this.clientsElem;
+      },
+      destroy: () => {
+        this.clientsObj.destroy();
+      },
+      read: () => {
+        return this.clientsObj.value;
+      },
+      write: () => {
+        this.clientsObj = new DropDownList({
+          change: () => {
+            this.worksObj.enabled = true;
+            const tempQuery = new Query().addParams("clientId", this.clientsObj.value);
+            this.worksObj.query = tempQuery;
+            this.worksObj.text = "";
+            this.worksObj.dataBind();
+          },
+          dataSource: new DataManager({
+            adaptor: new WebApiAdaptor(),
+            url: `${config.URL_API}/${CLIENTSLITE}`,
+            headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }],
+          }),
+          fields: { value: "id", text: "name" },
+          floatLabelType: "Never",
+          placeholder: "Selecciona Cliente",
+          popupWidth: "auto",
+          allowFiltering: true,
+          filtering: this.handleFilteringClients.bind(this)  
+        });
+        this.clientsObj.appendTo(this.clientsElem);
+      }
+    };
+    this.editWorks = {
+      create: () => {
+        this.worksElem = document.createElement("input");
+        return this.worksElem;
+      },
+      destroy: () => {
+        this.worksObj.destroy();
+      },
+      read: () => {
+        return this.worksObj.value;
+      },
+      write: () => {
+        this.worksObj = new DropDownList({
+          // change: () => {
+          //   this.stateObj.enabled = true;
+          //   const tempQuery = new Query().where(
+          //     "CustomerID",
+          //     "equal",
+          //     this.countryObj.value
+          //   );
+          //   this.stateObj.query = tempQuery;
+          //   this.stateObj.text = "";
+          //   this.stateObj.dataBind();
+          // },
+          dataSource: new DataManager({
+            adaptor: new WebApiAdaptor(),
+            url: `${config.URL_API}/${WORKSLITE}`,
+            headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }],
+          }),
+          enabled: false,
+          fields: { value: "id", text: "name" },
+          floatLabelType: "Never",
+          placeholder: "Selecciona Obra",
+          popupWidth: "auto"
+        });
+        this.worksObj.appendTo(this.worksElem);
+      }      
+    };
+
+    this.formatDate = { type: "dateTime", format: "dd/MM/yyyy" };
+
+    this.actionBegin = this.actionBegin.bind(this);
     this.actionFailure = this.actionFailure.bind(this);
     this.actionComplete = this.actionComplete.bind(this);
     this.clickHandler = this.clickHandler.bind(this);
@@ -119,6 +219,26 @@ class Invoices extends Component {
     });
   }
 
+  actionBegin(args) {
+    if (args.requestType === "save") {
+      var cols = this.grid.columns;
+      for (var i = 0; i < cols.length; i++) {
+        if (cols[i].type === "date") {
+          var date = args.data[cols[i].field];
+          args.data[cols[i].field] = new Date(
+            Date.UTC(
+              date.getFullYear(),
+              date.getMonth(),
+              date.getDate(),
+              date.getHours(),
+              date.getMilliseconds()
+            )
+          );
+        }
+      }
+    }
+  }
+
   actionComplete(args) {
     if (args.requestType === "save") {
       this.props.showMessage({
@@ -134,6 +254,29 @@ class Invoices extends Component {
         type: "success",
       });
     }
+  }
+
+  changeClient(args) {
+
+  }
+
+  selectClient(args) {
+    this.editWorks.params.query.params = [];
+    if (args.itemData.id != null) {
+      this.editWorks.params.query.addParams("clientId", args.itemData.id);
+    }
+
+    // this.grid.columnModel[7].edit.params.query.params = [];
+    // if (args.itemData.id != null) {
+    //   this.grid.columnModel[7].edit.params.query.addParams("clientId", args.itemData.id);
+    // }
+  }
+
+  handleFilteringClients(e) {
+    let query = new Query();
+    query =
+      e.text !== "" ? query.where("name", "contains", e.text, true) : query;
+      e.updateData(this.clients, query);
   }
 
   render() {
@@ -172,6 +315,7 @@ class Invoices extends Component {
                     marginTop: -20,
                     marginBottom: 20,
                   }}
+                  actionBegin={this.actionBegin}
                   actionFailure={this.actionFailure}
                   actionComplete={this.actionComplete}
                   // rowSelected={this.rowSelected}
@@ -179,6 +323,7 @@ class Invoices extends Component {
                   allowTextWrap={true}
                   textWrapSettings={this.wrapSettings}
                   dataBound={this.dataBound}
+                  allowResizing={true}
                 >
                   <ColumnsDirective>
                     <ColumnDirective
@@ -204,42 +349,61 @@ class Invoices extends Component {
                       field="startDate"
                       headerText="F. Inicio"
                       width="100"
-                      allowEditing={false}
+                      type="date"
+                      format={this.formatDate}
+                      editType="datepickeredit"
+                      // allowEditing={false}
                     />
                     <ColumnDirective
                       field="endDate"
                       headerText="F. Fin"
                       width="100"
-                      allowEditing={false}
+                      type="date"
+                      format={this.formatDate}
+                      editType="datepickeredit"
+                      // allowEditing={false}
                     />
                     <ColumnDirective
                       field="issueDate"
                       headerText="F. Emisión"
                       width="100"
-                      allowEditing={false}
+                      type="date"
+                      format={this.formatDate}
+                      editType="datepickeredit"
+                      // allowEditing={false}
                     />
                     <ColumnDirective
-                      field="clientName"
+                      field="clientId"
                       headerText="Cliente"
                       width="100"
-                      allowEditing={false}
+                      // editType="dropdownedit"
+                      foreignKeyValue="name"
+                      foreignKeyField="id"
+                      validationRules={this.requeridIdRules}
+                      dataSource={this.clients}
+                      edit={this.editClients}
                     />
                     <ColumnDirective
-                      field="workName"
+                      field="workId"
                       headerText="Obra"
                       width="100"
-                      allowEditing={false}
+                      //editType="dropdownedit"
+                      foreignKeyValue="name"
+                      foreignKeyField="id"
+                      validationRules={this.requeridIdRules}
+                      dataSource={this.works}
+                      edit={this.editWorks}
                     />
                     <ColumnDirective
                       field="taxBase"
-                      headerText="B. Imponible"
+                      headerText="B. Impon."
                       width="100"
                       allowEditing={false}
                     />
                     <ColumnDirective
                       field="ivaTaxBase"
                       headerText="IVA"
-                      width="100"
+                      width="90"
                       allowEditing={false}
                     />
                     <ColumnDirective
@@ -250,15 +414,15 @@ class Invoices extends Component {
                     />
                     <ColumnDirective
                       field="retentions"
-                      headerText="Retenciones"
-                      width="100"
+                      headerText="Ret."
+                      width="70"
                       fotmat="N2"
                       editType="numericedit"
                       edit={this.numericParams}
                     />
                     <ColumnDirective field="typeInvoice" visible={false} />
                   </ColumnsDirective>
-                  <Inject services={[Page, Toolbar, Edit]} />
+                  <Inject services={[Page, Toolbar, Edit, Resize]} />
                 </GridComponent>
               </Row>
             </div>

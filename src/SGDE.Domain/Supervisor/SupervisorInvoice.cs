@@ -40,9 +40,9 @@
 
                 InvoiceNumber = newInvoiceViewModel.invoiceNumber,
                 Name = newInvoiceViewModel.name,
-                StartDate = DateTime.ParseExact(newInvoiceViewModel.startDate, "dd/MM/yyyy", null),
-                EndDate = DateTime.ParseExact(newInvoiceViewModel.endDate, "dd/MM/yyyy", null),
-                IssueDate = DateTime.ParseExact(newInvoiceViewModel.issueDate, "dd/MM/yyyy", null),
+                StartDate = newInvoiceViewModel.startDate,
+                EndDate = newInvoiceViewModel.endDate,
+                IssueDate = newInvoiceViewModel.issueDate,
                 TaxBase = (decimal)newInvoiceViewModel.taxBase,
                 Iva = newInvoiceViewModel.iva,
                 TypeInvoice = newInvoiceViewModel.typeInvoice,
@@ -73,9 +73,9 @@
                 AddedDate = DateTime.Now,
                 ModifiedDate = null,
 
-                StartDate = DateTime.ParseExact(invoiceQueryViewModel.startDate, "dd/MM/yyyy", null),
-                EndDate = DateTime.ParseExact(invoiceQueryViewModel.endDate, "dd/MM/yyyy", null),
-                IssueDate = DateTime.ParseExact(invoiceQueryViewModel.issueDate, "dd/MM/yyyy", null),
+                StartDate = invoiceQueryViewModel.startDate,
+                EndDate = invoiceQueryViewModel.endDate,
+                IssueDate = invoiceQueryViewModel.issueDate,
                 WorkId = invoiceQueryViewModel.workId,
                 ClientId = invoiceQueryViewModel.clientId,
                 UserId = invoiceQueryViewModel.workerId,
@@ -117,9 +117,9 @@
 
             invoice.InvoiceNumber = invoiceViewModel.invoiceNumber;
             invoice.Name = invoiceViewModel.name;
-            invoice.StartDate = DateTime.ParseExact(invoiceViewModel.startDate, "dd/MM/yyyy", null);
-            invoice.EndDate = DateTime.ParseExact(invoiceViewModel.endDate, "dd/MM/yyyy", null);
-            invoice.IssueDate = DateTime.ParseExact(invoiceViewModel.issueDate, "dd/MM/yyyy", null);
+            invoice.StartDate = invoiceViewModel.startDate;
+            invoice.EndDate = invoiceViewModel.endDate;
+            invoice.IssueDate = invoiceViewModel.issueDate;
             invoice.TaxBase = (decimal)invoiceViewModel.taxBase;
             invoice.Iva = invoiceViewModel.iva;
             invoice.TypeInvoice = invoiceViewModel.typeInvoice;
@@ -180,7 +180,7 @@
         {
             var invoices = GetAllInvoice(0, 0, null, (int)invoiceViewModel.workId, 0);
             var invoice = invoices.Data
-                .Where(x => DateTime.ParseExact(x.endDate, "dd/MM/yyyy", null) < DateTime.ParseExact(invoiceViewModel.startDate, "dd/MM/yyyy", null))
+                .Where(x => x.endDate < invoiceViewModel.startDate)
                 .OrderByDescending(x => x.startDate)
                 .FirstOrDefault();
 

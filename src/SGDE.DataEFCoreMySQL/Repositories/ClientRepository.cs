@@ -116,7 +116,25 @@
             _context.Client.Remove(toRemove);
             _context.SaveChanges();
             return true;
+        }
 
+        public List<Client> GetAllLite(string filter = null)
+        {
+            var data = _context.Client
+                .Select(x => new Client
+                {
+                    Id = x.Id,
+                    Name = x.Name
+                }).ToList();
+
+            if (filter != null)
+            {
+                data = data.Where(x =>
+                        Searcher.RemoveAccentsWithNormalization(x.Name.ToLower()).Contains(filter))
+                    .ToList();
+            }
+
+            return data;
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿namespace SGDE.Domain.ViewModels
 {
+    using System;
     #region Using
 
     using System.Collections.Generic;
@@ -8,9 +9,9 @@
 
     public class InvoiceQueryViewModel
     {
-        public string startDate { get; set; }
-        public string endDate { get; set; }
-        public string issueDate { get; set; }
+        public DateTime startDate { get; set; }
+        public DateTime endDate { get; set; }
+        public DateTime issueDate { get; set; }
         public int typeInvoice { get; set; }        
         public int? clientId { get; set; }
         public int? workId { get; set; }

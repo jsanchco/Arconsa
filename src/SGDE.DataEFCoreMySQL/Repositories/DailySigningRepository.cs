@@ -31,10 +31,7 @@
         {
             if (disposing)
             {
-                if (_context != null)
-                {
-                    _context.Dispose();
-                }
+                _context.Dispose();
             }
         }
 
@@ -54,6 +51,8 @@
                 .ThenInclude(y => y.Work)
                 .Include(z => z.UserHiring)
                 .ThenInclude(w => w.User)
+                .Include(x => x.Profession)
+                .OrderByDescending(x => x.StartHour)
                 .ToList();
             }
             else
@@ -63,9 +62,12 @@
                 .ThenInclude(y => y.Work)
                 .Include(z => z.UserHiring)
                 .ThenInclude(w => w.User)
+                .Include(x => x.Profession)
                 .Where(x => x.UserHiring.User.Id == userId)
+                .OrderByDescending(x => x.StartHour)
                 .ToList();
             }
+
             var count = data.Count;
             return (skip != 0 || take != 0)
                 ? new QueryResult<DailySigning>
@@ -88,7 +90,10 @@
                 .ThenInclude(v => v.Client)
                 .Include(z => z.UserHiring)
                 .ThenInclude(w => w.User)
-                .Where(x => x.UserHiring.User.Id == userId)
+                .Include(x => x.Profession)
+                .Include(r => r.UserHiring)
+                .ThenInclude(s => s.Profession)
+                .Where(x => x.UserHiring.UserId == userId)
                 .OrderBy(x => x.StartHour)
                 .ToList();
         }
@@ -114,10 +119,10 @@
         {
             return _context.DailySigning
                 .Include(x => x.UserHiring)
-                .Include(x => x.UserHiring)
                 .ThenInclude(y => y.Work)
                 .Include(z => z.UserHiring)
                 .ThenInclude(w => w.User)
+                .Include(x => x.Profession)
                 .FirstOrDefault(x => x.Id == id);
         }
 
@@ -181,11 +186,8 @@
             return true;
         }
 
-        public List<DailySigning> GetByUserId(string startDate, string endDate, int userId)
+        public List<DailySigning> GetByUserId(DateTime startDate, DateTime endDate, int userId)
         {
-            var dtStart = DateTime.Parse(startDate);
-            var dtEnd = DateTime.Parse(endDate).AddHours(23).AddMinutes(59);
-
             return _context.DailySigning
                 .Include(x => x.UserHiring)
                 .ThenInclude(x => x.Work)
@@ -198,15 +200,15 @@
                 .ThenInclude(x => x.CostWorkers)
                 .Include(x => x.UserHiring)
                 .ThenInclude(x => x.Profession)
-                .Where(x => x.UserHiring.StartDate >= dtStart && x.UserHiring.EndDate <= dtEnd && x.UserHiring.UserId == userId)
+                .Include(x => x.HourType)
+                .Include(x => x.Profession)
+                .Where(x => x.StartHour >= startDate && x.EndHour <= endDate && x.UserHiring.UserId == userId)
+                .OrderBy(x => x.StartHour)
                 .ToList();
         }
 
-        public List<DailySigning> GetByWorkId(string startDate, string endDate, int workId)
+        public List<DailySigning> GetByWorkId(DateTime startDate, DateTime endDate, int workId)
         {
-            var dtStart = DateTime.Parse(startDate);
-            var dtEnd = DateTime.Parse(endDate).AddHours(23).AddMinutes(59);
-
             return _context.DailySigning
                 .Include(x => x.UserHiring)
                 .ThenInclude(x => x.Work)
@@ -219,16 +221,16 @@
                 .ThenInclude(x => x.CostWorkers)
                 .Include(x => x.UserHiring)
                 .ThenInclude(x => x.Profession)
-                .Where(x => x.UserHiring.StartDate >= dtStart && x.UserHiring.EndDate <= dtEnd && x.UserHiring.WorkId == workId)
+                .Include(x => x.HourType)
+                .Include(x => x.Profession)
+                .Where(x => x.StartHour >= startDate && x.EndHour <= endDate && x.UserHiring.WorkId == workId)
+                .OrderBy(x => x.StartHour)
                 .ToList();
 
         }
 
-        public List<DailySigning> GetByClientId(string startDate, string endDate, int clientId)
+        public List<DailySigning> GetByClientId(DateTime startDate, DateTime endDate, int clientId)
         {
-            var dtStart = DateTime.Parse(startDate);
-            var dtEnd = DateTime.Parse(endDate).AddHours(23).AddMinutes(59);
-
             return _context.DailySigning
                 .Include(x => x.UserHiring)
                 .ThenInclude(x => x.Work)
@@ -241,7 +243,10 @@
                 .ThenInclude(x => x.CostWorkers)
                 .Include(x => x.UserHiring)
                 .ThenInclude(x => x.Profession)
-                .Where(x => x.UserHiring.StartDate >= dtStart && x.UserHiring.EndDate <= dtEnd && x.UserHiring.Work.ClientId == clientId)
+                .Include(x => x.HourType)
+                .Include(x => x.Profession)
+                .Where(x => x.StartHour >= startDate && x.EndHour <= endDate && x.UserHiring.Work.ClientId == clientId)
+                .OrderBy(x => x.StartHour)
                 .ToList();
         }
     }

@@ -123,6 +123,8 @@ class GridInvoice extends Component {
     if (props.clientId) {
       this.query = new Query().addParams("clientId", props.clientId);
     }
+
+    this.formatDate = { type: "dateTime", format: "dd/MM/yyyy" };
   }
 
   componentDidUpdate(prevProps) {
@@ -357,18 +359,21 @@ class GridInvoice extends Component {
               headerText="F. Inicio"
               width="100"
               allowEditing={false}
+              format={this.formatDate}
             />
             <ColumnDirective
               field="endDate"
               headerText="F. Fin"
               width="100"
               allowEditing={false}
+              format={this.formatDate}
             />
             <ColumnDirective
               field="issueDate"
               headerText="F. Emisión"
               width="100"
               allowEditing={false}
+              format={this.formatDate}
             />
             <ColumnDirective
               field="clientName"

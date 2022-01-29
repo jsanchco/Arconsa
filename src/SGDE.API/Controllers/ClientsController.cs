@@ -128,5 +128,22 @@ namespace SGDE.API.Controllers
                 return StatusCode(500, ex);
             }
         }
+
+        [HttpGet("getallclientslite")]
+        public object GetAllClientsLite()
+        {
+            try
+            {
+                var queryString = Request.Query;
+                var filter = Util.Helper.getSearchLite(queryString["$filter"]);
+
+                return _supervisor.GetAllClientLite(filter);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Exception: ");
+                return StatusCode(500, ex);
+            }
+        }
     }
 }

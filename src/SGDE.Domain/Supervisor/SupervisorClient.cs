@@ -81,5 +81,10 @@
         {
             return _clientRepository.Delete(id);
         }
+
+        public List<ClientViewModel> GetAllClientLite(string filter = null)
+        {
+            return ClientConverter.ConvertList(_clientRepository.GetAllLite(filter));
+        }
     }
 }

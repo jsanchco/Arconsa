@@ -478,9 +478,9 @@
             _invoiceResponseViewModel.data.taxBase = (double)_invoice.TaxBase;
             _invoiceResponseViewModel.data.ivaTaxBase = _invoice.IvaTaxBase;
             _invoiceResponseViewModel.data.retentions = _invoice.Retentions;
-            _invoiceResponseViewModel.data.startDate = _invoice.StartDate.ToString("dd/MM/yyyy");
-            _invoiceResponseViewModel.data.endDate = _invoice.EndDate.ToString("dd/MM/yyyy");
-            _invoiceResponseViewModel.data.issueDate = _invoice.IssueDate.ToString("dd/MM/yyyy");
+            _invoiceResponseViewModel.data.startDate = _invoice.StartDate;
+            _invoiceResponseViewModel.data.endDate = _invoice.EndDate;
+            _invoiceResponseViewModel.data.issueDate = _invoice.IssueDate;
             _invoiceResponseViewModel.data.iva = _invoice.Iva;
             _invoiceResponseViewModel.data.total = _invoice.Total;
             _invoiceResponseViewModel.data.workId = _invoice.WorkId;
