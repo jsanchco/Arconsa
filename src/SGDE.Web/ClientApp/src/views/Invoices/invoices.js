@@ -11,7 +11,13 @@ import {
   Resize,
 } from "@syncfusion/ej2-react-grids";
 import { DataManager, WebApiAdaptor } from "@syncfusion/ej2-data";
-import { config, INVOICES, CLIENTSLITE, WORKSLITE } from "../../constants";
+import {
+  config,
+  INVOICES,
+  CLIENTSLITE,
+  WORKSLITE,
+  WORKBUDGETSLITE,
+} from "../../constants";
 import { L10n } from "@syncfusion/ej2-base";
 import data from "../../locales/locale.json";
 import { connect } from "react-redux";
@@ -41,6 +47,12 @@ class Invoices extends Component {
     headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }],
   });
 
+  workBudgets = new DataManager({
+    adaptor: new WebApiAdaptor(),
+    url: `${config.URL_API}/${WORKBUDGETSLITE}`,
+    headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }],
+  });
+
   grid = null;
 
   requeridIdRules = { required: true };
@@ -57,7 +69,9 @@ class Invoices extends Component {
     this.clientsElem = null;
     this.clientsObj = null;
     this.worksElem = null;
-    this.worksObj = null;    
+    this.worksObj = null;
+    this.workBudgetsElem = null;
+    this.worksBudgetObj = null;
 
     this.toolbarOptions = [
       "Add",
@@ -96,7 +110,7 @@ class Invoices extends Component {
         validateDecimalOnType: true,
       },
     };
-    this.editClients = {      
+    this.editClients = {
       create: () => {
         this.clientsElem = document.createElement("input");
         return this.clientsElem;
@@ -107,29 +121,44 @@ class Invoices extends Component {
       read: () => {
         return this.clientsObj.value;
       },
-      write: () => {
+      write: (args) => {
         this.clientsObj = new DropDownList({
           change: () => {
             this.worksObj.enabled = true;
-            const tempQuery = new Query().addParams("clientId", this.clientsObj.value);
+            const tempQuery = new Query().addParams(
+              "clientId",
+              this.clientsObj.value
+            );
             this.worksObj.query = tempQuery;
             this.worksObj.text = "";
+            this.worksObj.value = null;
+            this.workBudgetsObj.text = "";
+            this.workBudgetsObj.value = null;
             this.worksObj.dataBind();
           },
           dataSource: new DataManager({
             adaptor: new WebApiAdaptor(),
             url: `${config.URL_API}/${CLIENTSLITE}`,
-            headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }],
+            headers: [
+              { Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) },
+            ],
           }),
           fields: { value: "id", text: "name" },
           floatLabelType: "Never",
           placeholder: "Selecciona Cliente",
           popupWidth: "auto",
           allowFiltering: true,
-          filtering: this.handleFilteringClients.bind(this)  
+          filtering: this.handleFilteringClients.bind(this),
         });
         this.clientsObj.appendTo(this.clientsElem);
-      }
+        if (
+          args.rowData != null &&
+          args.rowData.clientId != null &&
+          args.rowData.clientId !== 0
+        ) {
+          this.clientsObj.value = args.rowData.clientId;
+        }
+      },
     };
     this.editWorks = {
       create: () => {
@@ -142,32 +171,79 @@ class Invoices extends Component {
       read: () => {
         return this.worksObj.value;
       },
-      write: () => {
+      write: (args) => {
         this.worksObj = new DropDownList({
-          // change: () => {
-          //   this.stateObj.enabled = true;
-          //   const tempQuery = new Query().where(
-          //     "CustomerID",
-          //     "equal",
-          //     this.countryObj.value
-          //   );
-          //   this.stateObj.query = tempQuery;
-          //   this.stateObj.text = "";
-          //   this.stateObj.dataBind();
-          // },
+          change: () => {
+            this.workBudgetsObj.enabled = true;
+            const tempQuery = new Query().addParams(
+              "workId",
+              this.worksObj.value
+            );
+            this.workBudgetsObj.query = tempQuery;
+            this.workBudgetsObj.text = "";
+            this.workBudgetsObj.value = null;
+            this.workBudgetsObj.dataBind();
+          },
           dataSource: new DataManager({
             adaptor: new WebApiAdaptor(),
             url: `${config.URL_API}/${WORKSLITE}`,
-            headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }],
+            headers: [
+              { Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) },
+            ],
           }),
           enabled: false,
           fields: { value: "id", text: "name" },
           floatLabelType: "Never",
           placeholder: "Selecciona Obra",
-          popupWidth: "auto"
+          popupWidth: "auto",
+          allowFiltering: true,
+          filtering: this.handleFilteringWorks.bind(this),
         });
         this.worksObj.appendTo(this.worksElem);
-      }      
+        if (
+          args.rowData != null &&
+          args.rowData.workId != null &&
+          args.rowData.workId !== 0
+        ) {
+          this.worksObj.value = args.rowData.workId;
+        }
+      },
+    };
+    this.editWorkBudgets = {
+      create: () => {
+        this.workBudgetsElem = document.createElement("input");
+        return this.workBudgetsElem;
+      },
+      destroy: () => {
+        this.workBudgetsObj.destroy();
+      },
+      read: () => {
+        return this.workBudgetsObj.value;
+      },
+      write: (args) => {
+        this.workBudgetsObj = new DropDownList({
+          dataSource: new DataManager({
+            adaptor: new WebApiAdaptor(),
+            url: `${config.URL_API}/${WORKBUDGETSLITE}`,
+            headers: [
+              { Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) },
+            ],
+          }),
+          enabled: false,
+          fields: { value: "id", text: "name" },
+          floatLabelType: "Never",
+          placeholder: "Selecciona Presupuesto",
+          popupWidth: "auto",
+        });
+        this.workBudgetsObj.appendTo(this.workBudgetsElem);
+        if (
+          args.rowData != null &&
+          args.rowData.workBudgetId != null &&
+          args.rowData.workBudgetId !== 0
+        ) {
+          this.workBudgetsObj.value = args.rowData.workId;
+        }
+      },
     };
 
     this.formatDate = { type: "dateTime", format: "dd/MM/yyyy" };
@@ -177,6 +253,7 @@ class Invoices extends Component {
     this.actionComplete = this.actionComplete.bind(this);
     this.clickHandler = this.clickHandler.bind(this);
     this.dataBound = this.dataBound.bind(this);
+    this.rowSelected = this.rowSelected.bind(this);
   }
 
   clickHandler(args) {
@@ -205,6 +282,11 @@ class Invoices extends Component {
   dataBound() {
     this.props.setCurrentPageInvoices(this.grid.pageSettings.currentPage);
     this.props.setCurrentSearchInvoices(this.grid.searchSettings.key);
+  }
+
+  rowSelected() {
+    const selectedRecords = this.grid.getSelectedRecords();
+    this.setState({ rowSelected: selectedRecords[0] });
   }
 
   actionFailure(args) {
@@ -256,27 +338,18 @@ class Invoices extends Component {
     }
   }
 
-  changeClient(args) {
-
-  }
-
-  selectClient(args) {
-    this.editWorks.params.query.params = [];
-    if (args.itemData.id != null) {
-      this.editWorks.params.query.addParams("clientId", args.itemData.id);
-    }
-
-    // this.grid.columnModel[7].edit.params.query.params = [];
-    // if (args.itemData.id != null) {
-    //   this.grid.columnModel[7].edit.params.query.addParams("clientId", args.itemData.id);
-    // }
-  }
-
   handleFilteringClients(e) {
     let query = new Query();
     query =
       e.text !== "" ? query.where("name", "contains", e.text, true) : query;
-      e.updateData(this.clients, query);
+    e.updateData(this.clients, query);
+  }
+
+  handleFilteringWorks(e) {
+    let query = new Query();
+    query =
+      e.text !== "" ? query.where("name", "contains", e.text, true) : query;
+    e.updateData(this.works, query);
   }
 
   render() {
@@ -318,7 +391,7 @@ class Invoices extends Component {
                   actionBegin={this.actionBegin}
                   actionFailure={this.actionFailure}
                   actionComplete={this.actionComplete}
-                  // rowSelected={this.rowSelected}
+                  rowSelected={this.rowSelected}
                   ref={(g) => (this.grid = g)}
                   allowTextWrap={true}
                   textWrapSettings={this.wrapSettings}
@@ -376,7 +449,6 @@ class Invoices extends Component {
                       field="clientId"
                       headerText="Cliente"
                       width="100"
-                      // editType="dropdownedit"
                       foreignKeyValue="name"
                       foreignKeyField="id"
                       validationRules={this.requeridIdRules}
@@ -387,12 +459,21 @@ class Invoices extends Component {
                       field="workId"
                       headerText="Obra"
                       width="100"
-                      //editType="dropdownedit"
                       foreignKeyValue="name"
                       foreignKeyField="id"
                       validationRules={this.requeridIdRules}
                       dataSource={this.works}
                       edit={this.editWorks}
+                    />
+                    <ColumnDirective
+                      field="workBudgetId"
+                      headerText="Presupuesto"
+                      width="100"
+                      foreignKeyValue="name"
+                      foreignKeyField="id"
+                      validationRules={this.requeridIdRules}
+                      dataSource={this.workBudgets}
+                      edit={this.editWorkBudgets}
                     />
                     <ColumnDirective
                       field="taxBase"

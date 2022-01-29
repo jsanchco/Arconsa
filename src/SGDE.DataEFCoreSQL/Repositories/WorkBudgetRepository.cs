@@ -86,5 +86,32 @@ namespace SGDE.DataEFCoreSQL.Repositories
             _context.SaveChanges();
             return true;
         }
+
+        public List<WorkBudget> GetAllLite(int workId = 0)
+        {
+            List<WorkBudget> data;
+
+            if (workId != 0)
+            {
+                data = _context.WorkBudget
+                    .Where(x => x.WorkId == workId && x.Type != "Version X")
+                    .Select(x => new WorkBudget
+                    {
+                        Id = x.Id,
+                        Name = x.Name
+                    }).ToList();
+            }
+            else
+            {
+                data = _context.WorkBudget
+                    .Select(x => new WorkBudget
+                    {
+                        Id = x.Id,
+                        Name = x.Name
+                    }).ToList();
+            }
+
+            return data;
+        }
     }
 }

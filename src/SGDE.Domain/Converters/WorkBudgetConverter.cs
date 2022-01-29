@@ -62,5 +62,19 @@ namespace SGDE.Domain.Converters
             })
                 .ToList();
         }
+
+        public static List<WorkBudgetViewModel> ConvertListLite(IEnumerable<WorkBudget> workBudgets)
+        {
+            return workBudgets?.Select(workBudget =>
+            {
+                var model = new WorkBudgetViewModel
+                {
+                    id = workBudget.Id,
+                    name = workBudget.Name
+                };
+                return model;
+            })
+                .ToList();
+        }
     }
 }

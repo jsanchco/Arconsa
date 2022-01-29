@@ -139,7 +139,10 @@ namespace SGDE.API.Controllers
         {
             try
             {
-                return _supervisor.GetAllWorkLite(null, clientId);
+                var queryString = Request.Query;
+                var filter = Util.Helper.getSearchLite(queryString["$filter"]);
+
+                return _supervisor.GetAllWorkLite(filter, clientId);
             }
             catch (Exception ex)
             {

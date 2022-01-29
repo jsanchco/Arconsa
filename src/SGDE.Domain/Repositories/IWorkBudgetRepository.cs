@@ -5,6 +5,7 @@ namespace SGDE.Domain.Repositories
 {
     public interface IWorkBudgetRepository
     {
+        List<WorkBudget> GetAllLite(int workId = 0);
         List<WorkBudget> GetAll(int workId);
         WorkBudget GetById(int id);
         WorkBudget Add(WorkBudget newWorkBudget);

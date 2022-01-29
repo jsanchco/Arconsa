@@ -125,5 +125,19 @@ namespace SGDE.API.Controllers
                 return StatusCode(500, ex.Message);
             }
         }
+
+        [HttpGet("getallbudgetslite")]
+        public object GetAllBudgetsLite(int workId = 0)
+        {
+            try
+            {
+                return _supervisor.GetAllWorkBudgetLite(workId);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Exception: ");
+                return StatusCode(500, ex);
+            }
+        }
     }
 }

@@ -22,7 +22,7 @@
         public string KeyOrder => $"{IssueDate.Year.ToString().Substring(2, 2)}{InvoiceNumber:0000}";
 
         public Decimal Retentions { get; set; }
-        public int State { get; set; } // 0 = nada, 1 = Añaddido, 2 = Modificado, 3 = Existe con los mismos datos => no hago nada
+        public int State { get; set; } // 0 = nada, 1 = Añadido, 2 = Modificado, 3 = Existe con los mismos datos => no hago nada
 
         public int? WorkId { get; set; }
         public virtual Work Work { get; set; }

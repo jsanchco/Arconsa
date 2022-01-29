@@ -77,6 +77,11 @@ namespace SGDE.Domain.Supervisor
             return _workBudgetRepository.Delete(id);
         }
 
+        public List<WorkBudgetViewModel> GetAllWorkBudgetLite(int workId = 0)
+        {
+            return WorkBudgetConverter.ConvertListLite(_workBudgetRepository.GetAllLite(workId));
+        }
+
         #region Auxiliary methods
 
         private void UpdateFieldsInBudget(WorkBudgetViewModel workBudgetViewModel, WorkBudget workBudget)

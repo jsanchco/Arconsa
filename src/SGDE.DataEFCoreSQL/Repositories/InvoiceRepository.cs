@@ -50,9 +50,10 @@
                     .Include(x => x.Work)
                     .ThenInclude(x => x.Client)
                     .Include(x => x.InvoiceToCancel)
+                    .Include(x => x.Work)
+                    .ThenInclude(x => x.WorkBudgets)
                     .ToList()
                     .OrderByDescending(x => x.KeyOrder)
-                    //.OrderByDescending(x => x.InvoiceNumber)
                     .ToList();
             }
 
@@ -62,10 +63,11 @@
                     .Include(x => x.Work)
                     .ThenInclude(x => x.Client)
                     .Include(x => x.InvoiceToCancel)
+                    .Include(x => x.Work)
+                    .ThenInclude(x => x.WorkBudgets)
                     .Where(x => x.WorkId == workId)
                     .ToList()
                     .OrderByDescending(x => x.KeyOrder)
-                    //.OrderByDescending(x => x.InvoiceNumber)
                     .ToList();
             }
 
@@ -75,10 +77,11 @@
                     .Include(x => x.Work)
                     .ThenInclude(x => x.Client)
                     .Include(x => x.InvoiceToCancel)
+                    .Include(x => x.Work)
+                    .ThenInclude(x => x.WorkBudgets)
                     .Where(x => x.Work.ClientId == clientId)
                     .ToList()
                     .OrderByDescending(x => x.KeyOrder)
-                    //.OrderByDescending(x => x.InvoiceNumber)
                     .ToList();
             }
 

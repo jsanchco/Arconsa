@@ -312,6 +312,7 @@ namespace SGDE.Domain.Supervisor
 
         #region WorkBudget
 
+        List<WorkBudgetViewModel> GetAllWorkBudgetLite(int workId = 0);
         List<WorkBudgetViewModel> GetAllWorkBudget(int workId);
         WorkBudgetViewModel GetWorkBudgetById(int id);
         WorkBudgetViewModel AddWorkBudget(WorkBudgetViewModel newWorkBudgetViewModel);
