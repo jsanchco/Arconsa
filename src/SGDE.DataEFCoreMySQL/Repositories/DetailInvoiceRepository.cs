@@ -41,9 +41,16 @@
             return GetById(id) != null;
         }
 
-        public List<DetailInvoice> GetAll()
+        public List<DetailInvoice> GetAll(int invoiceId = 0)
         {
+            if (invoiceId == 0)
+            {
+                return _context.DetailInvoice
+                    .ToList();
+            }
+
             return _context.DetailInvoice
+                .Where(x => x.InvoiceId == invoiceId)
                 .ToList();
         }
 

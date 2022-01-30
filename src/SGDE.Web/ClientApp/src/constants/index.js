@@ -33,6 +33,7 @@ export const INVOICES = "api/Invoices";
 export const PRINTINVOICE = "api/Invoices/print";
 export const BILLPAYMENT = "api/Invoices/billpayment";
 export const IMPORTPREVIOUSINVOICE = "api/Invoices/importpreviousinvoice";
+export const DETAILSINVOICE = "api/DetailsInvoice";
 export const HISTORYHIRINGBYUSERID = "api/HistoryHiring/getbyuserid";
 export const HISTORYHIRINGBYWORKID = "api/HistoryHiring";
 export const HISTORYHIRINGUPDATEINWORK = "api/HistoryHiring/updateinwork";

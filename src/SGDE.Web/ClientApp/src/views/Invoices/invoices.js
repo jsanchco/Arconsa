@@ -9,6 +9,9 @@ import {
   Toolbar,
   Page,
   Resize,
+  parentsUntil,
+  DetailRow,
+  Aggregate
 } from "@syncfusion/ej2-react-grids";
 import { DataManager, WebApiAdaptor } from "@syncfusion/ej2-data";
 import {
@@ -17,6 +20,7 @@ import {
   CLIENTSLITE,
   WORKSLITE,
   WORKBUDGETSLITE,
+  DETAILSINVOICE,
 } from "../../constants";
 import { L10n } from "@syncfusion/ej2-base";
 import data from "../../locales/locale.json";
@@ -53,7 +57,13 @@ class Invoices extends Component {
     headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }],
   });
 
-  grid = null;
+  detailsInvoice = new DataManager({
+    adaptor: new WebApiAdaptor(),
+    url: `${config.URL_API}/${DETAILSINVOICE}`,
+    headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }],
+  });
+
+  gridInvoice = null;
 
   requeridIdRules = { required: true };
 
@@ -110,6 +120,10 @@ class Invoices extends Component {
         validateDecimalOnType: true,
       },
     };
+    this.formatDate = { type: "dateTime", format: "dd/MM/yyyy" };
+    this.expandGridRow = null;
+    this.rowSelectedInvoices = null;
+    this.rowSelectedDetailsInvoice = null;
     this.editClients = {
       create: () => {
         this.clientsElem = document.createElement("input");
@@ -246,7 +260,164 @@ class Invoices extends Component {
       },
     };
 
-    this.formatDate = { type: "dateTime", format: "dd/MM/yyyy" };
+    this.toolbarOptionsDetailsInvoice = [
+      "Add",
+      "Edit",
+      "Delete",
+      "Update",
+      "Cancel"
+    ];
+    this.gridDetailsInvoice = {
+      columns: [
+        {
+          field: "id",
+          isPrimaryKey: true,
+          isIdentity: true,
+          visible: false,
+        },
+        {
+          field: "invoiceId",
+          visible: false,
+        },
+        {
+          field: "servicesPerformed",
+          headerText: "Servicios Prestados",
+          width: "100",
+          textAlign: "left",
+        },
+        {
+          field: "nameUnit",
+          headerText: "Medición",
+          width: "100",
+          textAlign: "center",
+        },
+        {
+          field: "units",
+          headerText: "Trámite",
+          width: "100",
+          fotmat: "N2",
+          textAlign: "right",
+          editType: "numericedit",
+          edit: this.numericParams,
+        },
+        {
+          field: "unitsAccumulated",
+          headerText: "Anteriores",
+          width: "100",
+          fotmat: "N2",
+          textAlign: "right",
+          editType: "numericedit",
+          edit: this.numericParams,
+          allowEditing: false,
+          defaultValue: 0,
+        },
+        {
+          field: "unitsTotal",
+          headerText: "Origen",
+          width: "100",
+          fotmat: "N2",
+          textAlign: "right",
+          editType: "numericedit",
+          edit: this.numericParams,
+          allowEditing: false,
+        },
+        {
+          field: "priceUnity",
+          headerText: "Precio Unidad",
+          width: "100",
+          fotmat: "N2",
+          textAlign: "right",
+          editType: "numericedit",
+          edit: this.numericParams,
+        },
+        {
+          field: "amountUnits",
+          headerText: "Trámite",
+          width: "100",
+          fotmat: "N2",
+          textAlign: "right",
+          editType: "numericedit",
+          edit: this.numericParams,
+          allowEditing: false,
+        },
+        {
+          field: "amountAccumulated",
+          headerText: "Anteriores",
+          width: "100",
+          fotmat: "N2",
+          textAlign: "right",
+          editType: "numericedit",
+          edit: this.numericParams,
+          allowEditing: false,
+          defaultValue: 0,
+        },
+        {
+          field: "amountTotal",
+          headerText: "Origen",
+          width: "100",
+          fotmat: "N2",
+          textAlign: "right",
+          editType: "numericedit",
+          edit: this.numericParams,
+          allowEditing: false,
+        },
+      ],
+      aggregates: [
+        {
+          columns: [
+            {
+              type: "Sum",
+              field: "units",
+              format: "N2",
+              footerTemplate: this.footerSumUnits,
+            },
+            {
+              type: "Sum",
+              field: "unitsAccumulated",
+              format: "N2",
+              footerTemplate: this.footerSumUnits,
+            },
+            {
+              type: "Sum",
+              field: "unitsTotal",
+              format: "N2",
+              footerTemplate: this.footerSumUnits,
+            },
+            {
+              type: "Sum",
+              field: "amountUnits",
+              format: "N2",
+              footerTemplate: this.footerSumAmountUnits,
+            },
+            {
+              type: "Sum",
+              field: "amountAccumulated",
+              format: "N2",
+              footerTemplate: this.footerSumAmountAccumulated,
+            },
+            {
+              type: "Sum",
+              field: "amountTotal",
+              format: "N2",
+              footerTemplate: this.footerSumAmountTotal,
+            },
+          ],
+        },
+      ],
+      dataSource: this.detailsInvoice,
+      queryString: "invoiceId",
+      locale: "es-US",
+      toolbar: this.toolbarOptionsDetailsInvoice,
+      actionFailure: this.actionFailure,
+      allowGrouping: false,
+      ref: (g) => (this.gridDetailsInvoice = g),
+      allowTextWrap: true,
+      textWrapSettings: this.wrapSettings,
+      load: this.loadGridDetailsInvoice,
+      actionComplete: this.gridDetailsInvoiceActionComplete,
+      actionBegin: this.gridDetailsEmbargoActionBegin,
+      dataBound: this.dataBoundDetailsInvoice
+    };
 
     this.actionBegin = this.actionBegin.bind(this);
     this.actionFailure = this.actionFailure.bind(this);
@@ -256,9 +427,21 @@ class Invoices extends Component {
     this.rowSelected = this.rowSelected.bind(this);
   }
 
+  dataBoundDetailsInvoice(args) {
+    console.log();
+  }
+
+  loadGridDetailsInvoice() {
+    this.query = [];
+    this.query = new Query().addParams(
+      "invoiceId",
+      this.parentDetails.parentRowData.id
+    );
+  }
+
   clickHandler(args) {
     if (args.item.id === "Details") {
-      const selectedRecords = this.grid.getSelectedRecords();
+      const selectedRecords = this.gridInvoice.getSelectedRecords();
       if (Array.isArray(selectedRecords) && selectedRecords.length === 1) {
         this.setState({ rowSelected: selectedRecords[0] });
 
@@ -280,12 +463,14 @@ class Invoices extends Component {
   }
 
   dataBound() {
-    this.props.setCurrentPageInvoices(this.grid.pageSettings.currentPage);
-    this.props.setCurrentSearchInvoices(this.grid.searchSettings.key);
+    this.props.setCurrentPageInvoices(
+      this.gridInvoice.pageSettings.currentPage
+    );
+    this.props.setCurrentSearchInvoices(this.gridInvoice.searchSettings.key);
   }
 
   rowSelected() {
-    const selectedRecords = this.grid.getSelectedRecords();
+    const selectedRecords = this.gridInvoice.getSelectedRecords();
     this.setState({ rowSelected: selectedRecords[0] });
   }
 
@@ -303,7 +488,7 @@ class Invoices extends Component {
 
   actionBegin(args) {
     if (args.requestType === "save") {
-      var cols = this.grid.columns;
+      var cols = this.gridInvoice.columns;
       for (var i = 0; i < cols.length; i++) {
         if (cols[i].type === "date") {
           var date = args.data[cols[i].field];
@@ -338,6 +523,43 @@ class Invoices extends Component {
     }
   }
 
+  gridDetailsInvoiceActionComplete(args) {
+    if (args.requestType === "save") {
+      this.props.showMessage({
+        statusText: "200",
+        responseText: "Operación realizada con éxito",
+        type: "success",
+      });
+
+      this.expandGridRow = parentsUntil(
+        this.gridInvoice.element.querySelector(".e-detailrowexpand"),
+        "e-row"
+      );
+
+      this.gridInvoice.refresh();
+    }
+    if (args.requestType === "delete") {
+      this.props.showMessage({
+        statusText: "200",
+        responseText: "Operación realizada con éxito",
+        type: "success",
+      });
+
+      this.expandGridRow = parentsUntil(
+        this.gridInvoice.element.querySelector(".e-detailrowexpand"),
+        "e-row"
+      );
+
+      this.gridInvoice.refresh();
+    }
+  }
+
+  gridDetailsEmbargoActionBegin(args) {
+    if (args.requestType === "add") {
+      args.data.invoiceId = this.parentDetails.parentKeyFieldValue;
+    }
+  }
+
   handleFilteringClients(e) {
     let query = new Query();
     query =
@@ -350,6 +572,106 @@ class Invoices extends Component {
     query =
       e.text !== "" ? query.where("name", "contains", e.text, true) : query;
     e.updateData(this.works, query);
+  }
+
+  footerSumUnits(args) {
+    let amount = Number(args.Sum);
+    amount = Math.round((amount + Number.EPSILON) * 100) / 100;
+
+    if (isNaN(amount)) {
+      amount = args.Sum.replace(",", "").replace("$", "");
+      amount = Number(amount);
+      amount = Math.round((amount + Number.EPSILON) * 100) / 100;
+    }
+
+    return <span>Total: {amount}</span>;
+  }
+
+  footerSumEuros(args) {
+    let amount = Number(args.Sum);
+    amount = Math.round((amount + Number.EPSILON) * 100) / 100;
+
+    if (isNaN(amount)) {
+      amount = args.Sum.replace(",", "").replace("$", "");
+      amount = Number(amount);
+      amount = Math.round((amount + Number.EPSILON) * 100) / 100;
+    }
+
+    return <span>Total: {amount}€</span>;
+  }
+
+  footerSumAmountUnits(args) {
+    let amount = Number(args.Sum);
+    amount = Math.round((amount + Number.EPSILON) * 100) / 100;
+
+    if (isNaN(amount)) {
+      amount = args.Sum.replace(",", "").replace("$", "");
+      amount = Number(amount);
+      amount = Math.round((amount + Number.EPSILON) * 100) / 100;
+    }
+
+    return <span>B. Imponible: {amount}€</span>;
+  }
+
+  footerSumAmountAccumulated(args) {
+    let amount = Number(args.Sum);
+    amount = Math.round((amount + Number.EPSILON) * 100) / 100;
+
+    if (isNaN(amount)) {
+      amount = args.Sum.replace(",", "").replace("$", "");
+      amount = Number(amount);
+      amount = Math.round((amount + Number.EPSILON) * 100) / 100;
+    }
+
+    return <span>Cert. Anterior: {amount}€</span>;
+  }
+
+  footerSumAmountTotal(args) {
+    let amount = Number(args.Sum);
+    amount = Math.round((amount + Number.EPSILON) * 100) / 100;
+
+    if (isNaN(amount)) {
+      amount = args.Sum.replace(",", "").replace("$", "");
+      amount = Number(amount);
+      amount = Math.round((amount + Number.EPSILON) * 100) / 100;
+    }
+
+    return <span>Cert. Origen: {amount}€</span>;
+  }
+
+  footerTaxBase(args) {
+    let amount = Number(args.Sum);
+    amount = Math.round((amount + Number.EPSILON) * 100) / 100;
+
+    if (isNaN(amount)) {
+      amount = args.Sum.replace(",", "").replace("$", "");
+      amount = Number(amount);
+      amount = Math.round((amount + Number.EPSILON) * 100) / 100;
+    }
+
+    return <span>B. Imponible: {amount}€</span>;
+  }
+
+  customAggregateFn(args) {
+    let total = 0;
+    for (let cont = 0; cont < args.result.length; cont++) {
+      total += Number(args.result[cont].units * args.result[cont].priceUnity);
+    }
+
+    return total;
+  }
+
+  getSum(args) {
+    let amount = Number(args.Sum);
+    amount = Math.round((amount + Number.EPSILON) * 100) / 100;
+
+    if (isNaN(amount)) {
+      amount = args.Sum.replace(",", "").replace("$", "");
+      amount = Number(amount);
+      amount = Math.round((amount + Number.EPSILON) * 100) / 100;
+    }
+
+    return;
   }
 
   render() {
@@ -392,11 +714,12 @@ class Invoices extends Component {
                   actionFailure={this.actionFailure}
                   actionComplete={this.actionComplete}
                   rowSelected={this.rowSelected}
-                  ref={(g) => (this.grid = g)}
+                  ref={(g) => (this.gridInvoice = g)}
                   allowTextWrap={true}
                   textWrapSettings={this.wrapSettings}
                   dataBound={this.dataBound}
                   allowResizing={true}
+                  childGrid={this.gridDetailsInvoice}
                 >
                   <ColumnsDirective>
                     <ColumnDirective
@@ -511,7 +834,7 @@ class Invoices extends Component {
                     />
                     <ColumnDirective field="typeInvoice" visible={false} />
                   </ColumnsDirective>
-                  <Inject services={[Page, Toolbar, Edit, Resize]} />
+                  <Inject services={[Page, Toolbar, Edit, Resize, DetailRow, Aggregate]} />
                 </GridComponent>
               </Row>
             </div>

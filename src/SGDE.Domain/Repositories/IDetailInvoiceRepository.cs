@@ -9,7 +9,7 @@
 
     public interface IDetailInvoiceRepository
     {
-        List<DetailInvoice> GetAll();
+        List<DetailInvoice> GetAll(int invoiceId = 0);
         DetailInvoice GetById(int id);
         DetailInvoice Add(DetailInvoice newDetailInvoice);
         bool Update(DetailInvoice detailInvoice);
