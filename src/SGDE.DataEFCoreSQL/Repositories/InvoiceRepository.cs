@@ -142,8 +142,19 @@
 
         public Invoice Add(Invoice newInvoice)
         {
+            Validate(newInvoice);
+
+            var invoiceNumber = CountInvoicesInYear(newInvoice.IssueDate.Year);
+            var work = _context.Work.FirstOrDefault(x => x.Id == newInvoice.WorkId);
+
+            newInvoice.InvoiceNumber = invoiceNumber;
+            newInvoice.Name = work != null
+                ? $"{work.WorksToRealize}{invoiceNumber:0000}_{newInvoice.IssueDate.Year.ToString().Substring(2, 2)}"
+                : $"{invoiceNumber:0000}_{newInvoice.IssueDate.Year.ToString().Substring(2, 2)}";
+
             _context.Invoice.Add(newInvoice);
             _context.SaveChanges();
+
             return newInvoice;
         }
 
@@ -378,5 +389,19 @@
 
             return invoiceNumber;
         }
+
+        #region Auxiliary Methods
+
+        private void Validate(Invoice invoice)
+        {
+            if (invoice.ClientId == null ||
+                invoice.WorkId == null ||
+                invoice.WorkBudgetId == null)
+            {
+                throw new Exception("Factura incompleta. Revisa los datos");
+            }
+        }
+
+        #endregion
     }
 }

@@ -425,6 +425,7 @@ class Invoices extends Component {
                       type="date"
                       format={this.formatDate}
                       editType="datepickeredit"
+                      validationRules={this.requeridIdRules}
                       // allowEditing={false}
                     />
                     <ColumnDirective
@@ -434,6 +435,7 @@ class Invoices extends Component {
                       type="date"
                       format={this.formatDate}
                       editType="datepickeredit"
+                      validationRules={this.requeridIdRules}
                       // allowEditing={false}
                     />
                     <ColumnDirective
@@ -443,6 +445,7 @@ class Invoices extends Component {
                       type="date"
                       format={this.formatDate}
                       editType="datepickeredit"
+                      validationRules={this.requeridIdRules}
                       // allowEditing={false}
                     />
                     <ColumnDirective
@@ -480,26 +483,31 @@ class Invoices extends Component {
                       headerText="B. Impon."
                       width="100"
                       allowEditing={false}
+                      defaultValue={0}
                     />
                     <ColumnDirective
                       field="ivaTaxBase"
                       headerText="IVA"
                       width="90"
                       allowEditing={false}
+                      defaultValue={0}
                     />
                     <ColumnDirective
                       field="total"
                       headerText="Total"
                       width="100"
                       allowEditing={false}
+                      defaultValue={0}
                     />
                     <ColumnDirective
                       field="retentions"
                       headerText="Ret."
                       width="70"
-                      fotmat="N2"
-                      editType="numericedit"
-                      edit={this.numericParams}
+                      // fotmat="N2"
+                      // editType="numericedit"
+                      // edit={this.numericParams}
+                      allowEditing={false}
+                      defaultValue={0}
                     />
                     <ColumnDirective field="typeInvoice" visible={false} />
                   </ColumnsDirective>
