@@ -289,7 +289,7 @@ class Embargos extends Component {
     return <span>Total: {args.Sum}€</span>;
   }
 
-  dataBound(args) {
+  dataBound() {
     if (this.expandGridRow != null) {
       let rowIndex = parseInt(this.expandGridRow.getAttribute("aria-rowindex"));
       this.gridEmbargos.detailRowModule.expand(rowIndex);

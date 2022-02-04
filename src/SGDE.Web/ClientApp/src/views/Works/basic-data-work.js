@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from "react";
 import { Form, Col, FormGroup, Input, Label, Row, Button } from "reactstrap";
 import { AppSwitch } from "@coreui/react";
+import { DropDownListComponent } from "@syncfusion/ej2-react-dropdowns";
 import { DatePickerComponent } from "@syncfusion/ej2-react-calendars";
 import { NumericTextBoxComponent } from "@syncfusion/ej2-react-inputs";
 import { updateWork, getWork } from "../../services";
@@ -15,6 +16,7 @@ class BasicDataWork extends Component {
     super(props);
 
     this.state = {};
+
     getWork(this.props.workId).then((result) => {
       this.setState({
         id: result.id,
@@ -47,6 +49,9 @@ class BasicDataWork extends Component {
 
     this.ntbTotalContract = null;
     this.ntbPercentageRetention = null;
+
+    this.typeWork = [{ id: "HO" }, { id: "PA" }, { id: "MA" }];
+    this.ddlTypeWork = null;
   }
 
   componentDidMount() {
@@ -125,7 +130,7 @@ class BasicDataWork extends Component {
       id: this.state.id,
       name: this.state.name,
       address: this.state.address,
-      worksToRealize: this.state.worksToRealize,
+      worksToRealize: this.ddlTypeWork.value,
       numberPersonsRequested: this.state.numberPersonsRequested,
       estimatedDuration: this.state.estimatedDuration,
       openDate: this.state.openDate,
@@ -228,13 +233,13 @@ class BasicDataWork extends Component {
             <Col xs="4">
               <FormGroup>
                 <Label htmlFor="worksToRealize">Tipo de Trabajo</Label>
-                <Input
-                  type="text"
+                <DropDownListComponent
                   id="worksToRealize"
-                  name="worksToRealize"
-                  placeholder="tipo de trabajo"
+                  dataSource={this.typeWork}
+                  placeholder={`Selecciona Tipo de Obra`}
+                  fields={{ text: "id", value: "id" }}
+                  ref={(g) => (this.ddlTypeWork = g)}
                   value={this.state.worksToRealize || ""}
-                  onChange={this.handleInputChange}
                 />
               </FormGroup>
             </Col>
@@ -379,7 +384,7 @@ class BasicDataWork extends Component {
                     fontSize: "Medium",
                     textAlign: "Center",
                     display: "block",
-                    marginRight: "140px"
+                    marginRight: "140px",
                   }}
                 >
                   <b>Total Contrato</b>

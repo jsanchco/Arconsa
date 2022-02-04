@@ -11,7 +11,7 @@ import {
   Resize,
   parentsUntil,
   DetailRow,
-  Aggregate
+  Aggregate,
 } from "@syncfusion/ej2-react-grids";
 import { DataManager, WebApiAdaptor } from "@syncfusion/ej2-data";
 import {
@@ -260,12 +260,22 @@ class Invoices extends Component {
       },
     };
 
+    this.actionBegin = this.actionBegin.bind(this);
+    this.actionFailure = this.actionFailure.bind(this);
+    this.actionComplete = this.actionComplete.bind(this);
+    this.clickHandler = this.clickHandler.bind(this);
+    this.dataBoundGridInvoice = this.dataBoundGridInvoice.bind(this);
+    this.rowSelected = this.rowSelected.bind(this);
+    this.gridDetailsInvoiceActionComplete = this.gridDetailsInvoiceActionComplete.bind(this);
+    this.gridDetailsInvoiceActionBegin = this.gridDetailsInvoiceActionBegin.bind(this);
+    this.detailDataBound = this.detailDataBound.bind(this);
+    
     this.toolbarOptionsDetailsInvoice = [
       "Add",
       "Edit",
       "Delete",
       "Update",
-      "Cancel"
+      "Cancel",
     ];
     this.gridDetailsInvoice = {
       columns: [
@@ -286,80 +296,92 @@ class Invoices extends Component {
           textAlign: "left",
         },
         {
-          field: "nameUnit",
-          headerText: "Medición",
-          width: "100",
+          headerText: "UNIDADES",
           textAlign: "center",
+          columns: [
+            {
+              field: "nameUnit",
+              headerText: "Medición",
+              width: "100",
+              textAlign: "center",
+            },
+            {
+              field: "units",
+              headerText: "Trámite",
+              width: "100",
+              fotmat: "N2",
+              textAlign: "right",
+              editType: "numericedit",
+              edit: this.numericParams,
+            },
+            {
+              field: "unitsAccumulated",
+              headerText: "Anteriores",
+              width: "100",
+              fotmat: "N2",
+              textAlign: "right",
+              editType: "numericedit",
+              edit: this.numericParams,
+              allowEditing: false,
+              defaultValue: 0,
+            },
+            {
+              field: "unitsTotal",
+              headerText: "Origen",
+              width: "100",
+              fotmat: "N2",
+              textAlign: "right",
+              editType: "numericedit",
+              edit: this.numericParams,
+              allowEditing: false,
+            },
+          ],
         },
         {
-          field: "units",
-          headerText: "Trámite",
-          width: "100",
-          fotmat: "N2",
-          textAlign: "right",
-          editType: "numericedit",
-          edit: this.numericParams,
-        },
-        {
-          field: "unitsAccumulated",
-          headerText: "Anteriores",
-          width: "100",
-          fotmat: "N2",
-          textAlign: "right",
-          editType: "numericedit",
-          edit: this.numericParams,
-          allowEditing: false,
-          defaultValue: 0,
-        },
-        {
-          field: "unitsTotal",
-          headerText: "Origen",
-          width: "100",
-          fotmat: "N2",
-          textAlign: "right",
-          editType: "numericedit",
-          edit: this.numericParams,
-          allowEditing: false,
-        },
-        {
-          field: "priceUnity",
-          headerText: "Precio Unidad",
-          width: "100",
-          fotmat: "N2",
-          textAlign: "right",
-          editType: "numericedit",
-          edit: this.numericParams,
-        },
-        {
-          field: "amountUnits",
-          headerText: "Trámite",
-          width: "100",
-          fotmat: "N2",
-          textAlign: "right",
-          editType: "numericedit",
-          edit: this.numericParams,
-          allowEditing: false,
-        },
-        {
-          field: "amountAccumulated",
-          headerText: "Anteriores",
-          width: "100",
-          fotmat: "N2",
-          textAlign: "right",
-          editType: "numericedit",
-          edit: this.numericParams,
-          allowEditing: false,
-          defaultValue: 0,
-        },
-        {
-          field: "amountTotal",
-          headerText: "Origen",
-          width: "100",
-          fotmat: "N2",
-          textAlign: "right",
-          editType: "numericedit",
-          edit: this.numericParams,
-          allowEditing: false,
+          headerText: "IMPORTES",
+          textAlign: "center",
+          columns: [
+            {
+              field: "priceUnity",
+              headerText: "Precio Unidad",
+              width: "100",
+              fotmat: "N2",
+              textAlign: "right",
+              editType: "numericedit",
+              edit: this.numericParams,
+            },
+            {
+              field: "amountUnits",
+              headerText: "Trámite",
+              width: "100",
+              fotmat: "N2",
+              textAlign: "right",
+              editType: "numericedit",
+              edit: this.numericParams,
+              allowEditing: false,
+            },
+            {
+              field: "amountAccumulated",
+              headerText: "Anteriores",
+              width: "100",
+              fotmat: "N2",
+              textAlign: "right",
+              editType: "numericedit",
+              edit: this.numericParams,
+              allowEditing: false,
+              defaultValue: 0,
+            },
+            {
+              field: "amountTotal",
+              headerText: "Origen",
+              width: "100",
+              fotmat: "N2",
+              textAlign: "right",
+              editType: "numericedit",
+              edit: this.numericParams,
+              allowEditing: false,
+            },
+          ],
         },
       ],
       aggregates: [
@@ -407,7 +429,7 @@ class Invoices extends Component {
       dataSource: this.detailsInvoice,
       queryString: "invoiceId",
       locale: "es-US",
-      toolbar: this.toolbarOptionsDetailsInvoice,
+      toolbar: ["Add", "Edit", "Delete", "Update", "Cancel"],
       actionFailure: this.actionFailure,
       allowGrouping: false,
       ref: (g) => (this.gridDetailsInvoice = g),
@@ -415,16 +437,10 @@ class Invoices extends Component {
       textWrapSettings: this.wrapSettings,
       load: this.loadGridDetailsInvoice,
       actionComplete: this.gridDetailsInvoiceActionComplete,
-      actionBegin: this.gridDetailsEmbargoActionBegin,
-      dataBound: this.dataBoundDetailsInvoice
+      actionBegin: this.gridDetailsInvoiceActionBegin,
+      dataBound: this.dataBoundDetailsInvoice,
+      editSettings: this.editSettings,
     };
-
-    this.actionBegin = this.actionBegin.bind(this);
-    this.actionFailure = this.actionFailure.bind(this);
-    this.actionComplete = this.actionComplete.bind(this);
-    this.clickHandler = this.clickHandler.bind(this);
-    this.dataBound = this.dataBound.bind(this);
-    this.rowSelected = this.rowSelected.bind(this);
   }
 
   dataBoundDetailsInvoice(args) {
@@ -462,11 +478,16 @@ class Invoices extends Component {
     }
   }
 
-  dataBound() {
+  dataBoundGridInvoice() {
     this.props.setCurrentPageInvoices(
       this.gridInvoice.pageSettings.currentPage
     );
     this.props.setCurrentSearchInvoices(this.gridInvoice.searchSettings.key);
+
+    if (this.expandGridRow != null) {
+      let rowIndex = parseInt(this.expandGridRow.getAttribute("aria-rowindex"));
+      this.gridInvoice.detailRowModule.expand(rowIndex);
+    }
   }
 
   rowSelected() {
@@ -530,11 +551,13 @@ class Invoices extends Component {
         responseText: "Operación realizada con éxito",
         type: "success",
       });
-
+      
       this.expandGridRow = parentsUntil(
         this.gridInvoice.element.querySelector(".e-detailrowexpand"),
-        "e-row"
+        "e-row"        
       );
+      let rowIndex = parseInt(this.expandGridRow.getAttribute("aria-rowindex"));
+      let rowSelected = this.gridInvoice.getCurrentViewRecords()[rowIndex];
 
       this.gridInvoice.refresh();
     }
@@ -554,7 +577,7 @@ class Invoices extends Component {
     }
   }
 
-  gridDetailsEmbargoActionBegin(args) {
+  gridDetailsInvoiceActionBegin(args) {
     if (args.requestType === "add") {
       args.data.invoiceId = this.parentDetails.parentKeyFieldValue;
     }
@@ -661,17 +684,8 @@ class Invoices extends Component {
     return total;
   }
 
-  getSum(args) {
-    let amount = Number(args.Sum);
-    amount = Math.round((amount + Number.EPSILON) * 100) / 100;
-
-    if (isNaN(amount)) {
-      amount = args.Sum.replace(",", "").replace("$", "");
-      amount = Number(amount);
-      amount = Math.round((amount + Number.EPSILON) * 100) / 100;
-    }
-
-    return;
+  detailDataBound(args) {
+    console.log();
   }
 
   render() {
@@ -717,9 +731,10 @@ class Invoices extends Component {
                   ref={(g) => (this.gridInvoice = g)}
                   allowTextWrap={true}
                   textWrapSettings={this.wrapSettings}
-                  dataBound={this.dataBound}
+                  dataBound={this.dataBoundGridInvoice}
                   allowResizing={true}
                   childGrid={this.gridDetailsInvoice}
+                  detailDataBound={this.detailDataBound}
                 >
                   <ColumnsDirective>
                     <ColumnDirective
@@ -834,7 +849,16 @@ class Invoices extends Component {
                     />
                     <ColumnDirective field="typeInvoice" visible={false} />
                   </ColumnsDirective>
-                  <Inject services={[Page, Toolbar, Edit, Resize, DetailRow, Aggregate]} />
+                  <Inject
+                    services={[
+                      Page,
+                      Toolbar,
+                      Edit,
+                      Resize,
+                      DetailRow,
+                      Aggregate,
+                    ]}
+                  />
                 </GridComponent>
               </Row>
             </div>
