@@ -16,7 +16,7 @@ import { DataManager, WebApiAdaptor, Query } from "@syncfusion/ej2-data";
 import { config, EMBARGOS, DETAILSEMBARGO } from "../../constants";
 import { L10n } from "@syncfusion/ej2-base";
 import data from "../../locales/locale.json";
-import { TOKEN_KEY, getUser } from "../../services";
+import { TOKEN_KEY, getUser, getEmbargo } from "../../services";
 
 L10n.load(data);
 
@@ -248,6 +248,10 @@ class Embargos extends Component {
         this.gridEmbargos.element.querySelector(".e-detailrowexpand"),
         "e-row"
       );
+
+      // getUser(args.data.embargoId).then((result) => {
+      //   });
+      // });
 
       this.gridEmbargos.refresh();
     }
