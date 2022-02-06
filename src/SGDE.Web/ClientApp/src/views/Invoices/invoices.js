@@ -9,9 +9,12 @@ import {
   Toolbar,
   Page,
   Resize,
-  parentsUntil,
   DetailRow,
   Aggregate,
+  AggregateColumnDirective, 
+  AggregateColumnsDirective, 
+  AggregateDirective, 
+  AggregatesDirective
 } from "@syncfusion/ej2-react-grids";
 import { DataManager, WebApiAdaptor } from "@syncfusion/ej2-data";
 import {
@@ -26,7 +29,7 @@ import { L10n } from "@syncfusion/ej2-base";
 import data from "../../locales/locale.json";
 import { connect } from "react-redux";
 import ACTION_APPLICATION from "../../actions/applicationAction";
-import { TOKEN_KEY } from "../../services";
+import { TOKEN_KEY, getInvoice } from "../../services";
 import { Query } from "@syncfusion/ej2-data";
 import { DropDownList } from "@syncfusion/ej2-dropdowns";
 
@@ -71,10 +74,6 @@ class Invoices extends Component {
 
   constructor(props) {
     super(props);
-
-    this.state = {
-      rowSelected: null,
-    };
 
     this.clientsElem = null;
     this.clientsObj = null;
@@ -122,7 +121,7 @@ class Invoices extends Component {
     };
     this.formatDate = { type: "dateTime", format: "dd/MM/yyyy" };
     this.expandGridRow = null;
-    this.rowSelectedInvoices = null;
+    this.rowSelectedInvoice = null;
     this.rowSelectedDetailsInvoice = null;
     this.editClients = {
       create: () => {
@@ -265,9 +264,9 @@ class Invoices extends Component {
     this.actionComplete = this.actionComplete.bind(this);
     this.clickHandler = this.clickHandler.bind(this);
     this.dataBoundGridInvoice = this.dataBoundGridInvoice.bind(this);
-    this.rowSelected = this.rowSelected.bind(this);
+    this.fnRowSelectedInvoice = this.fnRowSelectedInvoice.bind(this);
+    // this.fnRowSelectedDetailsInvoice = this.fnRowSelectedDetailsInvoice.bind(this);
     this.gridDetailsInvoiceActionComplete = this.gridDetailsInvoiceActionComplete.bind(this);
-    this.gridDetailsInvoiceActionBegin = this.gridDetailsInvoiceActionBegin.bind(this);
     this.detailDataBound = this.detailDataBound.bind(this);
     
     this.toolbarOptionsDetailsInvoice = [
@@ -440,6 +439,7 @@ class Invoices extends Component {
       actionBegin: this.gridDetailsInvoiceActionBegin,
       dataBound: this.dataBoundDetailsInvoice,
       editSettings: this.editSettings,
+      rowSelected: this.fnRowSelectedDetailsInvoice
     };
   }
 
@@ -490,9 +490,14 @@ class Invoices extends Component {
     }
   }
 
-  rowSelected() {
+  fnRowSelectedInvoice() {
     const selectedRecords = this.gridInvoice.getSelectedRecords();
-    this.setState({ rowSelected: selectedRecords[0] });
+    this.rowSelectedInvoice = selectedRecords[0];
+  }
+
+  fnRowSelectedDetailsInvoice() {
+    const selectedRecords = this.getSelectedRecords();
+    this.rowSelectedDetailsInvoice = selectedRecords[0];
   }
 
   actionFailure(args) {
@@ -552,14 +557,12 @@ class Invoices extends Component {
         type: "success",
       });
       
-      this.expandGridRow = parentsUntil(
-        this.gridInvoice.element.querySelector(".e-detailrowexpand"),
-        "e-row"        
-      );
-      let rowIndex = parseInt(this.expandGridRow.getAttribute("aria-rowindex"));
-      let rowSelected = this.gridInvoice.getCurrentViewRecords()[rowIndex];
+      getInvoice(args.data.invoiceId).then((result) => {
+        this.gridInvoice.setRowData(args.data.invoiceId, result);
+      });
 
-      this.gridInvoice.refresh();
+      // var selectedRecord = this.getSelectedRecords()[0];
+      // this.gridDetailsInvoice.aggregateModule.refresh(selectedRecord);
     }
     if (args.requestType === "delete") {
       this.props.showMessage({
@@ -568,18 +571,18 @@ class Invoices extends Component {
         type: "success",
       });
 
-      this.expandGridRow = parentsUntil(
-        this.gridInvoice.element.querySelector(".e-detailrowexpand"),
-        "e-row"
-      );
+      getInvoice(args.data[0].invoiceId).then((result) => {
+        this.gridInvoice.setRowData(args.data[0].invoiceId, result);
+      });
 
-      this.gridInvoice.refresh();
+      // selectedRecord = this.getSelectedRecords()[0];
+      // this.gridDetailsInvoice.aggregateModule.refresh(selectedRecord);
     }
   }
 
   gridDetailsInvoiceActionBegin(args) {
     if (args.requestType === "add") {
-      args.data.invoiceId = this.parentDetails.parentKeyFieldValue;
+      args.data.invoiceId = this.parentDetails.parentRowData.id;
     }
   }
 
@@ -662,18 +665,18 @@ class Invoices extends Component {
     return <span>Cert. Origen: {amount}€</span>;
   }
 
-  footerTaxBase(args) {
-    let amount = Number(args.Sum);
-    amount = Math.round((amount + Number.EPSILON) * 100) / 100;
+  // footerTaxBase(args) {
+  //   let amount = Number(args.Sum);
+  //   amount = Math.round((amount + Number.EPSILON) * 100) / 100;
 
-    if (isNaN(amount)) {
-      amount = args.Sum.replace(",", "").replace("$", "");
-      amount = Number(amount);
-      amount = Math.round((amount + Number.EPSILON) * 100) / 100;
-    }
+  //   if (isNaN(amount)) {
+  //     amount = args.Sum.replace(",", "").replace("$", "");
+  //     amount = Number(amount);
+  //     amount = Math.round((amount + Number.EPSILON) * 100) / 100;
+  //   }
 
-    return <span>B. Imponible: {amount}€</span>;
-  }
+  //   return <span>B. Imponible: {amount}€</span>;
+  // }
 
   customAggregateFn(args) {
     let total = 0;
@@ -727,7 +730,7 @@ class Invoices extends Component {
                   actionBegin={this.actionBegin}
                   actionFailure={this.actionFailure}
                   actionComplete={this.actionComplete}
-                  rowSelected={this.rowSelected}
+                  rowSelected={this.fnRowSelectedInvoice}
                   ref={(g) => (this.gridInvoice = g)}
                   allowTextWrap={true}
                   textWrapSettings={this.wrapSettings}

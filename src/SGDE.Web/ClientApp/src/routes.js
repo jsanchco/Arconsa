@@ -68,6 +68,9 @@ const InvoicesCustom = React.lazy(() => import('./views/Invoices/invoices-custom
 
 const Blank = React.lazy(() => import('./views/Pages/Blank/blank'));
 
+const TestBlank = React.lazy(() => import('./views/Pages/Tests/TestBlank'));
+const TestHierachical = React.lazy(() => import('./views/Pages/Tests/TestHierachical'));
+
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
 const routes = [
   { path: '/', exact: true, name: 'Inicio' },
@@ -134,7 +137,9 @@ const routes = [
   { path: '/reports/reporthoursclient', exact: true, name: 'Informe Horas Cliente', component: ReportHoursClient },
   { path: '/reports/reportsvarious', exact: true, name: 'Informes Varios', component: ReportsVarious },
   { path: '/invoices/invoices', exact: true, name: 'Facturas', component: Invoices },
-  { path: '/invoices/invoicescustom', exact: true, name: 'Facturas Personalizadas', component: InvoicesCustom }
+  { path: '/invoices/invoicescustom', exact: true, name: 'Facturas Personalizadas', component: InvoicesCustom },
+  { path: '/pages/Tests/TestBlank', name: 'Test Blank', component: TestBlank },
+  { path: '/pages/Tests/TestHierachical', name: 'Test Hierachical', component: TestHierachical }
 ];
 
 export default routes;

@@ -9,14 +9,13 @@ import {
   Toolbar,
   DetailRow,
   Aggregate,
-  parentsUntil,
-  Resize,
+  Resize
 } from "@syncfusion/ej2-react-grids";
 import { DataManager, WebApiAdaptor, Query } from "@syncfusion/ej2-data";
 import { config, EMBARGOS, DETAILSEMBARGO } from "../../constants";
 import { L10n } from "@syncfusion/ej2-base";
 import data from "../../locales/locale.json";
-import { TOKEN_KEY, getUser, getEmbargo } from "../../services";
+import { TOKEN_KEY, getUser, getEmbargo, getDetailsEmbargo } from "../../services";
 
 L10n.load(data);
 
@@ -27,7 +26,7 @@ class Embargos extends Component {
     headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }],
   });
 
-  deatilsEmbargo = new DataManager({
+  detailsEmbargo = new DataManager({
     adaptor: new WebApiAdaptor(),
     url: `${config.URL_API}/${DETAILSEMBARGO}`,
     headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }],
@@ -74,7 +73,6 @@ class Embargos extends Component {
     this.actionComplete = this.actionComplete.bind(this);
     this.gridDetailsEmbargoActionComplete =
       this.gridDetailsEmbargoActionComplete.bind(this);
-    this.dataBound = this.dataBound.bind(this);
     this.clickHandlerEmbargos = this.clickHandlerEmbargos.bind(this);
     this.rowSelectedEmbargos = this.rowSelectedEmbargos.bind(this);
     this.beforePrint = this.beforePrint.bind(this);
@@ -129,8 +127,8 @@ class Embargos extends Component {
           ],
         },
       ],
-      dataSource: this.deatilsEmbargo,
-      queryString: "id",
+      dataSource: this.detailsEmbargo,
+      queryString: "embargoId",
       locale: "es-US",
       toolbar: this.toolbarOptions,
       editSettings: this.editSettings,
@@ -139,12 +137,17 @@ class Embargos extends Component {
       ref: (g) => (this.gridDetailsEmbargo = g),
       allowTextWrap: true,
       textWrapSettings: this.wrapSettings,
-      load: this.loadGridDetailsEmbargo,
       actionComplete: this.gridDetailsEmbargoActionComplete,
       actionBegin: this.gridDetailsEmbargoActionBegin,
+      Load() {
+        this.query = [];
+        this.query = new Query().addParams(
+          "embargoId",
+          this.parentDetails.parentKeyFieldValue
+        );
+      }
     };
 
-    this.expandGridRow = null;
     this.rowSelectedEmbargos = null;
     this.rowSelectedDetailsEmbargo = null;
   }
@@ -177,14 +180,6 @@ class Embargos extends Component {
         type: "danger",
       });
     }
-  }
-
-  loadGridDetailsEmbargo(args) {
-    this.query = [];
-    this.query = new Query().addParams(
-      "embargoId",
-      this.parentDetails.parentKeyFieldValue
-    );
   }
 
   actionFailure(args) {
@@ -244,16 +239,13 @@ class Embargos extends Component {
         type: "success",
       });
 
-      this.expandGridRow = parentsUntil(
-        this.gridEmbargos.element.querySelector(".e-detailrowexpand"),
-        "e-row"
-      );
+      getEmbargo(args.data.embargoId).then((result) => {
+        this.gridEmbargos.setRowData(args.data.embargoId, result);
+      });
 
-      // getUser(args.data.embargoId).then((result) => {
-      //   });
-      // });
-
-      this.gridEmbargos.refresh();
+      getDetailsEmbargo(args.data.embargoId).then((result) => {
+        this.gridDetailsEmbargo.dataSource = result.Items;
+      });
     }
     if (args.requestType === "delete") {
       this.props.showMessage({
@@ -262,12 +254,9 @@ class Embargos extends Component {
         type: "success",
       });
 
-      this.expandGridRow = parentsUntil(
-        this.gridEmbargos.element.querySelector(".e-detailrowexpand"),
-        "e-row"
-      );
-
-      this.gridEmbargos.refresh();
+      getEmbargo(args.data[0].embargoId).then((result) => {
+        this.gridEmbargos.setRowData(args.data[0].embargoId, result);
+      });
     }
   }
 
@@ -275,7 +264,7 @@ class Embargos extends Component {
     if (args.requestType === "add") {
       args.data.embargoId = this.parentDetails.parentKeyFieldValue;
     }
-    
+
     if (args.requestType === "save") {
       var date = args.data.datePay;
       args.data.datePay = new Date(
@@ -285,19 +274,13 @@ class Embargos extends Component {
           date.getDate(),
           date.getHours(),
           date.getMilliseconds()
-        ));
+        )
+      );
     }
   }
 
   footerSumAmount(args) {
     return <span>Total: {args.Sum}€</span>;
-  }
-
-  dataBound() {
-    if (this.expandGridRow != null) {
-      let rowIndex = parseInt(this.expandGridRow.getAttribute("aria-rowindex"));
-      this.gridEmbargos.detailRowModule.expand(rowIndex);
-    }
   }
 
   beforePrint(args) {

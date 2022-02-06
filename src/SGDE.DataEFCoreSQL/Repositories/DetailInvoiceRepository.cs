@@ -59,9 +59,30 @@
 
         public DetailInvoice Add(DetailInvoice newDetailInvoice)
         {
-            _context.DetailInvoice.Add(newDetailInvoice);
-            _context.SaveChanges();
-            return newDetailInvoice;
+            using (var transaction = _context.Database.BeginTransaction())
+            {
+                try
+                {
+                    var invoice = _context.Invoice.FirstOrDefault(x => x.Id == newDetailInvoice.InvoiceId);
+                    if (invoice == null)
+                        throw new Exception("Factura no encontrada");
+
+                    _context.DetailInvoice.Add(newDetailInvoice);
+
+                    invoice.TaxBase += newDetailInvoice.Units * newDetailInvoice.PriceUnity;
+                    _context.Invoice.Update(invoice);
+
+                    _context.SaveChanges();
+                    transaction.Commit();
+
+                    return newDetailInvoice;
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    throw ex;
+                }
+            }
         }
 
         public bool Update(DetailInvoice detailInvoice)
@@ -69,9 +90,36 @@
             if (!DetailInvoiceExists(detailInvoice.Id))
                 return false;
 
-            _context.DetailInvoice.Update(detailInvoice);
-            _context.SaveChanges();
-            return true;
+            using (var transaction = _context.Database.BeginTransaction())
+            {
+                try
+                {
+                    var invoice = _context.Invoice.FirstOrDefault(x => x.Id == detailInvoice.InvoiceId);
+                    if (invoice == null)
+                        throw new Exception("Factura no encontrada");
+
+                    _context.DetailInvoice.Update(detailInvoice);
+                    _context.SaveChanges();
+
+                    var total =_context.DetailInvoice
+                        .Where(x => x.InvoiceId == detailInvoice.InvoiceId)
+                        .ToList()
+                        .Sum(x => x.Total);
+
+                    invoice.TaxBase = (decimal)total;
+                    _context.Invoice.Update(invoice);
+                    _context.SaveChanges();
+
+                    transaction.Commit();
+
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    throw ex;
+                }
+            }
         }
 
         public bool Delete(int id)
@@ -79,10 +127,37 @@
             if (!DetailInvoiceExists(id))
                 return false;
 
-            var toRemove = _context.DetailInvoice.Find(id);
-            _context.DetailInvoice.Remove(toRemove);
-            _context.SaveChanges();
-            return true;
+            using (var transaction = _context.Database.BeginTransaction())
+            {
+                try
+                {
+                    var toRemove = _context.DetailInvoice.Find(id);
+                    var invoice = _context.Invoice.FirstOrDefault(x => x.Id == toRemove.InvoiceId);
+                    if (invoice == null)
+                        throw new Exception("Factura no encontrada");
+
+                    _context.DetailInvoice.Remove(toRemove);
+                    _context.SaveChanges();
+
+                    var total = _context.DetailInvoice
+                        .Where(x => x.InvoiceId == toRemove.InvoiceId)
+                        .ToList()
+                        .Sum(x => x.Total);
+
+                    invoice.TaxBase = (decimal)total;
+                    _context.Invoice.Update(invoice);
+                    _context.SaveChanges();
+
+                    transaction.Commit();
+
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    throw ex;
+                }
+            }
         }
     }
 }

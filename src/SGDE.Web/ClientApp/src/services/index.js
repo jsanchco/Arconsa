@@ -28,7 +28,8 @@ import {
   WORKBUDGETS,
   REMOVEALLWORKCOSTS,
   COMPANY_ADD_INDIRECTCOSTS,
-  EMBARGOS
+  EMBARGOS,
+  DETAILSEMBARGO
 } from "../constants";
 import store from "../store/store";
 import ACTION_AUTHENTICATION from "../actions/authenticationAction";
@@ -133,6 +134,28 @@ export const getUser = (id) => {
 export const getEmbargo = (id) => {
   return new Promise((resolve, reject) => {
     const url = `${config.URL_API}/${EMBARGOS}/${id}`;
+    fetch(url, {
+      headers: {
+        Accept: "text/plain",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`,
+      },
+      method: "GET",
+    })
+      .then((data) => data.json())
+      .then((result) => {
+        resolve(result);
+      })
+      .catch((error) => {
+        console.log("error ->", error);
+        reject();
+      });
+  });
+}
+
+export const getDetailsEmbargo = (embargoId) => {
+  return new Promise((resolve, reject) => {
+    const url = `${config.URL_API}/${DETAILSEMBARGO}?embargoId=${embargoId}`;
     fetch(url, {
       headers: {
         Accept: "text/plain",
