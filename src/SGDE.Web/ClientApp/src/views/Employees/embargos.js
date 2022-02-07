@@ -9,13 +9,17 @@ import {
   Toolbar,
   DetailRow,
   Aggregate,
-  Resize
+  Resize,
 } from "@syncfusion/ej2-react-grids";
 import { DataManager, WebApiAdaptor, Query } from "@syncfusion/ej2-data";
 import { config, EMBARGOS, DETAILSEMBARGO } from "../../constants";
 import { L10n } from "@syncfusion/ej2-base";
 import data from "../../locales/locale.json";
-import { TOKEN_KEY, getUser, getEmbargo, getDetailsEmbargo } from "../../services";
+import {
+  TOKEN_KEY,
+  getUser,
+  getEmbargo
+} from "../../services";
 
 L10n.load(data);
 
@@ -139,13 +143,7 @@ class Embargos extends Component {
       textWrapSettings: this.wrapSettings,
       actionComplete: this.gridDetailsEmbargoActionComplete,
       actionBegin: this.gridDetailsEmbargoActionBegin,
-      Load() {
-        this.query = [];
-        this.query = new Query().addParams(
-          "embargoId",
-          this.parentDetails.parentKeyFieldValue
-        );
-      }
+      load: this.loadGridDetailsEmbargo,
     };
 
     this.rowSelectedEmbargos = null;
@@ -160,6 +158,14 @@ class Embargos extends Component {
         },
       });
     });
+  }
+
+  loadGridDetailsEmbargo() {
+    this.query = [];
+    this.query = new Query().addParams(
+      "embargoId",
+      this.parentDetails.parentRowData.id
+    );
   }
 
   rowSelectedEmbargos() {
@@ -243,9 +249,18 @@ class Embargos extends Component {
         this.gridEmbargos.setRowData(args.data.embargoId, result);
       });
 
-      getDetailsEmbargo(args.data.embargoId).then((result) => {
-        this.gridDetailsEmbargo.dataSource = result.Items;
-      });
+      var childGridElements =
+        this.gridEmbargos.element.querySelectorAll(".e-detailrow");
+      for (var i = 0; i < childGridElements.length; i++) {
+        let element = childGridElements[i];
+        let childGridObj = element.querySelector(".e-grid").ej2_instances[0];
+        if (
+          childGridObj.parentDetails.parentRowData.id === args.data.embargoId
+        ) {
+          childGridObj.refresh();
+          break;
+        }
+      }
     }
     if (args.requestType === "delete") {
       this.props.showMessage({
@@ -262,7 +277,7 @@ class Embargos extends Component {
 
   gridDetailsEmbargoActionBegin(args) {
     if (args.requestType === "add") {
-      args.data.embargoId = this.parentDetails.parentKeyFieldValue;
+      args.data.embargoId = this.parentDetails.parentRowData.id;
     }
 
     if (args.requestType === "save") {

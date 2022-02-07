@@ -10,11 +10,7 @@ import {
   Page,
   Resize,
   DetailRow,
-  Aggregate,
-  AggregateColumnDirective, 
-  AggregateColumnsDirective, 
-  AggregateDirective, 
-  AggregatesDirective
+  Aggregate
 } from "@syncfusion/ej2-react-grids";
 import { DataManager, WebApiAdaptor } from "@syncfusion/ej2-data";
 import {
@@ -265,7 +261,6 @@ class Invoices extends Component {
     this.clickHandler = this.clickHandler.bind(this);
     this.dataBoundGridInvoice = this.dataBoundGridInvoice.bind(this);
     this.fnRowSelectedInvoice = this.fnRowSelectedInvoice.bind(this);
-    // this.fnRowSelectedDetailsInvoice = this.fnRowSelectedDetailsInvoice.bind(this);
     this.gridDetailsInvoiceActionComplete = this.gridDetailsInvoiceActionComplete.bind(this);
     this.detailDataBound = this.detailDataBound.bind(this);
     
@@ -561,8 +556,18 @@ class Invoices extends Component {
         this.gridInvoice.setRowData(args.data.invoiceId, result);
       });
 
-      // var selectedRecord = this.getSelectedRecords()[0];
-      // this.gridDetailsInvoice.aggregateModule.refresh(selectedRecord);
+      var childGridElements =
+        this.gridInvoice.element.querySelectorAll(".e-detailrow");
+      for (var i = 0; i < childGridElements.length; i++) {
+        let element = childGridElements[i];
+        let childGridObj = element.querySelector(".e-grid").ej2_instances[0];
+        if (
+          childGridObj.parentDetails.parentRowData.id === args.data.invoiceId
+        ) {
+          childGridObj.refresh();
+          break;
+        }
+      }
     }
     if (args.requestType === "delete") {
       this.props.showMessage({

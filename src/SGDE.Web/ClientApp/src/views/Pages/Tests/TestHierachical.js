@@ -4,12 +4,8 @@ import {
   ColumnDirective,
   ColumnsDirective,
   GridComponent,
-  Edit,
   Inject,
-  Toolbar,
   DetailRow,
-  Aggregate,
-  Resize,
 } from "@syncfusion/ej2-react-grids";
 import { DataManager, WebApiAdaptor, Query } from "@syncfusion/ej2-data";
 import { config, EMBARGOS, DETAILSEMBARGO } from "../../../constants";
@@ -17,16 +13,7 @@ import { L10n } from "@syncfusion/ej2-base";
 import data from "../../../locales/locale.json";
 import {
   TOKEN_KEY,
-  getUser,
-  getEmbargo,
-  getDetailsEmbargo,
 } from "../../../services";
-import {
-  childdata,
-  detailsEmbargo,
-  //   embargos,
-  employeeData,
-} from "./datasource";
 
 L10n.load(data);
 
