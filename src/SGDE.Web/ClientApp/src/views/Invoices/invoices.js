@@ -10,7 +10,7 @@ import {
   Page,
   Resize,
   DetailRow,
-  Aggregate
+  Aggregate,
 } from "@syncfusion/ej2-react-grids";
 import { DataManager, WebApiAdaptor } from "@syncfusion/ej2-data";
 import {
@@ -84,12 +84,12 @@ class Invoices extends Component {
       "Delete",
       "Update",
       "Cancel",
-      {
-        text: "Detalles",
-        tooltipText: "Detalles",
-        prefixIcon: "e-custom-icons e-details",
-        id: "Details",
-      },
+      // {
+      //   text: "Detalles",
+      //   tooltipText: "Detalles",
+      //   prefixIcon: "e-custom-icons e-details",
+      //   id: "Details",
+      // },
       "Print",
       "Search",
     ];
@@ -258,19 +258,12 @@ class Invoices extends Component {
     this.actionBegin = this.actionBegin.bind(this);
     this.actionFailure = this.actionFailure.bind(this);
     this.actionComplete = this.actionComplete.bind(this);
-    this.clickHandler = this.clickHandler.bind(this);
     this.dataBoundGridInvoice = this.dataBoundGridInvoice.bind(this);
     this.fnRowSelectedInvoice = this.fnRowSelectedInvoice.bind(this);
-    this.gridDetailsInvoiceActionComplete = this.gridDetailsInvoiceActionComplete.bind(this);
+    this.gridDetailsInvoiceActionComplete =
+      this.gridDetailsInvoiceActionComplete.bind(this);
     this.detailDataBound = this.detailDataBound.bind(this);
-    
-    this.toolbarOptionsDetailsInvoice = [
-      "Add",
-      "Edit",
-      "Delete",
-      "Update",
-      "Cancel",
-    ];
+
     this.gridDetailsInvoice = {
       columns: [
         {
@@ -423,7 +416,19 @@ class Invoices extends Component {
       dataSource: this.detailsInvoice,
       queryString: "invoiceId",
       locale: "es-US",
-      toolbar: ["Add", "Edit", "Delete", "Update", "Cancel"],
+      toolbar: [
+        "Add",
+        "Edit",
+        "Delete",
+        "Update",
+        "Cancel",
+        {
+          text: "Importar Factura Anterior",
+          tooltipText: "importar factura anterior",
+          prefixIcon: "e-custom-icons e-file-workers",
+          id: "PreviousInvoice",
+        },
+      ],
       actionFailure: this.actionFailure,
       allowGrouping: false,
       ref: (g) => (this.gridDetailsInvoice = g),
@@ -434,7 +439,8 @@ class Invoices extends Component {
       actionBegin: this.gridDetailsInvoiceActionBegin,
       dataBound: this.dataBoundDetailsInvoice,
       editSettings: this.editSettings,
-      rowSelected: this.fnRowSelectedDetailsInvoice
+      rowSelected: this.fnRowSelectedDetailsInvoice,
+      toolbarClick: this.clickHandlerGridDetailsInvoice,
     };
   }
 
@@ -450,26 +456,18 @@ class Invoices extends Component {
     );
   }
 
-  clickHandler(args) {
-    if (args.item.id === "Details") {
-      const selectedRecords = this.gridInvoice.getSelectedRecords();
-      if (Array.isArray(selectedRecords) && selectedRecords.length === 1) {
-        this.setState({ rowSelected: selectedRecords[0] });
-
-        this.props.history.push({
-          pathname: "/clients/detailclient/" + selectedRecords[0].id,
-          state: {
-            client: selectedRecords[0],
-          },
-        });
-      } else {
-        this.setState({ rowSelected: null });
-        this.props.showMessage({
-          statusText: "Debes seleccionar un solo registro",
-          responseText: "Debes seleccionar un solo registro",
-          type: "danger",
-        });
-      }
+  clickHandlerGridDetailsInvoice(args) {
+    if (args.item.id === "PreviousInvoice") {
+      this.query = [];
+      this.query = new Query()
+      .addParams(
+        "invoiceId",
+        this.parentDetails.parentRowData.id
+      )
+      .addParams(
+        "previousInvoice",
+        true
+      );
     }
   }
 
@@ -551,7 +549,7 @@ class Invoices extends Component {
         responseText: "Operación realizada con éxito",
         type: "success",
       });
-      
+
       getInvoice(args.data.invoiceId).then((result) => {
         this.gridInvoice.setRowData(args.data.invoiceId, result);
       });

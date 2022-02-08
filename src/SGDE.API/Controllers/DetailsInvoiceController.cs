@@ -43,6 +43,7 @@ namespace SGDE.API.Controllers
             {
                 var queryString = Request.Query;
                 var invoiceId = Convert.ToInt32(queryString["invoiceId"]);
+                var previousInvoice = Convert.ToBoolean(queryString["previousInvoice"]);
 
                 var data = _supervisor.GetAllDetailInvoice(invoiceId);
 

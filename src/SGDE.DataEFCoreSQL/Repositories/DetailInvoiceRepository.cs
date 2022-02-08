@@ -7,6 +7,7 @@
     using Domain.Entities;
     using Domain.Repositories;
     using System;
+    using Microsoft.EntityFrameworkCore;
 
     #endregion
 
@@ -38,12 +39,53 @@
             return GetById(id) != null;
         }
 
-        public List<DetailInvoice> GetAll(int invoiceId = 0)
+        public List<DetailInvoice> GetAll(int invoiceId = 0, bool previousInvoice = false)
         {
             if (invoiceId == 0)
             {
                 return _context.DetailInvoice
                     .ToList();
+            }
+
+            if (previousInvoice)
+            {
+                using (var transaction = _context.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        var invoice = _context.Invoice.FirstOrDefault(x => x.Id == invoiceId);
+                        if (invoice == null)
+                            throw new Exception("Factura no encontrada");
+
+                        var detailsInvoice = _context.DetailInvoice.Where(x => x.InvoiceId == invoiceId);
+                        _context.DetailInvoice.RemoveRange(detailsInvoice);
+
+                        var invoiceFind = _context.Invoice
+                            .Include(x => x.DetailsInvoice)
+                            .Where(x => x.EndDate < invoice.StartDate)
+                            .OrderByDescending(x => x.StartDate)
+                            .FirstOrDefault();
+                        if (invoiceFind == null)
+                            throw new Exception("Factura no encontrada");
+
+                        foreach (var detailInvoice in invoiceFind.DetailsInvoice)
+                        {
+                            detailInvoice.InvoiceId = invoiceId;
+                            _context.DetailInvoice.Add(detailInvoice);
+
+                            invoice.TaxBase += detailInvoice.Units * detailInvoice.PriceUnity;
+                        }             
+                        _context.Invoice.Update(invoice);
+
+                        _context.SaveChanges();
+                        transaction.Commit();
+                    }
+                    catch (Exception ex)
+                    {
+                        transaction.Rollback();
+                        throw ex;
+                    }
+                }
             }
 
             return _context.DetailInvoice

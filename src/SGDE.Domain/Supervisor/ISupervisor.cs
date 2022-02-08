@@ -244,7 +244,7 @@ namespace SGDE.Domain.Supervisor
 
         #region DetailInvoice
 
-        List<DetailInvoiceViewModel> GetAllDetailInvoice(int invoiceId = 0);
+        List<DetailInvoiceViewModel> GetAllDetailInvoice(int invoiceId = 0, bool previousInvoice = false);
         DetailInvoiceViewModel GetDetailInvoiceById(int id);
         DetailInvoiceViewModel AddDetailInvoice(DetailInvoiceViewModel newDetailInvoiceViewModel);
         bool UpdateDetailInvoice(DetailInvoiceViewModel detailInvoiceViewModel);

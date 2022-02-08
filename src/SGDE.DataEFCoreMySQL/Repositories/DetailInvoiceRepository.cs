@@ -41,7 +41,7 @@
             return GetById(id) != null;
         }
 
-        public List<DetailInvoice> GetAll(int invoiceId = 0)
+        public List<DetailInvoice> GetAll(int invoiceId = 0, bool previousInvoice = false)
         {
             if (invoiceId == 0)
             {

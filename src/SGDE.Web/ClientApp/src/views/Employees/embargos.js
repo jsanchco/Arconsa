@@ -143,7 +143,7 @@ class Embargos extends Component {
       textWrapSettings: this.wrapSettings,
       actionComplete: this.gridDetailsEmbargoActionComplete,
       actionBegin: this.gridDetailsEmbargoActionBegin,
-      load: this.loadGridDetailsEmbargo,
+      load: this.loadGridDetailsEmbargo
     };
 
     this.rowSelectedEmbargos = null;

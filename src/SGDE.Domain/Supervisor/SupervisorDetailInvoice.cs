@@ -14,7 +14,7 @@
 
     public partial class Supervisor
     {
-        public List<DetailInvoiceViewModel> GetAllDetailInvoice(int invoiceId = 0)
+        public List<DetailInvoiceViewModel> GetAllDetailInvoice(int invoiceId = 0, bool previousInvoice = false)
         {
             return DetailInvoiceConverter.ConvertList(_detailInvoiceRepository.GetAll(invoiceId));
         }
