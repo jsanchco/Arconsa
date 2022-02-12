@@ -14,5 +14,6 @@
         DetailInvoice Add(DetailInvoice newDetailInvoice);
         bool Update(DetailInvoice detailInvoice);
         bool Delete(int id);
+        List<DetailInvoice> UpdateFromPreviousInvoice(int invoiceId);
     }
 }

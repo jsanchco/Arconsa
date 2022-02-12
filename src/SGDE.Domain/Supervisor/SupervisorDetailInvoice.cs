@@ -4,6 +4,7 @@
 
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
     using Converters;
@@ -71,6 +72,11 @@
         public bool DeleteDetailInvoice(int id)
         {
             return _detailInvoiceRepository.Delete(id);
+        }
+
+        public List<DetailInvoiceViewModel> GetDetailInvoiceFromPreviousInvoice(int invoiceId)
+        {
+            return DetailInvoiceConverter.ConvertList(_detailInvoiceRepository.UpdateFromPreviousInvoice(invoiceId));
         }
     }
 }

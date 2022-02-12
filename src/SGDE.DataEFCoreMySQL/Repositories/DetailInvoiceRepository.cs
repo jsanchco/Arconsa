@@ -4,6 +4,7 @@
 
     using Domain.Entities;
     using Domain.Repositories;
+    using Microsoft.EntityFrameworkCore;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -86,6 +87,51 @@
             _context.DetailInvoice.Remove(toRemove);
             _context.SaveChanges();
             return true;
+        }
+
+        public List<DetailInvoice> UpdateFromPreviousInvoice(int invoiceId)
+        {
+            using (var transaction = _context.Database.BeginTransaction())
+            {
+                try
+                {
+                    var invoice = _context.Invoice.FirstOrDefault(x => x.Id == invoiceId);
+                    if (invoice == null)
+                        throw new Exception("Factura no encontrada");
+
+                    var detailsInvoice = _context.DetailInvoice.Where(x => x.InvoiceId == invoiceId);
+                    _context.DetailInvoice.RemoveRange(detailsInvoice);
+
+                    var invoiceFind = _context.Invoice
+                        .Include(x => x.DetailsInvoice)
+                        .Where(x => x.EndDate < invoice.StartDate)
+                        .OrderByDescending(x => x.StartDate)
+                        .FirstOrDefault();
+                    if (invoiceFind == null)
+                        throw new Exception("Factura no encontrada");
+
+                    foreach (var detailInvoice in invoiceFind.DetailsInvoice)
+                    {
+                        detailInvoice.InvoiceId = invoiceId;
+                        _context.DetailInvoice.Add(detailInvoice);
+
+                        invoice.TaxBase += detailInvoice.Units * detailInvoice.PriceUnity;
+                    }
+                    _context.Invoice.Update(invoice);
+
+                    _context.SaveChanges();
+                    transaction.Commit();
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    throw ex;
+                }
+            }
+
+            return _context.DetailInvoice
+                .Where(x => x.InvoiceId == invoiceId)
+                .ToList();
         }
     }
 }

@@ -106,6 +106,7 @@ class Invoices extends Component {
       currentPage: props.currentPageInvoices,
     };
     this.searchSettings = {
+      fields: ['name'],
       key: props.currentSearchInvoices,
     };
     this.numericParams = {
@@ -423,13 +424,19 @@ class Invoices extends Component {
         "Update",
         "Cancel",
         {
+          text: "Detalle por Horas",
+          tooltipText: "detalle por horas",
+          prefixIcon: "e-custom-icons e-details",
+          id: "DetailByHours",
+        },        
+        {
           text: "Importar Factura Anterior",
           tooltipText: "importar factura anterior",
           prefixIcon: "e-custom-icons e-file-workers",
           id: "PreviousInvoice",
         },
       ],
-      actionFailure: this.actionFailure,
+      actionFailure: this.gridDetailsInvoiceActionFailure,
       allowGrouping: false,
       ref: (g) => (this.gridDetailsInvoice = g),
       allowTextWrap: true,
@@ -441,6 +448,7 @@ class Invoices extends Component {
       editSettings: this.editSettings,
       rowSelected: this.fnRowSelectedDetailsInvoice,
       toolbarClick: this.clickHandlerGridDetailsInvoice,
+      props: this.props
     };
   }
 
@@ -457,6 +465,19 @@ class Invoices extends Component {
   }
 
   clickHandlerGridDetailsInvoice(args) {
+    if (args.item.id === "DetailByHours") {
+      this.query = [];
+      this.query = new Query()
+      .addParams(
+        "invoiceId",
+        this.parentDetails.parentRowData.id
+      )
+      .addParams(
+        "detailByHours",
+        true
+      );
+    }
+
     if (args.item.id === "PreviousInvoice") {
       this.query = [];
       this.query = new Query()
@@ -498,6 +519,7 @@ class Invoices extends Component {
     if (Array.isArray(error)) {
       error = error[0].error;
     }
+
     this.props.showMessage({
       statusText: error.statusText,
       responseText: error.responseText,
@@ -542,6 +564,28 @@ class Invoices extends Component {
     }
   }
 
+  gridDetailsInvoiceActionFailure(args) {
+    let error = Array.isArray(args) ? args[0].error : args.error;
+    if (Array.isArray(error)) {
+      error = error[0].error;
+    } else if (error.statusText == null) {
+      error.statusText = error.error.statusText;
+      error.responseText = JSON.parse(error.error.responseText).Message;
+    }
+
+    this.query = [];
+    this.query = new Query().addParams(
+      "invoiceId",
+      this.parentDetails.parentRowData.id
+    );
+    
+    this.props.showMessage({
+      statusText: error.statusText,
+      responseText: error.responseText,
+      type: "danger",
+    });
+  }
+
   gridDetailsInvoiceActionComplete(args) {
     if (args.requestType === "save") {
       this.props.showMessage({
@@ -577,9 +621,6 @@ class Invoices extends Component {
       getInvoice(args.data[0].invoiceId).then((result) => {
         this.gridInvoice.setRowData(args.data[0].invoiceId, result);
       });
-
-      // selectedRecord = this.getSelectedRecords()[0];
-      // this.gridDetailsInvoice.aggregateModule.refresh(selectedRecord);
     }
   }
 
@@ -587,6 +628,20 @@ class Invoices extends Component {
     if (args.requestType === "add") {
       args.data.invoiceId = this.parentDetails.parentRowData.id;
     }
+    if (args.requestType === "save") {
+      this.query = [];
+      this.query = new Query().addParams(
+        "invoiceId",
+        this.parentDetails.parentRowData.id
+      );
+    }
+    if (args.requestType === "delete") {
+      this.query = [];
+      this.query = new Query().addParams(
+        "invoiceId",
+        this.parentDetails.parentRowData.id
+      );
+    }    
   }
 
   handleFilteringClients(e) {

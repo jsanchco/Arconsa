@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using SGDE.Domain.Supervisor;
 using SGDE.Domain.ViewModels;
 using System;
+using System.Collections.Generic;
 
 namespace SGDE.API.Controllers
 {
@@ -44,8 +45,22 @@ namespace SGDE.API.Controllers
                 var queryString = Request.Query;
                 var invoiceId = Convert.ToInt32(queryString["invoiceId"]);
                 var previousInvoice = Convert.ToBoolean(queryString["previousInvoice"]);
+                var detailByHours = Convert.ToBoolean(queryString["detailByHours"]);
 
-                var data = _supervisor.GetAllDetailInvoice(invoiceId);
+                List<DetailInvoiceViewModel> data = null;
+
+                if (previousInvoice)
+                    data = _supervisor.GetDetailInvoiceFromPreviousInvoice(invoiceId);
+
+                if (detailByHours)
+                    data = _supervisor.GetDetailInvoiceFromPreviousInvoice(invoiceId);
+
+                if (data == null)
+                {
+                    data = !previousInvoice ?
+                        _supervisor.GetAllDetailInvoice(invoiceId) :
+                        _supervisor.GetDetailInvoiceFromPreviousInvoice(invoiceId);
+                }
 
                 return new { Items = data, Count = data.Count };
             }
