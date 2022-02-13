@@ -32,6 +32,7 @@
                 invoiceToOrigin = work.InvoiceToOrigin,
                 totalContract = (double)work.WorkBudgets.FirstOrDefault(x => x.Type == "Definitivo")?.TotalContract,
                 percentageRetention = (double)work.PercentageRetention,
+                percentageIVA = (double)work.PercentageIVA,
 
                 openDate = work.OpenDate.ToString("dd/MM/yyyy"),
                 closeDate = work.CloseDate?.ToString("dd/MM/yyyy"),

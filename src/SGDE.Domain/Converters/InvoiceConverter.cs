@@ -47,7 +47,7 @@
             };
             if (invoice.Iva == true)
             {
-                invoiceViewModel.ivaTaxBase = Math.Round(invoiceViewModel.taxBase * 0.21, 2);
+                invoiceViewModel.ivaTaxBase = Math.Round(invoiceViewModel.taxBase * (double)invoice.Work.PercentageIVA, 2);
                 invoiceViewModel.total = Math.Round(invoiceViewModel.taxBase + invoiceViewModel.ivaTaxBase);
             }
             else
@@ -92,7 +92,7 @@
                 };
                 if (invoice.Iva == true)
                 {
-                    model.ivaTaxBase = Math.Round(model.taxBase * 0.21, 2);
+                    model.ivaTaxBase = Math.Round(model.taxBase * (double)invoice.Work.PercentageIVA, 2);
                     model.total = Math.Round(model.taxBase + model.ivaTaxBase, 2);
                 }
                 else

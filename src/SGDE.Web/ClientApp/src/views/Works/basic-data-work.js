@@ -31,6 +31,7 @@ class BasicDataWork extends Component {
         invoiceToOrigin: result.invoiceToOrigin,
         totalContract: result.totalContract,
         percentageRetention: result.percentageRetention,
+        percentageIVA: result.percentageIVA,
         open: result.open,
         clientId: result.clientId,
         workBudgets: result.workBudgets,
@@ -44,11 +45,14 @@ class BasicDataWork extends Component {
     this.handleChangeTotalContract = this.handleChangeTotalContract.bind(this);
     this.handleChangePercentageRetention =
       this.handleChangePercentageRetention.bind(this);
+    this.handleChangePercentageIVA = this.handleChangePercentageIVA.bind(this);
     this.updateFromInvoiceToOrigin = this.updateFromInvoiceToOrigin.bind(this);
+    this.updateFromPassiveSubject = this.updateFromPassiveSubject.bind(this);
     this.renderTotalContratc = this.renderTotalContratc.bind(this);
 
     this.ntbTotalContract = null;
     this.ntbPercentageRetention = null;
+    this.ntbPercentageIVA = null;
 
     this.typeWork = [{ id: "HO" }, { id: "PA" }, { id: "MA" }];
     this.ddlTypeWork = null;
@@ -61,6 +65,10 @@ class BasicDataWork extends Component {
   componentDidUpdate(prevState) {
     if (this.state.invoiceToOrigin !== prevState.invoiceToOrigin) {
       this.updateFromInvoiceToOrigin();
+    }
+
+    if (this.state.passiveSubject !== prevState.passiveSubject) {
+      this.updateFromPassiveSubject();
     }
   }
 
@@ -75,6 +83,15 @@ class BasicDataWork extends Component {
       if (this.ntbTotalContract) {
         this.ntbTotalContract.enabled = false;
       }
+    }
+  }
+
+  updateFromPassiveSubject() {
+    if (this.state.passiveSubject) {
+      this.ntbPercentageIVA.enabled = false;
+      this.ntbPercentageIVA.value = 0;
+    } else {
+      this.ntbPercentageIVA.enabled = true;
     }
   }
 
@@ -97,6 +114,10 @@ class BasicDataWork extends Component {
         });
       }
     }
+
+    if (name === "passiveSubject") {
+      this.ntbPercentageIVA.enabled = !target.checked
+    }
   }
 
   handleChangeTotalContract(args) {
@@ -105,6 +126,10 @@ class BasicDataWork extends Component {
 
   handleChangePercentageRetention(args) {
     this.setState({ percentageRetention: args.value });
+  }
+
+  handleChangePercentageIVA(args) {
+    this.setState({ percentageIVA: args.value });
   }
 
   formatDate(args) {
@@ -139,6 +164,7 @@ class BasicDataWork extends Component {
       invoiceToOrigin: this.state.invoiceToOrigin,
       totalContract: this.state.totalContract,
       percentageRetention: this.state.percentageRetention,
+      percentageIVA: this.state.percentageIVA,
       open: this.state.open,
       clientId: this.state.clientId,
       workBudgets: this.state.workBudgets,
@@ -350,23 +376,23 @@ class BasicDataWork extends Component {
                 />
               </FormGroup>
             </Col>
-            {/* <Col xs="4">
+            <Col xs="4">
               <FormGroup>
-                <Label htmlFor="totalContract" style={{ fontSize: "Medium" }}>
-                  <b>Total Contrato</b>
-                </Label>
-                {this.renderTotalContratc()}
+                <Label htmlFor="percentageIVA">IVA</Label>
                 <NumericTextBoxComponent
-                  format="N2"
-                  id="totalContract"
-                  name="totalContract"
-                  value={this.state.totalContract}
-                  placeholder="total contrato"
-                  change={this.handleChangeTotalContract}
-                  ref={(g) => (this.ntbTotalContract = g)}
+                  format="p2"
+                  id="percentageIVA"
+                  name="percentageIVA"
+                  value={this.state.percentageIVA}
+                  min={0}
+                  max={1}
+                  step={0.01}
+                  placeholder="porcentaje IVA"
+                  change={this.handleChangePercentageIVA}
+                  ref={(g) => (this.ntbPercentageIVA = g)}
                 />
               </FormGroup>
-            </Col> */}
+            </Col>
           </Row>
           <Row>
             <Col xs="12">
