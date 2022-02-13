@@ -114,7 +114,16 @@ class Invoices extends Component {
   handleDate(event) {
     const name = event.element.name;
     this.setState({
-      [name]: this.formatDate(event.value),
+      [name]: new Date(
+        Date.UTC(
+          event.value.getFullYear(),
+          event.value.getMonth(),
+          event.value.getDate(),
+          event.value.getHours(),
+          event.value.getMilliseconds()
+        )
+      )
+      // [name]: this.formatDate(event.value),
     });
   }
 
