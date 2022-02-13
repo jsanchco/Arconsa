@@ -105,26 +105,26 @@
             _indirectCostRepository.Add(new IndirectCost { AccountNumber = "67800000", Description = "GASTOS EXCEPCIONALES", Amount = 0, Date = new System.DateTime(2021, 1, 1) });
             _indirectCostRepository.Add(new IndirectCost { AccountNumber = "67800001", Description = "RECARGOS SEGURIDAD SOCIAL", Amount = 0, Date = new System.DateTime(2021, 1, 1) });
 
-            //var works = _workRepository.GetAll().Data;
-            //foreach (var work in works)
-            //{
-            //    AddWorkBudget(new WorkBudgetViewModel
-            //    {
-            //        date = work.OpenDate,
-            //        reference = $"{work.Name.Split(" ")[0]}",
-            //        type = "Version X",
-            //        workId = work.Id,
-            //        totalContract = (double)work.TotalContract
-            //    });
-            //    AddWorkBudget(new WorkBudgetViewModel
-            //    {
-            //        date = work.OpenDate,
-            //        reference = $"{work.Name.Split(" ")[0]}",
-            //        type = "Definitivo",
-            //        workId = work.Id,
-            //        totalContract = (double)work.TotalContract
-            //    });
-            //}
+            var works = _workRepository.GetAll().Data;
+            foreach (var work in works)
+            {
+                AddWorkBudget(new WorkBudgetViewModel
+                {
+                    date = work.OpenDate,
+                    reference = $"{work.Name.Split(" ")[0]}",
+                    type = "Version X",
+                    workId = work.Id,
+                    totalContract = (double)work.TotalContract
+                });
+                AddWorkBudget(new WorkBudgetViewModel
+                {
+                    date = work.OpenDate,
+                    reference = $"{work.Name.Split(" ")[0]}",
+                    type = "Definitivo",
+                    workId = work.Id,
+                    totalContract = (double)work.TotalContract
+                });
+            }
 
             var invoices = _invoiceRepository.GetAll().Data;
             foreach (var invoice in invoices)
