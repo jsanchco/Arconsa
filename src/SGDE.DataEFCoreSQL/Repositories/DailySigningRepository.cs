@@ -226,7 +226,6 @@
                 .Where(x => x.StartHour >= startDate && x.EndHour <= endDate && x.UserHiring.WorkId == workId)
                 .OrderBy(x => x.StartHour)
                 .ToList();
-
         }
 
         public List<DailySigning> GetByClientId(DateTime startDate, DateTime endDate, int clientId)

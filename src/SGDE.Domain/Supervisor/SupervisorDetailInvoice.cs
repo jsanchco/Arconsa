@@ -78,5 +78,73 @@
         {
             return DetailInvoiceConverter.ConvertList(_detailInvoiceRepository.UpdateFromPreviousInvoice(invoiceId));
         }
+
+        public List<DetailInvoiceViewModel> GetDetailInvoiceFromWork(int invoiceId)
+        {
+            var invoice = GetInvoice(invoiceId);
+            if (invoice == null)
+                throw new Exception("Factura no encontrada");
+
+            var listReportResultViewModel = GetHoursByWork(new ReportQueryViewModel
+            {
+                startDate = invoice.StartDate,
+                endDate = invoice.EndDate,
+                workId = invoice.WorkId
+            });
+
+            var listGroupedByProfessionId = listReportResultViewModel.GroupBy(x => new { x.professionId, x.hourTypeId })
+                .Select(
+                        x => new
+                        {
+                            Key = x.Key,
+                            ProfessionName = x.Select(y => y.professionName).First(),
+                            ProfessionId = x.Select(y => y.professionId).First(),
+                            HourTypeId = x.Select(y => y.hourTypeId).First(),
+                            HourTypeName = x.Select(y => y.hourTypeName).First(),
+                            Hours = x.Sum(y => y.hours)
+                        })
+                .OrderBy(x => x.HourTypeId)
+                .OrderBy(x => x.ProfessionId);
+
+            var result = _detailInvoiceRepository.UpdateFromWork(
+                invoiceId,
+                listGroupedByProfessionId.Select(x =>
+                new DetailInvoice 
+                {
+                    ServicesPerformed = $"{x.HourTypeName} {x.ProfessionName}",
+                    PriceUnity = (decimal)GetPriceHourSale(x.HourTypeId, x.ProfessionId),
+                    Units = (decimal)x.Hours,
+                    NameUnit = "horas"
+                }).ToList());
+
+            return DetailInvoiceConverter.ConvertList(result);
+        }
+
+        #region Auxiliary Methods
+
+        private double GetPriceHourSale(int? type, int? professionId)
+        {
+            if (type == null || professionId == null)
+                return 0;
+
+            var professionInClient = GetProfessionInClientById(professionId.Value);
+            if (professionInClient == null)
+                return 0;
+
+            switch (type)
+            {
+                case 1:
+                    return (double)professionInClient.priceHourSaleOrdinary;
+                case 2:
+                    return (double)professionInClient.priceHourSaleExtra;
+                case 3:
+                    return (double)professionInClient.priceHourSaleFestive;
+
+                default:
+                    return 0;
+            }
+        }
+
+        #endregion
     }
 }

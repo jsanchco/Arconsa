@@ -250,6 +250,7 @@ namespace SGDE.Domain.Supervisor
         bool UpdateDetailInvoice(DetailInvoiceViewModel detailInvoiceViewModel);
         bool DeleteDetailInvoice(int id);
         List<DetailInvoiceViewModel> GetDetailInvoiceFromPreviousInvoice(int invoiceId);
+        List<DetailInvoiceViewModel> GetDetailInvoiceFromWork(int invoiceId);
 
         #endregion
 

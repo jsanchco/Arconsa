@@ -14,10 +14,12 @@
     public class DetailInvoiceRepository : IDetailInvoiceRepository, IDisposable
     {
         private readonly EFContextSQL _context;
+        private readonly IDailySigningRepository _dailySigningRepository;
 
-        public DetailInvoiceRepository(EFContextSQL context)
+        public DetailInvoiceRepository(EFContextSQL context, IDailySigningRepository dailySigningRepository)
         {
             _context = context;
+            _dailySigningRepository = dailySigningRepository;
         }
 
         public void Dispose()
@@ -192,6 +194,37 @@
                         detailInvoice.InvoiceId = invoiceId;
                         detailInvoice.UnitsAccumulated = detailInvoice.Units;
                         detailInvoice.Units = 0;
+
+                        _context.DetailInvoice.Add(detailInvoice);
+                    }
+
+                    _context.SaveChanges();
+                    transaction.Commit();
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    throw ex;
+                }
+            }
+
+            return _context.DetailInvoice
+                .Where(x => x.InvoiceId == invoiceId)
+                .ToList();
+        }
+
+        public List<DetailInvoice> UpdateFromWork(int invoiceId, List<DetailInvoice> detailsInvoice)
+        {
+            using (var transaction = _context.Database.BeginTransaction())
+            {
+                try
+                {
+                    var detailsInvoiceFind = _context.DetailInvoice.Where(x => x.InvoiceId == invoiceId);
+                    _context.DetailInvoice.RemoveRange(detailsInvoiceFind);
+
+                    foreach (var detailInvoice in detailsInvoice)
+                    {
+                        detailInvoice.InvoiceId = invoiceId;
 
                         _context.DetailInvoice.Add(detailInvoice);
                     }

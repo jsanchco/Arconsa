@@ -133,5 +133,36 @@
                 .Where(x => x.InvoiceId == invoiceId)
                 .ToList();
         }
+
+        public List<DetailInvoice> UpdateFromWork(int invoiceId, List<DetailInvoice> detailsInvoice)
+        {
+            using (var transaction = _context.Database.BeginTransaction())
+            {
+                try
+                {
+                    var detailsInvoiceFind = _context.DetailInvoice.Where(x => x.InvoiceId == invoiceId);
+                    _context.DetailInvoice.RemoveRange(detailsInvoiceFind);
+
+                    foreach (var detailInvoice in detailsInvoice)
+                    {
+                        detailInvoice.InvoiceId = invoiceId;
+
+                        _context.DetailInvoice.Add(detailInvoice);
+                    }
+
+                    _context.SaveChanges();
+                    transaction.Commit();
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    throw ex;
+                }
+            }
+
+            return _context.DetailInvoice
+                .Where(x => x.InvoiceId == invoiceId)
+                .ToList();
+        }
     }
 }

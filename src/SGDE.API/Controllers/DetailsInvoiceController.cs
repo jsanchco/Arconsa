@@ -53,7 +53,7 @@ namespace SGDE.API.Controllers
                     data = _supervisor.GetDetailInvoiceFromPreviousInvoice(invoiceId);
 
                 if (detailByHours)
-                    data = _supervisor.GetDetailInvoiceFromPreviousInvoice(invoiceId);
+                    data = _supervisor.GetDetailInvoiceFromWork(invoiceId);
 
                 if (data == null)
                 {

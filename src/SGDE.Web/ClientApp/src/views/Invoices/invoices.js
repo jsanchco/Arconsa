@@ -12,6 +12,11 @@ import {
   DetailRow,
   Aggregate,
 } from "@syncfusion/ej2-react-grids";
+import {
+  createSpinner,
+  showSpinner,
+  hideSpinner,
+} from "@syncfusion/ej2-popups";
 import { DataManager, WebApiAdaptor } from "@syncfusion/ej2-data";
 import {
   config,
@@ -25,7 +30,13 @@ import { L10n } from "@syncfusion/ej2-base";
 import data from "../../locales/locale.json";
 import { connect } from "react-redux";
 import ACTION_APPLICATION from "../../actions/applicationAction";
-import { TOKEN_KEY, getInvoice } from "../../services";
+import {
+  TOKEN_KEY,
+  getInvoice,
+  base64ToArrayBuffer,
+  saveByteArray,
+  printInvoice
+} from "../../services";
 import { Query } from "@syncfusion/ej2-data";
 import { DropDownList } from "@syncfusion/ej2-dropdowns";
 
@@ -91,6 +102,12 @@ class Invoices extends Component {
       //   id: "Details",
       // },
       "Print",
+      {
+        text: "Imprimir Factura",
+        tooltipText: "Imprimir Factura",
+        prefixIcon: "e-custom-icons e-print",
+        id: "PrintInvoice",
+      },
       "Search",
     ];
     this.editSettings = {
@@ -106,7 +123,7 @@ class Invoices extends Component {
       currentPage: props.currentPageInvoices,
     };
     this.searchSettings = {
-      fields: ['name'],
+      fields: ["name"],
       key: props.currentSearchInvoices,
     };
     this.numericParams = {
@@ -264,6 +281,7 @@ class Invoices extends Component {
     this.gridDetailsInvoiceActionComplete =
       this.gridDetailsInvoiceActionComplete.bind(this);
     this.detailDataBound = this.detailDataBound.bind(this);
+    this.clickHandlerGridInvoice = this.clickHandlerGridInvoice.bind(this);
 
     this.gridDetailsInvoice = {
       columns: [
@@ -428,7 +446,7 @@ class Invoices extends Component {
           tooltipText: "detalle por horas",
           prefixIcon: "e-custom-icons e-details",
           id: "DetailByHours",
-        },        
+        },
         {
           text: "Importar Factura Anterior",
           tooltipText: "importar factura anterior",
@@ -448,7 +466,7 @@ class Invoices extends Component {
       editSettings: this.editSettings,
       rowSelected: this.fnRowSelectedDetailsInvoice,
       toolbarClick: this.clickHandlerGridDetailsInvoice,
-      props: this.props
+      props: this.props,
     };
   }
 
@@ -468,27 +486,15 @@ class Invoices extends Component {
     if (args.item.id === "DetailByHours") {
       this.query = [];
       this.query = new Query()
-      .addParams(
-        "invoiceId",
-        this.parentDetails.parentRowData.id
-      )
-      .addParams(
-        "detailByHours",
-        true
-      );
+        .addParams("invoiceId", this.parentDetails.parentRowData.id)
+        .addParams("detailByHours", true);
     }
 
     if (args.item.id === "PreviousInvoice") {
       this.query = [];
       this.query = new Query()
-      .addParams(
-        "invoiceId",
-        this.parentDetails.parentRowData.id
-      )
-      .addParams(
-        "previousInvoice",
-        true
-      );
+        .addParams("invoiceId", this.parentDetails.parentRowData.id)
+        .addParams("previousInvoice", true);
     }
   }
 
@@ -578,7 +584,7 @@ class Invoices extends Component {
       "invoiceId",
       this.parentDetails.parentRowData.id
     );
-    
+
     this.props.showMessage({
       statusText: error.statusText,
       responseText: error.responseText,
@@ -641,7 +647,7 @@ class Invoices extends Component {
         "invoiceId",
         this.parentDetails.parentRowData.id
       );
-    }    
+    }
   }
 
   handleFilteringClients(e) {
@@ -749,6 +755,36 @@ class Invoices extends Component {
     console.log();
   }
 
+  clickHandlerGridInvoice(args) {
+    const selectedRecords = this.gridInvoice.getSelectedRecords();
+    if (args.item.id === "PrintInvoice") {
+      if (selectedRecords.length === 0) {
+        this.props.showMessage({
+          statusText: "Debes seleccionar una factura",
+          responseText: "Debes seleccionar una factura",
+          type: "danger",
+        });
+      } else {
+        const element = document.getElementById("gridInvoices");
+
+        createSpinner({
+          target: element,
+        });
+        showSpinner(element);
+
+        printInvoice(selectedRecords[0].id)
+          .then((result) => {
+            const fileArr = base64ToArrayBuffer(result.file);
+            saveByteArray(result.fileName, fileArr, result.typeFile);
+            hideSpinner(element);
+          })
+          .catch((error) => {
+            hideSpinner(element);
+          });
+      }
+    }
+  }
+
   render() {
     return (
       <Fragment>
@@ -771,13 +807,13 @@ class Invoices extends Component {
               <Row>
                 <GridComponent
                   dataSource={this.invoices}
-                  id="Invoices"
+                  id="gridInvoices"
                   locale="es"
                   allowPaging={true}
                   pageSettings={this.pageSettings}
                   searchSettings={this.searchSettings}
                   toolbar={this.toolbarOptions}
-                  toolbarClick={this.clickHandler}
+                  toolbarClick={this.clickHandlerGridInvoice}
                   editSettings={this.editSettings}
                   style={{
                     marginLeft: 30,
