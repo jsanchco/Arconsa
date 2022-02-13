@@ -46,6 +46,7 @@ namespace SGDE.API.Controllers
                 var invoiceId = Convert.ToInt32(queryString["invoiceId"]);
                 var previousInvoice = Convert.ToBoolean(queryString["previousInvoice"]);
                 var detailByHours = Convert.ToBoolean(queryString["detailByHours"]);
+                var emptyDetails = Convert.ToBoolean(queryString["emptyDetails"]);      
 
                 List<DetailInvoiceViewModel> data = null;
 
@@ -55,12 +56,11 @@ namespace SGDE.API.Controllers
                 if (detailByHours)
                     data = _supervisor.GetDetailInvoiceFromWork(invoiceId);
 
+                if (emptyDetails)
+                    data = _supervisor.GetEmptyDetails(invoiceId);
+
                 if (data == null)
-                {
-                    data = !previousInvoice ?
-                        _supervisor.GetAllDetailInvoice(invoiceId) :
-                        _supervisor.GetDetailInvoiceFromPreviousInvoice(invoiceId);
-                }
+                    data = _supervisor.GetAllDetailInvoice(invoiceId);
 
                 return new { Items = data, Count = data.Count };
             }

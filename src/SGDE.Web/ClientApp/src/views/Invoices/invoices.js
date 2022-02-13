@@ -448,6 +448,12 @@ class Invoices extends Component {
           id: "DetailByHours",
         },
         {
+          text: "Limpiar",
+          tooltipText: "limpiar",
+          prefixIcon: "e-custom-icons e-empty",
+          id: "EmptyDetails",
+        },
+        {
           text: "Importar Factura Anterior",
           tooltipText: "importar factura anterior",
           prefixIcon: "e-custom-icons e-file-workers",
@@ -488,6 +494,13 @@ class Invoices extends Component {
       this.query = new Query()
         .addParams("invoiceId", this.parentDetails.parentRowData.id)
         .addParams("detailByHours", true);
+    }
+
+    if (args.item.id === "EmptyDetails") {
+      this.query = [];
+      this.query = new Query()
+        .addParams("invoiceId", this.parentDetails.parentRowData.id)
+        .addParams("emptyDetails", true);
     }
 
     if (args.item.id === "PreviousInvoice") {

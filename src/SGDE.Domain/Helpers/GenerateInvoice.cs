@@ -376,8 +376,11 @@
 
             var pdfCell = new PdfPCell(new Phrase("Método de Pago", _STANDARFONT_10_BOLD_CUSTOMCOLOR)) { BorderWidth = 0 };
             pdfPTable.AddCell(pdfCell);
-            pdfCell = new PdfPCell(new Phrase(_client.WayToPay, _STANDARFONT_10))
-            { BorderWidth = 0 };
+            pdfCell = new PdfPCell(new Phrase(_client.WayToPay, _STANDARFONT_10)) 
+            { 
+                BorderWidth = 0,
+                HorizontalAlignment = Element.ALIGN_RIGHT
+            };
             pdfPTable.AddCell(pdfCell);
             pdfCell = new PdfPCell(new Phrase(" ", _STANDARFONT_10)) { BorderWidth = 0 };
             pdfPTable.AddCell(pdfCell);
@@ -511,11 +514,12 @@
 
 
             PdfPCell pdfCell;
-            if (_work.TotalContract != 0)
+            var totalContract = (double)_work.WorkBudgets.FirstOrDefault(x => x.Type == "Definitivo")?.TotalContract;
+            if (totalContract != 0)
             {
                 pdfCell = new PdfPCell(new Phrase("Total Contrato", _STANDARFONT_10_BOLD_CUSTOMCOLOR)) { BorderWidth = 0 };
                 pdfPTable.AddCell(pdfCell);
-                pdfCell = new PdfPCell(new Phrase($"{Math.Round((double)_work.TotalContract, 2).ToFormatSpain()} €", _STANDARFONT_10)) { BorderWidth = 0, HorizontalAlignment = Element.ALIGN_RIGHT };
+                pdfCell = new PdfPCell(new Phrase($"{Math.Round((double)totalContract, 2).ToFormatSpain()} €", _STANDARFONT_10)) { BorderWidth = 0, HorizontalAlignment = Element.ALIGN_RIGHT };
                 pdfPTable.AddCell(pdfCell);
                 pdfCell = new PdfPCell(new Phrase(" ", _STANDARFONT_10)) { BorderWidth = 0 };
                 pdfPTable.AddCell(pdfCell);
@@ -524,7 +528,7 @@
                 pdfCell = new PdfPCell(new Phrase(" ", _STANDARFONT_10)) { BorderWidth = 0 };
                 pdfPTable.AddCell(pdfCell);
 
-                var pendingContract = (double)_work.TotalContract - certificacionOrigen;
+                var pendingContract = (double)totalContract - certificacionOrigen;
                 pdfCell = new PdfPCell(new Phrase("Pendiente Contrato", _STANDARFONT_10_BOLD_CUSTOMCOLOR)) { BorderWidth = 0 };
                 pdfPTable.AddCell(pdfCell);
                 pdfCell = new PdfPCell(new Phrase($"{Math.Round((double)pendingContract, 2).ToFormatSpain()} €", _STANDARFONT_10)) { BorderWidth = 0, HorizontalAlignment = Element.ALIGN_RIGHT };

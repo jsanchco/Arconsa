@@ -16,5 +16,6 @@
         bool Delete(int id);
         List<DetailInvoice> UpdateFromPreviousInvoice(int invoiceId);
         List<DetailInvoice> UpdateFromWork(int invoiceId, List<DetailInvoice> detailsInvoice);
+        List<DetailInvoice> UpdateToEmptyDetails(int invoiceId);
     }
 }

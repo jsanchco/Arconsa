@@ -120,6 +120,11 @@
             return DetailInvoiceConverter.ConvertList(result);
         }
 
+        public List<DetailInvoiceViewModel> GetEmptyDetails(int invoiceId)
+        {
+            return DetailInvoiceConverter.ConvertList(_detailInvoiceRepository.UpdateToEmptyDetails(invoiceId));
+        }
+
         #region Auxiliary Methods
 
         private double GetPriceHourSale(int? type, int? professionId)

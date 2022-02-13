@@ -164,5 +164,29 @@
                 .Where(x => x.InvoiceId == invoiceId)
                 .ToList();
         }
+
+        public List<DetailInvoice> UpdateToEmptyDetails(int invoiceId)
+        {
+            using (var transaction = _context.Database.BeginTransaction())
+            {
+                try
+                {
+                    var detailsInvoiceFind = _context.DetailInvoice.Where(x => x.InvoiceId == invoiceId);
+                    _context.DetailInvoice.RemoveRange(detailsInvoiceFind);
+
+                    _context.SaveChanges();
+                    transaction.Commit();
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    throw ex;
+                }
+            }
+
+            return _context.DetailInvoice
+                .Where(x => x.InvoiceId == invoiceId)
+                .ToList();
+        }
     }
 }
