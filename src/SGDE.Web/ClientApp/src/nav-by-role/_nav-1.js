@@ -114,15 +114,15 @@ export default {
         }
       ]
     },
-    {
-      name: "Test",
-      url: "/Pages/Tests/TestBlank",
-      icon: "cui-file"
-    },
-    {
-      name: "Test Hierachical",
-      url: "/Pages/Tests/TestHierachical",
-      icon: "cui-file"
-    }
+    // {
+    //   name: "Test",
+    //   url: "/Pages/Tests/TestBlank",
+    //   icon: "cui-file"
+    // },
+    // {
+    //   name: "Test Hierachical",
+    //   url: "/Pages/Tests/TestHierachical",
+    //   icon: "cui-file"
+    // }
   ]
 };
