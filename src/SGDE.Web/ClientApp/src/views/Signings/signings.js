@@ -349,7 +349,9 @@ class Signings extends Component {
       professionId: valueDdlProfessions,
       startSigning: valueDtpStartDate,
       endSigning: valueDtpEndDate,
-      data: this.gridResult.getCurrentViewRecords(),
+      data: this.transformCurrentViewRecords(
+        this.gridResult.getCurrentViewRecords()
+      ),
       includeSaturdays: this.state.includeSaturdays,
       includeSundays: this.state.includeSundays,
     })
@@ -359,6 +361,29 @@ class Signings extends Component {
       .catch((error) => {
         hideSpinner(element);
       });
+  }
+
+  transformCurrentViewRecords(args) {
+    for (var i = 0; i < args.length; i++) {
+      args[i].startHour = new Date(
+        Date.UTC(
+          args[i].startHour.getFullYear(),
+          args[i].startHour.getMonth(),
+          args[i].startHour.getDate(),
+          args[i].startHour.getHours(),
+          args[i].startHour.getMilliseconds()
+        ));
+
+        args[i].endHour = new Date(
+          Date.UTC(
+            args[i].endHour.getFullYear(),
+            args[i].endHour.getMonth(),
+            args[i].endHour.getDate(),
+            args[i].endHour.getHours(),
+            args[i].endHour.getMilliseconds()
+          ));
+    }
+    return args;
   }
 
   formatDate(args) {
@@ -462,25 +487,25 @@ class Signings extends Component {
       args.data.id = Math.max(...values) + 1;
     }
 
-    if (args.requestType === "save") {
-      var cols = this.gridResult.columns;
-      for (var i = 0; i < cols.length; i++) {
-        if (cols[i].type === "date") {
-          var date = args.data[cols[i].field];
-          if (date !== null) {
-            args.data[cols[i].field] = new Date(
-              Date.UTC(
-                date.getFullYear(),
-                date.getMonth(),
-                date.getDate(),
-                date.getHours(),
-                date.getMilliseconds()
-              )
-            );
-          }
-        }
-      }
-    }
+    // if (args.requestType === "save") {
+    //   var cols = this.gridResult.columns;
+    //   for (var i = 0; i < cols.length; i++) {
+    //     if (cols[i].type === "date") {
+    //       var date = args.data[cols[i].field];
+    //       if (date !== null) {
+    //         args.data[cols[i].field] = new Date(
+    //           Date.UTC(
+    //             date.getFullYear(),
+    //             date.getMonth(),
+    //             date.getDate(),
+    //             date.getHours(),
+    //             date.getMilliseconds()
+    //           )
+    //         );
+    //       }
+    //     }
+    //   }
+    // }
 
     // if (args.requestType === "save" && args.data.hourTypeId === 5) {
     //   args.data.startHour = new Date(
