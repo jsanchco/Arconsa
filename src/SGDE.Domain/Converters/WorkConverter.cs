@@ -30,7 +30,9 @@
                 numberPersonsRequested = work.UserHirings.Where(x => x.EndDate == null)?.Count(),
                 open = work.Open,
                 invoiceToOrigin = work.InvoiceToOrigin,
-                totalContract = (double)work.WorkBudgets.FirstOrDefault(x => x.Type == "Definitivo")?.TotalContract,
+                totalContract = work.WorkBudgets.FirstOrDefault(x => x.Type == "Definitivo") != null ?
+                        (double)work.WorkBudgets.FirstOrDefault(x => x.Type == "Definitivo").TotalContract :
+                        0,
                 percentageRetention = (double)work.PercentageRetention,
                 percentageIVA = (double)work.PercentageIVA,
 
@@ -67,7 +69,9 @@
                     numberPersonsRequested = work.UserHirings.Where(x => x.EndDate == null).Count(),
                     open = work.Open,
                     invoiceToOrigin = work.InvoiceToOrigin,
-                    totalContract = (double)work.WorkBudgets.FirstOrDefault(x => x.Type == "Definitivo")?.TotalContract,
+                    totalContract = work.WorkBudgets.FirstOrDefault(x => x.Type == "Definitivo") != null ?
+                        (double)work.WorkBudgets.FirstOrDefault(x => x.Type == "Definitivo").TotalContract :
+                        0,
                     percentageRetention = (double)work.PercentageRetention,
 
                     openDate = work.OpenDate.ToString("dd/MM/yyyy"),
