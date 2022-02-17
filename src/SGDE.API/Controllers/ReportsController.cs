@@ -94,8 +94,8 @@
 
                 var reportAllViewModel = new ReportQueryAllViewModel
                 {
-                    startDate = DateTime.Parse(startDate),
-                    endDate = DateTime.Parse(endDate),
+                    startDate = DateTime.ParseExact(startDate, "dd/MM/yyyy", null),
+                    endDate = DateTime.ParseExact(endDate, "dd/MM/yyyy", null),
                     workers = workers,
                     works = works,
                     clients = clients
