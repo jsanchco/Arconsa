@@ -46,8 +46,8 @@
 
                 var reportViewModel = new ReportQueryViewModel
                 {
-                    startDate = DateTime.Parse(startDate),
-                    endDate = DateTime.Parse(endDate),
+                    startDate = DateTime.ParseExact(startDate, "dd/MM/yyyy", null),
+                    endDate = DateTime.ParseExact(endDate, "dd/MM/yyyy", null),
                     workerId = workerId,
                     workId = workId,
                     clientId = clientId

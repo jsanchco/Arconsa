@@ -365,23 +365,25 @@ class Signings extends Component {
 
   transformCurrentViewRecords(args) {
     for (var i = 0; i < args.length; i++) {
+      let date = new Date(args[i].startHour);
       args[i].startHour = new Date(
         Date.UTC(
-          args[i].startHour.getFullYear(),
-          args[i].startHour.getMonth(),
-          args[i].startHour.getDate(),
-          args[i].startHour.getHours(),
-          args[i].startHour.getMilliseconds()
+          date.getFullYear(),
+          date.getMonth(),
+          date.getDate(),
+          date.getHours(),
+          date.getMilliseconds()
         ));
 
-        args[i].endHour = new Date(
-          Date.UTC(
-            args[i].endHour.getFullYear(),
-            args[i].endHour.getMonth(),
-            args[i].endHour.getDate(),
-            args[i].endHour.getHours(),
-            args[i].endHour.getMilliseconds()
-          ));
+      date = new Date(args[i].endHour);
+      args[i].endHour = new Date(
+        Date.UTC(
+          date.getFullYear(),
+          date.getMonth(),
+          date.getDate(),
+          date.getHours(),
+          date.getMilliseconds()
+        ));
     }
     return args;
   }

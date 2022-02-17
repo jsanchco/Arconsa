@@ -51,7 +51,7 @@ export const COMPANY_ADD_INDIRECTCOSTS = "api/indirectCosts/addindirectcosts";
 export const COMPANY_DATA = "COMPANY_DATA";
 
 const dev = {
-  URL_API: "http://localhost:51667"
+  URL_API: "http://localhost:44566"
   //URL_API: "https://arconsa1-api.azurewebsites.net"
 };
 
