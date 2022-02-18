@@ -40,6 +40,7 @@
                 var workerId = Convert.ToInt32(queryString["workerId"]);
                 var workId = Convert.ToInt32(queryString["workId"]);
                 var clientId = Convert.ToInt32(queryString["clientId"]);
+                var showCeros = Convert.ToBoolean(queryString["showCeros"]);
 
                 if (string.IsNullOrEmpty(startDate) || string.IsNullOrEmpty(endDate))
                     throw new Exception("Informe mal configurado");

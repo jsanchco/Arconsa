@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
 import {
   ColumnDirective,
@@ -15,6 +15,8 @@ import {
   AggregateDirective,
   AggregatesDirective,
 } from "@syncfusion/ej2-react-grids";
+import { FormGroup, Label, Row, Col } from "reactstrap";
+import { AppSwitch } from "@coreui/react";
 import { DataManager, WebApiAdaptor, Query } from "@syncfusion/ej2-data";
 import { config, REPORTS } from "../../constants";
 import { L10n } from "@syncfusion/ej2-base";
@@ -42,6 +44,7 @@ class GridSelection extends Component {
       cif: "",
       address: "",
       phoneNumber: "",
+      showCeros: true,
     };
 
     this.toolbarOptions = [
@@ -63,6 +66,7 @@ class GridSelection extends Component {
     this.beforePrint = this.beforePrint.bind(this);
     this.templateHours = this.templateHours.bind(this);
     this.excelQueryCellInfo = this.excelQueryCellInfo.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this);
   }
 
   componentDidMount() {
@@ -107,7 +111,8 @@ class GridSelection extends Component {
           this.grid.query = new Query()
             .addParams("workerId", settings.selection)
             .addParams("startDate", settings.start)
-            .addParams("endDate", settings.end);
+            .addParams("endDate", settings.end)
+            .addParams("showCeros", settings.showCeros);
 
           this.grid.refresh();
           break;
@@ -123,7 +128,8 @@ class GridSelection extends Component {
           this.grid.query = new Query()
             .addParams("workId", settings.selection)
             .addParams("startDate", settings.start)
-            .addParams("endDate", settings.end);
+            .addParams("endDate", settings.end)
+            .addParams("showCeros", settings.showCeros);
 
           this.grid.refresh();
           break;
@@ -139,16 +145,28 @@ class GridSelection extends Component {
           this.grid.query = new Query()
             .addParams("clientId", settings.selection)
             .addParams("startDate", settings.start)
-            .addParams("endDate", settings.end);
+            .addParams("endDate", settings.end)
+            .addParams("showCeros", settings.showCeros);
 
           this.grid.refresh();
           break;
 
         default:
           break;
-      }      
+      }
     }
-    hideSpinner(element)
+    hideSpinner(element);
+  }
+
+  handleInputChange(event) {
+    const target = event.target;
+    const name = target.name;
+
+    if (name === "show_Ceros") {
+      this.setState({
+        showCeros: !target.checked,
+      });
+    }
   }
 
   clickHandler(args) {
@@ -165,7 +183,11 @@ class GridSelection extends Component {
   footerSum(args) {
     let amount = args.Sum.toString().replace("$", "").replace(".00", "");
 
-    return <div style={{ textAlign: "right" }}><span>Total: {amount}</span></div>;
+    return (
+      <div style={{ textAlign: "right" }}>
+        <span>Total: {amount}</span>
+      </div>
+    );
     //return <span>Total: {args.Sum}</span>;
   }
 
@@ -179,7 +201,11 @@ class GridSelection extends Component {
       amount = Math.round((amount + Number.EPSILON) * 100) / 100;
     }
 
-    return <div style={{ textAlign: "right" }}><span>Total: {amount}€</span></div>;
+    return (
+      <div style={{ textAlign: "right" }}>
+        <span>Total: {amount}€</span>
+      </div>
+    );
   }
 
   renderWorker() {
@@ -392,7 +418,7 @@ class GridSelection extends Component {
 
   templateHours(args) {
     let value = args.hours;
-    if (args.hourTypeName === "Diario") {      
+    if (args.hourTypeName === "Diario") {
       value = "";
     }
 
@@ -407,157 +433,191 @@ class GridSelection extends Component {
 
   render() {
     return (
-      <div className="control-pane">
-        <div className="control-section">
-          <div>
-            <GridComponent
-              id="Grid"
-              //dataSource={null}
-              locale="es-US"
-              toolbar={this.toolbarOptions}
-              toolbarClick={this.clickHandler}
+      <Fragment>
+        <div className="control-pane">
+          <div className="control-section">
+            <div
               style={{
-                marginLeft: 30,
-                marginRight: 30,
-                marginTop: 10,
-                marginBottom: 20,
+                marginLeft: "35px",
+                marginTop: "-20px",
+                marginBottom: "30px",
               }}
-              allowGrouping={true}
-              allowExcelExport={true}
-              rowSelected={this.rowSelected}
-              ref={(g) => (this.grid = g)}
-              allowTextWrap={true}
-              textWrapSettings={this.wrapSettings}
-              beforePrint={this.beforePrint}
-              excelQueryCellInfo={this.excelQueryCellInfo}
             >
-              <ColumnsDirective>
-                {this.renderClient()}
-
-                {this.renderWork()}
-
-                {this.renderWorker()}
-
-                <ColumnDirective
-                  field="professionName"
-                  headerText="Puesto"
-                  width="100"
-                />
-
-                <ColumnDirective
-                  field="dateHour"
-                  headerText="Fecha"
-                  width="100"
-                />
-                <ColumnDirective
-                  field="hours"
-                  headerText="Horas"
-                  width="70"
-                  fotmat="N1"
-                  textAlign="right"
-                  editType="numericedit"
-                  template={this.templateHours}
-                />
-                <ColumnDirective
-                  field="hourTypeName"
-                  headerText="Tipo"
-                  width="100"
-                />
-                <ColumnDirective
-                  field="priceHour"
-                  headerText="Precio Coste"
-                  width="70"
-                  fotmat="C1"
-                  textAlign="right"
-                  editType="numericedit"
-                />
-                <ColumnDirective
-                  field="priceHourSale"
-                  headerText="Precio Venta"
-                  width="70"
-                  fotmat="C1"
-                  textAlign="right"
-                  editType="numericedit"
-                />
-              </ColumnsDirective>
-
-              <AggregatesDirective>
-                <AggregateDirective>
-                  <AggregateColumnsDirective>
-                    <AggregateColumnDirective
-                      field="hours"
-                      type="Sum"
-                      format="C2"
-                      footerTemplate={this.footerSum}
+              <Row>
+                <Col xs="10">&nbsp;</Col>
+                <Col xs="2">
+                  <FormGroup style={{ marginTop: 10 }}>
+                    <Label
+                      htmlFor="show_ceros"
+                      style={{ verticalAlign: "bottom" }}
                     >
-                      {" "}
-                    </AggregateColumnDirective>
+                      Mostrar registos con ceros&nbsp;
+                    </Label>
+                    <AppSwitch
+                      className={"mx-1 mt-4"}
+                      variant={"pill"}
+                      color={"primary"}
+                      label
+                      id="show_ceros"
+                      name="show_ceros"
+                      placeholder="mostrar registos con ceros"
+                      onChange={this.handleInputChange}
+                      dataOn="No"
+                      dataOff="Si"
+                    />
+                  </FormGroup>
+                </Col>
+              </Row>
+            </div>
+            <div>
+              <GridComponent
+                id="Grid"
+                //dataSource={null}
+                locale="es-US"
+                toolbar={this.toolbarOptions}
+                toolbarClick={this.clickHandler}
+                style={{
+                  marginLeft: 30,
+                  marginRight: 30,
+                  marginTop: -30,
+                  marginBottom: 20,
+                }}
+                allowGrouping={true}
+                allowExcelExport={true}
+                rowSelected={this.rowSelected}
+                ref={(g) => (this.grid = g)}
+                allowTextWrap={true}
+                textWrapSettings={this.wrapSettings}
+                beforePrint={this.beforePrint}
+                excelQueryCellInfo={this.excelQueryCellInfo}
+              >
+                <ColumnsDirective>
+                  {this.renderClient()}
 
-                    <AggregateColumnDirective
-                      field="priceHour"
-                      type="Sum"
-                      format="C2"
-                      footerTemplate={this.footerSumEuros}
-                    >
-                      {" "}
-                    </AggregateColumnDirective>
+                  {this.renderWork()}
 
-                    <AggregateColumnDirective
-                      field="priceHourSale"
-                      type="Sum"
-                      format="C2"
-                      footerTemplate={this.footerSumEuros}
-                    >
-                      {" "}
-                    </AggregateColumnDirective>
-                  </AggregateColumnsDirective>
-                </AggregateDirective>
+                  {this.renderWorker()}
 
-                <AggregateDirective>
-                  <AggregateColumnsDirective>
-                    <AggregateColumnDirective
-                      field="hours"
-                      type="Sum"
-                      groupCaptionTemplate={this.footerSum}
-                    >
-                      {" "}
-                    </AggregateColumnDirective>
-                  </AggregateColumnsDirective>
-                </AggregateDirective>
+                  <ColumnDirective
+                    field="professionName"
+                    headerText="Puesto"
+                    width="100"
+                  />
 
-                <AggregateDirective>
-                  <AggregateColumnsDirective>
-                    <AggregateColumnDirective
-                      field="priceHour"
-                      type="Sum"
-                      groupCaptionTemplate={this.footerSumEuros}
-                    >
-                      {" "}
-                    </AggregateColumnDirective>
-                  </AggregateColumnsDirective>
-                </AggregateDirective>
+                  <ColumnDirective
+                    field="dateHour"
+                    headerText="Fecha"
+                    width="100"
+                  />
+                  <ColumnDirective
+                    field="hours"
+                    headerText="Horas"
+                    width="70"
+                    fotmat="N1"
+                    textAlign="right"
+                    editType="numericedit"
+                    template={this.templateHours}
+                  />
+                  <ColumnDirective
+                    field="hourTypeName"
+                    headerText="Tipo"
+                    width="100"
+                  />
+                  <ColumnDirective
+                    field="priceHour"
+                    headerText="Precio Coste"
+                    width="70"
+                    fotmat="C1"
+                    textAlign="right"
+                    editType="numericedit"
+                  />
+                  <ColumnDirective
+                    field="priceHourSale"
+                    headerText="Precio Venta"
+                    width="70"
+                    fotmat="C1"
+                    textAlign="right"
+                    editType="numericedit"
+                  />
+                </ColumnsDirective>
 
-                <AggregateDirective>
-                  <AggregateColumnsDirective>
-                    <AggregateColumnDirective
-                      field="priceHourSale"
-                      type="Sum"
-                      groupCaptionTemplate={this.footerSumEuros}
-                    >
-                      {" "}
-                    </AggregateColumnDirective>
-                  </AggregateColumnsDirective>
-                </AggregateDirective>
-                
-              </AggregatesDirective>
+                <AggregatesDirective>
+                  <AggregateDirective>
+                    <AggregateColumnsDirective>
+                      <AggregateColumnDirective
+                        field="hours"
+                        type="Sum"
+                        format="C2"
+                        footerTemplate={this.footerSum}
+                      >
+                        {" "}
+                      </AggregateColumnDirective>
 
-              <Inject
-                services={[Group, ExcelExport, Toolbar, Edit, Aggregate]}
-              />
-            </GridComponent>
+                      <AggregateColumnDirective
+                        field="priceHour"
+                        type="Sum"
+                        format="C2"
+                        footerTemplate={this.footerSumEuros}
+                      >
+                        {" "}
+                      </AggregateColumnDirective>
+
+                      <AggregateColumnDirective
+                        field="priceHourSale"
+                        type="Sum"
+                        format="C2"
+                        footerTemplate={this.footerSumEuros}
+                      >
+                        {" "}
+                      </AggregateColumnDirective>
+                    </AggregateColumnsDirective>
+                  </AggregateDirective>
+
+                  <AggregateDirective>
+                    <AggregateColumnsDirective>
+                      <AggregateColumnDirective
+                        field="hours"
+                        type="Sum"
+                        groupCaptionTemplate={this.footerSum}
+                      >
+                        {" "}
+                      </AggregateColumnDirective>
+                    </AggregateColumnsDirective>
+                  </AggregateDirective>
+
+                  <AggregateDirective>
+                    <AggregateColumnsDirective>
+                      <AggregateColumnDirective
+                        field="priceHour"
+                        type="Sum"
+                        groupCaptionTemplate={this.footerSumEuros}
+                      >
+                        {" "}
+                      </AggregateColumnDirective>
+                    </AggregateColumnsDirective>
+                  </AggregateDirective>
+
+                  <AggregateDirective>
+                    <AggregateColumnsDirective>
+                      <AggregateColumnDirective
+                        field="priceHourSale"
+                        type="Sum"
+                        groupCaptionTemplate={this.footerSumEuros}
+                      >
+                        {" "}
+                      </AggregateColumnDirective>
+                    </AggregateColumnsDirective>
+                  </AggregateDirective>
+                </AggregatesDirective>
+
+                <Inject
+                  services={[Group, ExcelExport, Toolbar, Edit, Aggregate]}
+                />
+              </GridComponent>
+            </div>
           </div>
         </div>
-      </div>
+      </Fragment>
     );
   }
 }
