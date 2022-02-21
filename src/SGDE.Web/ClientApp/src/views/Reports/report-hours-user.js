@@ -16,8 +16,10 @@ class ReportHoursUser extends Component {
     this.updateReport = this.updateReport.bind(this);
   }
 
-  updateReport(type, start, end, selection, textSelection) {
-    this.setState({ settings: { type, start, end, selection, textSelection } });
+  updateReport(type, start, end, selection, textSelection, showCeros) {
+    this.setState({
+      settings: { type, start, end, selection, textSelection, showCeros },
+    });
   }
 
   render() {
@@ -25,7 +27,9 @@ class ReportHoursUser extends Component {
       <Fragment>
         <Breadcrumb>
           {/*eslint-disable-next-line*/}
-          <BreadcrumbItem><a href="#">Inicio</a></BreadcrumbItem>
+          <BreadcrumbItem>
+            <a href="#">Inicio</a>
+          </BreadcrumbItem>
           {/* eslint-disable-next-line*/}
           <BreadcrumbItem active>Informe de Horas por Tabajador</BreadcrumbItem>
         </Breadcrumb>

@@ -51,7 +51,8 @@
                     endDate = DateTime.ParseExact(endDate, "dd/MM/yyyy", null),
                     workerId = workerId,
                     workId = workId,
-                    clientId = clientId
+                    clientId = clientId,
+                    showCeros = showCeros
                 };
 
                 var data = new List<ReportResultViewModel>();
@@ -89,6 +90,7 @@
                 var workers = Convert.ToBoolean(queryString["workers"]);
                 var works = Convert.ToBoolean(queryString["works"]);
                 var clients = Convert.ToBoolean(queryString["clients"]);
+                var showCeros = Convert.ToBoolean(queryString["showCeros"]);
 
                 if (string.IsNullOrEmpty(startDate) || string.IsNullOrEmpty(endDate))
                     throw new Exception("Informe mal configurado");
@@ -99,7 +101,8 @@
                     endDate = DateTime.ParseExact(endDate, "dd/MM/yyyy", null),
                     workers = workers,
                     works = works,
-                    clients = clients
+                    clients = clients,
+                    showCeros = showCeros
                 };
 
                 var data = new List<ReportVariousInfoViewModel>();

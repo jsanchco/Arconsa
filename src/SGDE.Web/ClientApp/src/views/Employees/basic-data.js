@@ -2,13 +2,13 @@ import React, { Component, Fragment } from "react";
 import { Form, Col, FormGroup, Input, Label, Row, Button } from "reactstrap";
 import { DatePickerComponent } from "@syncfusion/ej2-react-calendars";
 import { MaskedTextBoxComponent } from "@syncfusion/ej2-react-inputs";
-import { MultiSelectComponent } from '@syncfusion/ej2-react-dropdowns';
+import { MultiSelectComponent } from "@syncfusion/ej2-react-dropdowns";
 import { updateUser, getUser } from "../../services";
 import ModalSelectImage from "../Modals/modal-select-image";
 import {
   createSpinner,
   showSpinner,
-  hideSpinner
+  hideSpinner,
 } from "@syncfusion/ej2-popups";
 import { getProfessions } from "../../services";
 
@@ -18,14 +18,13 @@ class BasicData extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { 
+    this.state = {
       modal: false,
       photo: null,
-      msdDataSource: null
+      msdDataSource: null,
     };
 
-    getUser(props.userId)
-    .then(result => {
+    getUser(props.userId).then((result) => {
       this.setState({
         id: result.id,
         name: result.name,
@@ -46,13 +45,12 @@ class BasicData extends Component {
         userProfessions: result.userProfessions,
         workId: result.workId,
         clientId: result.clientId,
-        modal: false
+        modal: false,
       });
     });
 
-    getProfessions()
-    .then(result => {
-      this.setState( { msdDataSource: result.Items} );
+    getProfessions().then((result) => {
+      this.setState({ msdDataSource: result.Items });
     });
 
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -81,13 +79,13 @@ class BasicData extends Component {
     const name = target.name;
 
     this.setState({
-      [name]: target.value
+      [name]: target.value,
     });
   }
 
   handleChangeProfessions(event) {
     this.setState({
-      userProfessions: event.value
+      userProfessions: event.value,
     });
   }
 
@@ -112,7 +110,7 @@ class BasicData extends Component {
       professionId: this.state.professionId,
       userProfessions: this.state.userProfessions,
       workId: this.state.workId,
-      clientId: this.state.clientId
+      clientId: this.state.clientId,
     };
   }
 
@@ -120,7 +118,7 @@ class BasicData extends Component {
     const element = document.getElementById("container");
 
     createSpinner({
-      target: element
+      target: element,
     });
     showSpinner(element);
     updateUser(this.getUser())
@@ -148,7 +146,7 @@ class BasicData extends Component {
 
   toggleModal() {
     this.setState({
-      modal: !this.state.modal
+      modal: !this.state.modal,
     });
   }
 
@@ -174,7 +172,7 @@ class BasicData extends Component {
             marginLeft: 10,
             marginRight: 60,
             marginTop: 20,
-            marginBottom: 20
+            marginBottom: 20,
           }}
           id="container"
         >
@@ -192,7 +190,7 @@ class BasicData extends Component {
                     <span
                       style={{
                         fontSize: 10,
-                        fontWeight: "bold"
+                        fontWeight: "bold",
                       }}
                     >
                       Doble click para cambiar la imagen
@@ -357,16 +355,16 @@ class BasicData extends Component {
                   </Col>
                 </Row>
                 <Row>
-                <Col xs="4">
+                  <Col xs="4">
                     <FormGroup>
                       <Label htmlFor="professions">Puestos de Trabajo</Label>
-                      <MultiSelectComponent 
-                        id="professions" 
+                      <MultiSelectComponent
+                        id="professions"
                         name="professions"
-                        dataSource={this.state.msdDataSource} 
+                        dataSource={this.state.msdDataSource}
                         fields={this.fields}
                         value={this.state.userProfessions}
-                        placeholder="Selecciona puesto/s" 
+                        placeholder="Selecciona puesto/s"
                         change={this.handleChangeProfessions}
                       />
                     </FormGroup>

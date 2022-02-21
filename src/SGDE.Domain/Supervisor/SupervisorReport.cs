@@ -17,7 +17,10 @@
     {
         public List<ReportResultViewModel> GetHoursByUser(ReportQueryViewModel reportViewModel)
         {
-            return ReportResultConverter.ConvertList(_dailySigningRepository.GetByUserId(reportViewModel.startDate, reportViewModel.endDate, (int)reportViewModel.workerId));
+            var result = _dailySigningRepository.GetByUserId(reportViewModel.startDate, reportViewModel.endDate, (int)reportViewModel.workerId);
+            //if (!reportViewModel.showCeros)
+            //    result = result.Where(x => x.)
+            return ReportResultConverter.ConvertList(result);
         }
 
         public List<ReportResultViewModel> GetHoursByWork(ReportQueryViewModel reportViewModel)
@@ -78,6 +81,25 @@
                                                 .Select(x => x.priceHourSale).Sum()
                 });
             }
+
+            if (!reportAllViewModel.showCeros)
+            {
+                result = result.Where(x =>
+                    x.totalHoursOrdinary != 0 ||
+                    x.totalHoursExtraordinary != 0 ||
+                    x.totalHoursFestive != 0 ||
+                    x.totalHoursNocturnal != 0 ||
+                    x.priceTotalHoursOrdinary != 0 ||
+                    x.priceTotalHoursSaleOrdinary != 0 ||
+                    x.priceTotalHoursExtraordinary != 0 ||
+                    x.priceTotalHoursSaleExtraordinary != 0 ||
+                    x.priceTotalHoursFestive != 0 ||
+                    x.priceTotalHoursSaleFestive != 0 ||
+                    x.priceTotalHoursNocturnal != 0 ||
+                    x.priceTotalHoursSaleNocturnal != 0)
+                    .ToList();
+            }
+
             return result;
         }
 
@@ -130,6 +152,25 @@
                                                 .Select(x => x.priceHourSale).Sum()
                 });
             }
+
+            if (!reportAllViewModel.showCeros)
+            {
+                result = result.Where(x =>
+                    x.totalHoursOrdinary != 0 ||
+                    x.totalHoursExtraordinary != 0 ||
+                    x.totalHoursFestive != 0 ||
+                    x.totalHoursNocturnal != 0 ||
+                    x.priceTotalHoursOrdinary != 0 ||
+                    x.priceTotalHoursSaleOrdinary != 0 ||
+                    x.priceTotalHoursExtraordinary != 0 ||
+                    x.priceTotalHoursSaleExtraordinary != 0 ||
+                    x.priceTotalHoursFestive != 0 ||
+                    x.priceTotalHoursSaleFestive != 0 ||
+                    x.priceTotalHoursNocturnal != 0 ||
+                    x.priceTotalHoursSaleNocturnal != 0)
+                    .ToList();
+            }
+
             return result;
         }
 
@@ -181,6 +222,25 @@
                                                 .Select(x => x.priceHourSale).Sum()
                 });
             }
+
+            if (!reportAllViewModel.showCeros)
+            {
+                result = result.Where(x =>
+                    x.totalHoursOrdinary != 0 ||
+                    x.totalHoursExtraordinary != 0 ||
+                    x.totalHoursFestive != 0 ||
+                    x.totalHoursNocturnal != 0 ||
+                    x.priceTotalHoursOrdinary != 0 ||
+                    x.priceTotalHoursSaleOrdinary != 0 ||
+                    x.priceTotalHoursExtraordinary != 0 ||
+                    x.priceTotalHoursSaleExtraordinary != 0 ||
+                    x.priceTotalHoursFestive != 0 ||
+                    x.priceTotalHoursSaleFestive != 0 ||
+                    x.priceTotalHoursNocturnal != 0 ||
+                    x.priceTotalHoursSaleNocturnal != 0)
+                    .ToList();
+            }
+
             return result;
         }
     }

@@ -1,6 +1,6 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
-import { Form, FormGroup, Label, Button } from "reactstrap";
+import { Form, FormGroup, Label, Button, Row, Col } from "reactstrap";
 import { DatePickerComponent } from "@syncfusion/ej2-react-calendars";
 import { DropDownListComponent } from "@syncfusion/ej2-react-dropdowns";
 import { L10n, loadCldr } from "@syncfusion/ej2-base";
@@ -11,7 +11,8 @@ import {
   showSpinner,
   hideSpinner,
 } from "@syncfusion/ej2-popups";
-import { Query } from '@syncfusion/ej2-data';
+import { AppSwitch } from "@coreui/react";
+import { Query } from "@syncfusion/ej2-data";
 
 import * as gregorian from "cldr-data/main/es-US/ca-gregorian.json";
 import * as numbers from "cldr-data/main/es-US/numbers.json";
@@ -26,6 +27,7 @@ L10n.load(data);
 class HeaderSettings extends Component {
   dtpStartDate = null;
   dtpEndDate = null;
+  appSwitchSwhowCeros = null;
   ddl = null;
 
   fields = { text: "name", value: "id" };
@@ -35,7 +37,12 @@ class HeaderSettings extends Component {
 
     this.element = null;
 
-    this._handleOnClick = this._handleOnClick.bind(this);
+    this.state = {
+      showCeros: true,
+    };
+
+    this.handleOnClick = this.handleOnClick.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this);
   }
 
   componentDidMount() {
@@ -45,7 +52,7 @@ class HeaderSettings extends Component {
     });
 
     showSpinner(this.element);
-    if (this.props.type === "workers") {      
+    if (this.props.type === "workers") {
       getWorkers()
         .then((items) => {
           this.ddl.dataSource = items;
@@ -85,7 +92,16 @@ class HeaderSettings extends Component {
     }
   }
 
-  _handleOnClick() {
+  handleInputChange(event) {
+    const target = event.target;
+    const name = target.name;
+
+    if (name === "show_ceros") {
+      this.setState({ showCeros: !target.checked });
+    }
+  }
+
+  handleOnClick() {
     const valueDtpStartDate = this.formatDate(this.dtpStartDate.value);
     const valueDtpEndDate = this.formatDate(this.dtpEndDate.value);
     const valueDdl = this.ddl.value;
@@ -118,18 +134,18 @@ class HeaderSettings extends Component {
           valueDtpStartDate,
           valueDtpEndDate,
           valueDdl,
-          textDdl
+          textDdl,
+          this.state.showCeros
         );
       }
     }
   }
 
-  _handleFiltering(e)
-  {
-      let query = new Query();
-      query =
-        e.text !== "" ? query.where("name", "contains", e.text, true) : query;
-      e.updateData(this.searchData, query);
+  handleFiltering(e) {
+    let query = new Query();
+    query =
+      e.text !== "" ? query.where("name", "contains", e.text, true) : query;
+    e.updateData(this.searchData, query);
   }
 
   formatDate(args) {
@@ -171,56 +187,118 @@ class HeaderSettings extends Component {
     }
 
     return (
-      <Form inline style={{ marginLeft: "20px" }}>
-        <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
-          <Label for="startDate" className="mr-sm-2">
-            Fecha Inicio
-          </Label>
-          <DatePickerComponent
-            id="startDate"
-            ref={(g) => (this.dtpStartDate = g)}
-            format="dd/MM/yyyy"
-          />
-        </FormGroup>
-        <FormGroup
-          className="mb-2 mr-sm-2 mb-sm-0"
-          style={{ marginLeft: "20px" }}
+      <Fragment>
+        {/* <div> */}
+          <Form style={{ marginLeft: "20px" }}>
+            <Row>
+              <Col xs="3">
+                <FormGroup>
+                  <Label for="startDate">Fecha Inicio</Label>
+                  <DatePickerComponent
+                    id="startDate"
+                    ref={(g) => (this.dtpStartDate = g)}
+                    format="dd/MM/yyyy"
+                  />
+                </FormGroup>
+              </Col>
+              <Col xs="3">
+                <FormGroup style={{ marginLeft: "20px" }}>
+                  <Label for="endDate">Fecha Fin</Label>
+                  <DatePickerComponent
+                    id="endDate"
+                    ref={(g) => (this.dtpEndDate = g)}
+                    format="dd/MM/yyyy"
+                  />
+                </FormGroup>
+              </Col>
+              <Col xs="3">
+                <FormGroup style={{ marginLeft: "20px" }}>
+                  <Label for={title}>{title}</Label>
+                  <DropDownListComponent
+                    id={title}
+                    dataSource={null}
+                    placeholder={`Selecciona ${title}`}
+                    fields={this.fields}
+                    ref={(g) => (this.ddl = g)}
+                    filtering={this.handleFiltering.bind(this)}
+                    allowFiltering={true}
+                    popupWidth="auto"
+                  />
+                </FormGroup>
+              </Col>
+              {/* <Col xs="3">
+                <FormGroup style={{ marginTop: "30px" }}>
+                  <Label
+                    htmlFor="show_ceros"
+                    style={{ verticalAlign: "bottom" }}
+                  >
+                    Mostrar registos con ceros&nbsp;
+                  </Label>
+                  <AppSwitch
+                    // className={"mx-1 mt-4"}
+                    variant={"pill"}
+                    color={"primary"}
+                    label
+                    id="show_ceros"
+                    name="show_ceros"
+                    placeholder="mostrar registos con ceros"
+                    onChange={this.handleInputChange}
+                    dataOn="No"
+                    dataOff="Si"
+                    checked={!this.state.showCeros}
+                    // value={this.state.showCeros}
+                    // ref={(g) => (this.appSwitchSwhowCeros = g)}
+                  />
+                </FormGroup>
+              </Col> */}
+            </Row>
+            <Row>
+              <Col xs="10"></Col>
+              <Col xs="2">
+                <Button
+                  color="primary"
+                  style={{ marginLeft: "30px", textAlign: "left" }}
+                  onClick={this.handleOnClick}
+                >
+                  Consultar
+                </Button>
+              </Col>
+            </Row>
+          </Form>
+        {/* </div> */}
+        {/* <div
+          style={{
+            marginLeft: "35px",
+            marginTop: "-20px",
+            marginBottom: "30px",
+          }}
         >
-          <Label for="endDate" className="mr-sm-2">
-            Fecha Fin
-          </Label>
-          <DatePickerComponent
-            id="endDate"
-            ref={(g) => (this.dtpEndDate = g)}
-            format="dd/MM/yyyy"
-          />
-        </FormGroup>
-        <FormGroup
-          className="mb-2 mr-sm-2 mb-sm-0"
-          style={{ marginLeft: "20px" }}
-        >
-          <Label for={title} className="mr-sm-2">
-            {title}
-          </Label>
-          <DropDownListComponent
-            id={title}
-            dataSource={null}
-            placeholder={`Selecciona ${title}`}
-            fields={this.fields}
-            ref={(g) => (this.ddl = g)}
-            filtering={this._handleFiltering.bind(this)}
-            allowFiltering={true}
-            popupWidth="auto"
-          />
-        </FormGroup>
-        <Button
-          color="primary"
-          style={{ marginLeft: "20px" }}
-          onClick={this._handleOnClick}
-        >
-          Consultar
-        </Button>
-      </Form>
+          <Row>
+            <Col xs="9">&nbsp;</Col>
+            <Col xs="3">
+              <FormGroup style={{ marginTop: 10 }}>
+                <Label htmlFor="show_ceros" style={{ verticalAlign: "bottom" }}>
+                  Mostrar registos con ceros&nbsp;
+                </Label>
+                <AppSwitch
+                  className={"mx-1 mt-4"}
+                  variant={"pill"}
+                  color={"primary"}
+                  label
+                  id="show_ceros"
+                  name="show_ceros"
+                  placeholder="mostrar registos con ceros"
+                  onChange={this.handleInputChange}
+                  dataOn="No"
+                  dataOff="Si"
+                  value={this.state.showCeros}
+                  ref={(g) => (this.appSwitchSwhowCeros = g)}
+                />
+              </FormGroup>
+            </Col>
+          </Row>
+        </div> */}
+      </Fragment>
     );
   }
 }

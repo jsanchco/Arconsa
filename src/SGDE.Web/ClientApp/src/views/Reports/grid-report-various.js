@@ -15,6 +15,7 @@ import {
   AggregateDirective,
   AggregatesDirective,
   Resize,
+  autoCol,
 } from "@syncfusion/ej2-react-grids";
 import { DataManager, WebApiAdaptor, Query } from "@syncfusion/ej2-data";
 import { config, REPORTS_ALL } from "../../constants";
@@ -84,7 +85,7 @@ class GridReportVarious extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.settings !== this.props.settings) {
+    if (this.hasChanges(prevProps.settings, this.props.settings)) {
       const { settings } = this.props;
       switch (settings.textSelection) {
         case "Trabajadores":
@@ -104,7 +105,8 @@ class GridReportVarious extends Component {
           this.grid.query = new Query()
             .addParams("workers", true)
             .addParams("startDate", settings.start)
-            .addParams("endDate", settings.end);
+            .addParams("endDate", settings.end)
+            .addParams("showCeros", settings.showCeros);
 
           this.grid.refresh();
           break;
@@ -126,7 +128,8 @@ class GridReportVarious extends Component {
           this.grid.query = new Query()
             .addParams("works", true)
             .addParams("startDate", settings.start)
-            .addParams("endDate", settings.end);
+            .addParams("endDate", settings.end)
+            .addParams("showCeros", settings.showCeros);
 
           this.grid.refresh();
           break;
@@ -148,7 +151,8 @@ class GridReportVarious extends Component {
           this.grid.query = new Query()
             .addParams("clients", true)
             .addParams("startDate", settings.start)
-            .addParams("endDate", settings.end);
+            .addParams("endDate", settings.end)
+            .addParams("showCeros", settings.showCeros);
 
           this.grid.refresh();
           break;
@@ -157,6 +161,23 @@ class GridReportVarious extends Component {
           break;
       }
     }
+  }
+
+  hasChanges(prevProps, actualProps) {
+    if (prevProps == null && actualProps == null) return false;
+    
+    if (prevProps == null && actualProps != null) return true;
+
+    if (
+      prevProps.start !== actualProps.start ||
+      prevProps.end !== actualProps.end ||
+      prevProps.textSelection !== actualProps.textSelection ||
+      prevProps.showCeros !== actualProps.showCeros
+    ) {
+      return true;
+    }
+
+    return false;
   }
 
   clickHandler(args) {

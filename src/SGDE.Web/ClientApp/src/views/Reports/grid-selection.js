@@ -15,8 +15,6 @@ import {
   AggregateDirective,
   AggregatesDirective,
 } from "@syncfusion/ej2-react-grids";
-import { FormGroup, Label, Row, Col } from "reactstrap";
-import { AppSwitch } from "@coreui/react";
 import { DataManager, WebApiAdaptor, Query } from "@syncfusion/ej2-data";
 import { config, REPORTS } from "../../constants";
 import { L10n } from "@syncfusion/ej2-base";
@@ -44,7 +42,6 @@ class GridSelection extends Component {
       cif: "",
       address: "",
       phoneNumber: "",
-      showCeros: true,
     };
 
     this.toolbarOptions = [
@@ -66,7 +63,6 @@ class GridSelection extends Component {
     this.beforePrint = this.beforePrint.bind(this);
     this.templateHours = this.templateHours.bind(this);
     this.excelQueryCellInfo = this.excelQueryCellInfo.bind(this);
-    this.handleInputChange = this.handleInputChange.bind(this);
   }
 
   componentDidMount() {
@@ -90,12 +86,23 @@ class GridSelection extends Component {
   }
 
   componentDidUpdate(prevProps) {
+    if (prevProps.settings == null || this.props.settings == null) return;
+
     var element = document.getElementById("Grid");
     createSpinner({
       target: element,
     });
 
     showSpinner(element);
+
+    // if (
+    //   prevProps.settings.type !== this.props.settings.type ||
+    //   prevProps.settings.start !== this.props.settings.start ||
+    //   prevProps.settings.end !== this.props.settings.end ||
+    //   prevProps.settings.selection !== this.props.settings.selection ||
+    //   prevProps.settings.textSelection !== this.props.settings.textSelection ||
+    //   prevProps.settings.showCeros !== this.props.settings.showCeros
+    // ) {
 
     if (prevProps.settings !== this.props.settings) {
       const { settings } = this.props;
@@ -156,17 +163,6 @@ class GridSelection extends Component {
       }
     }
     hideSpinner(element);
-  }
-
-  handleInputChange(event) {
-    const target = event.target;
-    const name = target.name;
-
-    if (name === "show_Ceros") {
-      this.setState({
-        showCeros: !target.checked,
-      });
-    }
   }
 
   clickHandler(args) {
@@ -436,39 +432,6 @@ class GridSelection extends Component {
       <Fragment>
         <div className="control-pane">
           <div className="control-section">
-            <div
-              style={{
-                marginLeft: "35px",
-                marginTop: "-20px",
-                marginBottom: "30px",
-              }}
-            >
-              <Row>
-                <Col xs="10">&nbsp;</Col>
-                <Col xs="2">
-                  <FormGroup style={{ marginTop: 10 }}>
-                    <Label
-                      htmlFor="show_ceros"
-                      style={{ verticalAlign: "bottom" }}
-                    >
-                      Mostrar registos con ceros&nbsp;
-                    </Label>
-                    <AppSwitch
-                      className={"mx-1 mt-4"}
-                      variant={"pill"}
-                      color={"primary"}
-                      label
-                      id="show_ceros"
-                      name="show_ceros"
-                      placeholder="mostrar registos con ceros"
-                      onChange={this.handleInputChange}
-                      dataOn="No"
-                      dataOff="Si"
-                    />
-                  </FormGroup>
-                </Col>
-              </Row>
-            </div>
             <div>
               <GridComponent
                 id="Grid"
@@ -479,7 +442,7 @@ class GridSelection extends Component {
                 style={{
                   marginLeft: 30,
                   marginRight: 30,
-                  marginTop: -30,
+                  marginTop: 30,
                   marginBottom: 20,
                 }}
                 allowGrouping={true}

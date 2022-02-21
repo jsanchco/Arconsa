@@ -16,8 +16,8 @@ class ReportHoursWork extends Component {
     this.updateReport = this.updateReport.bind(this);
   }
 
-  updateReport(type, start, end, selection, textSelection) {
-    this.setState({ settings: { type, start, end, selection, textSelection } });
+  updateReport(type, start, end, selection, textSelection, showCeros) {
+    this.setState({ settings: { type, start, end, selection, textSelection, showCeros } });
   }
 
   render() {

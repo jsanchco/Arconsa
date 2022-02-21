@@ -9,5 +9,6 @@ namespace SGDE.Domain.ViewModels
         public int? workerId { get; set; }
         public int? workId { get; set; }
         public int? clientId { get; set; }
+        public bool showCeros { get; set; }
     }
 }

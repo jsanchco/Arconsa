@@ -16,8 +16,8 @@ class ReportsVarious extends Component {
     this.updateReport = this.updateReport.bind(this);
   }
 
-  updateReport(start, end, textSelection) {
-    this.setState({ settings: { start, end, textSelection } });
+  updateReport(start, end, textSelection, showCeros) {
+    this.setState({ settings: { start, end, textSelection, showCeros } });
   }
 
   render() {
