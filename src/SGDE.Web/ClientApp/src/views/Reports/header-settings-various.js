@@ -6,6 +6,7 @@ import { DatePickerComponent } from "@syncfusion/ej2-react-calendars";
 import { DropDownListComponent } from "@syncfusion/ej2-react-dropdowns";
 import { L10n } from "@syncfusion/ej2-base";
 import data from "../../locales/locale.json";
+// import PubSub from "pubsub-js";
 
 L10n.load(data);
 
@@ -67,6 +68,14 @@ class HeaderSettingsVarious extends Component {
           type: "danger",
         });
       } else {
+        // var data = {
+        //   start: this.formatDate(this.dtpStartDate.value),
+        //   end: this.formatDate(this.dtpEndDate.value),
+        //   textSelection: textDdl,
+        //   showCeros: this.state.showCeros
+        // };
+        // PubSub.publish("updateGrid", data);
+
         this.props.updateReport(
           valueDtpStartDate,
           valueDtpEndDate,
@@ -166,6 +175,7 @@ class HeaderSettingsVarious extends Component {
           <Col xs="10"></Col>
           <Col xs="2">
             <Button
+              id="consultar"
               color="primary"
               style={{ marginLeft: "30px", textAlign: "left" }}
               onClick={this._handleOnClick}

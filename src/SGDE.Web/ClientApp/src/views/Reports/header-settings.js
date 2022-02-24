@@ -11,7 +11,6 @@ import {
   showSpinner,
   hideSpinner,
 } from "@syncfusion/ej2-popups";
-import { AppSwitch } from "@coreui/react";
 import { Query } from "@syncfusion/ej2-data";
 
 import * as gregorian from "cldr-data/main/es-US/ca-gregorian.json";
@@ -101,7 +100,7 @@ class HeaderSettings extends Component {
     }
   }
 
-  handleOnClick() {
+  handleOnClick() {    
     const valueDtpStartDate = this.formatDate(this.dtpStartDate.value);
     const valueDtpEndDate = this.formatDate(this.dtpEndDate.value);
     const valueDdl = this.ddl.value;
@@ -226,31 +225,6 @@ class HeaderSettings extends Component {
                   />
                 </FormGroup>
               </Col>
-              {/* <Col xs="3">
-                <FormGroup style={{ marginTop: "30px" }}>
-                  <Label
-                    htmlFor="show_ceros"
-                    style={{ verticalAlign: "bottom" }}
-                  >
-                    Mostrar registos con ceros&nbsp;
-                  </Label>
-                  <AppSwitch
-                    // className={"mx-1 mt-4"}
-                    variant={"pill"}
-                    color={"primary"}
-                    label
-                    id="show_ceros"
-                    name="show_ceros"
-                    placeholder="mostrar registos con ceros"
-                    onChange={this.handleInputChange}
-                    dataOn="No"
-                    dataOff="Si"
-                    checked={!this.state.showCeros}
-                    // value={this.state.showCeros}
-                    // ref={(g) => (this.appSwitchSwhowCeros = g)}
-                  />
-                </FormGroup>
-              </Col> */}
             </Row>
             <Row>
               <Col xs="10"></Col>
@@ -265,39 +239,6 @@ class HeaderSettings extends Component {
               </Col>
             </Row>
           </Form>
-        {/* </div> */}
-        {/* <div
-          style={{
-            marginLeft: "35px",
-            marginTop: "-20px",
-            marginBottom: "30px",
-          }}
-        >
-          <Row>
-            <Col xs="9">&nbsp;</Col>
-            <Col xs="3">
-              <FormGroup style={{ marginTop: 10 }}>
-                <Label htmlFor="show_ceros" style={{ verticalAlign: "bottom" }}>
-                  Mostrar registos con ceros&nbsp;
-                </Label>
-                <AppSwitch
-                  className={"mx-1 mt-4"}
-                  variant={"pill"}
-                  color={"primary"}
-                  label
-                  id="show_ceros"
-                  name="show_ceros"
-                  placeholder="mostrar registos con ceros"
-                  onChange={this.handleInputChange}
-                  dataOn="No"
-                  dataOff="Si"
-                  value={this.state.showCeros}
-                  ref={(g) => (this.appSwitchSwhowCeros = g)}
-                />
-              </FormGroup>
-            </Col>
-          </Row>
-        </div> */}
       </Fragment>
     );
   }

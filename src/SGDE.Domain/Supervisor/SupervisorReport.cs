@@ -78,7 +78,11 @@
                                                 .Select(x => x.priceHour).Sum(),
                     priceTotalHoursSaleNocturnal = (double)listReportResultViewModel
                                                 .Where(x => x.hourTypeId == 4)
-                                                .Select(x => x.priceHourSale).Sum()
+                                                .Select(x => x.priceHourSale).Sum(),
+                    //priceDiary = (double)listReportResultViewModel
+                    //                            .FirstOrDefault(x => x.hourTypeId == 5)?.priceHour,
+                    //priceSaleDiary = (double)listReportResultViewModel
+                    //                            .FirstOrDefault(x => x.hourTypeId == 5)?.priceHourSale,
                 });
             }
 
@@ -96,7 +100,9 @@
                     x.priceTotalHoursFestive != 0 ||
                     x.priceTotalHoursSaleFestive != 0 ||
                     x.priceTotalHoursNocturnal != 0 ||
-                    x.priceTotalHoursSaleNocturnal != 0)
+                    x.priceTotalHoursSaleNocturnal != 0 ||
+                    x.priceDiary != 0 ||
+                    x.priceSaleDiary != 0)
                     .ToList();
             }
 
@@ -149,7 +155,11 @@
                                                 .Select(x => x.priceHour).Sum(),
                     priceTotalHoursSaleNocturnal = (double)listReportResultViewModel
                                                 .Where(x => x.hourTypeId == 4)
-                                                .Select(x => x.priceHourSale).Sum()
+                                                .Select(x => x.priceHourSale).Sum(),
+                    priceDiary = (double)listReportResultViewModel
+                                                .FirstOrDefault(x => x.hourTypeId == 5)?.priceHour,
+                    priceSaleDiary = (double)listReportResultViewModel
+                                                .FirstOrDefault(x => x.hourTypeId == 5)?.priceHourSale,
                 });
             }
 
@@ -167,7 +177,9 @@
                     x.priceTotalHoursFestive != 0 ||
                     x.priceTotalHoursSaleFestive != 0 ||
                     x.priceTotalHoursNocturnal != 0 ||
-                    x.priceTotalHoursSaleNocturnal != 0)
+                    x.priceTotalHoursSaleNocturnal != 0 ||
+                    x.priceDiary != 0 ||
+                    x.priceSaleDiary != 0)
                     .ToList();
             }
 
@@ -219,7 +231,11 @@
                                                 .Select(x => x.priceHour).Sum(),
                     priceTotalHoursSaleNocturnal = (double)listReportResultViewModel
                                                 .Where(x => x.hourTypeId == 4)
-                                                .Select(x => x.priceHourSale).Sum()
+                                                .Select(x => x.priceHourSale).Sum(),
+                    priceDiary = (double)listReportResultViewModel
+                                                .FirstOrDefault(x => x.hourTypeId == 5)?.priceHour,
+                    priceSaleDiary = (double)listReportResultViewModel
+                                                .FirstOrDefault(x => x.hourTypeId == 5)?.priceHourSale,
                 });
             }
 
@@ -237,7 +253,9 @@
                     x.priceTotalHoursFestive != 0 ||
                     x.priceTotalHoursSaleFestive != 0 ||
                     x.priceTotalHoursNocturnal != 0 ||
-                    x.priceTotalHoursSaleNocturnal != 0)
+                    x.priceTotalHoursSaleNocturnal != 0 ||
+                    x.priceDiary != 0 ||
+                    x.priceSaleDiary != 0)
                     .ToList();
             }
 

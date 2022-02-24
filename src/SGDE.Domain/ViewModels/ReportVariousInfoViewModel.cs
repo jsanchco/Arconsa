@@ -14,9 +14,11 @@
         public double priceTotalHoursFestive { get; set; }
         public double priceTotalHoursExtraordinary { get; set; }
         public double priceTotalHoursNocturnal { get; set; }
+        public double priceDiary { get; set; }
         public double priceTotalHoursSaleOrdinary { get; set; }
         public double priceTotalHoursSaleFestive { get; set; }
         public double priceTotalHoursSaleExtraordinary { get; set; }
         public double priceTotalHoursSaleNocturnal { get; set; }
+        public double priceSaleDiary { get; set; }
     }
 }

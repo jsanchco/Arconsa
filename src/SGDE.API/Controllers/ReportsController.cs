@@ -10,6 +10,7 @@
     using Domain.ViewModels;
     using System.Linq;
     using System.Collections.Generic;
+    using Newtonsoft.Json;
 
     #endregion
 

@@ -15,7 +15,6 @@ import {
   AggregateDirective,
   AggregatesDirective,
   Resize,
-  autoCol,
 } from "@syncfusion/ej2-react-grids";
 import { DataManager, WebApiAdaptor, Query } from "@syncfusion/ej2-data";
 import { config, REPORTS_ALL } from "../../constants";
@@ -23,13 +22,17 @@ import { L10n } from "@syncfusion/ej2-base";
 import data from "../../locales/locale.json";
 import { TOKEN_KEY, getSettings } from "../../services";
 import { COMPANY_DATA } from "../../constants";
+// import PubSub from "pubsub-js";
 
 L10n.load(data);
 
 class GridReportVarious extends Component {
   grid = null;
-
   wrapSettings = { wrapMode: "Content" };
+  // title = null;
+  // titleColumn = null;
+  // titleFooter = null;
+  // field = null;
 
   constructor(props) {
     super(props);
@@ -60,11 +63,13 @@ class GridReportVarious extends Component {
     this.renderColumn = this.renderColumn.bind(this);
     this.footerCount = this.footerCount.bind(this);
     this.beforePrint = this.beforePrint.bind(this);
+    this.updateGrid = this.updateGrid.bind(this);
 
     this.format = { type: "dateTime", format: "dd/MM/yyyy" };
   }
 
   componentDidMount() {
+    // PubSub.subscribe("updateGrid", this.updateGrid);
     getSettings(COMPANY_DATA)
       .then((result) => {
         const data = JSON.parse(result.data);
@@ -85,10 +90,16 @@ class GridReportVarious extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (this.hasChanges(prevProps.settings, this.props.settings)) {
+    // if (this.hasChanges(prevProps.settings, this.props.settings)) {
+    if (prevProps.settings !== this.props.settings) {
       const { settings } = this.props;
       switch (settings.textSelection) {
         case "Trabajadores":
+          // this.title = "TRABAJADORES";
+          // this.titleColumn = "Trabajador";
+          // this.titleFooter = "Trabajadores";
+          // this.field = "workerName";
+
           this.setState({
             title: "TRABAJADORES",
             titleColumn: "Trabajador",
@@ -112,6 +123,11 @@ class GridReportVarious extends Component {
           break;
 
         case "Obras":
+          // this.title = "OBRAS";
+          // this.titleColumn = "Obra";
+          // this.titleFooter = "Obras";
+          // this.field = "workName";
+
           this.setState({
             title: "OBRAS",
             titleColumn: "Obra",
@@ -135,6 +151,11 @@ class GridReportVarious extends Component {
           break;
 
         case "Clientes":
+          // this.title = "CLIENTES";
+          // this.titleColumn = "Cliente";
+          // this.titleFooter = "Clientes";
+          // this.field = "clientName";
+
           this.setState({
             title: "CLIENTES",
             titleColumn: "Cliente",
@@ -163,9 +184,87 @@ class GridReportVarious extends Component {
     }
   }
 
+  updateGrid(topic, data) {
+    if (topic !== "updateGrid") return;
+
+    switch (data.textSelection) {
+      case "Trabajadores":
+        this.setState({
+          title: "TRABAJADORES",
+          titleColumn: "Trabajador",
+          titleFooter: "Trabajadores",
+          field: "workerName",
+        });
+        this.grid.dataSource = new DataManager({
+          adaptor: new WebApiAdaptor(),
+          url: `${config.URL_API}/${REPORTS_ALL}`,
+          headers: [
+            { Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) },
+          ],
+        });
+        this.grid.query = new Query()
+          .addParams("workers", true)
+          .addParams("startDate", data.start)
+          .addParams("endDate", data.end)
+          .addParams("showCeros", data.showCeros);
+
+        this.grid.refresh();
+        break;
+
+      case "Obras":
+        this.setState({
+          title: "OBRAS",
+          titleColumn: "Obra",
+          titleFooter: "Obras",
+          field: "workName",
+        });
+        this.grid.dataSource = new DataManager({
+          adaptor: new WebApiAdaptor(),
+          url: `${config.URL_API}/${REPORTS_ALL}`,
+          headers: [
+            { Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) },
+          ],
+        });
+        this.grid.query = new Query()
+          .addParams("works", true)
+          .addParams("startDate", data.start)
+          .addParams("endDate", data.end)
+          .addParams("showCeros", data.showCeros);
+
+        this.grid.refresh();
+        break;
+
+      case "Clientes":
+        this.setState({
+          title: "CLIENTES",
+          titleColumn: "Cliente",
+          titleFooter: "Clientes",
+          field: "clientName",
+        });
+        this.grid.dataSource = new DataManager({
+          adaptor: new WebApiAdaptor(),
+          url: `${config.URL_API}/${REPORTS_ALL}`,
+          headers: [
+            { Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) },
+          ],
+        });
+        this.grid.query = new Query()
+          .addParams("clients", true)
+          .addParams("startDate", data.start)
+          .addParams("endDate", data.end)
+          .addParams("showCeros", data.showCeros);
+
+        this.grid.refresh();
+        break;
+
+      default:
+        break;
+    }
+  }
+
   hasChanges(prevProps, actualProps) {
     if (prevProps == null && actualProps == null) return false;
-    
+
     if (prevProps == null && actualProps != null) return true;
 
     if (
@@ -194,6 +293,7 @@ class GridReportVarious extends Component {
   footerCount(args) {
     return (
       <span>
+        {/* Total: {args.Count} {this.titleFooter} */}
         Total: {args.Count} {this.state.titleFooter}
       </span>
     );
@@ -239,6 +339,10 @@ class GridReportVarious extends Component {
   }
 
   getExcelExportProperties() {
+    // let title = `INFORME de ${this.title}`;
+    // let type = this.title;
+    // let fileName = `Inf_${this.title}.xlsx`;
+
     let title = `INFORME de ${this.state.title}`;
     let type = this.state.title;
     let fileName = `Inf_${this.state.title}.xlsx`;
@@ -351,6 +455,24 @@ class GridReportVarious extends Component {
       default:
         return null;
     }
+
+    // if (this.titleColumn === "") {
+    //   return null;
+    // }
+
+    // switch (this.titleColumn) {
+    //   case "Obra":
+    //     return (
+    //       <ColumnDirective
+    //         field="totalWorkers"
+    //         headerText="Nº Trab."
+    //         width="70"
+    //       />
+    //     );
+
+    //   default:
+    //     return null;
+    // }
   }
 
   beforePrint(args) {
@@ -366,8 +488,8 @@ class GridReportVarious extends Component {
   render() {
     return (
       <GridComponent
-        dataSource={this.users}
-        id="GridWorker"
+        // dataSource={this.users}
+        id="gridReportsVarious"
         locale="es"
         toolbar={this.toolbarOptions}
         toolbarClick={this.clickHandler}
@@ -393,6 +515,12 @@ class GridReportVarious extends Component {
             headerText={this.state.titleColumn}
             width="100"
           />
+
+          {/* <ColumnDirective
+            field={this.field}
+            headerText={this.titleColumn}
+            width="100"
+          /> */}
 
           {this.renderColumn()}
 
@@ -454,6 +582,16 @@ class GridReportVarious extends Component {
           <ColumnDirective
             field="priceTotalHoursSaleNocturnal"
             headerText="Venta Festivo"
+            width="70"
+          />
+          <ColumnDirective
+            field="priceDiary"
+            headerText="Precio Diario"
+            width="70"
+          />
+          <ColumnDirective
+            field="priceSaleDiary"
+            headerText="Venta Diario"
             width="70"
           />
         </ColumnsDirective>

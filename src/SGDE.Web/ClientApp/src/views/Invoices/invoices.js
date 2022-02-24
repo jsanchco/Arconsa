@@ -833,6 +833,7 @@ class Invoices extends Component {
                     marginRight: 30,
                     marginTop: -20,
                     marginBottom: 20,
+                    overflow: "auto",
                   }}
                   actionBegin={this.actionBegin}
                   actionFailure={this.actionFailure}
