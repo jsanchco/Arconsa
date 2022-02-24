@@ -17,10 +17,7 @@
     {
         public List<ReportResultViewModel> GetHoursByUser(ReportQueryViewModel reportViewModel)
         {
-            var result = _dailySigningRepository.GetByUserId(reportViewModel.startDate, reportViewModel.endDate, (int)reportViewModel.workerId);
-            //if (!reportViewModel.showCeros)
-            //    result = result.Where(x => x.)
-            return ReportResultConverter.ConvertList(result);
+             return ReportResultConverter.ConvertList(_dailySigningRepository.GetByUserId(reportViewModel.startDate, reportViewModel.endDate, (int)reportViewModel.workerId));
         }
 
         public List<ReportResultViewModel> GetHoursByWork(ReportQueryViewModel reportViewModel)
@@ -79,10 +76,12 @@
                     priceTotalHoursSaleNocturnal = (double)listReportResultViewModel
                                                 .Where(x => x.hourTypeId == 4)
                                                 .Select(x => x.priceHourSale).Sum(),
-                    //priceDiary = (double)listReportResultViewModel
-                    //                            .FirstOrDefault(x => x.hourTypeId == 5)?.priceHour,
-                    //priceSaleDiary = (double)listReportResultViewModel
-                    //                            .FirstOrDefault(x => x.hourTypeId == 5)?.priceHourSale,
+                    priceDiary = (double)listReportResultViewModel
+                                                .Where(x => x.hourTypeId == 5)
+                                                .Select(x => x.priceHour).Sum(),
+                    priceSaleDiary = (double)listReportResultViewModel
+                                                .Where(x => x.hourTypeId == 5)
+                                                .Select(x => x.priceHourSale).Sum()
                 });
             }
 
@@ -157,9 +156,11 @@
                                                 .Where(x => x.hourTypeId == 4)
                                                 .Select(x => x.priceHourSale).Sum(),
                     priceDiary = (double)listReportResultViewModel
-                                                .FirstOrDefault(x => x.hourTypeId == 5)?.priceHour,
+                                                .Where(x => x.hourTypeId == 5)
+                                                .Select(x => x.priceHour).Sum(),
                     priceSaleDiary = (double)listReportResultViewModel
-                                                .FirstOrDefault(x => x.hourTypeId == 5)?.priceHourSale,
+                                                .Where(x => x.hourTypeId == 5)
+                                                .Select(x => x.priceHourSale).Sum()
                 });
             }
 
@@ -233,9 +234,11 @@
                                                 .Where(x => x.hourTypeId == 4)
                                                 .Select(x => x.priceHourSale).Sum(),
                     priceDiary = (double)listReportResultViewModel
-                                                .FirstOrDefault(x => x.hourTypeId == 5)?.priceHour,
+                                                .Where(x => x.hourTypeId == 5)
+                                                .Select(x => x.priceHour).Sum(),
                     priceSaleDiary = (double)listReportResultViewModel
-                                                .FirstOrDefault(x => x.hourTypeId == 5)?.priceHourSale,
+                                                .Where(x => x.hourTypeId == 5)
+                                                .Select(x => x.priceHourSale).Sum()
                 });
             }
 

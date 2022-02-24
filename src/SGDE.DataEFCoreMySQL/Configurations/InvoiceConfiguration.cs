@@ -21,6 +21,7 @@
             entity.Ignore(x => x.IvaTaxBase);
             entity.Ignore(x => x.Total);
             entity.Ignore(x => x.KeyOrder);
+            entity.Ignore(x => x.IsPaid);
             entity.Property(x => x.Retentions).HasColumnType("decimal(18,2)");
             entity.Property(x => x.TaxBase).HasColumnType("decimal(18,2)");
 

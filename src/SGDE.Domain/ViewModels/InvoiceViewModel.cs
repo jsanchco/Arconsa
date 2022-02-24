@@ -14,12 +14,14 @@
         public DateTime startDate { get; set; }
         public DateTime endDate { get; set; }
         public DateTime issueDate { get; set; }
+        public DateTime? payDate { get; set; }
         public double taxBase { get; set; }
         public double ivaTaxBase { get; set; }
         public double total { get; set; }
         public bool iva { get; set; }
         public int typeInvoice { get; set; }  // 1 = por horas, 2 = custom
         public Decimal retentions { get; set; }
+        public bool isPaid => payDate != null;
 
 
         public int? workId { get; set; }

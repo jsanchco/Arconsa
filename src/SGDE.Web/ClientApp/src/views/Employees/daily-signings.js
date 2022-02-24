@@ -247,6 +247,7 @@ class DailySignings extends Component {
                 date.getMonth(),
                 date.getDate(),
                 date.getHours(),
+                date.getMinutes(),
                 date.getMilliseconds()
               )
             );

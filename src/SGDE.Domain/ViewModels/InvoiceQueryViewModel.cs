@@ -1,8 +1,8 @@
 ﻿namespace SGDE.Domain.ViewModels
 {
-    using System;
     #region Using
 
+    using System;
     using System.Collections.Generic;
 
     #endregion
@@ -12,6 +12,7 @@
         public DateTime startDate { get; set; }
         public DateTime endDate { get; set; }
         public DateTime issueDate { get; set; }
+        public DateTime? payDate { get; set; }
         public int typeInvoice { get; set; }        
         public int? clientId { get; set; }
         public int? workId { get; set; }

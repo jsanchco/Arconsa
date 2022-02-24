@@ -35,7 +35,7 @@ import {
   getInvoice,
   base64ToArrayBuffer,
   saveByteArray,
-  printInvoice
+  printInvoice,
 } from "../../services";
 import { Query } from "@syncfusion/ej2-data";
 import { DropDownList } from "@syncfusion/ej2-dropdowns";
@@ -957,6 +957,14 @@ class Invoices extends Component {
                       // edit={this.numericParams}
                       allowEditing={false}
                       defaultValue={0}
+                    />
+                    <ColumnDirective
+                      field="payDate"
+                      headerText="F. Pago"
+                      width="100"
+                      type="date"
+                      format={this.formatDate}
+                      editType="datepickeredit"
                     />
                     <ColumnDirective field="typeInvoice" visible={false} />
                   </ColumnsDirective>

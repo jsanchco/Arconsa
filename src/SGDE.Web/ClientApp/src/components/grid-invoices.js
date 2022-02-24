@@ -70,7 +70,7 @@ class GridInvoice extends Component {
         prefixIcon: "e-custom-icons e-empty",
         id: "CancelInvoice",
       },
-      "Search"
+      "Search",
     ];
     if (props.showViewInvoice === true) {
       this.toolbarOptions.push({
@@ -281,7 +281,6 @@ class GridInvoice extends Component {
     }
   }
 
-  
   beforePrint(args) {
     var div = document.createElement("Div");
     div.innerHTML = this.props.workName;
@@ -413,6 +412,13 @@ class GridInvoice extends Component {
               editType="numericedit"
               edit={this.numericParams}
             />
+            <ColumnDirective
+              field="payDate"
+              headerText="F. Pago"
+              width="100"
+              allowEditing={false}
+              format={this.formatDate}
+            />
             <ColumnDirective field="typeInvoice" visible={false} />
           </ColumnsDirective>
 
@@ -472,7 +478,7 @@ GridInvoice.propTypes = {
   showMessage: PropTypes.func.isRequired,
   updateForm: PropTypes.func,
   showViewInvoice: PropTypes.bool.isRequired,
-  toggleForm: PropTypes.func.isRequired
+  toggleForm: PropTypes.func.isRequired,
 };
 
 export default GridInvoice;

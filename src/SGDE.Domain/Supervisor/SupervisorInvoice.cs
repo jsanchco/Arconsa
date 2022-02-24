@@ -43,6 +43,7 @@
                 StartDate = newInvoiceViewModel.startDate,
                 EndDate = newInvoiceViewModel.endDate,
                 IssueDate = newInvoiceViewModel.issueDate,
+                PayDate = newInvoiceViewModel.payDate,
                 TaxBase = (decimal)newInvoiceViewModel.taxBase,
                 Iva = newInvoiceViewModel.iva,
                 TypeInvoice = newInvoiceViewModel.typeInvoice,
@@ -77,6 +78,7 @@
                 StartDate = invoiceQueryViewModel.startDate,
                 EndDate = invoiceQueryViewModel.endDate,
                 IssueDate = invoiceQueryViewModel.issueDate,
+                PayDate = invoiceQueryViewModel.payDate,
                 WorkId = invoiceQueryViewModel.workId,
                 ClientId = invoiceQueryViewModel.clientId,
                 UserId = invoiceQueryViewModel.workerId,
@@ -121,6 +123,7 @@
             invoice.StartDate = invoiceViewModel.startDate;
             invoice.EndDate = invoiceViewModel.endDate;
             invoice.IssueDate = invoiceViewModel.issueDate;
+            invoice.PayDate = invoiceViewModel.payDate;
             invoice.TaxBase = (decimal)invoiceViewModel.taxBase;
             invoice.Iva = invoiceViewModel.iva;
             invoice.TypeInvoice = invoiceViewModel.typeInvoice;
@@ -201,9 +204,5 @@
 
             return result;
         }
-
-        #region Auxiliary Methods
-
-        #endregion
     }
 }
