@@ -18,6 +18,7 @@ export const ASSIGNWORKERS = "api/UsersHiring/assignworkers";
 export const DAILYSIGNINGS = "api/dailysignings";
 export const REPORTS = "api/Reports";
 export const REPORTS_ALL= "api/Reports/GetReportAll";
+export const REPORT_INVOICES = "api/Reports/GetReportInvoices";
 export const AUTHENTICATE = "api/Users/authenticate";
 export const UPDATEPASSWORD = "api/Users/updatepassword";
 export const INVOICERESPONSES = "api/InvoiceResponses";

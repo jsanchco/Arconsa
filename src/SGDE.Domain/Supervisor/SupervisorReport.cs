@@ -264,5 +264,15 @@
 
             return result;
         }
+
+        public List<InvoiceViewModel> GetAllInvoice(ReportQueryAllViewModel reportAllViewModel)
+        {
+            var invoices = _invoiceRepository.GetAll().Data;
+            var result = InvoiceConverter.ConvertList(invoices.Where(x => x.IssueDate >= reportAllViewModel.startDate &&
+                                                                          x.IssueDate <= reportAllViewModel.endDate)
+                                                              .ToList());
+
+            return result;
+        }
     }
 }

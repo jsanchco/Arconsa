@@ -127,5 +127,34 @@
                 return StatusCode(500, ex);
             }
         }
+
+        [HttpGet("GetReportInvoices")]
+        public object GetReportInvoices()
+        {
+            try
+            {
+                var queryString = Request.Query;
+                var startDate = queryString["startDate"];
+                var endDate = queryString["endDate"];
+
+                if (string.IsNullOrEmpty(startDate) || string.IsNullOrEmpty(endDate))
+                    throw new Exception("Informe mal configurado");
+
+                var reportAllViewModel = new ReportQueryAllViewModel
+                {
+                    startDate = DateTime.ParseExact(startDate, "dd/MM/yyyy", null),
+                    endDate = DateTime.ParseExact(endDate, "dd/MM/yyyy", null)
+                };
+
+                var data = _supervisor.GetAllInvoice(reportAllViewModel);
+
+                return new { Items = data, data.Count };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Exception: ");
+                return StatusCode(500, ex);
+            }
+        }
     }
 }

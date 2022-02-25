@@ -108,6 +108,11 @@ export default {
           icon: "icon-list"
         },
         {
+          name: "Facturas",
+          url: "/reports/ReportInvoices",
+          icon: "icon-list"
+        },
+        {
           name: "Varios",
           url: "/reports/ReportsVarious",
           icon: "icon-list"

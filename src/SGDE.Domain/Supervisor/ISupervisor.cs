@@ -175,6 +175,7 @@ namespace SGDE.Domain.Supervisor
         List<ReportVariousInfoViewModel> GetHoursByAllUser(ReportQueryAllViewModel reportAllViewModel);
         List<ReportVariousInfoViewModel> GetHoursByAllWork(ReportQueryAllViewModel reportAllViewModel);
         List<ReportVariousInfoViewModel> GetHoursByAllClient(ReportQueryAllViewModel reportAllViewModel);
+        List<InvoiceViewModel> GetAllInvoice(ReportQueryAllViewModel reportAllViewModel);
 
         #endregion
 
