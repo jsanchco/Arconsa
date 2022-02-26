@@ -103,6 +103,7 @@ class Employees extends Component {
     // this.tooltip = this.tooltip.bind(this);
     this.dataBound = this.dataBound.bind(this);
     this.hasEmbargo = this.hasEmbargo.bind(this);
+    this.hasAdvance = this.hasAdvance.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
 
     this.format = { type: "dateTime", format: "dd/MM/yyyy" };
@@ -132,13 +133,26 @@ class Employees extends Component {
     }
     return null;
   }
-
+  
+  hasAdvance(args) {
+    if (args.hasAdvancesPending) {
+      return (
+        <span
+          id={"user-" + args.id}
+          title="Tiene adelanto(s) pendiente(s)"
+          className="dot-small-blue"
+        ></span>
+      );
+    }
+    return null;
+  }
   gridTemplate(args) {
     if (args.photo !== null && args.photo !== "") {
       const src = "data:image/png;base64," + args.photo;
       return (
         <div className="image">
           {this.hasEmbargo(args)}
+          {this.hasAdvance(args)}
           <img src={src} alt={args.name} width="100px" height="100px" />
         </div>
       );
@@ -146,6 +160,7 @@ class Employees extends Component {
       return (
         <div className="image">
           {this.hasEmbargo(args)}
+          {this.hasAdvance(args)}
           <img
             src={"assets/img/avatars/user_no_photo.png"}
             alt={args.name}

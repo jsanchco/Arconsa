@@ -63,6 +63,7 @@ namespace SGDE.Tests
             var workCostRepository = new Mock<IWorkCostRepository>();
             var workBudgetRepository = new Mock<IWorkBudgetRepository>();
             var indirectCostRepository = new Mock<IIndirectCostRepository>();
+            var advanceRepository = new Mock<IAdvanceRepository>();
 
             _supervisor = new Supervisor(
                 userRepositoryMock.Object,
@@ -89,7 +90,8 @@ namespace SGDE.Tests
                 sSHiringRepository.Object,
                 workCostRepository.Object,
                 workBudgetRepository.Object,
-                indirectCostRepository.Object);
+                indirectCostRepository.Object,
+                advanceRepository.Object);
         }
 
         [TestMethod]

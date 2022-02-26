@@ -50,7 +50,8 @@
                         .AddScoped<ISSHiringRepository, DataEFCoreSQL.Repositories.SSHiringRepository>()
                         .AddScoped<IWorkCostRepository, DataEFCoreSQL.Repositories.WorkCostRepository>()
                         .AddScoped<IWorkBudgetRepository, DataEFCoreSQL.Repositories.WorkBudgetRepository>()
-                        .AddScoped<IIndirectCostRepository, DataEFCoreSQL.Repositories.IndirectCostRepository>();
+                        .AddScoped<IIndirectCostRepository, DataEFCoreSQL.Repositories.IndirectCostRepository>()
+                        .AddScoped<IAdvanceRepository, DataEFCoreSQL.Repositories.AdvanceRepository>();
                     break;
                 case "MySQL":
                     services
@@ -78,7 +79,8 @@
                         .AddScoped<ISSHiringRepository, DataEFCoreMySQL.Repositories.SSHiringRepository>()
                         .AddScoped<IWorkCostRepository, DataEFCoreMySQL.Repositories.WorkCostRepository>()
                         .AddScoped<IWorkBudgetRepository, DataEFCoreMySQL.Repositories.WorkBudgetRepository>()
-                        .AddScoped<IIndirectCostRepository, DataEFCoreMySQL.Repositories.IndirectCostRepository>();
+                        .AddScoped<IIndirectCostRepository, DataEFCoreMySQL.Repositories.IndirectCostRepository>()
+                        .AddScoped<IAdvanceRepository, DataEFCoreMySQL.Repositories.AdvanceRepository>();
                     break;
 
                 default:
@@ -106,7 +108,8 @@
                         .AddScoped<ISSHiringRepository, DataEFCoreSQL.Repositories.SSHiringRepository>()
                         .AddScoped<IWorkCostRepository, DataEFCoreSQL.Repositories.WorkCostRepository>()
                         .AddScoped<IWorkBudgetRepository, DataEFCoreSQL.Repositories.WorkBudgetRepository>()
-                        .AddScoped<IIndirectCostRepository, DataEFCoreSQL.Repositories.IndirectCostRepository>();
+                        .AddScoped<IIndirectCostRepository, DataEFCoreSQL.Repositories.IndirectCostRepository>()
+                        .AddScoped<IAdvanceRepository, DataEFCoreSQL.Repositories.AdvanceRepository>();
                     break;
             }
 

@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
 import {
   ColumnDirective,
@@ -64,6 +64,8 @@ class GridReportVarious extends Component {
     this.footerCount = this.footerCount.bind(this);
     this.beforePrint = this.beforePrint.bind(this);
     this.updateGrid = this.updateGrid.bind(this);
+    this.renderColumnsEmbargos = this.renderColumnsEmbargos.bind(this);
+    this.renderColumnsAdvances = this.renderColumnsAdvances.bind(this);
 
     this.format = { type: "dateTime", format: "dd/MM/yyyy" };
   }
@@ -437,6 +439,74 @@ class GridReportVarious extends Component {
     };
   }
 
+  beforePrint(args) {
+    var div = document.createElement("Div");
+    div.innerHTML = this.props.settings.textSelection;
+    div.style.textAlign = "center";
+    div.style.color = "red";
+    div.style.padding = "10px 0";
+    div.style.fontSize = "25px";
+    args.element.insertBefore(div, args.element.childNodes[0]);
+  }
+
+  templateHasEmbargosPendings(args) {
+    if (args.hasEmbargosPendings) {
+      return <span>Si</span>;
+    } else {
+      return <span>No</span>;
+    }
+  }
+
+  templateHasAdvancesPendings(args) {
+    if (args.hasAdvancesPendings) {
+      return <span>Si</span>;
+    } else {
+      return <span>No</span>;
+    }
+  }
+
+  renderColumnsEmbargos() {
+    if (this.state.titleColumn === "") {
+      return null;
+    }
+
+    switch (this.state.titleColumn) {
+      case "Trabajador":
+        return (
+          <ColumnDirective
+            field="hasEmbargosPendings"
+            headerText="Embargos"
+            template={this.templateHasEmbargosPendings}
+            width="70"
+          />
+        );
+
+      default:
+        return null;
+    }
+  }
+
+  renderColumnsAdvances() {
+    if (this.state.titleColumn === "") {
+      return null;
+    }
+
+    switch (this.state.titleColumn) {
+      case "Trabajador":
+        return (
+          <ColumnDirective
+            field="hasAdvancesPendings"
+            headerText="Adelantos"
+            template={this.templateHasAdvancesPendings}
+            width="70"
+          />
+        );
+
+      default:
+        return null;
+    }
+  }
+
   renderColumn() {
     if (this.state.titleColumn === "") {
       return null;
@@ -455,40 +525,11 @@ class GridReportVarious extends Component {
       default:
         return null;
     }
-
-    // if (this.titleColumn === "") {
-    //   return null;
-    // }
-
-    // switch (this.titleColumn) {
-    //   case "Obra":
-    //     return (
-    //       <ColumnDirective
-    //         field="totalWorkers"
-    //         headerText="Nº Trab."
-    //         width="70"
-    //       />
-    //     );
-
-    //   default:
-    //     return null;
-    // }
-  }
-
-  beforePrint(args) {
-    var div = document.createElement("Div");
-    div.innerHTML = this.props.settings.textSelection;
-    div.style.textAlign = "center";
-    div.style.color = "red";
-    div.style.padding = "10px 0";
-    div.style.fontSize = "25px";
-    args.element.insertBefore(div, args.element.childNodes[0]);
   }
 
   render() {
     return (
       <GridComponent
-        // dataSource={this.users}
         id="gridReportsVarious"
         locale="es"
         toolbar={this.toolbarOptions}
@@ -515,12 +556,6 @@ class GridReportVarious extends Component {
             headerText={this.state.titleColumn}
             width="100"
           />
-
-          {/* <ColumnDirective
-            field={this.field}
-            headerText={this.titleColumn}
-            width="100"
-          /> */}
 
           {this.renderColumn()}
 
@@ -594,6 +629,10 @@ class GridReportVarious extends Component {
             headerText="Venta Diario"
             width="70"
           />
+
+          {this.renderColumnsEmbargos()}
+          {this.renderColumnsAdvances()}
+
         </ColumnsDirective>
 
         <AggregatesDirective>

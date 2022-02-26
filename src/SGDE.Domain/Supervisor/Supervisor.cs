@@ -37,6 +37,7 @@ namespace SGDE.Domain.Supervisor
         public readonly IWorkCostRepository _workCostRepository;
         public readonly IWorkBudgetRepository _workBudgetRepository;
         public readonly IIndirectCostRepository _indirectCostRepository;
+        public readonly IAdvanceRepository _advanceRepository;
 
         public Supervisor()
         {
@@ -67,7 +68,8 @@ namespace SGDE.Domain.Supervisor
             ISSHiringRepository sSHiringRepository,
             IWorkCostRepository workCostRepository,
             IWorkBudgetRepository workBudgetRepository,
-            IIndirectCostRepository indirectCostRepository)
+            IIndirectCostRepository indirectCostRepository,
+            IAdvanceRepository advanceRepository)
         {
             _userRepository = userRepository;
             _professionRepository = professionRepository;
@@ -94,6 +96,7 @@ namespace SGDE.Domain.Supervisor
             _workCostRepository = workCostRepository;
             _workBudgetRepository = workBudgetRepository;
             _indirectCostRepository = indirectCostRepository;
+            _advanceRepository = advanceRepository;
         }
     }
 }

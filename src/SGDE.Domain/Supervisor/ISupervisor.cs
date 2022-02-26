@@ -336,6 +336,16 @@ namespace SGDE.Domain.Supervisor
 
         #endregion
 
+        #region Advance
+
+        QueryResult<AdvanceViewModel> GetAllAdvance(int skip = 0, int take = 0, int userId = 0);
+        AdvanceViewModel GetAdvanceById(int id);
+        AdvanceViewModel AddAdvance(AdvanceViewModel newAdvanceViewModel);
+        bool UpdateAdvance(AdvanceViewModel advanceViewModel);
+        bool DeleteAdvance(int id);
+
+        #endregion
+
         void Update();
     }
 }

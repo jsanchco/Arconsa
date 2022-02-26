@@ -16,6 +16,7 @@ import ChangePassword from "./change-password";
 import CostWorkers from "./cost-workers";
 import HistoryHirings from "./history-hirings";
 import Embargos from "./embargos";
+import Advances from "./advances";
 import SSHirings from "./sshiring";
 
 class DetailEmployee extends Component {
@@ -38,6 +39,7 @@ class DetailEmployee extends Component {
       { text: "Precios Coste" },
       { text: "Historial de Contratación" },
       { text: "Embargos" },
+      { text: "Adelantos" },
       { text: "Historial S. S." },
       { text: "Cambiar Contraseña" },
     ];
@@ -55,6 +57,7 @@ class DetailEmployee extends Component {
     this.contentTemplatHistoryHirings =
       this.contentTemplatHistoryHirings.bind(this);
     this.contentTemplatEmbargos = this.contentTemplatEmbargos.bind(this);
+    this.contentTemplateAdvances = this.contentTemplateAdvances.bind(this);
     this.contentTemplatSSHirings = this.contentTemplatSSHirings.bind(this);
   }
 
@@ -142,6 +145,16 @@ class DetailEmployee extends Component {
   contentTemplatEmbargos() {
     return (
       <Embargos
+        userId={this.props.match.params.id}
+        history={this.props.history}
+        showMessage={this.props.showMessage}
+      />
+    );
+  }
+
+  contentTemplateAdvances() {
+    return (
+      <Advances
         userId={this.props.match.params.id}
         history={this.props.history}
         showMessage={this.props.showMessage}
@@ -256,12 +269,19 @@ class DetailEmployee extends Component {
                     {this.state.user.roleId === 3 ? (
                       <TabItemDirective
                         header={this.headerText[6]}
+                        content={this.contentTemplateAdvances}
+                      />
+                    ) : null}
+
+                    {this.state.user.roleId === 3 ? (
+                      <TabItemDirective
+                        header={this.headerText[7]}
                         content={this.contentTemplatSSHirings}
                       />
                     ) : null}
 
                     <TabItemDirective
-                      header={this.headerText[7]}
+                      header={this.headerText[8]}
                       content={this.contentTemplatChangePassword}
                     />
                   </TabItemsDirective>

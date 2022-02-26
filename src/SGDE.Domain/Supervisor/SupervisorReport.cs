@@ -81,7 +81,9 @@
                                                 .Select(x => x.priceHour).Sum(),
                     priceSaleDiary = (double)listReportResultViewModel
                                                 .Where(x => x.hourTypeId == 5)
-                                                .Select(x => x.priceHourSale).Sum()
+                                                .Select(x => x.priceHourSale).Sum(),
+                    hasEmbargosPendings = user.Embargos.Any(x => x.Paid == false),
+                    hasAdvancesPendings = user.Advances.Any(x => x.Paid == false)
                 });
             }
 

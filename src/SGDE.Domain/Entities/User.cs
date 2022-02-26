@@ -44,5 +44,6 @@
         public virtual ICollection<CostWorker> CostWorkers { get; set; } = new HashSet<CostWorker>();
         public virtual ICollection<Embargo> Embargos { get; set; } = new HashSet<Embargo>();
         public virtual ICollection<SSHiring> SSHirings { get; set; } = new HashSet<SSHiring>();
+        public virtual ICollection<Advance> Advances { get; set; } = new HashSet<Advance>();
     }
 }

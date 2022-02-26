@@ -127,6 +127,7 @@
                             .Include(x => x.Embargos)
                             .Include(x => x.UserProfessions)
                             .ThenInclude(y => y.Profession)
+                            .Include(x => x.Advances)
                             .ToList();
             }
             else
@@ -140,6 +141,7 @@
                                 .Include(x => x.UserProfessions)
                                 .ThenInclude(y => y.Profession)
                                 .Include(x => x.SSHirings)
+                                .Include(x => x.Advances)
                                 .Where(x => roles.Contains(x.RoleId))
                                 .ToList()
                     : _context.User
@@ -150,6 +152,7 @@
                                 .Include(x => x.UserProfessions)
                                 .ThenInclude(y => y.Profession)
                                 .Include(x => x.SSHirings)
+                                .Include(x => x.Advances)
                                 .Where(x => roles.Contains(x.RoleId) &&
                                        (!x.SSHirings.Any(y => y.EndDate == null) && x.SSHirings.Count > 0))
                                 .ToList();
@@ -234,6 +237,7 @@
                 .Include(x => x.UserProfessions)
                 .ThenInclude(y => y.Profession)
                 .Include(x => x.SSHirings)
+                .Include(x => x.Advances)
                 .FirstOrDefault(x => x.Id == id);
         }
 

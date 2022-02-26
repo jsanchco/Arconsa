@@ -16,6 +16,7 @@ export const WORKERSHIRING = "api/WorkersHiring";
 export const USERSHIRING = "api/UsersHiring";
 export const ASSIGNWORKERS = "api/UsersHiring/assignworkers";
 export const DAILYSIGNINGS = "api/dailysignings";
+export const ADVANCES = "api/Advances";
 export const REPORTS = "api/Reports";
 export const REPORTS_ALL= "api/Reports/GetReportAll";
 export const REPORT_INVOICES = "api/Reports/GetReportInvoices";
