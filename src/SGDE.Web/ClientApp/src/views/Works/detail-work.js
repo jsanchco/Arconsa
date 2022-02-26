@@ -23,8 +23,8 @@ class DetailWork extends Component {
     this.headerText = [
       { text: "Datos Básicos" },
       { text: "Presupuestos" },
-      { text: "Gastos" },
-      { text: "Altas/Bajas de Trabajadores" },
+      { text: "Gastos Proveedores" },
+      { text: "Gastos Trabajadores" },
       { text: "Facturas" },
     ];
 

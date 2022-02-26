@@ -23,5 +23,7 @@
         public string professionName { get; set; }
         public bool inWork { get; set; }
         public string status => inWork ? "En Obra" : "Fuera de Obra";
+        public double priceTotal { get; set; }
+        public double priceTotalSale { get; set; }
     }
 }

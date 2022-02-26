@@ -10,14 +10,18 @@ import {
   Page,
 } from "@syncfusion/ej2-react-grids";
 import { DataManager, WebApiAdaptor, Query } from "@syncfusion/ej2-data";
-import { config, HISTORYHIRINGBYWORKID, PROFESSIONSBYUSER } from "../../constants";
+import {
+  config,
+  HISTORYHIRINGBYWORKID,
+  PROFESSIONSBYUSER,
+} from "../../constants";
 import { L10n } from "@syncfusion/ej2-base";
 import data from "../../locales/locale.json";
-import { 
-  TOKEN_KEY, 
-  getUser, 
-  updateUserHiringInWorkByUser
- } from "../../services";
+import {
+  TOKEN_KEY,
+  getUser,
+  updateUserHiringInWorkByUser,
+} from "../../services";
 
 L10n.load(data);
 
@@ -48,7 +52,7 @@ class AuthorizeCancelWorkers extends Component {
     this.state = {
       usersHiring: null,
       rowSelected: null,
-      rowSelectedindex: null
+      rowSelectedindex: null,
     };
 
     this.toolbarOptions = ["Edit", "Delete", "Update", "Cancel", "Print"];
@@ -71,8 +75,7 @@ class AuthorizeCancelWorkers extends Component {
     this.template = this.gridTemplate;
     this.format = { type: "dateTime", format: "dd/MM/yyyy" };
 
-    this.query = new Query()
-      .addParams("workId", props.workId); 
+    this.query = new Query().addParams("workId", props.workId);
   }
 
   componentDidMount() {
@@ -104,14 +107,20 @@ class AuthorizeCancelWorkers extends Component {
     if (userHiringSelected === null || userHiringSelected === undefined) {
       return;
     }
-    
+
     if (args.item.id === "inWork") {
-      updateUserHiringInWorkByUser({ userHiringId: userHiringSelected.id, inWork: true }).then(() => {
+      updateUserHiringInWorkByUser({
+        userHiringId: userHiringSelected.id,
+        inWork: true,
+      }).then(() => {
         this.grid.refresh();
       });
     }
     if (args.item.id === "outWork") {
-      updateUserHiringInWorkByUser({ userHiringId: userHiringSelected.id, inWork: false }).then(() => {
+      updateUserHiringInWorkByUser({
+        userHiringId: userHiringSelected.id,
+        inWork: false,
+      }).then(() => {
         this.grid.refresh();
       });
     }
@@ -198,7 +207,10 @@ class AuthorizeCancelWorkers extends Component {
   actionBegin(args) {
     if (args.requestType === "beginEdit") {
       this.grid.columnModel[2].edit.params.query.params = [];
-      this.grid.columnModel[2].edit.params.query.addParams("userId", args.rowData.userId);
+      this.grid.columnModel[2].edit.params.query.addParams(
+        "userId",
+        args.rowData.userId
+      );
     }
 
     // if (args.requestType === "save") {
@@ -364,6 +376,16 @@ class AuthorizeCancelWorkers extends Component {
                     type="date"
                     format={this.format}
                     editType="datepickeredit"
+                  />
+                  <ColumnDirective
+                    field="priceTotal"
+                    headerText="Precio Coste"
+                    width="100"
+                  />
+                  <ColumnDirective
+                    field="priceTotalSale"
+                    headerText="Precio Venta"
+                    width="100"
                   />
                   {/* <ColumnDirective
                     field="inWork"

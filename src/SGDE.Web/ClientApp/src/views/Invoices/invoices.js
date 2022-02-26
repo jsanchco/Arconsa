@@ -307,7 +307,7 @@ class Invoices extends Component {
           columns: [
             {
               field: "nameUnit",
-              headerText: "Medición",
+              headerText: "Medida",
               width: "100",
               textAlign: "center",
             },

@@ -62,7 +62,7 @@
                 .ToList();
         }
 
-        private static decimal GetPriceHourCost(
+        public static decimal GetPriceHourCost(
             User user,
             int professionId,
             DateTime date, 
@@ -96,7 +96,7 @@
             }
         }
 
-        private static decimal GetPriceHourSale(
+        public static decimal GetPriceHourSale(
             Client client, 
             int? type, 
             int? professionId)
