@@ -395,8 +395,7 @@
         private void Validate(Invoice invoice)
         {
             if (invoice.ClientId == null ||
-                invoice.WorkId == null ||
-                invoice.WorkBudgetId == null)
+                invoice.WorkId == null)
             {
                 throw new Exception("Factura incompleta. Revisa los datos");
             }

@@ -86,7 +86,7 @@ class GridSelection extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.settings == null || this.props.settings == null) return;
+    if (prevProps.settings == null && this.props.settings == null) return;
 
     var element = document.getElementById("Grid");
     createSpinner({

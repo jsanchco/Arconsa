@@ -46,6 +46,8 @@ class HeaderSettings extends Component {
 
   componentDidMount() {
     this.element = document.getElementById("Grid");
+    if (this.element == null) return;
+
     createSpinner({
       target: this.element,
     });
@@ -100,7 +102,7 @@ class HeaderSettings extends Component {
     }
   }
 
-  handleOnClick() {    
+  handleOnClick() {
     const valueDtpStartDate = this.formatDate(this.dtpStartDate.value);
     const valueDtpEndDate = this.formatDate(this.dtpEndDate.value);
     const valueDdl = this.ddl.value;
@@ -188,57 +190,57 @@ class HeaderSettings extends Component {
     return (
       <Fragment>
         {/* <div> */}
-          <Form style={{ marginLeft: "20px" }}>
-            <Row>
-              <Col xs="3">
-                <FormGroup>
-                  <Label for="startDate">Fecha Inicio</Label>
-                  <DatePickerComponent
-                    id="startDate"
-                    ref={(g) => (this.dtpStartDate = g)}
-                    format="dd/MM/yyyy"
-                  />
-                </FormGroup>
-              </Col>
-              <Col xs="3">
-                <FormGroup style={{ marginLeft: "20px" }}>
-                  <Label for="endDate">Fecha Fin</Label>
-                  <DatePickerComponent
-                    id="endDate"
-                    ref={(g) => (this.dtpEndDate = g)}
-                    format="dd/MM/yyyy"
-                  />
-                </FormGroup>
-              </Col>
-              <Col xs="3">
-                <FormGroup style={{ marginLeft: "20px" }}>
-                  <Label for={title}>{title}</Label>
-                  <DropDownListComponent
-                    id={title}
-                    dataSource={null}
-                    placeholder={`Selecciona ${title}`}
-                    fields={this.fields}
-                    ref={(g) => (this.ddl = g)}
-                    filtering={this.handleFiltering.bind(this)}
-                    allowFiltering={true}
-                    popupWidth="auto"
-                  />
-                </FormGroup>
-              </Col>
-            </Row>
-            <Row>
-              <Col xs="10"></Col>
-              <Col xs="2">
-                <Button
-                  color="primary"
-                  style={{ marginLeft: "30px", textAlign: "left" }}
-                  onClick={this.handleOnClick}
-                >
-                  Consultar
-                </Button>
-              </Col>
-            </Row>
-          </Form>
+        <Form style={{ marginLeft: "20px" }}>
+          <Row>
+            <Col xs="3">
+              <FormGroup>
+                <Label for="startDate">Fecha Inicio</Label>
+                <DatePickerComponent
+                  id="startDate"
+                  ref={(g) => (this.dtpStartDate = g)}
+                  format="dd/MM/yyyy"
+                />
+              </FormGroup>
+            </Col>
+            <Col xs="3">
+              <FormGroup style={{ marginLeft: "20px" }}>
+                <Label for="endDate">Fecha Fin</Label>
+                <DatePickerComponent
+                  id="endDate"
+                  ref={(g) => (this.dtpEndDate = g)}
+                  format="dd/MM/yyyy"
+                />
+              </FormGroup>
+            </Col>
+            <Col xs="3">
+              <FormGroup style={{ marginLeft: "20px" }}>
+                <Label for={title}>{title}</Label>
+                <DropDownListComponent
+                  id={title}
+                  dataSource={null}
+                  placeholder={`Selecciona ${title}`}
+                  fields={this.fields}
+                  ref={(g) => (this.ddl = g)}
+                  filtering={this.handleFiltering.bind(this)}
+                  allowFiltering={true}
+                  popupWidth="auto"
+                />
+              </FormGroup>
+            </Col>
+          </Row>
+          <Row>
+            <Col xs="10"></Col>
+            <Col xs="2">
+              <Button
+                color="primary"
+                style={{ marginLeft: "30px", textAlign: "left" }}
+                onClick={this.handleOnClick}
+              >
+                Consultar
+              </Button>
+            </Col>
+          </Row>
+        </Form>
       </Fragment>
     );
   }

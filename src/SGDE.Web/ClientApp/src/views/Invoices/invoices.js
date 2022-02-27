@@ -537,7 +537,7 @@ class Invoices extends Component {
     let error = Array.isArray(args) ? args[0].error : args.error;
     if (Array.isArray(error)) {
       error = error[0].error;
-    }
+    } 
 
     this.props.showMessage({
       statusText: error.statusText,
@@ -552,15 +552,17 @@ class Invoices extends Component {
       for (var i = 0; i < cols.length; i++) {
         if (cols[i].type === "date") {
           var date = args.data[cols[i].field];
-          args.data[cols[i].field] = new Date(
-            Date.UTC(
-              date.getFullYear(),
-              date.getMonth(),
-              date.getDate(),
-              date.getHours(),
-              date.getMilliseconds()
-            )
-          );
+          if (date != null) {
+            args.data[cols[i].field] = new Date(
+              Date.UTC(
+                date.getFullYear(),
+                date.getMonth(),
+                date.getDate(),
+                date.getHours(),
+                date.getMilliseconds()
+              )
+            );
+          }
         }
       }
     }
@@ -923,7 +925,7 @@ class Invoices extends Component {
                       width="100"
                       foreignKeyValue="name"
                       foreignKeyField="id"
-                      validationRules={this.requeridIdRules}
+                      // validationRules={this.requeridIdRules}
                       dataSource={this.workBudgets}
                       edit={this.editWorkBudgets}
                     />
