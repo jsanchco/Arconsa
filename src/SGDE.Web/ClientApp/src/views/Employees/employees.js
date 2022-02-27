@@ -6,7 +6,7 @@ import {
   Row,
   Col,
   FormGroup,
-  Label
+  Label,
 } from "reactstrap";
 // import { getValue } from "@syncfusion/ej2-base";
 import {
@@ -60,11 +60,17 @@ class Employees extends Component {
       professions: null,
       roles: null,
       rowSelected: null,
-      showAllEmployees: true
+      showAllEmployees: true,
     };
 
     this.toolbarOptions = [
-      "Add",
+      // "Add",
+      {
+        text: "Añadir",
+        tooltipText: "Add",
+        prefixIcon: "e-btn-icon e-add e-icons e-icon-left",
+        id: "Add",
+      },
       "Edit",
       "Delete",
       "Update",
@@ -110,10 +116,7 @@ class Employees extends Component {
 
     this.query = new Query()
       .addParams("roles", [3])
-      .addParams(
-        "showAllEmployees",
-        this.state.showAllEmployees
-      );
+      .addParams("showAllEmployees", this.state.showAllEmployees);
   }
 
   dataBound() {
@@ -133,7 +136,7 @@ class Employees extends Component {
     }
     return null;
   }
-  
+
   hasAdvance(args) {
     if (args.hasAdvancesPending) {
       return (
@@ -217,7 +220,11 @@ class Employees extends Component {
   }
 
   clickHandler(args) {
-    if (args.item.id === "Details") {
+    if (args.item.id === "Add") {
+      this.props.history.push({
+        pathname: "/employees/add-new/"
+      });
+    } else if (args.item.id === "Details") {
       const { rowSelected } = this.state;
       if (rowSelected !== null) {
         this.props.history.push({
@@ -284,10 +291,7 @@ class Employees extends Component {
       console.log("showAllEmployees -> ", this.state.showAllEmployees);
       this.grid.query = new Query()
         .addParams("roles", [3])
-        .addParams(
-          "showAllEmployees",
-          this.state.showAllEmployees
-        );
+        .addParams("showAllEmployees", this.state.showAllEmployees);
       this.grid.refresh();
     }
 
@@ -329,8 +333,7 @@ class Employees extends Component {
                 }}
               >
                 <Row>
-                  <Col xs="8">
-                  </Col>
+                  <Col xs="8"></Col>
                   <Col xs="4">
                     <FormGroup style={{ marginTop: -20 }}>
                       <Label

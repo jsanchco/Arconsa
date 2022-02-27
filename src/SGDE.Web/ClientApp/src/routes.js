@@ -41,6 +41,7 @@ const SharedScheduler = React.lazy(() => import('./views/Employees/Employee/Shar
 const Employees = React.lazy(() => import('./views/Employees/employees'));
 const DetailEmployee = React.lazy(() => import('./views/Employees/detail-employee'));
 const BasicData = React.lazy(() => import('./views/Employees/basic-data'));
+const AddNewEmployee = React.lazy(() => import('./views/Employees/add-new'));
 
 const CompanyData = React.lazy(() => import('./views/Settings/company/company-data'));
 const IndirectCosts = React.lazy(() => import('./views/Settings/company/indirect-costs'));
@@ -121,6 +122,7 @@ const routes = [
   { path: '/employees/employees', exact: true, name: 'Trabajadores', component: Employees },
   { path: '/employees/detailemployee/:id', exact: true, name: 'Detalle Trabajador', component: DetailEmployee },
   { path: '/employees/basicdata', exact: true, name: 'Datos Básicos', component: BasicData },
+  { path: '/employees/add-new', exact: true, name: 'Datos Básicos', component: AddNewEmployee },
   { path: '/settings/company/companydata', exact: true, name: 'Datos de Empresa', component: CompanyData },
   { path: '/settings/company/indirect-costs', exact: true, name: 'Gastos Indirectos', component: IndirectCosts },
   { path: '/settings/roles', exact: true, name: 'Roles', component: Roles },

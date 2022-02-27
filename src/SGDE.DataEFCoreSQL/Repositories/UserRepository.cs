@@ -248,6 +248,37 @@
             return newUser;
         }
 
+        public User AddWithProfessions(User newUser, List<int> professions)
+        {
+            using (var transaction = _context.Database.BeginTransaction())
+            {
+                try
+                {
+                    _context.User.Add(newUser);
+                    _context.SaveChanges();
+
+                    foreach (var profession in professions)
+                    {
+                        _context.UserProfession.Add(new UserProfession
+                        {
+                            UserId = newUser.Id,
+                            ProfessionId = profession
+                        });
+                    }
+                    _context.SaveChanges();
+
+                    transaction.Commit();
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    throw ex;
+                }
+            }
+
+            return newUser;
+        }
+
         public bool Update(User user)
         {
             if (!UserExists(user.Id))

@@ -23,6 +23,7 @@
         List<User> GetUsersByRole(List<int> roles);
         User GetById(int id);
         User Add(User newUser);
+        User AddWithProfessions(User newUser, List<int> professions);
         bool Update(User user);
         bool Delete(int id);
         List<TypeDocument> GetPendingDocuments(int userId);

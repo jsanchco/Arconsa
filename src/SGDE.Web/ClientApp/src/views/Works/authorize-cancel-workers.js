@@ -8,6 +8,11 @@ import {
   Inject,
   Toolbar,
   Page,
+  Aggregate,
+  AggregateColumnsDirective,
+  AggregateColumnDirective,
+  AggregateDirective,
+  AggregatesDirective,
 } from "@syncfusion/ej2-react-grids";
 import { DataManager, WebApiAdaptor, Query } from "@syncfusion/ej2-data";
 import {
@@ -74,6 +79,12 @@ class AuthorizeCancelWorkers extends Component {
 
     this.template = this.gridTemplate;
     this.format = { type: "dateTime", format: "dd/MM/yyyy" };
+    this.numericParams = {
+      params: {
+        decimals: 2,
+        format: "n",
+      },
+    };
 
     this.query = new Query().addParams("workId", props.workId);
   }
@@ -276,6 +287,34 @@ class AuthorizeCancelWorkers extends Component {
     });
   }
 
+  tamplateNumericTotal(args) {
+    let amount = Number(args.priceTotal);
+    amount = Math.round((amount + Number.EPSILON) * 100) / 100;
+
+    return <span>{amount}</span>;
+  }
+
+  tamplateNumericTotalSale(args) {
+    let amount = Number(args.priceTotalSale);
+    amount = Math.round((amount + Number.EPSILON) * 100) / 100;
+
+    return <span>{amount}</span>;
+  }
+
+  footerSumEuros(args) {
+    let title = args.Sum;
+    title = title.replace(",", ".");
+    const index = title.lastIndexOf(".");
+    if (index >= 0) {
+      title = `${title.substring(0, index)},${title.substring(
+        index + 1,
+        title.length
+      )}`;
+    }
+
+    return <span>Total: {title}€</span>;
+  }
+
   render() {
     let title = ` Contratos [${this.props.workName}]`;
 
@@ -380,29 +419,46 @@ class AuthorizeCancelWorkers extends Component {
                   <ColumnDirective
                     field="priceTotal"
                     headerText="Precio Coste"
-                    width="100"
+                    template={this.tamplateNumericTotal}
+                    width="90"
+                    //format="n2"
+                    textAlign="Right"
                   />
                   <ColumnDirective
                     field="priceTotalSale"
                     headerText="Precio Venta"
-                    width="100"
+                    //editType="numericedit"
+                    width="90"
+                    template={this.tamplateNumericTotalSale}
+                    // format="n2"
+                    textAlign="Right"
                   />
-                  {/* <ColumnDirective
-                    field="inWork"
-                    headerText="Estado"
-                    template={this.inWorkTemplate}
-                    textAlign="Center"
-                    width="100"
-                  />
-                  <ColumnDirective
-                    field="status"
-                    headerText="Estado"
-                    textAlign="Center"
-                    width="100"
-                    visible={false}
-                  /> */}
                 </ColumnsDirective>
-                <Inject services={[Page, Toolbar, Edit]} />
+
+                <AggregatesDirective>
+                  <AggregateDirective>
+                    <AggregateColumnsDirective>
+                      <AggregateColumnDirective
+                        field="priceTotal"
+                        type="Sum"
+                        format="N2"
+                        footerTemplate={this.footerSumEuros}
+                      >
+                        {" "}
+                      </AggregateColumnDirective>
+
+                      <AggregateColumnDirective
+                        field="priceTotalSale"
+                        type="Sum"
+                        format="N2"
+                        footerTemplate={this.footerSumEuros}
+                      >
+                        {" "}
+                      </AggregateColumnDirective>
+                    </AggregateColumnsDirective>
+                  </AggregateDirective>
+                </AggregatesDirective>
+                <Inject services={[Page, Toolbar, Edit, Aggregate]} />
               </GridComponent>
             </Row>
           </div>

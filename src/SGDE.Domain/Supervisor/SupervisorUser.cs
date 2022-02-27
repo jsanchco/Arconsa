@@ -120,6 +120,9 @@ namespace SGDE.Domain.Supervisor
 
         public UserViewModel AddUser(UserViewModel newUserViewModel)
         {
+            if (newUserViewModel.userProfessions == null)
+                throw new Exception("Debes seleccionar al menos una profesión para este trabajador");
+
             var user = new User
             {
                 AddedDate = DateTime.Now,
@@ -133,7 +136,7 @@ namespace SGDE.Domain.Supervisor
                 SecuritySocialNumber = newUserViewModel.securitySocialNumber,
                 BirthDate = string.IsNullOrEmpty(newUserViewModel.birthDate)
                     ? null
-                    : (DateTime?)DateTime.ParseExact(newUserViewModel.birthDate, "dd/MM/yyyy", null),
+                    : (DateTime?)DateTime.Parse(newUserViewModel.birthDate),
                 Email = newUserViewModel.email,
                 Address = newUserViewModel.address,
                 PhoneNumber = newUserViewModel.phoneNumber,
@@ -141,12 +144,11 @@ namespace SGDE.Domain.Supervisor
                 AccountNumber = newUserViewModel.accountNumber,
                 Photo = newUserViewModel.photo,
                 RoleId = newUserViewModel.roleId,
-                WorkId = newUserViewModel.workId,
-                ClientId = newUserViewModel.clientId,
                 Password = "123456"
             };
 
-            _userRepository.Add(user);
+            var result = _userRepository.AddWithProfessions(user, newUserViewModel.userProfessions);
+            newUserViewModel.id = result.Id;
 
             return newUserViewModel;
         }
@@ -173,7 +175,7 @@ namespace SGDE.Domain.Supervisor
             //    : (DateTime?)DateTime.ParseExact(userViewModel.birthDate, "yyyy/MM/dd", null);
             user.BirthDate = string.IsNullOrEmpty(userViewModel.birthDate)
                 ? null
-                : (DateTime?)DateTime.ParseExact(userViewModel.birthDate, "dd/MM/yyyy", null);
+                : (DateTime?)DateTime.Parse(userViewModel.birthDate);
             user.Email = userViewModel.email;
             user.Address = userViewModel.address;
             user.PhoneNumber = userViewModel.phoneNumber;
