@@ -92,6 +92,8 @@ class GridReportVarious extends Component {
   }
 
   componentDidUpdate(prevProps) {
+    if (prevProps.settings == null && this.props.settings == null) return;
+
     // if (this.hasChanges(prevProps.settings, this.props.settings)) {
     if (prevProps.settings !== this.props.settings) {
       const { settings } = this.props;
@@ -632,7 +634,6 @@ class GridReportVarious extends Component {
 
           {this.renderColumnsEmbargos()}
           {this.renderColumnsAdvances()}
-
         </ColumnsDirective>
 
         <AggregatesDirective>
@@ -737,6 +738,24 @@ class GridReportVarious extends Component {
 
               <AggregateColumnDirective
                 field="priceTotalHoursSaleNocturnal"
+                type="Sum"
+                format="N2"
+                footerTemplate={this.footerSumEuros}
+              >
+                {" "}
+              </AggregateColumnDirective>
+
+              <AggregateColumnDirective
+                field="priceDiary"
+                type="Sum"
+                format="N2"
+                footerTemplate={this.footerSumEuros}
+              >
+                {" "}
+              </AggregateColumnDirective>
+
+              <AggregateColumnDirective
+                field="priceSaleDiary"
                 type="Sum"
                 format="N2"
                 footerTemplate={this.footerSumEuros}
