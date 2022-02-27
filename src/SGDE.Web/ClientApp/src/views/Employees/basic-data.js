@@ -14,6 +14,7 @@ import { getProfessions } from "../../services";
 
 class BasicData extends Component {
   fields = { text: "name", value: "id" };
+  dtpBirthDate = null;
 
   constructor(props) {
     super(props);
@@ -96,7 +97,12 @@ class BasicData extends Component {
       surname: this.state.surname,
       dni: this.state.dni,
       securitySocialNumber: this.state.securitySocialNumber,
-      birthDate: this.state.birthDate,
+      birthDate: this.dtpBirthDate.value != null ? new Date(
+        Date.UTC(
+          this.dtpBirthDate.value.getFullYear(),
+          this.dtpBirthDate.value.getMonth(),
+          this.dtpBirthDate.value.getDate())
+        ) : null,
       username: this.state.username,
       address: this.state.address,
       phoneNumber: this.state.phoneNumber,
@@ -350,6 +356,7 @@ class BasicData extends Component {
                         format="dd/MM/yyyy"
                         value={this.state.birthDate || ""}
                         onChange={this.handleInputChange}
+                        ref={(g) => (this.dtpBirthDate = g)}
                       />
                     </FormGroup>
                   </Col>

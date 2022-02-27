@@ -25,6 +25,7 @@ import { getProfessions } from "../../services";
 
 class AddNew extends Component {
   fields = { text: "name", value: "id" };
+  dtpBirthDate = null;
 
   constructor(props) {
     super(props);
@@ -33,7 +34,7 @@ class AddNew extends Component {
       modal: false,
       photo: null,
       msdDataSource: null,
-      userId: null
+      userId: null,
     };
 
     getProfessions().then((result) => {
@@ -83,7 +84,12 @@ class AddNew extends Component {
       surname: this.state.surname,
       dni: this.state.dni,
       securitySocialNumber: this.state.securitySocialNumber,
-      birthDate: this.state.birthDate,
+      birthDate: this.dtpBirthDate.value != null ? new Date(
+        Date.UTC(
+          this.dtpBirthDate.value.getFullYear(),
+          this.dtpBirthDate.value.getMonth(),
+          this.dtpBirthDate.value.getDate())
+        ) : null,
       username: this.state.username,
       address: this.state.address,
       phoneNumber: this.state.phoneNumber,
@@ -94,7 +100,7 @@ class AddNew extends Component {
       professions: this.state.professions,
       photo: this.state.photo,
       roleId: 3,
-      userProfessions: this.state.userProfessions
+      userProfessions: this.state.userProfessions,
     };
   }
 
@@ -107,23 +113,23 @@ class AddNew extends Component {
     showSpinner(element);
     if (this.state.userId == null) {
       addUser(this.getUser())
-      .then((result) => {
-        this.setState({
-          userId: result.id,
+        .then((result) => {
+          this.setState({
+            userId: result.id,
+          });
+          hideSpinner(element);
+        })
+        .catch(() => {
+          hideSpinner(element);
         });
-        hideSpinner(element);
-      })
-      .catch(() => {
-        hideSpinner(element);
-      });
     } else {
       updateUser(this.getUser())
-      .then(() => {
-        hideSpinner(element);
-      })
-      .catch(() => {
-        hideSpinner(element);
-      });
+        .then(() => {
+          hideSpinner(element);
+        })
+        .catch(() => {
+          hideSpinner(element);
+        });
     }
   }
 
@@ -335,6 +341,7 @@ class AddNew extends Component {
                                 format="dd/MM/yyyy"
                                 value={this.state.birthDate || ""}
                                 onChange={this.handleInputChange}
+                                ref={(g) => (this.dtpBirthDate = g)}
                               />
                             </FormGroup>
                           </Col>
