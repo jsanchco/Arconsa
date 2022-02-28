@@ -135,6 +135,18 @@
             {
                 if (dailySigning.UserHiring.UserId != historyHiringViewModel.userId)
                 {
+                    historyHiringViewModel.dtEndDate = dailySigning.HourTypeId != 5 ?
+                        historyHiringViewModel.dtEndDate = dailySigning.EndHour :
+                        historyHiringViewModel.dtEndDate = dailySigning.StartHour;
+
+                    historyHiringViewModel.priceTotal += dailySigning.HourTypeId != 5 ?
+                        ((DateTime)dailySigning.EndHour - (DateTime)dailySigning.StartHour).TotalHours * (double)ReportResultConverter.GetPriceHourCost(dailySigning.UserHiring.User, dailySigning.ProfessionId, (DateTime)dailySigning.StartHour, dailySigning.HourTypeId) :
+                        (double)ReportResultConverter.GetPriceHourCost(dailySigning.UserHiring.User, dailySigning.ProfessionId, (DateTime)dailySigning.StartHour, dailySigning.HourTypeId);
+
+                    historyHiringViewModel.priceTotalSale += dailySigning.HourTypeId != 5 ?
+                        ((DateTime)dailySigning.EndHour - (DateTime)dailySigning.StartHour).TotalHours * (double)ReportResultConverter.GetPriceHourSale(dailySigning.UserHiring.Work.Client, dailySigning.HourTypeId, dailySigning.ProfessionId) :
+                        (double)ReportResultConverter.GetPriceHourSale(dailySigning.UserHiring.Work.Client, dailySigning.HourTypeId, dailySigning.ProfessionId);
+
                     listHistoryHiringViewModel.Add(historyHiringViewModel);
 
                     historyHiringViewModel = new HistoryHiringViewModel
