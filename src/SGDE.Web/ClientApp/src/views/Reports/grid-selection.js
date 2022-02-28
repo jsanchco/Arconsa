@@ -121,7 +121,6 @@ class GridSelection extends Component {
             .addParams("endDate", settings.end)
             .addParams("showCeros", settings.showCeros);
 
-          this.grid.refresh();
           break;
 
         case "works":
@@ -138,7 +137,6 @@ class GridSelection extends Component {
             .addParams("endDate", settings.end)
             .addParams("showCeros", settings.showCeros);
 
-          this.grid.refresh();
           break;
 
         case "clients":
@@ -155,7 +153,6 @@ class GridSelection extends Component {
             .addParams("endDate", settings.end)
             .addParams("showCeros", settings.showCeros);
 
-          this.grid.refresh();
           break;
 
         default:

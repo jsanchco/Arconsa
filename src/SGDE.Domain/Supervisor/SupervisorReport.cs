@@ -199,6 +199,7 @@
                 result.Add(new ReportVariousInfoViewModel
                 {
                     clientName = client.Name,
+                    totalWorkers = client.Works.SelectMany(y => y.UserHirings).Select(x => x.UserId).Distinct().Count(),
                     totalHoursOrdinary = listReportResultViewModel
                                                 .Where(x => x.hourTypeId == 1)
                                                 .Select(x => x.hours).Sum(),

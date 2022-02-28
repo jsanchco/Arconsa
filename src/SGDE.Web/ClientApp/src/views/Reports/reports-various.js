@@ -59,7 +59,8 @@ class ReportsVarious extends Component {
       companyName: "",
       cif: "",
       address: "",
-      phoneNumber: ""
+      phoneNumber: "",
+      showCeros: true
     };
 
     this.toolbarOptions = [
@@ -128,20 +129,43 @@ class ReportsVarious extends Component {
           type: "danger",
         });
       } else {
-        // var data = {
-        //   start: this.formatDate(this.dtpStartDate.value),
-        //   end: this.formatDate(this.dtpEndDate.value),
-        //   textSelection: textDdl,
-        //   showCeros: this.state.showCeros
-        // };
-        // PubSub.publish("updateGrid", data);
+        this.grid.dataSource = new DataManager({
+          adaptor: new WebApiAdaptor(),
+          url: `${config.URL_API}/${REPORTS_ALL}`,
+          headers: [
+            { Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) },
+          ],
+        });
 
-        this.props.updateReport(
-          valueDtpStartDate,
-          valueDtpEndDate,
-          textDdl,
-          this.state.showCeros
-        );
+        switch (textDdl) {
+          case "Trabajadores":
+            this.grid.query = new Query()
+              .addParams("workers", true)
+              .addParams("startDate", valueDtpStartDate)
+              .addParams("endDate", valueDtpEndDate)
+              .addParams("showCeros", this.state.showCeros);
+
+            break;
+          case "Obras":
+            this.grid.query = new Query()
+              .addParams("works", true)
+              .addParams("startDate", valueDtpStartDate)
+              .addParams("endDate", valueDtpEndDate)
+              .addParams("showCeros", this.state.showCeros);
+
+            break;
+          case "Clientes":
+            this.grid.query = new Query()
+              .addParams("clients", true)
+              .addParams("startDate", valueDtpStartDate)
+              .addParams("endDate", valueDtpEndDate)
+              .addParams("showCeros", this.state.showCeros);
+
+            break;
+
+          default:
+            break;
+        }
       }
     }
   }
@@ -161,30 +185,36 @@ class ReportsVarious extends Component {
         this.title = "TRABAJADORES";
         this.grid.columnModel[0].field = "workerName";
         this.grid.columnModel[0].headerText = "Trabajador";
-        this.grid.getColumnByField("totalWorkers").visible = true;
+        this.grid.getColumnByField("totalWorkers").visible = false;
         this.grid.getColumnByField("hasEmbargosPendings").visible = true;
         this.grid.getColumnByField("hasAdvancesPendings").visible = true;
         this.grid.refreshHeader();
+
+        this.grid.dataSource = null;
 
         break;
       case "Obras":
         this.title = "OBRAS";
         this.grid.columnModel[0].field = "workName";
         this.grid.columnModel[0].headerText = "Obra";
-        this.grid.getColumnByField("totalWorkers").visible = false;
+        this.grid.getColumnByField("totalWorkers").visible = true;
         this.grid.getColumnByField("hasEmbargosPendings").visible = false;
         this.grid.getColumnByField("hasAdvancesPendings").visible = false;
         this.grid.refreshHeader();
+
+        this.grid.dataSource = null;
 
         break;
       case "Clientes":
         this.title = "CLIENTES";
         this.grid.columnModel[0].field = "clientName";
         this.grid.columnModel[0].headerText = "Cliente";
-        this.grid.getColumnByField("totalWorkers").visible = false;
+        this.grid.getColumnByField("totalWorkers").visible = true;
         this.grid.getColumnByField("hasEmbargosPendings").visible = false;
         this.grid.getColumnByField("hasAdvancesPendings").visible = false;
         this.grid.refreshHeader();
+
+        this.grid.dataSource = null;
 
         break;
 
@@ -517,7 +547,7 @@ class ReportsVarious extends Component {
                         id="consultar"
                         color="primary"
                         style={{ marginLeft: "30px", textAlign: "left" }}
-                        onClick={this._handleOnClick}
+                        onClick={this.handleOnClick}
                       >
                         Consultar
                       </Button>
@@ -555,9 +585,7 @@ class ReportsVarious extends Component {
                   field: "workerName",
                 */}
                   <ColumnsDirective>
-                    <ColumnDirective
-                      width="100"
-                    />
+                    <ColumnDirective width="100" />
                     <ColumnDirective
                       field="totalWorkers"
                       headerText="Nº Trab."
@@ -653,6 +681,14 @@ class ReportsVarious extends Component {
                   <AggregatesDirective>
                     <AggregateDirective>
                       <AggregateColumnsDirective>
+                        <AggregateColumnDirective
+                          field="totalWorkers"
+                          type="Sum"
+                          format="N2"
+                          footerTemplate={this.footerSum}
+                        >
+                          {" "}
+                        </AggregateColumnDirective>
                         <AggregateColumnDirective
                           field="totalHoursOrdinary"
                           type="Sum"
