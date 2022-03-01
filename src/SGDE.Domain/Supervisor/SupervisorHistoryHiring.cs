@@ -123,7 +123,6 @@
                 priceTotal = dailySignings[0].HourTypeId != 5 ?
                         ((DateTime)dailySignings[0].EndHour - (DateTime)dailySignings[0].StartHour).TotalHours * (double)ReportResultConverter.GetPriceHourCost(dailySignings[0].UserHiring.User, dailySignings[0].ProfessionId, (DateTime)dailySignings[0].StartHour, dailySignings[0].HourTypeId) :
                         (double)ReportResultConverter.GetPriceHourCost(dailySignings[0].UserHiring.User, dailySignings[0].ProfessionId, (DateTime)dailySignings[0].StartHour, dailySignings[0].HourTypeId),
-
                 priceTotalSale = dailySignings[0].HourTypeId != 5 ?
                         ((DateTime)dailySignings[0].EndHour - (DateTime)dailySignings[0].StartHour).TotalHours * (double)ReportResultConverter.GetPriceHourSale(dailySignings[0].UserHiring.Work.Client, dailySignings[0].HourTypeId, dailySignings[0].ProfessionId) :
                         (double)ReportResultConverter.GetPriceHourSale(dailySignings[0].UserHiring.Work.Client, dailySignings[0].HourTypeId, dailySignings[0].ProfessionId)
@@ -135,18 +134,6 @@
             {
                 if (dailySigning.UserHiring.UserId != historyHiringViewModel.userId)
                 {
-                    historyHiringViewModel.dtEndDate = dailySigning.HourTypeId != 5 ?
-                        historyHiringViewModel.dtEndDate = dailySigning.EndHour :
-                        historyHiringViewModel.dtEndDate = dailySigning.StartHour;
-
-                    historyHiringViewModel.priceTotal += dailySigning.HourTypeId != 5 ?
-                        ((DateTime)dailySigning.EndHour - (DateTime)dailySigning.StartHour).TotalHours * (double)ReportResultConverter.GetPriceHourCost(dailySigning.UserHiring.User, dailySigning.ProfessionId, (DateTime)dailySigning.StartHour, dailySigning.HourTypeId) :
-                        (double)ReportResultConverter.GetPriceHourCost(dailySigning.UserHiring.User, dailySigning.ProfessionId, (DateTime)dailySigning.StartHour, dailySigning.HourTypeId);
-
-                    historyHiringViewModel.priceTotalSale += dailySigning.HourTypeId != 5 ?
-                        ((DateTime)dailySigning.EndHour - (DateTime)dailySigning.StartHour).TotalHours * (double)ReportResultConverter.GetPriceHourSale(dailySigning.UserHiring.Work.Client, dailySigning.HourTypeId, dailySigning.ProfessionId) :
-                        (double)ReportResultConverter.GetPriceHourSale(dailySigning.UserHiring.Work.Client, dailySigning.HourTypeId, dailySigning.ProfessionId);
-
                     listHistoryHiringViewModel.Add(historyHiringViewModel);
 
                     historyHiringViewModel = new HistoryHiringViewModel
@@ -166,7 +153,14 @@
                         professionName = dailySigning.UserHiring.Profession?.Name,
                         workId = dailySigning.UserHiring.Work.Id,
                         workName = dailySigning.UserHiring.Work.Name,
-                        inWork = !dailySigning.UserHiring.EndDate.HasValue
+                        inWork = !dailySigning.UserHiring.EndDate.HasValue,
+
+                        priceTotal = dailySigning.HourTypeId != 5 ?
+                                ((DateTime)dailySigning.EndHour - (DateTime)dailySigning.StartHour).TotalHours * (double)ReportResultConverter.GetPriceHourCost(dailySigning.UserHiring.User, dailySigning.ProfessionId, (DateTime)dailySigning.StartHour, dailySigning.HourTypeId) :
+                                (double)ReportResultConverter.GetPriceHourCost(dailySigning.UserHiring.User, dailySigning.ProfessionId, (DateTime)dailySigning.StartHour, dailySigning.HourTypeId),
+                        priceTotalSale = dailySigning.HourTypeId != 5 ?
+                                ((DateTime)dailySigning.EndHour - (DateTime)dailySigning.StartHour).TotalHours * (double)ReportResultConverter.GetPriceHourSale(dailySigning.UserHiring.Work.Client, dailySigning.HourTypeId, dailySigning.ProfessionId) :
+                                (double)ReportResultConverter.GetPriceHourSale(dailySigning.UserHiring.Work.Client, dailySigning.HourTypeId, dailySigning.ProfessionId)
                     };
                 }
                 else
