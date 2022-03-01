@@ -120,7 +120,7 @@
                 result.Add(new ReportVariousInfoViewModel
                 {
                     workName = work.Name,
-                    totalWorkers = work.UserHirings.Select(x => x.UserId).Distinct().Count(),
+                    totalWorkers = listReportResultViewModel.Select(x => x.userName).Distinct().Count(),
                     totalHoursOrdinary = listReportResultViewModel
                                                 .Where(x => x.hourTypeId == 1)
                                                 .Select(x => x.hours).Sum(),
@@ -199,7 +199,7 @@
                 result.Add(new ReportVariousInfoViewModel
                 {
                     clientName = client.Name,
-                    totalWorkers = client.Works.SelectMany(y => y.UserHirings).Select(x => x.UserId).Distinct().Count(),
+                    totalWorkers = listReportResultViewModel.Select(x => x.userName).Distinct().Count(),
                     totalHoursOrdinary = listReportResultViewModel
                                                 .Where(x => x.hourTypeId == 1)
                                                 .Select(x => x.hours).Sum(),
