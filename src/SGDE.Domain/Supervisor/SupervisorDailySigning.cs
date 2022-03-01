@@ -229,6 +229,22 @@
 
         public bool ValidateDataMassiveSigning(List<PeriodByHoursViewModel> data)
         {
+            foreach (var item in data)
+            {
+                if (!item.startHour.HasValue)
+                    continue;
+
+                if (item.hourTypeId == 5)
+                {
+                    item.startHour = new DateTime(
+                        item.startHour.Value.Year, 
+                        item.startHour.Value.Month, 
+                        item.startHour.Value.Day);
+
+                    item.endHour = item.startHour.Value.AddDays(1).AddSeconds(-1);
+                }
+            }
+
             for (var i=0; i<data.Count; i++)
             {
                 var item = data[i];
