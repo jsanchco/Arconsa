@@ -32,7 +32,7 @@ class CostWorkers extends Component {
 
   numericParams = {
     params: {
-      decimals: 2,
+      decimals: 4,
       format: "N",
       validateDecimalOnType: true,
     },

@@ -9,7 +9,7 @@
     public class TrainingViewModel : BaseEntityViewModel
     {
         public string name { get; set; }
-        public Decimal hours { get; set; }
+        public double hours { get; set; }
         public string center { get; set; }
         public string address { get; set; }
         public byte[] file { get; set; }

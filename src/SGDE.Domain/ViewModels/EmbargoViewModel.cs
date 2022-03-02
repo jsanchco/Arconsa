@@ -11,8 +11,8 @@ namespace SGDE.Domain.ViewModels
         public DateTime? startDate { get; set; }
         public DateTime? endDate { get; set; }
         public string observations { get; set; }
-        public Decimal total { get; set; }
-        public Decimal? remaining { get; set; }
+        public double total { get; set; }
+        public double? remaining { get; set; }
         public bool paid { get; set; }
         public int userId { get; set; }
     }

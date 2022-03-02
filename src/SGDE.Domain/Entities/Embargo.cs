@@ -12,7 +12,7 @@ namespace SGDE.Domain.Entities
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
         public string Observations { get; set; }
-        public Decimal Total { get; set; }        
+        public double Total { get; set; }        
         public bool Paid { get; set; }
 
         public int UserId { get; set; }

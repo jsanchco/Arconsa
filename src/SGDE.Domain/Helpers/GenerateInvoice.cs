@@ -478,7 +478,7 @@
         {
             _invoiceResponseViewModel.data.name = _invoice.Name;
             _invoiceResponseViewModel.data.invoiceNumber = _invoice.InvoiceNumber;
-            _invoiceResponseViewModel.data.taxBase = (double)_invoice.TaxBase;
+            _invoiceResponseViewModel.data.taxBase = _invoice.TaxBase;
             _invoiceResponseViewModel.data.ivaTaxBase = _invoice.IvaTaxBase;
             _invoiceResponseViewModel.data.retentions = _invoice.Retentions;
             _invoiceResponseViewModel.data.startDate = _invoice.StartDate;

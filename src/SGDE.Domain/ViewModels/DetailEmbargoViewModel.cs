@@ -6,7 +6,7 @@ namespace SGDE.Domain.ViewModels
     {
         public DateTime datePay { get; set; }
         public string observations { get; set; }
-        public Decimal amount { get; set; }
+        public double amount { get; set; }
         public int embargoId { get; set; }
     }
 }

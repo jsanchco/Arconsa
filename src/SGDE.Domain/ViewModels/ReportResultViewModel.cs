@@ -17,7 +17,7 @@
         public string hourTypeName { get; set; }
         public string dateHour { get; set; }
         public double hours { get; set; }
-        public Decimal priceHour { get; set; }
-        public Decimal priceHourSale { get; set; }
+        public double priceHour { get; set; }
+        public double priceHourSale { get; set; }
     }
 }

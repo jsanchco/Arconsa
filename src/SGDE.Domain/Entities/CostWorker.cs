@@ -8,11 +8,11 @@
 
     public class CostWorker : BaseEntity
     {
-        public Decimal PriceHourOrdinary { get; set; }
-        public Decimal PriceHourExtra { get; set; }
-        public Decimal PriceHourFestive { get; set; }
-        public Decimal PriceHourNocturnal { get; set; }
-        public Decimal PriceDaily { get; set; }
+        public double PriceHourOrdinary { get; set; }
+        public double PriceHourExtra { get; set; }
+        public double PriceHourFestive { get; set; }
+        public double PriceHourNocturnal { get; set; }
+        public double PriceDaily { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime? EndDate { get; set; }
         public string Observations { get; set; }

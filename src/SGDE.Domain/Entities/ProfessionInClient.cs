@@ -8,11 +8,11 @@
 
     public class ProfessionInClient : BaseEntity
     {
-        public Decimal PriceHourSaleOrdinary { get; set; }
-        public Decimal PriceHourSaleExtra { get; set; }
-        public Decimal PriceHourSaleFestive { get; set; }
-        public Decimal PriceHourSaleNocturnal { get; set; }
-        public Decimal PriceDailySale{ get; set; }
+        public double PriceHourSaleOrdinary { get; set; }
+        public double PriceHourSaleExtra { get; set; }
+        public double PriceHourSaleFestive { get; set; }
+        public double PriceHourSaleNocturnal { get; set; }
+        public double PriceDailySale { get; set; }
 
         public int ClientId { get; set; }
         public virtual Client Client { get; set; }

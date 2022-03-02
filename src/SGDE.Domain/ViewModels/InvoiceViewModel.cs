@@ -20,7 +20,7 @@
         public double total { get; set; }
         public bool iva { get; set; }
         public int typeInvoice { get; set; }  // 1 = por horas, 2 = custom
-        public Decimal retentions { get; set; }
+        public double retentions { get; set; }
         public bool isPaid => payDate != null;
 
 

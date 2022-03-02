@@ -44,7 +44,7 @@
                 EndDate = newInvoiceViewModel.endDate,
                 IssueDate = newInvoiceViewModel.issueDate,
                 PayDate = newInvoiceViewModel.payDate,
-                TaxBase = (decimal)newInvoiceViewModel.taxBase,
+                TaxBase = newInvoiceViewModel.taxBase,
                 Iva = newInvoiceViewModel.iva,
                 TypeInvoice = newInvoiceViewModel.typeInvoice,
                 Retentions = newInvoiceViewModel.retentions,
@@ -94,14 +94,14 @@
                     ModifiedDate = null,
 
                     ServicesPerformed = detailInvoice.servicesPerformed,
-                    Units = (decimal)detailInvoice.units,
-                    UnitsAccumulated = (decimal)detailInvoice.unitsAccumulated,
-                    PriceUnity = (decimal)detailInvoice.priceUnity,
+                    Units = detailInvoice.units,
+                    UnitsAccumulated = detailInvoice.unitsAccumulated,
+                    PriceUnity = detailInvoice.priceUnity,
                     NameUnit = detailInvoice.nameUnit
                 });
                 taxBase += detailInvoice.units * detailInvoice.priceUnity;
             }
-            invoice.TaxBase = (decimal)taxBase;
+            invoice.TaxBase = taxBase;
 
             return _invoiceRepository.AddInvoiceFromQuery(invoice);
         }
@@ -124,7 +124,7 @@
             invoice.EndDate = invoiceViewModel.endDate;
             invoice.IssueDate = invoiceViewModel.issueDate;
             invoice.PayDate = invoiceViewModel.payDate;
-            invoice.TaxBase = (decimal)invoiceViewModel.taxBase;
+            invoice.TaxBase = invoiceViewModel.taxBase;
             invoice.Iva = invoiceViewModel.iva;
             invoice.TypeInvoice = invoiceViewModel.typeInvoice;
             invoice.Retentions = invoiceViewModel.retentions;

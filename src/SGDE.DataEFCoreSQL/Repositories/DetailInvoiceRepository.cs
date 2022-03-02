@@ -109,7 +109,7 @@
                         .ToList()
                         .Sum(x => x.Total);
 
-                    invoice.TaxBase = (decimal)total;
+                    invoice.TaxBase = total;
                     _context.Invoice.Update(invoice);
                     _context.SaveChanges();
 
@@ -147,7 +147,7 @@
                         .ToList()
                         .Sum(x => x.Total);
 
-                    invoice.TaxBase = (decimal)total;
+                    invoice.TaxBase = total;
                     _context.Invoice.Update(invoice);
                     _context.SaveChanges();
 

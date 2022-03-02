@@ -37,9 +37,9 @@
                 
                 InvoiceId = newDetailInvoiceViewModel.invoiceId,
                 ServicesPerformed = newDetailInvoiceViewModel.servicesPerformed,
-                Units = (decimal)newDetailInvoiceViewModel.units,
-                UnitsAccumulated = (decimal)newDetailInvoiceViewModel.unitsAccumulated,
-                PriceUnity = (decimal)newDetailInvoiceViewModel.priceUnity,
+                Units = newDetailInvoiceViewModel.units,
+                UnitsAccumulated = newDetailInvoiceViewModel.unitsAccumulated,
+                PriceUnity = newDetailInvoiceViewModel.priceUnity,
                 NameUnit = newDetailInvoiceViewModel.nameUnit
             };
 
@@ -61,9 +61,9 @@
 
             detailInvoice.InvoiceId = detailInvoiceViewModel.invoiceId;
             detailInvoice.ServicesPerformed = detailInvoiceViewModel.servicesPerformed;
-            detailInvoice.Units = (decimal)detailInvoiceViewModel.units;
-            detailInvoice.UnitsAccumulated = (decimal)detailInvoiceViewModel.unitsAccumulated;
-            detailInvoice.PriceUnity = (decimal)detailInvoiceViewModel.priceUnity;
+            detailInvoice.Units = detailInvoiceViewModel.units;
+            detailInvoice.UnitsAccumulated = detailInvoiceViewModel.unitsAccumulated;
+            detailInvoice.PriceUnity = detailInvoiceViewModel.priceUnity;
             detailInvoice.NameUnit = detailInvoiceViewModel.nameUnit;
 
             return _detailInvoiceRepository.Update(detailInvoice);
@@ -112,8 +112,8 @@
                 new DetailInvoice 
                 {
                     ServicesPerformed = $"{x.HourTypeName} {x.ProfessionName}",
-                    PriceUnity = (decimal)GetPriceHourSale(x.HourTypeId, x.ProfessionId),
-                    Units = (decimal)x.Hours,
+                    PriceUnity = GetPriceHourSale(x.HourTypeId, x.ProfessionId),
+                    Units = x.Hours,
                     NameUnit = "horas"
                 }).ToList());
 

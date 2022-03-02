@@ -15,7 +15,7 @@
         public DateTime EndDate { get; set; }
         public DateTime IssueDate { get; set; }
         public DateTime? PayDate { get; set; }
-        public Decimal TaxBase { get; set; }
+        public double TaxBase { get; set; }
         public double IvaTaxBase { get; set; }
         public double Total { get; set; }
         public bool Iva { get; set; }
@@ -23,7 +23,7 @@
         public string KeyOrder => $"{IssueDate.Year.ToString().Substring(2, 2)}{InvoiceNumber:0000}";
         public bool IsPaid => PayDate != null;
 
-        public Decimal Retentions { get; set; }
+        public double Retentions { get; set; }
         public int State { get; set; } // 0 = nada, 1 = Añadido, 2 = Modificado, 3 = Existe con los mismos datos => no hago nada
 
         public int? WorkId { get; set; }
