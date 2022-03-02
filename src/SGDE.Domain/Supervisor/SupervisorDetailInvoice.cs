@@ -112,7 +112,10 @@
                 new DetailInvoice 
                 {
                     ServicesPerformed = $"{x.HourTypeName} {x.ProfessionName}",
-                    PriceUnity = GetPriceHourSale(x.HourTypeId, x.ProfessionId),
+                    PriceUnity = GetPriceHourSale(
+                        invoice.Work.ClientId,
+                        x.HourTypeId, 
+                        x.ProfessionId),
                     Units = x.Hours,
                     NameUnit = "horas"
                 }).ToList());
@@ -127,23 +130,27 @@
 
         #region Auxiliary Methods
 
-        private double GetPriceHourSale(int? type, int? professionId)
+        private double GetPriceHourSale(int clientId, int? type, int? professionId)
         {
             if (type == null || professionId == null)
                 return 0;
 
-            var professionInClient = GetProfessionInClientById(professionId.Value);
+            var professionInClient = 
+                GetAllProfessionInClient(0, 0, null, professionId.Value, clientId)
+                    .Data
+                    .FirstOrDefault();
+
             if (professionInClient == null)
                 return 0;
 
             switch (type)
             {
                 case 1:
-                    return (double)professionInClient.priceHourSaleOrdinary;
+                    return professionInClient.priceHourSaleOrdinary;
                 case 2:
-                    return (double)professionInClient.priceHourSaleExtra;
+                    return professionInClient.priceHourSaleExtra;
                 case 3:
-                    return (double)professionInClient.priceHourSaleFestive;
+                    return professionInClient.priceHourSaleFestive;
 
                 default:
                     return 0;

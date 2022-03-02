@@ -19,6 +19,7 @@
 
             var reportResultViewModel = new ReportResultViewModel
             {
+                clientId = dailySigning.UserHiring.Work.Client.Id,
                 userName = $"{dailySigning.UserHiring.User.Name} {dailySigning.UserHiring.User.Surname}",
                 professionName = dailySigning.Profession.Name,
                 professionId = dailySigning.ProfessionId,
@@ -39,6 +40,7 @@
             {
                 var model = new ReportResultViewModel
                 {
+                    clientId = dailySigning.UserHiring.Work.Client.Id,
                     userName = $"{dailySigning.UserHiring.User.Name} {dailySigning.UserHiring.User.Surname}",
                     professionName = dailySigning.Profession.Name,
                     professionId = dailySigning.ProfessionId,

@@ -8,6 +8,7 @@
 
     public class ReportResultViewModel
     {
+        public int clientId { get; set; }
         public string clientName { get; set; }
         public string workName { get; set; }
         public string userName { get; set; }
