@@ -59,8 +59,7 @@ class ReportsVarious extends Component {
       companyName: "",
       cif: "",
       address: "",
-      phoneNumber: "",
-      showCeros: true
+      phoneNumber: ""
     };
 
     this.toolbarOptions = [
@@ -280,9 +279,9 @@ class ReportsVarious extends Component {
   }
 
   getExcelExportProperties() {
-    let title = `INFORME de ${this.state.title}`;
-    let type = this.state.title;
-    let fileName = `Inf_${this.state.title}.xlsx`;
+    let title = `INFORME de ${this.ddl.text.toUpperCase()}`;
+    let type = this.ddl.text;
+    let fileName = `Inf_${this.ddl.text}.xlsx`;
     const date = this.formatDate(new Date());
 
     return {
@@ -364,8 +363,8 @@ class ReportsVarious extends Component {
           {
             index: 6,
             cells: [
-              { index: 5, value: this.props.settings.start },
-              { index: 6, value: this.props.settings.end, width: 150 },
+              { index: 5, value: this.formatDate(this.dtpStartDate.value) },
+              { index: 6, value: this.formatDate(this.dtpEndDate.value), width: 150 },
             ],
           },
         ],
@@ -376,7 +375,7 @@ class ReportsVarious extends Component {
 
   beforePrint(args) {
     var div = document.createElement("Div");
-    div.innerHTML = this.props.settings.textSelection;
+    div.innerHTML = this.ddl.text;
     div.style.textAlign = "center";
     div.style.color = "red";
     div.style.padding = "10px 0";
