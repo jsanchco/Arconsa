@@ -44,6 +44,14 @@ class GridSelection extends Component {
       phoneNumber: "",
     };
 
+    this.numericParams = {
+      params: {
+        decimals: 2,
+        format: "C",
+        validateDecimalOnType: true,
+      },
+    };
+
     this.toolbarOptions = [
       "Print",
       "ExcelExport",
@@ -418,6 +426,20 @@ class GridSelection extends Component {
     return <div>{value}</div>;
   }
 
+  tamplateNumericHour(args) {
+    let amount = Number(args.priceHour);
+    amount = Math.round((amount + Number.EPSILON) * 100) / 100;
+
+    return <span style={{ textAlign: "right" }}>{amount}</span>;
+  }
+
+  tamplateNumericHourSale(args) {
+    let amount = Number(args.priceHourSale);
+    amount = Math.round((amount + Number.EPSILON) * 100) / 100;
+
+    return <span style={{ textAlign: "right" }}>{amount}</span>;
+  }
+
   excelQueryCellInfo(args) {
     if (args.data.hourTypeId === 5 && args.data.hours === 0) {
       args.data.hours = "";
@@ -487,17 +509,14 @@ class GridSelection extends Component {
                     field="priceHour"
                     headerText="Precio Coste"
                     width="70"
-                    fotmat="C1"
-                    textAlign="right"
-                    editType="numericedit"
+                    template={this.tamplateNumericHour}
+
                   />
                   <ColumnDirective
                     field="priceHourSale"
                     headerText="Precio Venta"
                     width="70"
-                    fotmat="C1"
-                    textAlign="right"
-                    editType="numericedit"
+                    template={this.tamplateNumericHourSale}
                   />
                 </ColumnsDirective>
 

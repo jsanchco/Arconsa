@@ -55,6 +55,7 @@
                     clientId = clientId,
                     showCeros = showCeros
                 };
+                reportViewModel.endDate = reportViewModel.endDate.AddDays(1).AddSeconds(-1);
 
                 var data = new List<ReportResultViewModel>();
                 if (workerId != 0 && workId == 0 && clientId == 0)
@@ -105,6 +106,7 @@
                     clients = clients,
                     showCeros = showCeros
                 };
+                reportAllViewModel.endDate = reportAllViewModel.endDate.AddDays(1).AddSeconds(-1);
 
                 var data = new List<ReportVariousInfoViewModel>();
                 if (workers && !works && !clients)

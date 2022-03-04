@@ -216,50 +216,75 @@ class CostWorkers extends Component {
                     textAlign="Center"
                     columns={[
                       {
-                        field: "priceHourOrdinary",
+                        field: "priceHourOrdinaryS",
                         headerText: "Ordinaria",
-                        width: "70",
-                        fotmat: "N2",
-                        textAlign: "left",
-                        editType: "numericedit",
-                        edit: this.numericParams,
+                        width: "70"
                       },
                       {
-                        field: "priceHourExtra",
+                        field: "priceHourExtraS",
                         headerText: "Extra",
-                        width: "70",
-                        fotmat: "N2",
-                        textAlign: "left",
-                        editType: "numericedit",
-                        edit: this.numericParams,
+                        width: "70"
                       },
                       {
-                        field: "priceHourFestive",
+                        field: "priceHourFestiveS",
                         headerText: "Festivo",
                         width: "70",
-                        fotmat: "N2",
-                        textAlign: "left",
-                        editType: "numericedit",
-                        edit: this.numericParams,
                       },
                       {
-                        field: "priceHourNocturnal",
+                        field: "priceHourNocturnalS",
                         headerText: "Nocturno",
                         width: "70",
-                        fotmat: "N2",
-                        textAlign: "left",
-                        editType: "numericedit",
-                        edit: this.numericParams,
                       },
                       {
                         field: "priceDaily",
                         headerText: "Diario",
                         width: "70",
-                        fotmat: "N2",
                         textAlign: "left",
                         editType: "numericedit",
                         edit: this.numericParams,
-                      }                                            
+                      },
+                      
+                      // {
+                      //   field: "priceHourOrdinary",
+                      //   headerText: "Ordinaria",
+                      //   width: "70",
+                      //   fotmat: "N2",
+                      //   textAlign: "left",
+                      //   editType: "numericedit",
+                      //   edit: this.numericParams,
+                      // },
+                      // {
+                      //   field: "priceHourExtra",
+                      //   headerText: "Extra",
+                      //   width: "70",
+                      //   textAlign: "left",
+                      //   editType: "numericedit",
+                      //   edit: this.numericParams,
+                      // },
+                      // {
+                      //   field: "priceHourFestive",
+                      //   headerText: "Festivo",
+                      //   width: "70",
+                      //   textAlign: "left",
+                      //   editType: "numericedit",
+                      //   edit: this.numericParams,
+                      // },
+                      // {
+                      //   field: "priceHourNocturnal",
+                      //   headerText: "Nocturno",
+                      //   width: "70",
+                      //   textAlign: "left",
+                      //   editType: "numericedit",
+                      //   edit: this.numericParams,
+                      // },
+                      // {
+                      //   field: "priceDaily",
+                      //   headerText: "Diario",
+                      //   width: "70",
+                      //   textAlign: "left",
+                      //   editType: "numericedit",
+                      //   edit: this.numericParams,
+                      // }    
                     ]}
                   />
                   <ColumnDirective
