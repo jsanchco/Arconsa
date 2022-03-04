@@ -120,12 +120,12 @@
                 workName = dailySignings[0].UserHiring.Work.Name,
                 inWork = !dailySignings[0].UserHiring.EndDate.HasValue,
 
-                priceTotal = dailySignings[0].HourTypeId != 5 ?
-                        ((DateTime)dailySignings[0].EndHour - (DateTime)dailySignings[0].StartHour).TotalHours * (double)ReportResultConverter.GetPriceHourCost(dailySignings[0].UserHiring.User, dailySignings[0].ProfessionId, (DateTime)dailySignings[0].StartHour, dailySignings[0].HourTypeId) :
-                        (double)ReportResultConverter.GetPriceHourCost(dailySignings[0].UserHiring.User, dailySignings[0].ProfessionId, (DateTime)dailySignings[0].StartHour, dailySignings[0].HourTypeId),
-                priceTotalSale = dailySignings[0].HourTypeId != 5 ?
-                        ((DateTime)dailySignings[0].EndHour - (DateTime)dailySignings[0].StartHour).TotalHours * (double)ReportResultConverter.GetPriceHourSale(dailySignings[0].UserHiring.Work.Client, dailySignings[0].HourTypeId, dailySignings[0].ProfessionId) :
-                        (double)ReportResultConverter.GetPriceHourSale(dailySignings[0].UserHiring.Work.Client, dailySignings[0].HourTypeId, dailySignings[0].ProfessionId)
+                //priceTotal = dailySignings[0].HourTypeId != 5 ?
+                //        ((DateTime)dailySignings[0].EndHour - (DateTime)dailySignings[0].StartHour).TotalHours * (double)ReportResultConverter.GetPriceHourCost(dailySignings[0].UserHiring.User, dailySignings[0].ProfessionId, (DateTime)dailySignings[0].StartHour, dailySignings[0].HourTypeId) :
+                //        (double)ReportResultConverter.GetPriceHourCost(dailySignings[0].UserHiring.User, dailySignings[0].ProfessionId, (DateTime)dailySignings[0].StartHour, dailySignings[0].HourTypeId),
+                //priceTotalSale = dailySignings[0].HourTypeId != 5 ?
+                //        ((DateTime)dailySignings[0].EndHour - (DateTime)dailySignings[0].StartHour).TotalHours * (double)ReportResultConverter.GetPriceHourSale(dailySignings[0].UserHiring.Work.Client, dailySignings[0].HourTypeId, dailySignings[0].ProfessionId) :
+                //        (double)ReportResultConverter.GetPriceHourSale(dailySignings[0].UserHiring.Work.Client, dailySignings[0].HourTypeId, dailySignings[0].ProfessionId)
             };
 
             //PrintDailySignings(dailySignings);
