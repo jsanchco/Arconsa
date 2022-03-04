@@ -49,6 +49,7 @@ class GridSelection extends Component {
         decimals: 2,
         format: "C",
         validateDecimalOnType: true,
+        showSpinButton: false
       },
     };
 

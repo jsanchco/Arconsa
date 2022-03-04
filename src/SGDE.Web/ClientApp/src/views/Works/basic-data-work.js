@@ -370,6 +370,7 @@ class BasicDataWork extends Component {
                   min={0}
                   max={1}
                   step={0.01}
+                  showSpinButton={false}
                   placeholder="porcentaje retención"
                   change={this.handleChangePercentageRetention}
                   ref={(g) => (this.ntbPercentageRetention = g)}
@@ -387,6 +388,7 @@ class BasicDataWork extends Component {
                   min={0}
                   max={1}
                   step={0.01}
+                  showSpinButton={false}
                   placeholder="porcentaje IVA"
                   change={this.handleChangePercentageIVA}
                   ref={(g) => (this.ntbPercentageIVA = g)}

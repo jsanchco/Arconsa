@@ -30,7 +30,8 @@ class Trainings extends Component {
     params: {
       decimals: 1,
       format: "N",
-      validateDecimalOnType: true
+      validateDecimalOnType: true,
+      showSpinButton: false
     }
   };
 

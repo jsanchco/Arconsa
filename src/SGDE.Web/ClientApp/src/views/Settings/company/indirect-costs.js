@@ -81,6 +81,7 @@ class IndirectCosts extends Component {
         format: "N",
         min: 2020,
         validateDecimalOnType: true,
+        showSpinButton: false
       },
     };
 

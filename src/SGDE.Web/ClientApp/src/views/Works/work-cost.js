@@ -44,6 +44,7 @@ class WorkCosts extends Component {
       decimals: 2,
       format: "N",
       validateDecimalOnType: true,
+      showSpinButton: false
     },
   };
 

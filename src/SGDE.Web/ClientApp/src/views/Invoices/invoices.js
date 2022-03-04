@@ -131,6 +131,7 @@ class Invoices extends Component {
         decimals: 2,
         format: "N",
         validateDecimalOnType: true,
+        showSpinButton: false
       },
     };
     this.formatDate = { type: "dateTime", format: "dd/MM/yyyy" };

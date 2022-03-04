@@ -30,11 +30,48 @@ class CostWorkers extends Component {
     headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }],
   });
 
-  numericParams = {
+  numericParams1 = {
     params: {
-      decimals: 4,
-      format: "N",
-      validateDecimalOnType: true,
+      // decimals: 5,
+      format: "N5",
+      //validateDecimalOnType: true,
+      showSpinButton: false
+    },
+  };
+
+  numericParams2 = {
+    params: {
+      // decimals: 5,
+      format: "N5",
+      // validateDecimalOnType: true,
+      showSpinButton: false
+    },
+  };
+
+  numericParams3 = {
+    params: {
+      // decimals: 5,
+      format: "N5",
+      // validateDecimalOnType: true,
+      showSpinButton: false
+    },
+  };
+
+  numericParams4 = {
+    params: {
+      // decimals: 5,
+      format: "N5",
+      // validateDecimalOnType: true,
+      showSpinButton: false
+    },
+  };
+
+  numericParams5 = {
+    params: {
+      // decimals: 5,
+      format: "N5",
+      // validateDecimalOnType: true,
+      showSpinButton: false
     },
   };
 
@@ -215,25 +252,63 @@ class CostWorkers extends Component {
                     headerText="Precio"
                     textAlign="Center"
                     columns={[
+                      // {
+                      //   field: "priceHourOrdinaryS",
+                      //   headerText: "Ordinaria",
+                      //   width: "70"
+                      // },
+                      // {
+                      //   field: "priceHourExtraS",
+                      //   headerText: "Extra",
+                      //   width: "70"
+                      // },
+                      // {
+                      //   field: "priceHourFestiveS",
+                      //   headerText: "Festivo",
+                      //   width: "70",
+                      // },
+                      // {
+                      //   field: "priceHourNocturnalS",
+                      //   headerText: "Nocturno",
+                      //   width: "70",
+                      // },
+                      // {
+                      //   field: "priceDailyS",
+                      //   headerText: "Diario",
+                      //   width: "70"
+                      // },
+                      
                       {
-                        field: "priceHourOrdinaryS",
+                        field: "priceHourOrdinary",
                         headerText: "Ordinaria",
-                        width: "70"
+                        width: "70",
+                        textAlign: "left",
+                        editType: "numericedit",
+                        edit: this.numericParams1,
                       },
                       {
-                        field: "priceHourExtraS",
+                        field: "priceHourExtra",
                         headerText: "Extra",
-                        width: "70"
+                        width: "70",
+                        textAlign: "left",
+                        editType: "numericedit",
+                        edit: this.numericParams2,
                       },
                       {
-                        field: "priceHourFestiveS",
+                        field: "priceHourFestive",
                         headerText: "Festivo",
                         width: "70",
+                        textAlign: "left",
+                        editType: "numericedit",
+                        edit: this.numericParams3,
                       },
                       {
-                        field: "priceHourNocturnalS",
+                        field: "priceHourNocturnal",
                         headerText: "Nocturno",
                         width: "70",
+                        textAlign: "left",
+                        editType: "numericedit",
+                        edit: this.numericParams4,
                       },
                       {
                         field: "priceDaily",
@@ -241,50 +316,8 @@ class CostWorkers extends Component {
                         width: "70",
                         textAlign: "left",
                         editType: "numericedit",
-                        edit: this.numericParams,
-                      },
-                      
-                      // {
-                      //   field: "priceHourOrdinary",
-                      //   headerText: "Ordinaria",
-                      //   width: "70",
-                      //   fotmat: "N2",
-                      //   textAlign: "left",
-                      //   editType: "numericedit",
-                      //   edit: this.numericParams,
-                      // },
-                      // {
-                      //   field: "priceHourExtra",
-                      //   headerText: "Extra",
-                      //   width: "70",
-                      //   textAlign: "left",
-                      //   editType: "numericedit",
-                      //   edit: this.numericParams,
-                      // },
-                      // {
-                      //   field: "priceHourFestive",
-                      //   headerText: "Festivo",
-                      //   width: "70",
-                      //   textAlign: "left",
-                      //   editType: "numericedit",
-                      //   edit: this.numericParams,
-                      // },
-                      // {
-                      //   field: "priceHourNocturnal",
-                      //   headerText: "Nocturno",
-                      //   width: "70",
-                      //   textAlign: "left",
-                      //   editType: "numericedit",
-                      //   edit: this.numericParams,
-                      // },
-                      // {
-                      //   field: "priceDaily",
-                      //   headerText: "Diario",
-                      //   width: "70",
-                      //   textAlign: "left",
-                      //   editType: "numericedit",
-                      //   edit: this.numericParams,
-                      // }    
+                        edit: this.numericParams5,
+                      }    
                     ]}
                   />
                   <ColumnDirective

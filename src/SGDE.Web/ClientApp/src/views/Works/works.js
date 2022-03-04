@@ -59,6 +59,7 @@ class Works extends Component {
       decimals: 0,
       format: "N",
       validateDecimalOnType: true,
+      showSpinButton: false
     },
   };
   wrapSettings = { wrapMode: "Content" };

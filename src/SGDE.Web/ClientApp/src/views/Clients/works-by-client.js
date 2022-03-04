@@ -38,7 +38,8 @@ class WorksByClient extends Component {
     params: {
       decimals: 0,
       format: "N",
-      validateDecimalOnType: true
+      validateDecimalOnType: true,
+      showSpinButton: false
     }
   };
 

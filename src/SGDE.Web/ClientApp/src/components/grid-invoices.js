@@ -91,6 +91,7 @@ class GridInvoice extends Component {
         decimals: 2,
         format: "N",
         validateDecimalOnType: true,
+        showSpinButton: false
       },
     };
     this.pageSettings = { pageCount: 10, pageSize: 10 };

@@ -35,7 +35,8 @@ class ProfessionInClient extends Component {
     params: {
       decimals: 2,
       format: "N",
-      validateDecimalOnType: true
+      validateDecimalOnType: true,
+      showSpinButton: false
     }
   };
 
