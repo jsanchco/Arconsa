@@ -20,7 +20,9 @@
         public double priceTotalHoursSaleExtraordinary { get; set; }
         public double priceTotalHoursSaleNocturnal { get; set; }
         public double priceSaleDiary { get; set; }
+        public double totalEmbargos { get; set; }
         public bool hasEmbargosPendings { get; set; }
+        public double totalAdvances { get; set; }
         public bool hasAdvancesPendings { get; set; }
     }
 }

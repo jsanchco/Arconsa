@@ -204,6 +204,13 @@
                 .ThenInclude(x => x.Profession)
                 .Include(x => x.HourType)
                 .Include(x => x.Profession)
+                .Include(x => x.UserHiring)
+                .ThenInclude(x => x.User)
+                .ThenInclude(x => x.Embargos)
+                .ThenInclude(x => x.DetailEmbargos)
+                .Include(x => x.UserHiring)
+                .ThenInclude(x => x.User)
+                .ThenInclude(x => x.Advances)
                 .Where(x => x.StartHour >= startDate && x.EndHour <= endDate && x.UserHiring.UserId == userId)
                 .OrderBy(x => x.StartHour)
                 .ToList();

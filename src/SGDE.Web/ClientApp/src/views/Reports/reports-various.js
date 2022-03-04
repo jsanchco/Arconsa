@@ -185,8 +185,10 @@ class ReportsVarious extends Component {
         this.grid.columnModel[0].field = "workerName";
         this.grid.columnModel[0].headerText = "Trabajador";
         this.grid.getColumnByField("totalWorkers").visible = false;
-        this.grid.getColumnByField("hasEmbargosPendings").visible = true;
-        this.grid.getColumnByField("hasAdvancesPendings").visible = true;
+        // this.grid.getColumnByField("hasEmbargosPendings").visible = true;
+        // this.grid.getColumnByField("hasAdvancesPendings").visible = true;
+        this.grid.getColumnByField("totalEmbargos").visible = true;
+        this.grid.getColumnByField("totalAdvances").visible = true;
         this.grid.refreshHeader();
 
         this.grid.dataSource = null;
@@ -197,8 +199,10 @@ class ReportsVarious extends Component {
         this.grid.columnModel[0].field = "workName";
         this.grid.columnModel[0].headerText = "Obra";
         this.grid.getColumnByField("totalWorkers").visible = true;
-        this.grid.getColumnByField("hasEmbargosPendings").visible = false;
-        this.grid.getColumnByField("hasAdvancesPendings").visible = false;
+        // this.grid.getColumnByField("hasEmbargosPendings").visible = false;
+        // this.grid.getColumnByField("hasAdvancesPendings").visible = false;
+        this.grid.getColumnByField("totalEmbargos").visible = false;
+        this.grid.getColumnByField("totalAdvances").visible = false;
         this.grid.refreshHeader();
 
         this.grid.dataSource = null;
@@ -209,8 +213,10 @@ class ReportsVarious extends Component {
         this.grid.columnModel[0].field = "clientName";
         this.grid.columnModel[0].headerText = "Cliente";
         this.grid.getColumnByField("totalWorkers").visible = true;
-        this.grid.getColumnByField("hasEmbargosPendings").visible = false;
-        this.grid.getColumnByField("hasAdvancesPendings").visible = false;
+        // this.grid.getColumnByField("hasEmbargosPendings").visible = false;
+        // this.grid.getColumnByField("hasAdvancesPendings").visible = false;
+        this.grid.getColumnByField("totalEmbargos").visible = false;
+        this.grid.getColumnByField("totalAdvances").visible = false;
         this.grid.refreshHeader();
 
         this.grid.dataSource = null;
@@ -662,6 +668,20 @@ class ReportsVarious extends Component {
                       width="70"
                     />
                     <ColumnDirective
+                      field="totalEmbargos"
+                      headerText="Embargos"
+                      // template={this.templateHasEmbargosPendings}
+                      width="70"
+                      visible={false}
+                    />
+                    <ColumnDirective
+                      field="totalAdvances"
+                      headerText="Adelantos"
+                      // template={this.templateHasAdvancesPendings}
+                      width="70"
+                      visible={false}
+                    />
+                    {/* <ColumnDirective
                       field="hasEmbargosPendings"
                       headerText="Embargos"
                       template={this.templateHasEmbargosPendings}
@@ -674,7 +694,7 @@ class ReportsVarious extends Component {
                       template={this.templateHasAdvancesPendings}
                       width="70"
                       visible={false}
-                    />
+                    /> */}
                   </ColumnsDirective>
 
                   <AggregatesDirective>

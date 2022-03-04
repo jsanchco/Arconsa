@@ -82,7 +82,11 @@
                     priceSaleDiary = (double)listReportResultViewModel
                                                 .Where(x => x.hourTypeId == 5)
                                                 .Select(x => x.priceHourSale).Sum(),
+                    totalEmbargos = user.Embargos.Where(x => !x.Paid)
+                                                .Sum(y => y.Total - y.DetailEmbargos.Sum(x => x.Amount)),
                     hasEmbargosPendings = user.Embargos.Any(x => x.Paid == false),
+                    totalAdvances = user.Advances.Where(x => !x.Paid)
+                                                .Sum(y => y.Amount),
                     hasAdvancesPendings = user.Advances.Any(x => x.Paid == false)
                 });
             }
