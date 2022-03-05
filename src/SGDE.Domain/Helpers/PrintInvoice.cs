@@ -150,6 +150,17 @@
             pdfCell = new PdfPCell(new Phrase(_invoice.IssueDate.ToString("dd/MM/yyyy"), _STANDARFONT_10_BOLD))
             { BackgroundColor = new BaseColor(204, 204, 255), BorderWidthLeft = 0, BorderWidthBottom = 0, BorderWidthTop = 0 };
             pdfPTable.AddCell(pdfCell);
+
+            if (_invoice.Work.Client.ExpirationDays != 0)
+            {
+                pdfCell = new PdfPCell(new Phrase("Vencimiento", _STANDARFONT_10_BOLD))
+                { BackgroundColor = new BaseColor(204, 204, 255), BorderWidthRight = 0, BorderWidthBottom = 0, BorderWidthTop = 0 };
+                pdfPTable.AddCell(pdfCell);
+                pdfCell = new PdfPCell(new Phrase(_invoice.IssueDate.AddDays(_invoice.Work.Client.ExpirationDays).ToString("dd/MM/yyyy"), _STANDARFONT_10_BOLD))
+                { BackgroundColor = new BaseColor(204, 204, 255), BorderWidthLeft = 0, BorderWidthBottom = 0, BorderWidthTop = 0 };
+                pdfPTable.AddCell(pdfCell);
+            }
+
             pdfCell = new PdfPCell(new Phrase("Nº Cliente", _STANDARFONT_10_BOLD))
             { BackgroundColor = new BaseColor(204, 204, 255), BorderWidthRight = 0, BorderWidthTop = 0 };
             pdfPTable.AddCell(pdfCell);

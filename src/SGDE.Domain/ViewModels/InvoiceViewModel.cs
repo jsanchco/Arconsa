@@ -15,6 +15,8 @@
         public DateTime endDate { get; set; }
         public DateTime issueDate { get; set; }
         public DateTime? payDate { get; set; }
+        public int expirationDays { get; set; }
+        public DateTime? expirationDate { get; set; }
         public double taxBase { get; set; }
         public double ivaTaxBase { get; set; }
         public double total { get; set; }

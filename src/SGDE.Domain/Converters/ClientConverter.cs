@@ -28,6 +28,7 @@
                 address = client.Address,
                 phoneNumber = client.PhoneNumber,
                 wayToPay = client.WayToPay,
+                expirationDays = client.ExpirationDays,
                 accountNumber = client.AccountNumber,
                 typeClientId = client.TypeClientId,
                 typeClientName = client.TypeClient?.Name
@@ -52,6 +53,7 @@
                     address = client.Address,
                     phoneNumber = client.PhoneNumber,
                     wayToPay = client.WayToPay,
+                    expirationDays = client.ExpirationDays,
                     accountNumber = client.AccountNumber,
                     typeClientId = client.TypeClientId,
                     typeClientName = client.TypeClient?.Name

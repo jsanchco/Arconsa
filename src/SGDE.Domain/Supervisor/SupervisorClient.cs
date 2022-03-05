@@ -48,6 +48,7 @@
                 PhoneNumber = newClientViewModel.phoneNumber,
                 Address = newClientViewModel.address,
                 WayToPay = newClientViewModel.wayToPay,
+                ExpirationDays = newClientViewModel.expirationDays,
                 AccountNumber = newClientViewModel.accountNumber
             };
 
@@ -72,6 +73,7 @@
             client.PhoneNumber = clientViewModel.phoneNumber;
             client.Address = clientViewModel.address;
             client.WayToPay = clientViewModel.wayToPay;
+            client.ExpirationDays = clientViewModel.expirationDays;
             client.AccountNumber = clientViewModel.accountNumber;
 
             return _clientRepository.Update(client);

@@ -1,16 +1,21 @@
 import React, { Component, Fragment } from "react";
 import { Form, Col, FormGroup, Input, Label, Row, Button } from "reactstrap";
-import { MaskedTextBoxComponent } from "@syncfusion/ej2-react-inputs";
+import {
+  MaskedTextBoxComponent,
+  NumericTextBoxComponent,
+} from "@syncfusion/ej2-react-inputs";
 import { updateClient, getClient } from "../../services";
 import {
   createSpinner,
   showSpinner,
-  hideSpinner
+  hideSpinner,
 } from "@syncfusion/ej2-popups";
 
 class BasicDataClient extends Component {
   constructor(props) {
     super(props);
+
+    this.ntbPercentageRetention = null;
 
     this.state = {};
     getClient(this.props.clientId).then((result) => {
@@ -21,11 +26,13 @@ class BasicDataClient extends Component {
         phoneNumber: result.phoneNumber,
         address: result.address,
         wayToPay: result.wayToPay,
-        accountNumber: result.accountNumber
+        expirationDays: result.expirationDays,
+        accountNumber: result.accountNumber,
       });
     });
 
     this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleChangeExpirationDays = this.handleChangeExpirationDays.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.getClient = this.getClient.bind(this);
   }
@@ -35,8 +42,12 @@ class BasicDataClient extends Component {
     const name = target.name;
 
     this.setState({
-      [name]: target.value
+      [name]: target.value,
     });
+  }
+
+  handleChangeExpirationDays(args) {
+    this.setState({ expirationDays: args.value });
   }
 
   getClient() {
@@ -47,7 +58,8 @@ class BasicDataClient extends Component {
       phoneNumber: this.state.phoneNumber,
       address: this.state.address,
       wayToPay: this.state.wayToPay,
-      accountNumber: this.state.accountNumber
+      expirationDays: this.state.expirationDays,
+      accountNumber: this.state.accountNumber,
     };
   }
 
@@ -55,7 +67,7 @@ class BasicDataClient extends Component {
     const element = document.getElementById("container");
 
     createSpinner({
-      target: element
+      target: element,
     });
     showSpinner(element);
     updateClient(this.getClient())
@@ -74,7 +86,7 @@ class BasicDataClient extends Component {
           marginLeft: 10,
           marginRight: 60,
           marginTop: 20,
-          marginBottom: 20
+          marginBottom: 20,
         }}
         id="container"
       >
@@ -124,7 +136,7 @@ class BasicDataClient extends Component {
               </Col>
             </Row>
             <Row>
-              <Col xs="4">
+              <Col xs="3">
                 <FormGroup>
                   <Label htmlFor="name">Teléfono</Label>
                   <Input
@@ -138,20 +150,36 @@ class BasicDataClient extends Component {
                   />
                 </FormGroup>
               </Col>
-              <Col xs="4">
+              <Col xs="3">
                 <FormGroup>
                   <Label htmlFor="wayToPay">Modo de Pago</Label>
                   <Input
                     type="text"
                     id="wayToPay"
                     name="wayToPay"
-                    placeholder="modo de ago"
+                    placeholder="modo de pago"
                     value={this.state.wayToPay || ""}
                     onChange={this.handleInputChange}
                   />
                 </FormGroup>
               </Col>
-              <Col xs="4">
+              <Col xs="3">
+                <FormGroup>
+                  <Label htmlFor="expirationDays">Vencimiento</Label>
+                  <NumericTextBoxComponent
+                    format="N0"
+                    id="expirationDays"
+                    name="expirationDays"
+                    value={this.state.expirationDays}
+                    min={0}
+                    showSpinButton={false}
+                    placeholder="vencimiento"
+                    change={this.handleChangeExpirationDays}
+                    ref={(g) => (this.ntbPercentageRetention = g)}
+                  />
+                </FormGroup>
+              </Col>
+              <Col xs="3">
                 <FormGroup>
                   <Label htmlFor="accountNumber">Nº de Cuenta</Label>
                   <MaskedTextBoxComponent

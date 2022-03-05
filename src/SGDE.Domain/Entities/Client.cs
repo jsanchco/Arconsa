@@ -13,6 +13,7 @@
         public string PhoneNumber { get; set; }
         public string Address { get; set; }
         public string WayToPay { get; set; }
+        public int ExpirationDays { get; set; }
         public string AccountNumber { get; set; }
 
         public int? PromoterId { get; set; } 
