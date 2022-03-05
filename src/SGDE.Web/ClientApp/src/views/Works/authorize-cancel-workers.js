@@ -390,7 +390,7 @@ class AuthorizeCancelWorkers extends Component {
                     width="100"
                     allowEditing={false}
                   />
-                  <ColumnDirective
+                  {/* <ColumnDirective
                     field="professionId"
                     headerText="Puesto"
                     width="100"
@@ -399,7 +399,7 @@ class AuthorizeCancelWorkers extends Component {
                     foreignKeyField="id"
                     validationRules={this.professionIdRules}
                     dataSource={this.professions}
-                  />
+                  /> */}
                   <ColumnDirective
                     field="dtStartDate"
                     headerText="Fecha Inicio"
