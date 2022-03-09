@@ -162,6 +162,7 @@ class Clients extends Component {
                     marginRight: 30,
                     marginTop: -20,
                     marginBottom: 20,
+                    overflow: "auto",
                   }}
                   actionFailure={this.actionFailure}
                   actionComplete={this.actionComplete}

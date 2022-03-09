@@ -147,11 +147,13 @@ class ReportInvoices extends Component {
   }
 
   footerSum(args) {
-    return <span>Total: {args.Sum} horas</span>;
+    const total = Math.round((args.Sum + Number.EPSILON) * 100) / 100;
+    return <span>Total: {total} horas</span>;
   }
 
   footerSumEuros(args) {
-    return <span>Total: {args.Sum}€</span>;
+    const total = Math.round((args.Sum + Number.EPSILON) * 100) / 100;
+    return <span>Total: {total}€</span>;
   }
 
   formatDate(args) {
