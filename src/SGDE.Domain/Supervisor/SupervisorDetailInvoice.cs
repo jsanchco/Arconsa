@@ -88,7 +88,7 @@
             var listReportResultViewModel = GetHoursByWork(new ReportQueryViewModel
             {
                 startDate = invoice.StartDate,
-                endDate = invoice.EndDate,
+                endDate = invoice.EndDate.AddDays(1).AddSeconds(-1),
                 workId = invoice.WorkId
             });
 

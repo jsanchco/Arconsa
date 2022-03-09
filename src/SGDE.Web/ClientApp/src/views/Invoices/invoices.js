@@ -644,6 +644,11 @@ class Invoices extends Component {
         this.gridInvoice.setRowData(args.data[0].invoiceId, result);
       });
     }
+    if (args.requestType === "refresh") {
+      getInvoice(args.rows[0].data.invoiceId).then((result) => {
+        this.gridInvoice.setRowData(args.rows[0].data.invoiceId, result);
+      });
+    }
   }
 
   gridDetailsInvoiceActionBegin(args) {

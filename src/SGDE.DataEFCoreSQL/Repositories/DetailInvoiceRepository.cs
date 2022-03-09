@@ -229,6 +229,14 @@
                         _context.DetailInvoice.Add(detailInvoice);
                     }
 
+                    var findInvoice = _context.Invoice.Find(invoiceId);
+                    if (findInvoice != null)
+                    {
+                        findInvoice.TaxBase = detailsInvoice.Sum(x => x.Total);
+                        findInvoice.IvaTaxBase = findInvoice.Iva == true ? (findInvoice.TaxBase * 0.21) : 0;
+                        findInvoice.Total = findInvoice.IvaTaxBase + (double)findInvoice.TaxBase;
+                    }
+
                     _context.SaveChanges();
                     transaction.Commit();
                 }
