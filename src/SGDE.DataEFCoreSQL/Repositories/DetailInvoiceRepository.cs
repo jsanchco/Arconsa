@@ -229,12 +229,12 @@
                         _context.DetailInvoice.Add(detailInvoice);
                     }
 
-                    var findInvoice = _context.Invoice.Find(invoiceId);
+                    var findInvoice = _context.Invoice
+                        .Include(x => x.Work)
+                        .FirstOrDefault(x => x.Id == invoiceId);
                     if (findInvoice != null)
                     {
                         findInvoice.TaxBase = detailsInvoice.Sum(x => x.Total);
-                        findInvoice.IvaTaxBase = findInvoice.Iva == true ? (findInvoice.TaxBase * 0.21) : 0;
-                        findInvoice.Total = findInvoice.IvaTaxBase + (double)findInvoice.TaxBase;
                     }
 
                     _context.SaveChanges();
@@ -260,6 +260,12 @@
                 {
                     var detailsInvoiceFind = _context.DetailInvoice.Where(x => x.InvoiceId == invoiceId);
                     _context.DetailInvoice.RemoveRange(detailsInvoiceFind);
+
+                    var findInvoice = _context.Invoice.Find(invoiceId);
+                    if (findInvoice != null)
+                    {
+                        findInvoice.TaxBase = 0;
+                    }
 
                     _context.SaveChanges();
                     transaction.Commit();

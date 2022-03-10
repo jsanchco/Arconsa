@@ -47,16 +47,8 @@
                 workBudgetId = invoice.WorkBudgetId,
                 workBudgetName = invoice.WorkBudget?.Name
             };
-            if (invoice.Iva == true)
-            {
-                invoiceViewModel.ivaTaxBase = Math.Round(invoiceViewModel.taxBase * (double)invoice.Work.PercentageIVA, 2);
-                invoiceViewModel.total = Math.Round(invoiceViewModel.taxBase + invoiceViewModel.ivaTaxBase);
-            }
-            else
-            {
-                invoiceViewModel.ivaTaxBase = 0;
-                invoiceViewModel.total = Math.Round(invoiceViewModel.taxBase);
-            }
+            invoiceViewModel.ivaTaxBase = invoiceViewModel.taxBase * invoice.Work.PercentageIVA;
+            invoiceViewModel.total = invoiceViewModel.taxBase + invoiceViewModel.ivaTaxBase;
 
             return invoiceViewModel;
         }
@@ -94,16 +86,9 @@
                     workBudgetId = invoice.WorkBudgetId,
                     workBudgetName = invoice.WorkBudget?.Name
                 };
-                if (invoice.Iva == true)
-                {
-                    model.ivaTaxBase = Math.Round(model.taxBase * (double)invoice.Work.PercentageIVA, 2);
-                    model.total = Math.Round(model.taxBase + model.ivaTaxBase, 2);
-                }
-                else
-                {
-                    model.ivaTaxBase = 0;
-                    model.total = Math.Round(model.taxBase, 2);
-                }
+
+                model.ivaTaxBase = model.taxBase * invoice.Work.PercentageIVA;
+                model.total = model.taxBase + model.ivaTaxBase;
 
                 return model;
             })

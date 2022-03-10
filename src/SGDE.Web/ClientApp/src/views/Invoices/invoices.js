@@ -498,6 +498,9 @@ class Invoices extends Component {
     }
 
     if (args.item.id === "EmptyDetails") {
+      var gridInvoices = document.getElementById("gridInvoices");
+      gridInvoices.invoiceIdCleaned = this.parentDetails.parentRowData.id;
+
       this.query = [];
       this.query = new Query()
         .addParams("invoiceId", this.parentDetails.parentRowData.id)
@@ -590,16 +593,19 @@ class Invoices extends Component {
     let error = Array.isArray(args) ? args[0].error : args.error;
     if (Array.isArray(error)) {
       error = error[0].error;
+    } else if (error.message != null) {
+      error.statusText = args.error.message;
+      error.responseText = args.error.message;
     } else if (error.statusText == null) {
       error.statusText = error.error.statusText;
       error.responseText = JSON.parse(error.error.responseText).Message;
     }
 
-    this.query = [];
-    this.query = new Query().addParams(
-      "invoiceId",
-      this.parentDetails.parentRowData.id
-    );
+    // this.query = [];
+    // this.query = new Query().addParams(
+    //   "invoiceId",
+    //   this.parentDetails.parentRowData.id
+    // );
 
     this.props.showMessage({
       statusText: error.statusText,
@@ -645,9 +651,17 @@ class Invoices extends Component {
       });
     }
     if (args.requestType === "refresh") {
-      getInvoice(args.rows[0].data.invoiceId).then((result) => {
-        this.gridInvoice.setRowData(args.rows[0].data.invoiceId, result);
-      });
+      var gridInvoices = document.getElementById("gridInvoices");
+      
+      if (args.rows != null && Array.isArray(args.rows)) {
+        getInvoice(args.rows[0].data.invoiceId).then((result) => {
+          this.gridInvoice.setRowData(args.rows[0].data.invoiceId, result);
+        });
+      } else if (gridInvoices.invoiceIdCleaned != null) {
+        getInvoice(gridInvoices.invoiceIdCleaned).then((result) => {
+          this.gridInvoice.setRowData(gridInvoices.invoiceIdCleaned, result);
+        });      
+      }
     }
   }
 
@@ -854,6 +868,7 @@ class Invoices extends Component {
                   allowResizing={true}
                   childGrid={this.gridDetailsInvoice}
                   detailDataBound={this.detailDataBound}
+                  invoiceIdCleaned={null}
                 >
                   <ColumnsDirective>
                     <ColumnDirective

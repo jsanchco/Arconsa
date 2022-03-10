@@ -134,7 +134,7 @@
             if (invoice == null)
                 return null;
 
-            invoice.IvaTaxBase = invoice.Iva == true ? Math.Round((double)invoice.TaxBase * 0.21, 2) : 0;
+            invoice.IvaTaxBase = invoice.TaxBase * invoice.Work.PercentageIVA;
             invoice.Total = invoice.IvaTaxBase + (double)invoice.TaxBase;
 
             return invoice;
