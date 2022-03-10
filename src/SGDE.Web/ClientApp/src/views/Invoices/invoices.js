@@ -131,7 +131,7 @@ class Invoices extends Component {
         decimals: 2,
         format: "N",
         validateDecimalOnType: true,
-        showSpinButton: false
+        showSpinButton: false,
       },
     };
     this.formatDate = { type: "dateTime", format: "dd/MM/yyyy" };
@@ -541,7 +541,7 @@ class Invoices extends Component {
     let error = Array.isArray(args) ? args[0].error : args.error;
     if (Array.isArray(error)) {
       error = error[0].error;
-    } 
+    }
 
     this.props.showMessage({
       statusText: error.statusText,
@@ -652,7 +652,7 @@ class Invoices extends Component {
     }
     if (args.requestType === "refresh") {
       var gridInvoices = document.getElementById("gridInvoices");
-      
+
       if (args.rows != null && Array.isArray(args.rows)) {
         getInvoice(args.rows[0].data.invoiceId).then((result) => {
           this.gridInvoice.setRowData(args.rows[0].data.invoiceId, result);
@@ -660,7 +660,7 @@ class Invoices extends Component {
       } else if (gridInvoices.invoiceIdCleaned != null) {
         getInvoice(gridInvoices.invoiceIdCleaned).then((result) => {
           this.gridInvoice.setRowData(gridInvoices.invoiceIdCleaned, result);
-        });      
+        });
       }
     }
   }
@@ -697,6 +697,11 @@ class Invoices extends Component {
     query =
       e.text !== "" ? query.where("name", "contains", e.text, true) : query;
     e.updateData(this.works, query);
+  }
+
+  templateIVA(args) {
+    let total = Math.round((args.ivaTaxBase + Number.EPSILON) * 100) / 100;
+    return <span>{total}</span>;
   }
 
   footerSumUnits(args) {
@@ -963,6 +968,7 @@ class Invoices extends Component {
                       width="90"
                       allowEditing={false}
                       defaultValue={0}
+                      template={this.templateIVA}
                     />
                     <ColumnDirective
                       field="total"
