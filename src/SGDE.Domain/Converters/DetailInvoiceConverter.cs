@@ -28,7 +28,8 @@
                 units = (double)detailInvoice.Units,
                 unitsAccumulated = (double)detailInvoice.UnitsAccumulated,
                 priceUnity = (double)detailInvoice.PriceUnity,
-                nameUnit = detailInvoice.NameUnit
+                nameUnit = detailInvoice.NameUnit,
+                iva = detailInvoice.Iva
             };
 
             return detailInvoiceViewModel;
@@ -50,7 +51,8 @@
                     units = (double)detailInvoice.Units,
                     unitsAccumulated = (double)detailInvoice.UnitsAccumulated,
                     priceUnity = (double)detailInvoice.PriceUnity,
-                    nameUnit = detailInvoice.NameUnit
+                    nameUnit = detailInvoice.NameUnit,
+                    iva = detailInvoice.Iva
                 };
                 return model;
             })

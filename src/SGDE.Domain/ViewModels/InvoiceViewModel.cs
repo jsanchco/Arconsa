@@ -20,7 +20,8 @@
         public double taxBase { get; set; }
         public double ivaTaxBase { get; set; }
         public double total { get; set; }
-        public bool iva { get; set; }
+        public bool iva { get; set; } 
+        public double ivaValue { get; set; } 
         public int typeInvoice { get; set; }  // 1 = por horas, 2 = custom
         public double retentions { get; set; }
         public bool isPaid => payDate != null;

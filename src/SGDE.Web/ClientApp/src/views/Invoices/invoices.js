@@ -134,6 +134,16 @@ class Invoices extends Component {
         showSpinButton: false,
       },
     };
+    this.numericParamsIVA = {
+      params: {
+        decimals: 2,
+        format: "N",
+        validateDecimalOnType: true,
+        showSpinButton: false,
+        min: 0,
+        max: 1
+      },
+    };
     this.formatDate = { type: "dateTime", format: "dd/MM/yyyy" };
     this.expandGridRow = null;
     this.rowSelectedInvoice = null;
@@ -341,7 +351,7 @@ class Invoices extends Component {
               editType: "numericedit",
               edit: this.numericParams,
               allowEditing: false,
-            },
+            }
           ],
         },
         {
@@ -377,6 +387,16 @@ class Invoices extends Component {
               edit: this.numericParams,
               allowEditing: false,
               defaultValue: 0,
+            },
+            {
+              field: "iva",
+              headerText: "IVA",
+              width: "100",
+              fotmat: "N2",
+              textAlign: "right",
+              editType: "numericedit",
+              edit: this.numericParamsIVA,
+              allowEditing: true,
             },
             {
               field: "amountTotal",
@@ -668,6 +688,7 @@ class Invoices extends Component {
   gridDetailsInvoiceActionBegin(args) {
     if (args.requestType === "add") {
       args.data.invoiceId = this.parentDetails.parentRowData.id;
+      args.data.iva = this.parentDetails.parentRowData.ivaValue;
     }
     if (args.requestType === "save") {
       this.query = [];

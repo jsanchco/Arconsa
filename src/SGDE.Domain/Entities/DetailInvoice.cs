@@ -13,7 +13,8 @@
         public double UnitsAccumulated { get; set; }
         public double PriceUnity { get; set; }
         public string NameUnit { get; set; }
-        public double Total => (double)Units * (double)PriceUnity;
+        public double Iva { get; set; }
+        public double Total => Math.Round(((double)Units * (double)PriceUnity) * (1 + Iva), 2);
 
         public int InvoiceId { get; set; }
         public virtual Invoice Invoice { get; set; }

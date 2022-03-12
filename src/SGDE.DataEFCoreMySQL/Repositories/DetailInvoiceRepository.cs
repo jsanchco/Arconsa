@@ -196,5 +196,13 @@
                 .Where(x => x.InvoiceId == invoiceId)
                 .ToList();
         }
+
+        public List<DetailInvoice> GetAllWithIncludes()
+        {
+            return _context.DetailInvoice
+                .Include(x => x.Invoice)
+                .ThenInclude(y => y.Work)
+                .ToList();
+        }
     }
 }

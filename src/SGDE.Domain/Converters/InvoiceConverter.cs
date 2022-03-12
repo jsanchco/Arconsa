@@ -31,7 +31,7 @@
                 issueDate = invoice.IssueDate,
                 payDate = invoice.PayDate,
                 expirationDate = invoice.Work.Client.ExpirationDays != 0 ? (DateTime?)invoice.IssueDate.AddDays(invoice.Work.Client.ExpirationDays) : null,
-                taxBase = (double)invoice.TaxBase,
+                taxBase = Math.Round(invoice.TaxBase, 2),
                 iva = invoice.Iva,
                 typeInvoice = invoice.TypeInvoice,
                 retentions = invoice.Work.InvoiceToOrigin == true ? ((double)invoice.TaxBase * (double)invoice.Work.PercentageRetention) : 0,
@@ -47,9 +47,10 @@
                 workBudgetId = invoice.WorkBudgetId,
                 workBudgetName = invoice.WorkBudget?.Name
             };
+            invoiceViewModel.ivaValue = invoice.Work.PercentageIVA;
             invoiceViewModel.ivaTaxBase = invoiceViewModel.taxBase * invoice.Work.PercentageIVA;
-            invoiceViewModel.total = invoiceViewModel.taxBase + invoiceViewModel.ivaTaxBase;
-
+            invoiceViewModel.total = Math.Round(invoiceViewModel.taxBase + invoiceViewModel.ivaTaxBase);
+            
             return invoiceViewModel;
         }
 
@@ -71,7 +72,7 @@
                     issueDate = invoice.IssueDate,
                     payDate = invoice.PayDate,
                     expirationDate = invoice.Work.Client.ExpirationDays != 0 ? (DateTime?)invoice.IssueDate.AddDays(invoice.Work.Client.ExpirationDays) : null,
-                    taxBase = (double)invoice.TaxBase,
+                    taxBase = Math.Round(invoice.TaxBase, 2),
                     iva = invoice.Iva,
                     typeInvoice = invoice.TypeInvoice,
                     retentions = invoice.Work.InvoiceToOrigin == true ? ((double)invoice.TaxBase * (double)invoice.Work.PercentageRetention) : 0,
@@ -86,9 +87,9 @@
                     workBudgetId = invoice.WorkBudgetId,
                     workBudgetName = invoice.WorkBudget?.Name
                 };
-
+                model.ivaValue = invoice.Work.PercentageIVA;
                 model.ivaTaxBase = model.taxBase * invoice.Work.PercentageIVA;
-                model.total = model.taxBase + model.ivaTaxBase;
+                model.total = Math.Round(model.taxBase + model.ivaTaxBase, 2);
 
                 return model;
             })

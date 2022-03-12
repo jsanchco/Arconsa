@@ -136,6 +136,14 @@
 
             //    _invoiceRepository.Update(invoice);
             //}
+
+            var detailinvoices = _detailInvoiceRepository.GetAllWithIncludes();
+            foreach (var detailinvoice in detailinvoices)
+            {
+                detailinvoice.Iva = detailinvoice.Invoice.Work.PercentageIVA;
+
+                _detailInvoiceRepository.Update(detailinvoice);
+            }
         }
     }
 }

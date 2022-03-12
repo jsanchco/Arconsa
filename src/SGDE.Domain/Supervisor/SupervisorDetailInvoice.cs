@@ -40,7 +40,8 @@
                 Units = newDetailInvoiceViewModel.units,
                 UnitsAccumulated = newDetailInvoiceViewModel.unitsAccumulated,
                 PriceUnity = newDetailInvoiceViewModel.priceUnity,
-                NameUnit = newDetailInvoiceViewModel.nameUnit
+                NameUnit = newDetailInvoiceViewModel.nameUnit,
+                Iva = newDetailInvoiceViewModel.iva
             };
 
             _detailInvoiceRepository.Add(detailInvoice);
@@ -65,6 +66,7 @@
             detailInvoice.UnitsAccumulated = detailInvoiceViewModel.unitsAccumulated;
             detailInvoice.PriceUnity = detailInvoiceViewModel.priceUnity;
             detailInvoice.NameUnit = detailInvoiceViewModel.nameUnit;
+            detailInvoice.Iva = detailInvoiceViewModel.iva;
 
             return _detailInvoiceRepository.Update(detailInvoice);
         }
