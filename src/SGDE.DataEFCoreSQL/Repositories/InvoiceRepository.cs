@@ -52,6 +52,7 @@
                     .Include(x => x.InvoiceToCancel)
                     .Include(x => x.Work)
                     .ThenInclude(x => x.WorkBudgets)
+                    .Include(x => x.DetailsInvoice)
                     .ToList()
                     .OrderByDescending(x => x.KeyOrder)
                     .ToList();
@@ -134,7 +135,8 @@
             if (invoice == null)
                 return null;
 
-            invoice.IvaTaxBase = invoice.TaxBase * invoice.Work.PercentageIVA;
+            var ivaTaxBase = Math.Round(invoice.DetailsInvoice.Sum(x => x.Units * x.PriceUnity * x.Iva), 2);
+            invoice.IvaTaxBase = ivaTaxBase;
             invoice.Total = invoice.IvaTaxBase + (double)invoice.TaxBase;
 
             return invoice;

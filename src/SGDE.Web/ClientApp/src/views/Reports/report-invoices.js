@@ -152,8 +152,14 @@ class ReportInvoices extends Component {
   }
 
   footerSumEuros(args) {
-    const total = Math.round((args.Sum + Number.EPSILON) * 100) / 100;
-    return <span>Total: {total}€</span>;
+    if (typeof args.Sum === "string" || args.Sum instanceof String) {
+      const total = args.Sum.replace(",", "");
+      //const total = args.Sum;
+      return <span>Total: {total}€</span>;
+    } else {
+      const total = Math.round((args.Sum + Number.EPSILON) * 100) / 100;
+      return <span>Total: {total}€</span>;
+    }
   }
 
   formatDate(args) {

@@ -405,16 +405,26 @@
 
             if (!_work.PassiveSubject)
             {
-                pdfCell = new PdfPCell(new Phrase("I.V.A.", _STANDARFONT_10_BOLD_CUSTOMCOLOR)) { BorderWidth = 0 };
-                pdfPTable.AddCell(pdfCell);
-                pdfCell = new PdfPCell(new Phrase($"{_invoice.IvaTaxBase.ToFormatSpain()} €", _STANDARFONT_10)) { BorderWidth = 0, HorizontalAlignment = Element.ALIGN_RIGHT };
-                pdfPTable.AddCell(pdfCell);
-                pdfCell = new PdfPCell(new Phrase(" ", _STANDARFONT_10)) { BorderWidth = 0 };
-                pdfPTable.AddCell(pdfCell);
-                pdfCell = new PdfPCell(new Phrase(" ", _STANDARFONT_10)) { BorderWidth = 0 };
-                pdfPTable.AddCell(pdfCell);
-                pdfCell = new PdfPCell(new Phrase(" ", _STANDARFONT_10)) { BorderWidth = 0 };
-                pdfPTable.AddCell(pdfCell);
+                var detailsGroup = _invoice.DetailsInvoice
+                    .GroupBy(x => x.Iva)
+                    .Select(y => new SumDetailInvoiceByIvaViewModel
+                    {
+                        Title = $"I.V.A. {y.Key * 100}%",
+                        Amount = Math.Round(y.Sum(z => z.Units * z.PriceUnity * z.Iva), 2)
+                    });
+                foreach (var detailGroup in detailsGroup)
+                {
+                    pdfCell = new PdfPCell(new Phrase(detailGroup.Title, _STANDARFONT_10_BOLD_CUSTOMCOLOR)) { BorderWidth = 0 };
+                    pdfPTable.AddCell(pdfCell);
+                    pdfCell = new PdfPCell(new Phrase($"{detailGroup.Amount.ToFormatSpain()} €", _STANDARFONT_10)) { BorderWidth = 0, HorizontalAlignment = Element.ALIGN_RIGHT };
+                    pdfPTable.AddCell(pdfCell);
+                    pdfCell = new PdfPCell(new Phrase(" ", _STANDARFONT_10)) { BorderWidth = 0 };
+                    pdfPTable.AddCell(pdfCell);
+                    pdfCell = new PdfPCell(new Phrase(" ", _STANDARFONT_10)) { BorderWidth = 0 };
+                    pdfPTable.AddCell(pdfCell);
+                    pdfCell = new PdfPCell(new Phrase(" ", _STANDARFONT_10)) { BorderWidth = 0 };
+                    pdfPTable.AddCell(pdfCell);
+                }
             }
 
             var percentageTaxBase = ((double)_invoice.TaxBase) * ((double)_work.PercentageRetention);

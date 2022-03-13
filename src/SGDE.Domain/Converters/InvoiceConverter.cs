@@ -31,7 +31,7 @@
                 issueDate = invoice.IssueDate,
                 payDate = invoice.PayDate,
                 expirationDate = invoice.Work.Client.ExpirationDays != 0 ? (DateTime?)invoice.IssueDate.AddDays(invoice.Work.Client.ExpirationDays) : null,
-                taxBase = Math.Round(invoice.TaxBase, 2),
+                //taxBase = Math.Round(invoice.TaxBase, 2),
                 iva = invoice.Iva,
                 typeInvoice = invoice.TypeInvoice,
                 retentions = invoice.Work.InvoiceToOrigin == true ? ((double)invoice.TaxBase * (double)invoice.Work.PercentageRetention) : 0,
@@ -45,11 +45,12 @@
                 invoiceToCancelName = invoice.InvoiceToCancel?.Name,
                 detailInvoice = DetailInvoiceConverter.ConvertList(invoice.DetailsInvoice),
                 workBudgetId = invoice.WorkBudgetId,
-                workBudgetName = invoice.WorkBudget?.Name
+                workBudgetName = invoice.WorkBudget?.Name,
             };
-            invoiceViewModel.ivaValue = invoice.Work.PercentageIVA;
-            invoiceViewModel.ivaTaxBase = invoiceViewModel.taxBase * invoice.Work.PercentageIVA;
-            invoiceViewModel.total = Math.Round(invoiceViewModel.taxBase + invoiceViewModel.ivaTaxBase);
+
+            invoiceViewModel.taxBase = Math.Round(invoiceViewModel.detailInvoice.Sum(x => x.amountUnits), 2);
+            invoiceViewModel.ivaTaxBase = Math.Round(invoiceViewModel.detailInvoice.Sum(x => x.amountUnits * x.iva), 2);
+            invoiceViewModel.total = Math.Round(invoiceViewModel.taxBase + invoiceViewModel.ivaTaxBase, 2);
             
             return invoiceViewModel;
         }
@@ -72,7 +73,7 @@
                     issueDate = invoice.IssueDate,
                     payDate = invoice.PayDate,
                     expirationDate = invoice.Work.Client.ExpirationDays != 0 ? (DateTime?)invoice.IssueDate.AddDays(invoice.Work.Client.ExpirationDays) : null,
-                    taxBase = Math.Round(invoice.TaxBase, 2),
+                    //taxBase = Math.Round(invoice.TaxBase, 2),
                     iva = invoice.Iva,
                     typeInvoice = invoice.TypeInvoice,
                     retentions = invoice.Work.InvoiceToOrigin == true ? ((double)invoice.TaxBase * (double)invoice.Work.PercentageRetention) : 0,
@@ -85,10 +86,11 @@
                     invoiceToCancelId = invoice.InvoiceToCancelId,
                     invoiceToCancelName = invoice.InvoiceToCancel?.Name,
                     workBudgetId = invoice.WorkBudgetId,
-                    workBudgetName = invoice.WorkBudget?.Name
+                    workBudgetName = invoice.WorkBudget?.Name,
+                    detailInvoice = DetailInvoiceConverter.ConvertList(invoice.DetailsInvoice)
                 };
-                model.ivaValue = invoice.Work.PercentageIVA;
-                model.ivaTaxBase = model.taxBase * invoice.Work.PercentageIVA;
+                model.taxBase = Math.Round(model.detailInvoice.Sum(x => x.amountUnits), 2);
+                model.ivaTaxBase = Math.Round(model.detailInvoice.Sum(x => x.amountUnits * x.iva), 2);
                 model.total = Math.Round(model.taxBase + model.ivaTaxBase, 2);
 
                 return model;

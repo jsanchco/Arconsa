@@ -53,6 +53,7 @@
                     .Include(x => x.Work)
                     .ThenInclude(x => x.Client)
                     .Include(x => x.InvoiceToCancel)
+                    .Include(x => x.DetailsInvoice)
                     .OrderByDescending(x => x.StartDate)
                     .ToList();
             }
