@@ -105,7 +105,7 @@
                     };
                     pdfPTable.AddCell(pdfCell);
 
-                    pdfCell = new PdfPCell(new Phrase($"{detailInvoice.Total.ToFormatSpain()} €", _STANDARFONT_10))
+                    pdfCell = new PdfPCell(new Phrase($"{Math.Round(detailInvoice.Units * detailInvoice.PriceUnity, 2).ToFormatSpain()} €", _STANDARFONT_10))
                     {
                         HorizontalAlignment = Element.ALIGN_RIGHT,
                         VerticalAlignment = Element.ALIGN_MIDDLE,

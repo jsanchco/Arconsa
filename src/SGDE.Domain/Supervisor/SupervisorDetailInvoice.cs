@@ -119,7 +119,8 @@
                         x.HourTypeId, 
                         x.ProfessionId),
                     Units = x.Hours,
-                    NameUnit = "horas"
+                    NameUnit = "horas",
+                    Iva = invoice.Work.PercentageIVA
                 }).ToList());
 
             return DetailInvoiceConverter.ConvertList(result);
