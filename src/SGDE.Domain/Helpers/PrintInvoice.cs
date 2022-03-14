@@ -2,16 +2,11 @@
 {
     #region Using
 
-    using SGDE.Domain.ViewModels;
-    using SGDE.Domain.Supervisor;
     using iTextSharp.text;
     using iTextSharp.text.pdf;
-    using System.IO;
+    using SGDE.Domain.Supervisor;
     using System;
-    using SGDE.Domain.Converters;
-    using Newtonsoft.Json.Linq;
-    using System.Collections.Generic;
-    using System.Linq;
+    using System.IO;
 
     #endregion
 

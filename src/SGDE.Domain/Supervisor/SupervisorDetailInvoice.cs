@@ -113,7 +113,7 @@
                 listGroupedByProfessionId.Select(x =>
                 new DetailInvoice 
                 {
-                    ServicesPerformed = $"{x.HourTypeName} {x.ProfessionName}",
+                    ServicesPerformed = $"{x.HourTypeName} {x.ProfessionName}, periodo del {invoice.StartDate:dd/MM/yyyy} al {invoice.EndDate:dd/MM/yyyy}",
                     PriceUnity = GetPriceHourSale(
                         invoice.Work.ClientId,
                         x.HourTypeId, 

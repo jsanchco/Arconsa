@@ -392,9 +392,10 @@
 
             GetInvoceToOrigen(pdfPTable);
 
+            var taxBase = Math.Round(_invoice.DetailsInvoice.Sum(x => x.PriceUnity * x.Units), 2);
             pdfCell = new PdfPCell(new Phrase("Base Imponible", _STANDARFONT_10_BOLD_CUSTOMCOLOR)) { BorderWidth = 0 };
             pdfPTable.AddCell(pdfCell);
-            pdfCell = new PdfPCell(new Phrase($"{Math.Round((double)_invoice.TaxBase, 2).ToFormatSpain()} €", _STANDARFONT_10)) { BorderWidth = 0, HorizontalAlignment = Element.ALIGN_RIGHT };
+            pdfCell = new PdfPCell(new Phrase($"{taxBase.ToFormatSpain()} €", _STANDARFONT_10)) { BorderWidth = 0, HorizontalAlignment = Element.ALIGN_RIGHT };
             pdfPTable.AddCell(pdfCell);
             pdfCell = new PdfPCell(new Phrase(" ", _STANDARFONT_10)) { BorderWidth = 0 };
             pdfPTable.AddCell(pdfCell);
@@ -427,9 +428,10 @@
                 }
             }
 
-            var percentageTaxBase = ((double)_invoice.TaxBase) * ((double)_work.PercentageRetention);
+            var percentageTaxBase = taxBase * _work.PercentageRetention;
             var titlePercentageTaxBase = percentageTaxBase == 0 ? "-" : percentageTaxBase.ToFormatSpain();
-            var total = _invoice.Total - percentageTaxBase;
+            var ivaTaxBase = Math.Round(_invoice.DetailsInvoice.Sum(x => x.PriceUnity * x.Units * x.Iva), 2);
+            var total = taxBase + ivaTaxBase - percentageTaxBase;
 
             pdfCell = new PdfPCell(new Phrase($"{Math.Round((double)_work.PercentageRetention * 100)}% de Retención", _STANDARFONT_10_BOLD_CUSTOMCOLOR)) { BorderWidth = 0 };
             pdfPTable.AddCell(pdfCell);
