@@ -201,6 +201,18 @@
                 .ToList();
         }
 
+        public List<User> GetWorkersWithSS()
+        {
+            return _context.User
+                .Include(x => x.Work)
+                .Include(x => x.SSHirings)
+                .Include(x => x.UserHirings)
+                .Where(x => x.RoleId == 3 &&
+                            x.SSHirings.Count > 0 &&
+                            x.SSHirings.Any(y => y.EndDate == null))
+                .ToList();
+        }
+
         public User GetById(int id)
         {
             return _context.User

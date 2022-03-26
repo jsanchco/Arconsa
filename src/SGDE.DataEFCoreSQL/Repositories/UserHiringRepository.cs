@@ -232,61 +232,119 @@
             {
                 try
                 {
-                    var work = _context.Work
-                        .Include(x => x.UserHirings)
-                        .FirstOrDefault(x => x.Id == workId);
-                    if (work == null)
-                        throw new Exception("No existe esta obra");
+                    #region Old code
+                    //var work = _context.Work
+                    //    .Include(x => x.UserHirings)
+                    //    .FirstOrDefault(x => x.Id == workId);
+                    //if (work == null)
+                    //    throw new Exception("No existe esta obra");
 
 
-                    // Damos de baja los tragajadores que no estén incluidos en los seleccionados
-                    var workersInWork = work.UserHirings
-                        .ToList()
-                        .Where(r => r.EndDate == null)?
-                        .GroupBy(x => x.UserId).Select(y => y.First())
-                        .Select(z => z.UserId);
+                    //// Damos de baja los tragajadores que no estén incluidos en los seleccionados
+                    //var workersInWork = work.UserHirings
+                    //    .ToList()
+                    //    .Where(r => r.EndDate == null)?
+                    //    .GroupBy(x => x.UserId).Select(y => y.First())
+                    //    .Select(z => z.UserId);
 
-                    if (workersInWork.Any())
-                    {
-                        var removeWorkerId = workersInWork.Except(listUserId);
-                        foreach(var remove in removeWorkerId)
-                        {
-                            var userHiring = _context.UserHiring
-                                .FirstOrDefault(x => x.UserId == remove && x.WorkId == workId && x.EndDate == null);
-                            if (userHiring == null)
-                                throw new Exception("No existe esta UserHiring");
+                    //if (workersInWork.Any())
+                    //{
+                    //    var removeWorkerId = workersInWork.Except(listUserId);
+                    //    foreach(var remove in removeWorkerId)
+                    //    {
+                    //        var userHiring = _context.UserHiring
+                    //            .FirstOrDefault(x => x.UserId == remove && x.WorkId == workId && x.EndDate == null);
+                    //        if (userHiring == null)
+                    //            throw new Exception("No existe esta UserHiring");
 
-                            userHiring.EndDate = DateTime.Now;
-                            _context.UserHiring.Update(userHiring);
+                    //        userHiring.EndDate = DateTime.Now;
+                    //        _context.UserHiring.Update(userHiring);
 
-                            var user = _context.User
-                                .Include(x => x.UserHirings)
-                                .Include(x => x.Work)
-                                .FirstOrDefault(x => x.Id == remove);
-                            if (user == null)
-                                throw new Exception("No existe este trabajador");
+                    //        var user = _context.User
+                    //            .Include(x => x.UserHirings)
+                    //            .Include(x => x.Work)
+                    //            .FirstOrDefault(x => x.Id == remove);
+                    //        if (user == null)
+                    //            throw new Exception("No existe este trabajador");
 
-                            user.Work = null;
-                            _context.User.Update(user);
+                    //        user.Work = null;
+                    //        _context.User.Update(user);
 
-                            _context.SaveChanges();
-                        }
-                    }
-                    // Damos de baja los tragajadores que no estén incluidos en los seleccionados
+                    //        _context.SaveChanges();
+                    //    }
+                    //}
+                    //// Damos de baja los tragajadores que no estén incluidos en los seleccionados
 
+
+                    //foreach (var userId in listUserId)
+                    //{
+                    //    var user = _context.User
+                    //        .Include(x => x.UserHirings)
+                    //        .Include(x => x.Work)
+                    //        .Include(x => x.UserProfessions)
+                    //        .FirstOrDefault(x => x.Id == userId);
+                    //    if (user == null)
+                    //        throw new Exception("No existe este trabajador");
+
+                    //    if
+
+
+                    //    if (user.Work == null)
+                    //    {
+                    //        _context.UserHiring.Add(new UserHiring
+                    //        {
+                    //            AddedDate = DateTime.Now,
+                    //            ModifiedDate = null,
+
+                    //            StartDate = DateTime.Now,
+                    //            EndDate = null,
+                    //            WorkId = workId,
+                    //            UserId = userId,
+                    //            ProfessionId = user.UserProfessions.FirstOrDefault()?.ProfessionId
+                    //        });
+                    //        //if (result == true)
+                    //        //    result = IsProfessionInClient(user.ProfessionId, 0, work.ClientId);
+
+                    //        user.WorkId = workId;
+                    //        _context.User.Update(user);
+
+                    //        _context.SaveChanges();
+                    //    }
+                    //    else
+                    //    {
+                    //        var userHiring = user.UserHirings.ToList().FirstOrDefault(x => x.EndDate == null && x.WorkId != workId);
+                    //        if (userHiring != null && user.WorkId != workId)
+                    //        {
+                    //            userHiring.EndDate = DateTime.Now;
+                    //            _context.UserHiring.Update(userHiring);
+
+                    //            _context.UserHiring.Add(new UserHiring
+                    //            {
+                    //                AddedDate = DateTime.Now,
+                    //                ModifiedDate = null,
+
+                    //                StartDate = DateTime.Now,
+                    //                EndDate = null,
+                    //                WorkId = workId,
+                    //                UserId = userId,
+                    //                ProfessionId = user.UserProfessions.FirstOrDefault()?.ProfessionId
+                    //            });
+                    //            //if (result == true)
+                    //            //    result = IsProfessionInClient(user.ProfessionId, 0, work.ClientId);
+
+                    //            user.WorkId = workId;
+                    //            _context.User.Update(user);
+
+                    //            _context.SaveChanges();
+                    //        }
+                    //    }
+                    //}
+                    #endregion
 
                     foreach (var userId in listUserId)
                     {
-                        var user = _context.User
-                            .Include(x => x.UserHirings)
-                            .Include(x => x.Work)
-                            .Include(x => x.UserProfessions)
-                            .FirstOrDefault(x => x.Id == userId);
-                        if (user == null)
-                            throw new Exception("No existe este trabajador");
-
-
-                        if (user.Work == null)
+                        var findUderHiring = _context.UserHiring.Any(x => x.UserId == userId && x.WorkId == workId);
+                        if (!findUderHiring)
                         {
                             _context.UserHiring.Add(new UserHiring
                             {
@@ -296,46 +354,12 @@
                                 StartDate = DateTime.Now,
                                 EndDate = null,
                                 WorkId = workId,
-                                UserId = userId,
-                                ProfessionId = user.UserProfessions.FirstOrDefault()?.ProfessionId
+                                UserId = userId
                             });
-                            //if (result == true)
-                            //    result = IsProfessionInClient(user.ProfessionId, 0, work.ClientId);
-
-                            user.WorkId = workId;
-                            _context.User.Update(user);
-
                             _context.SaveChanges();
                         }
-                        else
-                        {
-                            var userHiring = user.UserHirings.ToList().FirstOrDefault(x => x.EndDate == null && x.WorkId != workId);
-                            if (userHiring != null && user.WorkId != workId)
-                            {
-                                userHiring.EndDate = DateTime.Now;
-                                _context.UserHiring.Update(userHiring);
-
-                                _context.UserHiring.Add(new UserHiring
-                                {
-                                    AddedDate = DateTime.Now,
-                                    ModifiedDate = null,
-
-                                    StartDate = DateTime.Now,
-                                    EndDate = null,
-                                    WorkId = workId,
-                                    UserId = userId,
-                                    ProfessionId = user.UserProfessions.FirstOrDefault()?.ProfessionId
-                                });
-                                //if (result == true)
-                                //    result = IsProfessionInClient(user.ProfessionId, 0, work.ClientId);
-
-                                user.WorkId = workId;
-                                _context.User.Update(user);
-
-                                _context.SaveChanges();
-                            }
-                        }
                     }
+                    
                     transaction.Commit();
                 }
                 catch(Exception ex)

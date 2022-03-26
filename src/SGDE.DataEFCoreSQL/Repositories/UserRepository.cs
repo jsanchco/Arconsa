@@ -154,7 +154,8 @@
                                 .Include(x => x.SSHirings)
                                 .Include(x => x.Advances)
                                 .Where(x => roles.Contains(x.RoleId) &&
-                                       (!x.SSHirings.Any(y => y.EndDate == null) && x.SSHirings.Count > 0))
+                                            x.SSHirings.Count > 0 &&
+                                            x.SSHirings.Any(y => y.EndDate == null))
                                 .ToList();
             }
 
@@ -224,6 +225,18 @@
                 .ThenInclude(y => y.Profession)
                 .Include(x => x.SSHirings)
                 .Where(x => roles.Contains(x.RoleId))
+                .ToList();
+        }
+
+        public List<User> GetWorkersWithSS()
+        {
+            return _context.User
+                .Include(x => x.Work)
+                .Include(x => x.SSHirings)
+                .Include(x => x.UserHirings)
+                .Where(x => x.RoleId == 3 &&
+                            x.SSHirings.Count > 0 &&
+                            x.SSHirings.Any(y => y.EndDate == null))
                 .ToList();
         }
 

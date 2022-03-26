@@ -226,7 +226,7 @@ class ModalWorkers extends Component {
           <ModalHeader toggle={this.props.toggle}>{title}</ModalHeader>
           <ModalBody>
             <Row>
-              <Col>
+              {/* <Col>
                 <Button
                   color="danger"
                   style={{ marginLeft: "10px" }}
@@ -234,7 +234,7 @@ class ModalWorkers extends Component {
                 >
                   Seleccionar Trabajadores en Obra
                 </Button>
-              </Col>
+              </Col> */}
             </Row>
             <div
               style={{
@@ -247,7 +247,7 @@ class ModalWorkers extends Component {
                 elements={[
                   { color: "dot-green", text: "Activo" },
                   { color: "dot-red", text: "En esta obra" },
-                  { color: "dot-orange", text: "En otra obra" }
+                  // { color: "dot-orange", text: "En otra obra" }
                 ]}
               />
             </div>
@@ -290,7 +290,7 @@ class ModalWorkers extends Component {
                   <ColumnDirective
                     field="name"
                     headerText="Nombre"
-                    width="100"
+                    width="150"
                     allowEditing={false}
                   />
                   {/* <ColumnDirective
@@ -312,7 +312,7 @@ class ModalWorkers extends Component {
                   <ColumnDirective
                     field="state"
                     headerText="Estado"
-                    width="100"
+                    width="70"
                     textAlign="Center"
                     template={this.stateTemplate}
                     allowEditing={false}
