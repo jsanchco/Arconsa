@@ -281,5 +281,10 @@
 
             return result;
         }
+
+        public List<ReportResultsByWorkViewModel> GetAllResultsByWork(ReportQueryAllViewModel reportAllViewModel)
+        {
+            return null;
+        }
     }
 }

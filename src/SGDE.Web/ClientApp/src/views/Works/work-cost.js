@@ -91,7 +91,6 @@ class WorkCosts extends Component {
       allowDeleting: true,
       newRowPosition: "Top",
     };
-    this.pageSettings = { pageCount: 10, pageSize: 10 };
     this.actionFailure = this.actionFailure.bind(this);
     this.actionComplete = this.actionComplete.bind(this);
     this.actionBegin = this.actionBegin.bind(this);
@@ -395,7 +394,6 @@ class WorkCosts extends Component {
                 dataSource={this.workcosts}
                 locale="es-US"
                 allowPaging={true}
-                pageSettings={this.pageSettings}
                 toolbar={this.toolbarOptions}
                 toolbarClick={this.clickHandler}
                 editSettings={this.editSettings}
@@ -521,7 +519,7 @@ class WorkCosts extends Component {
                   </AggregateDirective>
                 </AggregatesDirective>
 
-                <Inject services={[Page, Toolbar, Edit, Group, Aggregate]} />
+                <Inject services={[Toolbar, Edit, Group, Aggregate]} />
               </GridComponent>
             </Row>
           </div>

@@ -63,6 +63,7 @@ const ReportHoursUser = React.lazy(() => import('./views/Reports/report-hours-us
 const ReportHoursWork = React.lazy(() => import('./views/Reports/report-hours-work'));
 const ReportHoursClient = React.lazy(() => import('./views/Reports/report-hours-client'));
 const ReportInvoices = React.lazy(() => import('./views/Reports/report-invoices'));
+const ReportResults = React.lazy(() => import('./views/Reports/report-results'));
 const ReportsVarious = React.lazy(() => import('./views/Reports/reports-various'));
 
 const Invoices = React.lazy(() => import('./views/Invoices/invoices'));
@@ -139,6 +140,7 @@ const routes = [
   { path: '/reports/reporthourswork', exact: true, name: 'Informe Horas Obra', component: ReportHoursWork },
   { path: '/reports/reporthoursclient', exact: true, name: 'Informe Horas Cliente', component: ReportHoursClient },
   { path: '/reports/reportinvoices', exact: true, name: 'Informe Facturas', component: ReportInvoices },
+  { path: '/reports/reportresults', exact: true, name: 'Informe Resultados', component: ReportResults },
   { path: '/reports/reportsvarious', exact: true, name: 'Informes Varios', component: ReportsVarious },
   { path: '/invoices/invoices', exact: true, name: 'Facturas', component: Invoices },
   { path: '/invoices/invoicescustom', exact: true, name: 'Facturas Personalizadas', component: InvoicesCustom },

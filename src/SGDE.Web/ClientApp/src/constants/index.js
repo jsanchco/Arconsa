@@ -20,6 +20,7 @@ export const ADVANCES = "api/Advances";
 export const REPORTS = "api/Reports";
 export const REPORTS_ALL= "api/Reports/GetReportAll";
 export const REPORT_INVOICES = "api/Reports/GetReportInvoices";
+export const REPORT_RESULTS = "api/Reports/GetReportResults";
 export const AUTHENTICATE = "api/Users/authenticate";
 export const UPDATEPASSWORD = "api/Users/updatepassword";
 export const INVOICERESPONSES = "api/InvoiceResponses";

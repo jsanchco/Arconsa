@@ -113,6 +113,11 @@ export default {
           icon: "icon-list"
         },
         {
+          name: "Resultados Obras",
+          url: "/reports/ReportResults",
+          icon: "icon-list"
+        },
+        {
           name: "Varios",
           url: "/reports/ReportsVarious",
           icon: "icon-list"
