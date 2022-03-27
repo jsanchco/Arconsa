@@ -7,7 +7,6 @@ import {
   Edit,
   Inject,
   Toolbar,
-  Page,
   Group,
   Aggregate,
   AggregateColumnsDirective,

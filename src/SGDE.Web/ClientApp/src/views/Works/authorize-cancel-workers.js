@@ -7,7 +7,6 @@ import {
   Edit,
   Inject,
   Toolbar,
-  Page,
   Aggregate,
   AggregateColumnsDirective,
   AggregateColumnDirective,
@@ -68,7 +67,6 @@ class AuthorizeCancelWorkers extends Component {
       allowDeleting: true,
       newRowPosition: "Top",
     };
-    this.pageSettings = { pageCount: 10, pageSize: 10 };
     this.actionFailure = this.actionFailure.bind(this);
     this.actionComplete = this.actionComplete.bind(this);
     this.actionBegin = this.actionBegin.bind(this);
@@ -352,7 +350,6 @@ class AuthorizeCancelWorkers extends Component {
                 dataSource={this.usersHiring}
                 locale="es-US"
                 allowPaging={true}
-                pageSettings={this.pageSettings}
                 toolbar={this.toolbarOptions}
                 editSettings={this.editSettings}
                 style={{
@@ -458,7 +455,7 @@ class AuthorizeCancelWorkers extends Component {
                     </AggregateColumnsDirective>
                   </AggregateDirective>
                 </AggregatesDirective>
-                <Inject services={[Page, Toolbar, Edit, Aggregate]} />
+                <Inject services={[Toolbar, Edit, Aggregate]} />
               </GridComponent>
             </Row>
           </div>

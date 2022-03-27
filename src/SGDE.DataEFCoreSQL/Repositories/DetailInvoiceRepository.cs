@@ -182,8 +182,10 @@
 
                     var invoiceFind = _context.Invoice
                         .Include(x => x.DetailsInvoice)
-                        .Where(x => x.WorkId == invoice.WorkId && x.EndDate < invoice.StartDate)
-                        .OrderByDescending(x => x.StartDate)
+                        .Where(x => x.WorkId == invoice.WorkId && 
+                                    x.WorkBudgetId == invoice.WorkBudgetId &&
+                                    x.EndDate < invoice.StartDate)
+                        .OrderByDescending(x => x.EndDate)
                         .FirstOrDefault();
                     if (invoiceFind == null)
                         throw new Exception("Factura no encontrada");
