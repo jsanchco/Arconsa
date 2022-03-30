@@ -37,8 +37,8 @@
                 retentions = invoice.Work.InvoiceToOrigin == true ? ((double)invoice.TaxBase * (double)invoice.Work.PercentageRetention) : 0,
                 workId = invoice.WorkId,
                 workName = invoice.Work.Name,
-                clientId = invoice.ClientId == null ? invoice.Work.ClientId : invoice.Client.Id,
-                clientName = invoice.ClientId == null ? invoice.Work.Client.Name : invoice.Client.Name,
+                clientId = invoice.Work.ClientId,
+                clientName = invoice.Work.Client.Name,
                 userId = invoice.UserId,
                 userName = invoice.UserId == null ? null : $"{invoice.User.Name} {invoice.User.Surname}",
                 invoiceToCancelId = invoice.InvoiceToCancelId,
@@ -79,8 +79,8 @@
                     retentions = invoice.Work.InvoiceToOrigin == true ? ((double)invoice.TaxBase * (double)invoice.Work.PercentageRetention) : 0,
                     workId = invoice.WorkId,
                     workName = invoice.Work.Name,
-                    clientId = invoice.ClientId == null ? invoice.Work.ClientId : invoice.Client.Id,
-                    clientName = invoice.ClientId == null ? invoice.Work.Client.Name : invoice.Client.Name,
+                    clientId = invoice.Work.ClientId,
+                    clientName = invoice.Work.Client.Name,
                     userId = invoice.UserId,
                     userName = invoice.UserId == null ? null : $"{invoice.User.Name} {invoice.User.Surname}",
                     invoiceToCancelId = invoice.InvoiceToCancelId,
@@ -89,6 +89,7 @@
                     workBudgetName = invoice.WorkBudget?.Name,
                     detailInvoice = DetailInvoiceConverter.ConvertList(invoice.DetailsInvoice)
                 };
+                System.Diagnostics.Debug.WriteLine($"{invoice.Id}");
                 model.taxBase = Math.Round(model.detailInvoice.Sum(x => x.amountUnits), 2);
                 model.ivaTaxBase = Math.Round(model.detailInvoice.Sum(x => x.amountUnits * x.iva), 2);
                 model.total = Math.Round(model.taxBase + model.ivaTaxBase, 2);
