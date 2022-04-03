@@ -392,7 +392,6 @@ class WorkCosts extends Component {
               <GridComponent
                 dataSource={this.workcosts}
                 locale="es-US"
-                allowPaging={true}
                 toolbar={this.toolbarOptions}
                 toolbarClick={this.clickHandler}
                 editSettings={this.editSettings}
