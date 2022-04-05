@@ -7,7 +7,7 @@ namespace SGDE.Domain.ViewModels
         public DateTime concessionDate { get; set; }
         public DateTime? payDate { get; set; }
         public double amount { get; set; }
-        public bool Paid => payDate != null;
+        public bool paid => payDate != null;
         public int userId { get; set; }
         public string userName { get; set; }
     }
