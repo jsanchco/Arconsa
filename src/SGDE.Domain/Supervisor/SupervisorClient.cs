@@ -49,7 +49,9 @@
                 Address = newClientViewModel.address,
                 WayToPay = newClientViewModel.wayToPay,
                 ExpirationDays = newClientViewModel.expirationDays,
-                AccountNumber = newClientViewModel.accountNumber
+                AccountNumber = newClientViewModel.accountNumber,
+                Email = newClientViewModel.email,
+                EmailInvoice = newClientViewModel.emailInvoice
             };
 
             _clientRepository.Add(client);
@@ -75,6 +77,8 @@
             client.WayToPay = clientViewModel.wayToPay;
             client.ExpirationDays = clientViewModel.expirationDays;
             client.AccountNumber = clientViewModel.accountNumber;
+            client.Email = clientViewModel.email;
+            client.EmailInvoice = clientViewModel.emailInvoice;
 
             return _clientRepository.Update(client);
         }

@@ -15,6 +15,8 @@
         public string WayToPay { get; set; }
         public int ExpirationDays { get; set; }
         public string AccountNumber { get; set; }
+        public string Email { get; set; }
+        public string EmailInvoice { get; set; }
 
         public int? PromoterId { get; set; } 
         public virtual Promoter Promoter { get; set; }
