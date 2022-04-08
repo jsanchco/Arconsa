@@ -146,7 +146,7 @@ class UsersNoWorker extends Component {
       const { rowSelected } = this.state;
       if (rowSelected !== null) {
         this.props.history.push({
-          pathname: "/employees/detailemployee",
+          pathname: "/employees/detailemployee/" + rowSelected.id,
           state: {
             user: rowSelected,
           },
