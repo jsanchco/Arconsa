@@ -349,7 +349,6 @@ class AuthorizeCancelWorkers extends Component {
               <GridComponent
                 dataSource={this.usersHiring}
                 locale="es-US"
-                allowPaging={true}
                 toolbar={this.toolbarOptions}
                 editSettings={this.editSettings}
                 style={{
@@ -361,7 +360,6 @@ class AuthorizeCancelWorkers extends Component {
                 actionFailure={this.actionFailure}
                 actionComplete={this.actionComplete}
                 actionBegin={this.actionBegin}
-                allowGrouping={false}
                 rowSelected={this.rowSelected}
                 ref={(g) => (this.grid = g)}
                 query={this.query}

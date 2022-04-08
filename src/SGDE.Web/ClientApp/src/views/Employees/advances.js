@@ -85,7 +85,7 @@ class Advances extends Component {
   }
 
   templateIsPaid(args) {
-    if (args.isPaid) {
+    if (args.paid) {
       return <span>Si</span>;
     } else {
       return <span>No</span>;
@@ -162,6 +162,7 @@ class Advances extends Component {
                     field="paid"
                     headerText="Pagado"
                     width="100"
+                    allowEditing={false}
                     template={this.templateIsPaid}
                   />
                   <ColumnDirective

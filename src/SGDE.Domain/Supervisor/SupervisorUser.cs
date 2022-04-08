@@ -3,15 +3,15 @@ namespace SGDE.Domain.Supervisor
 {
     #region Using
 
+    using Converters;
+    using Domain.Helpers;
+    using Entities;
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
-    using Converters;
-    using Entities;
     using ViewModels;
-    using Domain.Helpers;
-    using System.Linq;
 
     #endregion
 
@@ -78,7 +78,7 @@ namespace SGDE.Domain.Supervisor
             user.BirthDate = string.IsNullOrEmpty(userViewModel.birthDate)
                 ? null
                 : (DateTime?)DateTime.Parse(userViewModel.birthDate);
-            user.Email = userViewModel.email;            
+            user.Email = userViewModel.email;
 
             return await _userRepository.UpdateAsync(user, ct);
         }
@@ -89,16 +89,16 @@ namespace SGDE.Domain.Supervisor
         }
 
         public QueryResult<UserViewModel> GetAllUsers(
-            int skip = 0, 
-            int take = 0, 
-            string orderBy = null, 
-            string filter = null, 
-            List<int> roles = null, 
+            int skip = 0,
+            int take = 0,
+            string orderBy = null,
+            string filter = null,
+            List<int> roles = null,
             bool showAllEmployees = true)
         {
             var queryResult = _userRepository.GetAll(skip, take, orderBy, filter, roles, showAllEmployees);
             var data = UserConverter.ConvertList(queryResult.Data);
-            foreach(var item in data)
+            foreach (var item in data)
             {
                 UpdateStateUser(item);
             }
@@ -120,7 +120,7 @@ namespace SGDE.Domain.Supervisor
 
         public UserViewModel AddUser(UserViewModel newUserViewModel)
         {
-            if (newUserViewModel.userProfessions == null)
+            if (newUserViewModel.roleId == 3 && newUserViewModel.userProfessions == null)
                 throw new Exception("Debes seleccionar al menos una profesión para este trabajador");
 
             var user = new User
@@ -147,8 +147,16 @@ namespace SGDE.Domain.Supervisor
                 Password = "123456"
             };
 
-            var result = _userRepository.AddWithProfessions(user, newUserViewModel.userProfessions);
-            newUserViewModel.id = result.Id;
+            if (newUserViewModel.roleId == 3)
+            {
+                var result = _userRepository.AddWithProfessions(user, newUserViewModel.userProfessions);
+                newUserViewModel.id = result.Id;
+            }
+            else
+            {
+                var result = _userRepository.Add(user);
+                newUserViewModel.id = result.Id;
+            }
 
             return newUserViewModel;
         }
@@ -157,6 +165,9 @@ namespace SGDE.Domain.Supervisor
         {
             if (userViewModel.id == null)
                 return false;
+
+            if (userViewModel.roleId == 3 && userViewModel.userProfessions == null)
+                throw new Exception("Debes seleccionar al menos una profesión para este trabajador");
 
             var user = _userRepository.GetById((int)userViewModel.id);
 

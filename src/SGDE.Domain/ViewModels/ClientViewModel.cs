@@ -11,5 +11,7 @@
         public string accountNumber { get; set; }
         public int? typeClientId { get; set; }
         public string typeClientName { get; set; }
+        public string email { get; set; }
+        public string emailInvoice { get; set; }
     }
 }

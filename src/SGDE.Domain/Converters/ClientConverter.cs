@@ -31,7 +31,9 @@
                 expirationDays = client.ExpirationDays,
                 accountNumber = client.AccountNumber,
                 typeClientId = client.TypeClientId,
-                typeClientName = client.TypeClient?.Name
+                typeClientName = client.TypeClient?.Name,
+                email = client.Email,
+                emailInvoice = client.EmailInvoice
             };
 
             return clientViewModel;
@@ -56,7 +58,9 @@
                     expirationDays = client.ExpirationDays,
                     accountNumber = client.AccountNumber,
                     typeClientId = client.TypeClientId,
-                    typeClientName = client.TypeClient?.Name
+                    typeClientName = client.TypeClient?.Name,
+                    email = client.Email,
+                    emailInvoice = client.EmailInvoice
                 };
                 return model;
             })

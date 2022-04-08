@@ -28,11 +28,14 @@ class BasicDataClient extends Component {
         wayToPay: result.wayToPay,
         expirationDays: result.expirationDays,
         accountNumber: result.accountNumber,
+        email: result.email,
+        emailInvoice: result.emailInvoice,
       });
     });
 
     this.handleInputChange = this.handleInputChange.bind(this);
-    this.handleChangeExpirationDays = this.handleChangeExpirationDays.bind(this);
+    this.handleChangeExpirationDays =
+      this.handleChangeExpirationDays.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.getClient = this.getClient.bind(this);
   }
@@ -60,6 +63,8 @@ class BasicDataClient extends Component {
       wayToPay: this.state.wayToPay,
       expirationDays: this.state.expirationDays,
       accountNumber: this.state.accountNumber,
+      email: this.state.email,
+      emailInvoice: this.state.emailInvoice,
     };
   }
 
@@ -188,6 +193,34 @@ class BasicDataClient extends Component {
                     name="accountNumber"
                     placeholder="nº de cuenta"
                     value={this.state.accountNumber || ""}
+                    onChange={this.handleInputChange}
+                  />
+                </FormGroup>
+              </Col>
+            </Row>
+            <Row>
+              <Col xs="6">
+                <FormGroup>
+                  <Label htmlFor="email">Email</Label>
+                  <Input
+                    type="text"
+                    id="email"
+                    name="email"
+                    placeholder="email cliente"
+                    value={this.state.email || ""}
+                    onChange={this.handleInputChange}
+                  />
+                </FormGroup>
+              </Col>
+              <Col xs="6">
+                <FormGroup>
+                  <Label htmlFor="emailInvoice">Email Facturación</Label>
+                  <Input
+                    type="text"
+                    id="emailInvoice"
+                    name="emailInvoice"
+                    placeholder="email facturación"
+                    value={this.state.emailInvoice || ""}
                     onChange={this.handleInputChange}
                   />
                 </FormGroup>
