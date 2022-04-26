@@ -62,6 +62,7 @@ class ReportInvoices extends Component {
     this.handleOnClick = this.handleOnClick.bind(this);
     this.clickHandler = this.clickHandler.bind(this);
     this.getExcelExportProperties = this.getExcelExportProperties.bind(this);
+    this.beforePrint = this.beforePrint.bind(this);
 
     this.format = { type: "dateTime", format: "dd/MM/yyyy" };
   }
@@ -298,6 +299,19 @@ class ReportInvoices extends Component {
     };
   }
 
+  beforePrint(args) {
+    const valueDtpStartDate = this.formatDate(this.dtpStartDate.value);
+    const valueDtpEndDate = this.formatDate(this.dtpEndDate.value);
+
+    var div = document.createElement("Div");
+    div.innerHTML = "FACTURAS desde el " + valueDtpStartDate + " al " + valueDtpEndDate;
+    div.style.textAlign = "center";
+    div.style.color = "red";
+    div.style.padding = "10px 0";
+    div.style.fontSize = "25px";
+    args.element.insertBefore(div, args.element.childNodes[0]);
+  }
+
   render() {
     return (
       <Fragment>
@@ -373,6 +387,7 @@ class ReportInvoices extends Component {
                   allowTextWrap={true}
                   textWrapSettings={this.wrapSettings}
                   allowSorting={true}
+                  beforePrint={this.beforePrint}
                 >
                   <ColumnsDirective>
                     <ColumnDirective

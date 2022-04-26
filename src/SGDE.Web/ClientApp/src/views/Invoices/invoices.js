@@ -846,6 +846,16 @@ class Invoices extends Component {
     }
   }
 
+  beforePrint(args) {
+    var div = document.createElement("Div");
+    div.innerHTML = "FACTURAS";
+    div.style.textAlign = "center";
+    div.style.color = "red";
+    div.style.padding = "10px 0";
+    div.style.fontSize = "25px";
+    args.element.insertBefore(div, args.element.childNodes[0]);
+  }
+
   render() {
     return (
       <Fragment>
@@ -895,6 +905,7 @@ class Invoices extends Component {
                   childGrid={this.gridDetailsInvoice}
                   detailDataBound={this.detailDataBound}
                   invoiceIdCleaned={null}
+                  beforePrint={this.beforePrint}
                 >
                   <ColumnsDirective>
                     <ColumnDirective
