@@ -194,7 +194,10 @@
                     {
                         detailInvoice.Id = 0;
                         detailInvoice.InvoiceId = invoiceId;
-                        detailInvoice.UnitsAccumulated = detailInvoice.Units;
+
+                        if (detailInvoice.Units != 0)
+                            detailInvoice.UnitsAccumulated = detailInvoice.Units;
+
                         detailInvoice.Units = 0;
 
                         _context.DetailInvoice.Add(detailInvoice);

@@ -89,7 +89,6 @@
                     workBudgetName = invoice.WorkBudget?.Name,
                     detailInvoice = DetailInvoiceConverter.ConvertList(invoice.DetailsInvoice)
                 };
-                System.Diagnostics.Debug.WriteLine($"{invoice.Id}");
                 model.taxBase = Math.Round(model.detailInvoice.Sum(x => x.amountUnits), 2);
                 model.ivaTaxBase = Math.Round(model.detailInvoice.Sum(x => x.amountUnits * x.iva), 2);
                 model.total = Math.Round(model.taxBase + model.ivaTaxBase, 2);
