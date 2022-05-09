@@ -83,7 +83,9 @@
                                                 .Where(x => x.hourTypeId == 5)
                                                 .Select(x => x.priceHourSale).Sum(),
                     totalEmbargos = user.Embargos.Where(x => !x.Paid)
-                                                .Sum(y => y.Total - y.DetailEmbargos.Sum(x => x.Amount)),
+                                                .Sum(y => 
+                                                    y.DetailEmbargos
+                                                        .Where(w => w.DatePay <= reportAllViewModel.endDate && w.DatePay >= reportAllViewModel.startDate).Sum( x => x.Amount)),
                     hasEmbargosPendings = user.Embargos.Any(x => x.Paid == false),
                     totalAdvances = user.Advances.Where(x => !x.Paid)
                                                 .Sum(y => y.Amount),

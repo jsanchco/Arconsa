@@ -390,7 +390,7 @@ class Embargos extends Component {
                     format={this.format}
                     textAlign="Center"
                   />
-                  <ColumnDirective
+                  {/* <ColumnDirective
                     field="endDate"
                     headerText="Fecha Fin"
                     width="80"
@@ -398,7 +398,8 @@ class Embargos extends Component {
                     type="date"
                     format={this.format}
                     textAlign="Center"
-                  />
+                    visible={false}
+                  /> */}
                   <ColumnDirective
                     field="observations"
                     headerText="Observaciones"
