@@ -38,8 +38,8 @@
                 workName = dailySignings[0].UserHiring.Work.Name,
                 clientId = dailySignings[0].UserHiring.Work.Client.Id,
                 clientName = dailySignings[0].UserHiring.Work.Client.Name,
-                professionId = dailySignings[0].UserHiring.Profession.Id,
-                professionName = dailySignings[0].UserHiring.Profession.Name,
+                professionId = dailySignings[0].Profession.Id,
+                professionName = dailySignings[0].Profession.Name,
                 inWork = dailySignings[0].UserHiring.InWork
             };
 
@@ -59,8 +59,8 @@
                         workName = dailySigning.UserHiring.Work.Name,
                         clientId = dailySigning.UserHiring.Work.Client.Id,
                         clientName = dailySigning.UserHiring.Work.Client.Name,
-                        professionId = dailySigning.UserHiring.Profession.Id,
-                        professionName = dailySigning.UserHiring.Profession.Name,
+                        professionId = dailySigning.Profession.Id,
+                        professionName = dailySigning.Profession.Name,
                         inWork = dailySigning.UserHiring.InWork
                     };
                 }
