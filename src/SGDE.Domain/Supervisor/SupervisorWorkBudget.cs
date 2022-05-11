@@ -95,7 +95,7 @@ namespace SGDE.Domain.Supervisor
                 workBudget.NameInWork = $"Version {workBudgets.Count + 1}";
             }
 
-            if (workBudgetViewModel.type == "Definitivo")
+            if (workBudgetViewModel.type == "Definitivo Version")
             {
                 var workBudgets = GetAllWorkBudget(workBudgetViewModel.workId);
 
@@ -103,14 +103,20 @@ namespace SGDE.Domain.Supervisor
                 workBudget.NameInWork = $"Presupuesto Definitivo";
             }
 
-            if (workBudgetViewModel.type == "Complementario X")
+            if (workBudgetViewModel.type == "Complementario Version X")
             {
-                var workBudgets = GetAllWorkBudget(workBudgetViewModel.workId);
-                var workBudgetsComplementarios = workBudgets.Where(x => x.type == "Complementario X");
-                var budgetDefinitivo = workBudgets.FirstOrDefault(x => x.type == "Definitivo");
+                var workBudgets = GetAllWorkBudget(workBudgetViewModel.workId).OrderBy(x => x.id);
+                var lastBudget = workBudgets.Last();
+                if (lastBudget.name.EndsWith(".D"))
+                {
+                    workBudget.Name = $"{workBudgets.Last().name}.D.C1V1";
+                    workBudget.NameInWork = $"Complementario 1 Version 1";
+                }
+                else
+                {
 
-                workBudget.Name = $"{budgetDefinitivo.name}.C{workBudgetsComplementarios.Count() + 1}";
-                workBudget.NameInWork = $"Complementario {workBudgetsComplementarios.Count() + 1}";
+                }
+
             }
         }
 
@@ -123,7 +129,7 @@ namespace SGDE.Domain.Supervisor
                 throw new Exception("Hay presupuestos con fecha mayor");
             }
 
-            if (workBudget.type == "Complementario X")
+            if (workBudget.type == "Complementario Version X")
             {
                 if (!workBudgets.Any(x => x.type == "Definitivo"))
                 {
@@ -131,9 +137,17 @@ namespace SGDE.Domain.Supervisor
                 }
             }
 
-            if (workBudget.type == "Definitivo")
+            if (workBudget.type == "Complementario Definitivo")
             {
-                if (workBudgets.Any(x => x.type == "Definitivo"))
+                if (!workBudgets.Any(x => x.type == "Complementario Version X"))
+                {
+                    throw new Exception("No puede haber un Complementario Definitivo sin tener una Version del Complementario");
+                }
+            }
+
+            if (workBudget.type == "Definitivo Version")
+            {
+                if (workBudgets.Any(x => x.type == "Definitivo Version"))
                 {
                     throw new Exception("No puede haber mas de un Presupuesto Definitivo");
                 }
