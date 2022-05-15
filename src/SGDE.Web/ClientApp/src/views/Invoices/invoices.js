@@ -36,9 +36,11 @@ import {
   base64ToArrayBuffer,
   saveByteArray,
   printInvoice,
+  billPayment,
 } from "../../services";
 import { Query } from "@syncfusion/ej2-data";
 import { DropDownList } from "@syncfusion/ej2-dropdowns";
+import { DialogComponent } from "@syncfusion/ej2-react-popups";
 
 L10n.load(data);
 
@@ -82,6 +84,10 @@ class Invoices extends Component {
   constructor(props) {
     super(props);
 
+    this.state = {
+      hideConfirmDialog: false,
+    };
+
     this.clientsElem = null;
     this.clientsObj = null;
     this.worksElem = null;
@@ -107,6 +113,12 @@ class Invoices extends Component {
         tooltipText: "Imprimir Factura",
         prefixIcon: "e-custom-icons e-print",
         id: "PrintInvoice",
+      },
+      {
+        text: "Anular Factura",
+        tooltipText: "Anular Factura",
+        prefixIcon: "e-custom-icons e-empty",
+        id: "CancelInvoice",
       },
       "Search",
     ];
@@ -141,9 +153,25 @@ class Invoices extends Component {
         validateDecimalOnType: true,
         showSpinButton: false,
         min: 0,
-        max: 1
+        max: 1,
       },
     };
+    this.confirmButton = [
+      {
+        click: () => {
+          this.setState({ hideConfirmDialog: false });
+          this.billPayment();
+        },
+        buttonModel: { content: "Si", isPrimary: true },
+      },
+      {
+        click: () => {
+          this.setState({ hideConfirmDialog: false });
+        },
+        buttonModel: { content: "No" },
+      },
+    ];
+    this.animationSettings = { effect: "None" };
     this.formatDate = { type: "dateTime", format: "dd/MM/yyyy" };
     this.expandGridRow = null;
     this.rowSelectedInvoice = null;
@@ -293,6 +321,7 @@ class Invoices extends Component {
       this.gridDetailsInvoiceActionComplete.bind(this);
     this.detailDataBound = this.detailDataBound.bind(this);
     this.clickHandlerGridInvoice = this.clickHandlerGridInvoice.bind(this);
+    this.billPayment = this.billPayment.bind(this);
 
     this.gridDetailsInvoice = {
       columns: [
@@ -351,7 +380,7 @@ class Invoices extends Component {
               editType: "numericedit",
               edit: this.numericParams,
               allowEditing: false,
-            }
+            },
           ],
         },
         {
@@ -495,6 +524,40 @@ class Invoices extends Component {
       toolbarClick: this.clickHandlerGridDetailsInvoice,
       props: this.props,
     };
+  }
+
+  dialogClose() {
+    this.setState({
+      hideConfirmDialog: false,
+    });
+  }
+
+  billPayment() {
+    const element = document.getElementById("gridInvoices");
+
+    createSpinner({
+      target: element,
+    });
+    showSpinner(element);
+
+    billPayment(this.gridInvoice.getSelectedRecords()[0].id)
+      .then(() => {
+        this.props.showMessage({
+          statusText: "200",
+          responseText: "Operación realizada con éxito",
+          type: "success",
+        });
+        this.gridInvoice.refresh();
+        hideSpinner(element);
+      })
+      .catch((error) => {
+        this.props.showMessage({
+          statusText: "Ha ocurrido un error en la operación",
+          responseText: "Ha ocurrido un error en la operación",
+          type: "danger",
+        });
+        hideSpinner(element);
+      });
   }
 
   dataBoundDetailsInvoice(args) {
@@ -844,6 +907,18 @@ class Invoices extends Component {
           });
       }
     }
+
+    if (args.item.id === "CancelInvoice") {
+      if (selectedRecords.length === 0) {
+        this.props.showMessage({
+          statusText: "Debes seleccionar una factura",
+          responseText: "Debes seleccionar una factura",
+          type: "danger",
+        });
+      } else {
+        this.setState({ hideConfirmDialog: true });
+      }
+    }
   }
 
   beforePrint(args) {
@@ -867,6 +942,19 @@ class Invoices extends Component {
           {/* eslint-disable-next-line*/}
           <BreadcrumbItem active>Facturas</BreadcrumbItem>
         </Breadcrumb>
+
+        <DialogComponent
+          id="confirmDialog"
+          header="Abonar Factura"
+          visible={this.state.hideConfirmDialog}
+          showCloseIcon={true}
+          animationSettings={this.animationSettings}
+          width="500px"
+          content="¿Estás seguro de querer Abonar esta factura?"
+          ref={(dialog) => (this.confirmDialogInstance = dialog)}
+          buttons={this.confirmButton}
+          close={this.dialogClose.bind(this)}
+        ></DialogComponent>
 
         <Container fluid>
           <div className="animated fadeIn">
@@ -1026,6 +1114,12 @@ class Invoices extends Component {
                       type="date"
                       format={this.formatDate}
                       editType="datepickeredit"
+                    />
+                    <ColumnDirective
+                      field="invoiceToCancelName"
+                      headerText="Cancelada"
+                      width="100"
+                      allowEditing={false}
                     />
                     <ColumnDirective field="typeInvoice" visible={false} />
                   </ColumnsDirective>

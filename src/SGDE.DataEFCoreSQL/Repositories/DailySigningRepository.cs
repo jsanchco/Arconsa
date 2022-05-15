@@ -164,26 +164,33 @@
             if (dailySigning.StartHour >= dailySigning.EndHour)
                 return false;
 
-            if (_context.DailySigning.FirstOrDefault(x =>
-                x.StartHour < dailySigning.StartHour &&
-                x.EndHour > dailySigning.StartHour &&
-                x.Id != dailySigning.Id) != null)
-                //x.Id != dailySigning.Id &&
-                //x.UserHiringId == dailySigning.UserHiringId) != null)
+            if (_context
+                .DailySigning
+                .Include(x => x.UserHiring)
+                .Any(x =>
+                    x.StartHour < dailySigning.StartHour &&
+                    x.EndHour > dailySigning.StartHour &&
+                    x.Id != dailySigning.Id &&
+                    x.UserHiring.UserId == dailySigning.UserHiring.UserId))
                 return false;
 
-            if (_context.DailySigning.FirstOrDefault(x =>
-                x.StartHour < dailySigning.EndHour &&
-                x.EndHour > dailySigning.StartHour &&
-                x.Id != dailySigning.Id) != null)
-                //x.UserHiringId == dailySigning.UserHiringId) != null)
+
+            if (_context.DailySigning
+                .Include(x => x.UserHiring)
+                .Any(x =>
+                    x.StartHour < dailySigning.EndHour &&
+                    x.EndHour > dailySigning.StartHour &&
+                    x.Id != dailySigning.Id &&
+                    x.UserHiring.UserId == dailySigning.UserHiring.UserId))
                 return false;
 
-            if (_context.DailySigning.FirstOrDefault(x =>
-                x.StartHour < dailySigning.StartHour &&
-                x.EndHour > dailySigning.EndHour &&
-                x.Id != dailySigning.Id) != null)
-                //x.UserHiringId == dailySigning.UserHiringId) != null)
+            if (_context.DailySigning
+                .Include(x => x.UserHiring)
+                .Any(x =>
+                    x.StartHour < dailySigning.StartHour &&
+                    x.EndHour > dailySigning.EndHour &&
+                    x.Id != dailySigning.Id &&
+                    x.UserHiring.UserId == dailySigning.UserHiring.UserId))
                 return false;
 
             return true;

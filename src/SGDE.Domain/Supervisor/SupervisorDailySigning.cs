@@ -181,6 +181,7 @@
                             StartHour = new DateTime(actualDay.Year, actualDay.Month, actualDay.Day),
                             EndHour = null,
                             UserHiringId = massiveSigningQueryViewModel.userHiringId,
+                            UserHiring = _userHiringRepository.GetById(massiveSigningQueryViewModel.userHiringId),
                             ProfessionId = massiveSigningQueryViewModel.professionId,
                             HourTypeId = item.hourTypeId
                         };
@@ -204,6 +205,7 @@
                                 new DateTime(actualDay.Year, actualDay.Month, actualDay.Day, hourEnd, minuteEnd, 0).AddDays(1),
 
                             UserHiringId = massiveSigningQueryViewModel.userHiringId,
+                            UserHiring = _userHiringRepository.GetById(massiveSigningQueryViewModel.userHiringId),
                             ProfessionId = massiveSigningQueryViewModel.professionId,
                             HourTypeId = item.hourTypeId
                         };

@@ -95,7 +95,7 @@ namespace SGDE.Domain.Supervisor
                 workBudget.NameInWork = $"Version {workBudgets.Count + 1}";
             }
 
-            if (workBudgetViewModel.type == "Definitivo Version")
+            if (workBudgetViewModel.type == "Definitivo")
             {
                 var workBudgets = GetAllWorkBudget(workBudgetViewModel.workId);
 
@@ -103,20 +103,14 @@ namespace SGDE.Domain.Supervisor
                 workBudget.NameInWork = $"Presupuesto Definitivo";
             }
 
-            if (workBudgetViewModel.type == "Complementario Version X")
+            if (workBudgetViewModel.type == "Complementario X")
             {
-                var workBudgets = GetAllWorkBudget(workBudgetViewModel.workId).OrderBy(x => x.id);
-                var lastBudget = workBudgets.Last();
-                if (lastBudget.name.EndsWith(".D"))
-                {
-                    workBudget.Name = $"{workBudgets.Last().name}.D.C1V1";
-                    workBudget.NameInWork = $"Complementario 1 Version 1";
-                }
-                else
-                {
+                var workBudgets = GetAllWorkBudget(workBudgetViewModel.workId);
+                var workBudgetsComplementarios = workBudgets.Where(x => x.type == "Complementario X");
+                var budgetDefinitivo = workBudgets.FirstOrDefault(x => x.type == "Definitivo");
 
-                }
-
+                workBudget.Name = $"{budgetDefinitivo.name}.C{workBudgetsComplementarios.Count() + 1}";
+                workBudget.NameInWork = $"Complementario {workBudgetsComplementarios.Count() + 1}";
             }
         }
 

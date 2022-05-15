@@ -304,7 +304,8 @@ class ReportInvoices extends Component {
     const valueDtpEndDate = this.formatDate(this.dtpEndDate.value);
 
     var div = document.createElement("Div");
-    div.innerHTML = "FACTURAS desde el " + valueDtpStartDate + " al " + valueDtpEndDate;
+    div.innerHTML =
+      "FACTURAS desde el " + valueDtpStartDate + " al " + valueDtpEndDate;
     div.style.textAlign = "center";
     div.style.color = "red";
     div.style.padding = "10px 0";
@@ -437,6 +438,12 @@ class ReportInvoices extends Component {
                       headerText="Pagado"
                       width="100"
                       template={this.templateIsPaid}
+                    />
+                    <ColumnDirective
+                      field="invoiceToCancelName"
+                      headerText="Cancelada"
+                      width="100"
+                      allowEditing={false}
                     />
                   </ColumnsDirective>
 

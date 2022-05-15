@@ -43,9 +43,11 @@
                 userName = invoice.UserId == null ? null : $"{invoice.User.Name} {invoice.User.Surname}",
                 invoiceToCancelId = invoice.InvoiceToCancelId,
                 invoiceToCancelName = invoice.InvoiceToCancel?.Name,
-                detailInvoice = DetailInvoiceConverter.ConvertList(invoice.DetailsInvoice),
                 workBudgetId = invoice.WorkBudgetId,
                 workBudgetName = invoice.WorkBudget?.Name,
+                detailInvoice = invoice.InvoiceToCancelId == null ?
+                        DetailInvoiceConverter.ConvertList(invoice.DetailsInvoice) :
+                        DetailInvoiceConverter.ConvertList(invoice.InvoiceToCancel.DetailsInvoice, true)
             };
 
             invoiceViewModel.taxBase = Math.Round(invoiceViewModel.detailInvoice.Sum(x => x.amountUnits), 2);
@@ -87,7 +89,9 @@
                     invoiceToCancelName = invoice.InvoiceToCancel?.Name,
                     workBudgetId = invoice.WorkBudgetId,
                     workBudgetName = invoice.WorkBudget?.Name,
-                    detailInvoice = DetailInvoiceConverter.ConvertList(invoice.DetailsInvoice)
+                    detailInvoice = invoice.InvoiceToCancelId == null ? 
+                        DetailInvoiceConverter.ConvertList(invoice.DetailsInvoice) :
+                        DetailInvoiceConverter.ConvertList(invoice.InvoiceToCancel.DetailsInvoice, true)
                 };
                 model.taxBase = Math.Round(model.detailInvoice.Sum(x => x.amountUnits), 2);
                 model.ivaTaxBase = Math.Round(model.detailInvoice.Sum(x => x.amountUnits * x.iva), 2);

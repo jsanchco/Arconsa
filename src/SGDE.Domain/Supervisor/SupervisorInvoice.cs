@@ -162,7 +162,7 @@
 
             var newInvoice = new Invoice
             {
-                Name = $"AB_{invoiceNumber:0000}/{DateTime.Now.Year.ToString().Substring(2, 2)}",
+                Name = $"AB_{invoiceNumber:0000}_{DateTime.Now.Year.ToString().Substring(2, 2)}",
                 InvoiceNumber = invoiceNumber,
                 InvoiceToCancelId = invoiceId,
                 IssueDate = DateTime.Now,
@@ -178,7 +178,8 @@
                 TypeInvoice = invoiceParent.TypeInvoice
             };
 
-            return InvoiceConverter.Convert(_invoiceRepository.Add(newInvoice));
+            var addInvoice = _invoiceRepository.Add(newInvoice);
+            return InvoiceConverter.Convert(addInvoice);
         }
 
         public InvoiceViewModel GetPreviousInvoice(InvoiceViewModel invoiceViewModel)

@@ -11,7 +11,7 @@
 
     public class DetailInvoiceConverter 
     {
-        public static DetailInvoiceViewModel Convert(DetailInvoice detailInvoice)
+        public static DetailInvoiceViewModel Convert(DetailInvoice detailInvoice, bool isInvoiceToCancel = false)
         {
             if (detailInvoice == null)
                 return null;
@@ -27,7 +27,7 @@
                 servicesPerformed = detailInvoice.ServicesPerformed,
                 units = (double)detailInvoice.Units,
                 unitsAccumulated = (double)detailInvoice.UnitsAccumulated,
-                priceUnity = (double)detailInvoice.PriceUnity,
+                priceUnity = isInvoiceToCancel ? -(double)detailInvoice.PriceUnity : (double)detailInvoice.PriceUnity,
                 nameUnit = detailInvoice.NameUnit,
                 iva = detailInvoice.Iva
             };
@@ -35,7 +35,7 @@
             return detailInvoiceViewModel;
         }
 
-        public static List<DetailInvoiceViewModel> ConvertList(IEnumerable<DetailInvoice> detailInvoices)
+        public static List<DetailInvoiceViewModel> ConvertList(IEnumerable<DetailInvoice> detailInvoices, bool isInvoiceToCancel = false)
         {
             return detailInvoices?.Select(detailInvoice =>
             {
@@ -50,7 +50,7 @@
                     servicesPerformed = detailInvoice.ServicesPerformed,
                     units = (double)detailInvoice.Units,
                     unitsAccumulated = (double)detailInvoice.UnitsAccumulated,
-                    priceUnity = (double)detailInvoice.PriceUnity,
+                    priceUnity = isInvoiceToCancel ? -(double)detailInvoice.PriceUnity : (double)detailInvoice.PriceUnity,
                     nameUnit = detailInvoice.NameUnit,
                     iva = detailInvoice.Iva
                 };

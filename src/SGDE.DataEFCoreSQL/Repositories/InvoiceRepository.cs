@@ -50,6 +50,7 @@
                     .Include(x => x.Work)
                     .ThenInclude(x => x.Client)
                     .Include(x => x.InvoiceToCancel)
+                    .ThenInclude(y => y.DetailsInvoice)
                     .Include(x => x.Work)
                     .ThenInclude(x => x.WorkBudgets)
                     .Include(x => x.DetailsInvoice)
@@ -64,6 +65,7 @@
                     .Include(x => x.Work)
                     .ThenInclude(x => x.Client)
                     .Include(x => x.InvoiceToCancel)
+                    .ThenInclude(y => y.DetailsInvoice)
                     .Include(x => x.Work)
                     .ThenInclude(x => x.WorkBudgets)
                     .Include(x => x.DetailsInvoice)
@@ -79,6 +81,7 @@
                     .Include(x => x.Work)
                     .ThenInclude(x => x.Client)
                     .Include(x => x.InvoiceToCancel)
+                    .ThenInclude(y => y.DetailsInvoice)
                     .Include(x => x.Work)
                     .ThenInclude(x => x.WorkBudgets)
                     .Include(x => x.DetailsInvoice)
@@ -156,9 +159,12 @@
             var work = _context.Work.FirstOrDefault(x => x.Id == newInvoice.WorkId);
 
             newInvoice.InvoiceNumber = invoiceNumber;
-            newInvoice.Name = work != null
-                ? $"{work.WorksToRealize}{invoiceNumber:0000}_{newInvoice.IssueDate.Year.ToString().Substring(2, 2)}"
-                : $"{invoiceNumber:0000}_{newInvoice.IssueDate.Year.ToString().Substring(2, 2)}";
+            if (newInvoice.InvoiceToCancelId == null)
+            {
+                newInvoice.Name = work != null
+                    ? $"{work.WorksToRealize}{invoiceNumber:0000}_{newInvoice.IssueDate.Year.ToString().Substring(2, 2)}"
+                    : $"{invoiceNumber:0000}_{newInvoice.IssueDate.Year.ToString().Substring(2, 2)}";
+            }
 
             _context.Invoice.Add(newInvoice);
             _context.SaveChanges();
