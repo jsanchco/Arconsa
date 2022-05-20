@@ -307,7 +307,7 @@ class Invoices extends Component {
           args.rowData.workBudgetId != null &&
           args.rowData.workBudgetId !== 0
         ) {
-          this.workBudgetsObj.value = args.rowData.workId;
+          this.workBudgetsObj.value = args.rowData.workBudgetId;
         }
       },
     };
