@@ -3,6 +3,7 @@
     #region Using
 
     using Domain.Helpers;
+    using System;
 
     #endregion
 
@@ -40,21 +41,9 @@
             {
                 var newfiltersplits = filter;
                 var filtersplits = newfiltersplits.Split('(', ')', ' ');
-                var filterfield = filtersplits[1];
 
-                if (filtersplits.Length == 5)
-                {
-                    if (filtersplits[1].EndsWith("tolower"))
-                    {
-                        filterfield = filter.Split('(', ')', '\'')[2];
-                    }
-                }
-                else
-                {
-                    return null;
-                }    
-
-                return Searcher.RemoveAccentsWithNormalization(filterfield);
+                if (filtersplits.Length == 5 && filtersplits[1].Equals("id", StringComparison.CurrentCultureIgnoreCase))
+                    return filtersplits[3];
             }
 
             return null;

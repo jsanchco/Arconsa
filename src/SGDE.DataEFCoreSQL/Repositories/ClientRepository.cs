@@ -128,8 +128,8 @@
 
             if (filter != null)
             {
-                data = data.Where(x =>
-                        Searcher.RemoveAccentsWithNormalization(x.Name.ToLower()).Contains(filter))
+                data = data
+                    .Where(x => x.Id == Convert.ToInt32(filter))
                     .ToList();
             }
 
