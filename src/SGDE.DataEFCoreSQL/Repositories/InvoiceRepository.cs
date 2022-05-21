@@ -98,6 +98,7 @@
                         Searcher.RemoveAccentsWithNormalization(x.Work.Name?.ToLower()).Contains(filter) ||
                         Searcher.RemoveAccentsWithNormalization(x.Work.Client.Name.ToLower()).Contains(filter) ||
                         Searcher.RemoveAccentsWithNormalization(x.Name.ToLower()).Contains(filter) ||
+                        Searcher.RemoveAccentsWithNormalization(x.WorkBudget?.Name.ToLower()).Contains(filter) ||
                         x.TaxBase.ToString().Contains(filter) ||
                         Searcher.RemoveAccentsWithNormalization((Convert.ToDouble(x.TaxBase) + (Convert.ToDouble(x.TaxBase) * 0.21)).ToString()).Contains(filter) ||
                         Searcher.RemoveAccentsWithNormalization(x.StartDate.ToString("dd/MM/yyyyy")).Contains(filter) ||
