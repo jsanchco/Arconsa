@@ -49,6 +49,7 @@
                         .AddScoped<IDetailEmbargoRepository, DataEFCoreSQL.Repositories.DetailEmbargoRepository>()
                         .AddScoped<ISSHiringRepository, DataEFCoreSQL.Repositories.SSHiringRepository>()
                         .AddScoped<IWorkCostRepository, DataEFCoreSQL.Repositories.WorkCostRepository>()
+                        .AddScoped<IWorkBudgetDataRepository, DataEFCoreSQL.Repositories.WorkBudgetDataRepository>()
                         .AddScoped<IWorkBudgetRepository, DataEFCoreSQL.Repositories.WorkBudgetRepository>()
                         .AddScoped<IIndirectCostRepository, DataEFCoreSQL.Repositories.IndirectCostRepository>()
                         .AddScoped<IAdvanceRepository, DataEFCoreSQL.Repositories.AdvanceRepository>();
@@ -78,6 +79,7 @@
                         .AddScoped<IDetailEmbargoRepository, DataEFCoreMySQL.Repositories.DetailEmbargoRepository>()
                         .AddScoped<ISSHiringRepository, DataEFCoreMySQL.Repositories.SSHiringRepository>()
                         .AddScoped<IWorkCostRepository, DataEFCoreMySQL.Repositories.WorkCostRepository>()
+                        .AddScoped<IWorkBudgetDataRepository, DataEFCoreMySQL.Repositories.WorkBudgetDataRepository>()
                         .AddScoped<IWorkBudgetRepository, DataEFCoreMySQL.Repositories.WorkBudgetRepository>()
                         .AddScoped<IIndirectCostRepository, DataEFCoreMySQL.Repositories.IndirectCostRepository>()
                         .AddScoped<IAdvanceRepository, DataEFCoreMySQL.Repositories.AdvanceRepository>();
@@ -107,6 +109,7 @@
                         .AddScoped<IDetailEmbargoRepository, DataEFCoreSQL.Repositories.DetailEmbargoRepository>()
                         .AddScoped<ISSHiringRepository, DataEFCoreSQL.Repositories.SSHiringRepository>()
                         .AddScoped<IWorkCostRepository, DataEFCoreSQL.Repositories.WorkCostRepository>()
+                        .AddScoped<IWorkBudgetDataRepository, DataEFCoreSQL.Repositories.WorkBudgetDataRepository>()
                         .AddScoped<IWorkBudgetRepository, DataEFCoreSQL.Repositories.WorkBudgetRepository>()
                         .AddScoped<IIndirectCostRepository, DataEFCoreSQL.Repositories.IndirectCostRepository>()
                         .AddScoped<IAdvanceRepository, DataEFCoreSQL.Repositories.AdvanceRepository>();

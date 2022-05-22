@@ -37,6 +37,7 @@ namespace SGDE.DataEFCoreSQL
         public virtual DbSet<DetailEmbargo> DetailEmbargo { get; set; }
         public virtual DbSet<SSHiring> SSHiring { get; set; }
         public virtual DbSet<WorkCost> WorkCost { get; set; }
+        public virtual DbSet<WorkBudgetData> WorkBudgetData { get; set; }
         public virtual DbSet<WorkBudget> WorkBudget { get; set; }
         public virtual DbSet<IndirectCost> IndirectCost { get; set; }
         public virtual DbSet<Advance> Advance { get; set; }
@@ -72,6 +73,7 @@ namespace SGDE.DataEFCoreSQL
             new DetailEmbargoConfiguration(modelBuilder.Entity<DetailEmbargo>());
             new SSHiringConfiguration(modelBuilder.Entity<SSHiring>());
             new WorkCostConfiguration(modelBuilder.Entity<WorkCost>());
+            new WorkBudgetDataConfiguration(modelBuilder.Entity<WorkBudgetData>());
             new WorkBudgetConfiguration(modelBuilder.Entity<WorkBudget>());
             new IndirectCostConfiguration(modelBuilder.Entity<IndirectCost>());
             new AdvanceConfiguration(modelBuilder.Entity<Advance>());

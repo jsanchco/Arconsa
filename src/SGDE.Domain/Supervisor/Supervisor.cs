@@ -33,11 +33,12 @@ namespace SGDE.Domain.Supervisor
         private readonly IUserProfessionRepository _userProfessionRepository;
         private readonly IEmbargoRepository _embargoRepository;
         private readonly IDetailEmbargoRepository _detailEmbargoRepository;
-        public readonly ISSHiringRepository _sSHiringRepository;
-        public readonly IWorkCostRepository _workCostRepository;
-        public readonly IWorkBudgetRepository _workBudgetRepository;
-        public readonly IIndirectCostRepository _indirectCostRepository;
-        public readonly IAdvanceRepository _advanceRepository;
+        private readonly ISSHiringRepository _sSHiringRepository;
+        private readonly IWorkCostRepository _workCostRepository;
+        private readonly IWorkBudgetRepository _workBudgetRepository;
+        private readonly IWorkBudgetDataRepository _workBudgetDataRepository;
+        private readonly IIndirectCostRepository _indirectCostRepository;
+        private readonly IAdvanceRepository _advanceRepository;
 
         public Supervisor()
         {
@@ -67,6 +68,7 @@ namespace SGDE.Domain.Supervisor
             IDetailEmbargoRepository detailEmbargoRepository,
             ISSHiringRepository sSHiringRepository,
             IWorkCostRepository workCostRepository,
+            IWorkBudgetDataRepository workBudgetDataRepository,
             IWorkBudgetRepository workBudgetRepository,
             IIndirectCostRepository indirectCostRepository,
             IAdvanceRepository advanceRepository)
@@ -94,6 +96,7 @@ namespace SGDE.Domain.Supervisor
             _detailEmbargoRepository = detailEmbargoRepository;
             _sSHiringRepository = sSHiringRepository;
             _workCostRepository = workCostRepository;
+            _workBudgetDataRepository = workBudgetDataRepository;
             _workBudgetRepository = workBudgetRepository;
             _indirectCostRepository = indirectCostRepository;
             _advanceRepository = advanceRepository;

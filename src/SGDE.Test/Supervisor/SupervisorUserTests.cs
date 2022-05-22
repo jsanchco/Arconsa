@@ -61,6 +61,7 @@ namespace SGDE.Tests
             var detailEmbargoRepository = new Mock<IDetailEmbargoRepository>();
             var sSHiringRepository = new Mock<ISSHiringRepository>();
             var workCostRepository = new Mock<IWorkCostRepository>();
+            var workBudgetDataRepository = new Mock<IWorkBudgetDataRepository>();
             var workBudgetRepository = new Mock<IWorkBudgetRepository>();
             var indirectCostRepository = new Mock<IIndirectCostRepository>();
             var advanceRepository = new Mock<IAdvanceRepository>();
@@ -89,6 +90,7 @@ namespace SGDE.Tests
                 detailEmbargoRepository.Object,
                 sSHiringRepository.Object,
                 workCostRepository.Object,
+                workBudgetDataRepository.Object,
                 workBudgetRepository.Object,
                 indirectCostRepository.Object,
                 advanceRepository.Object);

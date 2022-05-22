@@ -315,6 +315,16 @@ namespace SGDE.Domain.Supervisor
 
         #endregion
 
+        #region WorkBudgetData
+
+        List<WorkBudgetDataViewModel> GetAllWorkBudgetData(int workId);
+        WorkBudgetDataViewModel GetWorkBudgetDataById(int id);
+        WorkBudgetDataViewModel AddWorkBudgetData(WorkBudgetDataViewModel newWorkBudgetDataViewModel);
+        bool UpdateWorkBudgetData(WorkBudgetDataViewModel workBudgetDataViewModel);
+        bool DeleteWorkBudgetData(int id);
+
+        #endregion
+
         #region WorkBudget
 
         List<WorkBudgetViewModel> GetAllWorkBudgetLite(int workId = 0);

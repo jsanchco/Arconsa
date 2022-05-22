@@ -30,6 +30,7 @@
         public virtual ICollection<DailySigning> DailySignings { get; set; } = new HashSet<DailySigning>();
         public virtual ICollection<Invoice> Invoices { get; set; } = new HashSet<Invoice>();
         public virtual ICollection<WorkCost> WorkCosts { get; set; } = new HashSet<WorkCost>();
+        public virtual ICollection<WorkBudgetData> WorkBudgetDatas { get; set; } = new HashSet<WorkBudgetData>();
         public virtual ICollection<WorkBudget> WorkBudgets { get; set; } = new HashSet<WorkBudget>();
     }
 }
