@@ -13,6 +13,7 @@ import BasicDataWork from "./basic-data-work";
 import InvoicesWork from "./invoices-work";
 import WorkCosts from "./work-cost";
 import WorkBudgets from "./work-budget";
+import WorkBudgets1 from "./work-budget1";
 
 class DetailWork extends Component {
   constructor(props) {
@@ -23,6 +24,7 @@ class DetailWork extends Component {
     this.headerText = [
       { text: "Datos Básicos" },
       { text: "Presupuestos" },
+      { text: "Presupuestos1" },
       { text: "Gastos Proveedores" },
       { text: "Gastos Trabajadores" },
       { text: "Facturas" },
@@ -30,6 +32,8 @@ class DetailWork extends Component {
 
     this.contentTemplateWorkBudgets =
       this.contentTemplateWorkBudgets.bind(this);
+    this.contentTemplateWorkBudgets1 =
+      this.contentTemplateWorkBudgets1.bind(this);
     this.contentTemplateAuthorizeCancelWorkers =
       this.contentTemplateAuthorizeCancelWorkers.bind(this);
     this.contentTemplateWorkCosts = this.contentTemplateWorkCosts.bind(this);
@@ -57,6 +61,22 @@ class DetailWork extends Component {
 
     return (
       <WorkBudgets
+        workId={this.props.match.params.id}
+        workName={workName}
+        history={this.props.history}
+        showMessage={this.props.showMessage}
+      />
+    );
+  }
+
+  contentTemplateWorkBudgets1() {
+    let workName = "";
+    if (this.state.work !== null && this.state.work !== undefined) {
+      workName = this.state.work.name;
+    }
+
+    return (
+      <WorkBudgets1
         workId={this.props.match.params.id}
         workName={workName}
         history={this.props.history}
@@ -157,10 +177,14 @@ class DetailWork extends Component {
                     />
                     <TabItemDirective
                       header={this.headerText[2]}
-                      content={this.contentTemplateWorkCosts}
+                      content={this.contentTemplateWorkBudgets}
                     />
                     <TabItemDirective
                       header={this.headerText[3]}
+                      content={this.contentTemplateWorkCosts}
+                    />
+                    <TabItemDirective
+                      header={this.headerText[4]}
                       content={this.contentTemplateAuthorizeCancelWorkers}
                     />
                     {user.roleId === 1 ? (
