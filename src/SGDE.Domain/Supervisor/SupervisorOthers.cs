@@ -137,12 +137,26 @@
             //    _invoiceRepository.Update(invoice);
             //}
 
-            var detailinvoices = _detailInvoiceRepository.GetAllWithIncludes();
-            foreach (var detailinvoice in detailinvoices)
-            {
-                detailinvoice.Iva = detailinvoice.Invoice.Work.PercentageIVA;
+            //var detailinvoices = _detailInvoiceRepository.GetAllWithIncludes();
+            //foreach (var detailinvoice in detailinvoices)
+            //{
+            //    detailinvoice.Iva = detailinvoice.Invoice.Work.PercentageIVA;
 
-                _detailInvoiceRepository.Update(detailinvoice);
+            //    _detailInvoiceRepository.Update(detailinvoice);
+            //}
+
+            var invoices = _invoiceRepository.GetAll().Data;
+            foreach (var invoice in invoices)
+            {
+                if (invoice.WorkBudget.Type == "Definitivo")
+                {
+                    _workBudgetDataRepository.Add(new WorkBudgetData
+                    {
+                        WorkId = invoice.WorkId.Value,
+                        Reference = invoice.WorkBudget.Reference,
+                        
+                    });
+                }
             }
         }
     }
