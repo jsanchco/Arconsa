@@ -23,7 +23,7 @@
                 modifiedDate = workBudgetData.ModifiedDate,
                 iPAddress = workBudgetData.IPAddress,
 
-                date = workBudgetData.Date,
+                description = workBudgetData.Description,
                 reference = workBudgetData.Reference,
 
                 workId = workBudgetData.WorkId,
@@ -44,7 +44,7 @@
                     modifiedDate = workBudgetData.ModifiedDate,
                     iPAddress = workBudgetData.IPAddress,
 
-                    date = workBudgetData.Date,
+                    description = workBudgetData.Description,
                     reference = workBudgetData.Reference,
 
                     workId = workBudgetData.WorkId,

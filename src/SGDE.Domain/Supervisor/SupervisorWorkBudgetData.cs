@@ -28,7 +28,7 @@ namespace SGDE.Domain.Supervisor
                 ModifiedDate = null,
                 IPAddress = newWorkBudgetDataViewModel.iPAddress,
 
-                Date = newWorkBudgetDataViewModel.date,
+                Description = newWorkBudgetDataViewModel.description,
                 WorkId = newWorkBudgetDataViewModel.workId,
                 Reference = newWorkBudgetDataViewModel.reference,
             };
@@ -49,7 +49,7 @@ namespace SGDE.Domain.Supervisor
             workBudgetData.ModifiedDate = DateTime.Now;
             workBudgetData.IPAddress = workBudgetDataViewModel.iPAddress;
 
-            workBudgetData.Date = workBudgetDataViewModel.date;
+            workBudgetData.Description = workBudgetDataViewModel.description;
             workBudgetData.WorkId = workBudgetDataViewModel.workId;
             workBudgetData.Reference = workBudgetDataViewModel.reference;
 

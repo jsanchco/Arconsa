@@ -42,13 +42,13 @@ namespace SGDE.DataEFCoreMySQL.Repositories
                 return _context.WorkBudgetData
                     .Include(x => x.Work)
                     .Where(x => x.WorkId == workId)
-                    .OrderBy(x => x.Date)
+                    .OrderBy(x => x.AddedDate)
                     .ToList();
             }
 
             return _context.WorkBudgetData
                 .Include(x => x.Work)
-                .OrderBy(x => x.Date)
+                .OrderBy(x => x.AddedDate)
                 .ToList();
         }
 

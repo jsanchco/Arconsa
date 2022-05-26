@@ -5,7 +5,7 @@ namespace SGDE.Domain.Entities
 {
     public class WorkBudgetData : BaseEntity
     {
-        public DateTime Date { get; set; }
+        public string Description { get; set; }
         public string Reference { get; set; }
 
         public int WorkId { get; set; }
