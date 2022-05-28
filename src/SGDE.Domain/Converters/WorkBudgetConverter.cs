@@ -27,6 +27,7 @@ namespace SGDE.Domain.Converters
                 file = workBudget.File,
                 nameInWork = workBudget.NameInWork,
                 totalContract = workBudget.TotalContract,
+                workBudgetDataId = workBudget.WorkBudgetDataId,
                 
                 workId = workBudget.WorkId,
                 workName = workBudget.Work.Name
@@ -54,6 +55,7 @@ namespace SGDE.Domain.Converters
                     file = workBudget.File,
                     nameInWork = workBudget.NameInWork,
                     totalContract = workBudget.TotalContract,
+                    workBudgetDataId = workBudget.WorkBudgetDataId,
 
                     workId = workBudget.WorkId,
                     workName = workBudget.Work.Name

@@ -148,14 +148,24 @@
             var invoices = _invoiceRepository.GetAll().Data;
             foreach (var invoice in invoices)
             {
-                if (invoice.WorkBudget.Type == "Definitivo")
+                if (invoice.WorkBudget == null)
+                    continue;
+
+                if (invoice.WorkBudget.Type == "Definitivo" || invoice.WorkBudget.Type == "Complementario X")
                 {
-                    _workBudgetDataRepository.Add(new WorkBudgetData
+                    var workBudgetData = _workBudgetDataRepository.Add(new WorkBudgetData
                     {
                         WorkId = invoice.WorkId.Value,
                         Reference = invoice.WorkBudget.Reference,
-                        
+                        Description = invoice.Work.Name,
                     });
+
+                    var workBudget = _workBudgetRepository.GetById(invoice.WorkBudgetId.Value);
+                    if (workBudget != null)
+                    {
+                        workBudget.WorkBudgetDataId = workBudgetData.Id;
+                        _workBudgetRepository.Update(workBudget);
+                    }
                 }
             }
         }

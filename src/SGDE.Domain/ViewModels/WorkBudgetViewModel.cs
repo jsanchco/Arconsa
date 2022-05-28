@@ -15,5 +15,6 @@ namespace SGDE.Domain.ViewModels
         public bool hasFile => file != null;
         public int workId { get; set; }
         public string workName { get; set; }
+        public int? workBudgetDataId { get; set; }
     }
 }

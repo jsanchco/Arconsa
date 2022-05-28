@@ -16,6 +16,9 @@ namespace SGDE.DataEFCoreSQL.Configurations
 
             entity.HasIndex(x => x.WorkId).HasName("IFK_Work_WorkBudget");
             entity.HasOne(u => u.Work).WithMany(a => a.WorkBudgets).HasForeignKey(a => a.WorkId).HasConstraintName("FK__WorkBudget__WorkId");
+
+            entity.HasIndex(x => x.WorkBudgetDataId).HasName("IFK_WorkBudgetData_WorkBudget");
+            entity.HasOne(u => u.WorkBudgetData).WithMany(a => a.WorkBudgets).HasForeignKey(a => a.WorkBudgetDataId).HasConstraintName("FK__WorkBudget__WorkBudgetDataId");
         }
     }
 }

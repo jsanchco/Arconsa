@@ -17,6 +17,9 @@ namespace SGDE.Domain.Entities
         public int WorkId { get; set; }
         public virtual Work Work { get; set; }
 
+        public int? WorkBudgetDataId { get; set; }
+        public virtual WorkBudgetData WorkBudgetData { get; set; }
+
         public virtual ICollection<Invoice> Invoices { get; set; } = new HashSet<Invoice>();
     }
 }
