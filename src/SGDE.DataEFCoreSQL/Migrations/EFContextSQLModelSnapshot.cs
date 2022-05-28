@@ -1138,8 +1138,7 @@ namespace SGDE.DataEFCoreSQL.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("WorkBudgetDataId")
-                        .HasName("IFK_WorkBudgetData_WorkBudget");
+                    b.HasIndex("WorkBudgetDataId");
 
                     b.HasIndex("WorkId")
                         .HasName("IFK_Work_WorkBudget");
@@ -1493,11 +1492,9 @@ namespace SGDE.DataEFCoreSQL.Migrations
 
             modelBuilder.Entity("SGDE.Domain.Entities.WorkBudget", b =>
                 {
-                    b.HasOne("SGDE.Domain.Entities.WorkBudgetData", "WorkBudgetData")
+                    b.HasOne("SGDE.Domain.Entities.WorkBudgetData", null)
                         .WithMany("WorkBudgets")
-                        .HasForeignKey("WorkBudgetDataId")
-                        .HasConstraintName("FK__WorkBudget__WorkBudgetDataId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .HasForeignKey("WorkBudgetDataId");
 
                     b.HasOne("SGDE.Domain.Entities.Work", "Work")
                         .WithMany("WorkBudgets")
