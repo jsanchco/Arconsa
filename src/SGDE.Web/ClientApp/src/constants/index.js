@@ -47,6 +47,7 @@ export const DETAILSEMBARGO = "api/DetailsEmbargo";
 export const SSHIRINGS = "api/sshirings";
 export const WORKCOSTS = "api/workcosts";
 export const REMOVEALLWORKCOSTS = "api/workcosts/removeall";
+export const WORKBUDGETDATAS = "api/workbudgetdatas";
 export const WORKBUDGETS = "api/workbudgets";
 export const WORKBUDGETSLITE = "api/workbudgets/getallbudgetslite";
 export const COMPANY_INDIRECTCOSTS = "api/indirectCosts";

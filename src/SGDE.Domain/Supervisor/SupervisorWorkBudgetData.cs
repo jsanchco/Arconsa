@@ -57,7 +57,7 @@ namespace SGDE.Domain.Supervisor
         }
 
         public bool DeleteWorkBudgetData(int id)
-        {
+        {      
             return _workBudgetDataRepository.Delete(id);
         }
     }

@@ -59,6 +59,12 @@ namespace SGDE.DataEFCoreMySQL.Repositories
                 .FirstOrDefault(x => x.Id == id);
         }
 
+        public WorkBudgetData GetByWorkIdAndReference(int workId, string reference)
+        {
+            return _context.WorkBudgetData
+                .FirstOrDefault(x => x.WorkId == workId && x.Reference == reference);
+        }
+
         public WorkBudgetData Add(WorkBudgetData newWorkBudgetData)
         {
             _context.WorkBudgetData.Add(newWorkBudgetData);

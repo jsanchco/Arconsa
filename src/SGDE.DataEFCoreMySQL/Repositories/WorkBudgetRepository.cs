@@ -35,19 +35,41 @@ namespace SGDE.DataEFCoreMySQL.Repositories
             return GetById(id) != null;
         }
 
-        public List<WorkBudget> GetAll(int workId)
+        public List<WorkBudget> GetAll(int workId = 0, int workBudgetDataId = 0)
         {
             if (workId != 0)
             {
                 return _context.WorkBudget
                     .Include(x => x.Work)
+                    .Include(x => x.Invoices)
                     .Where(x => x.WorkId == workId)
+                    .OrderBy(x => x.Date)
+                    .ToList();
+            }
+
+            if (workBudgetDataId != 0)
+            {
+                return _context.WorkBudget
+                    .Include(x => x.Work)
+                    .Include(x => x.Invoices)
+                    .Where(x => x.WorkBudgetDataId == workBudgetDataId)
+                    .OrderBy(x => x.Date)
+                    .ToList();
+            }
+
+            if (workId != 0 && workBudgetDataId != 0)
+            {
+                return _context.WorkBudget
+                    .Include(x => x.Work)
+                    .Include(x => x.Invoices)
+                    .Where(x => x.WorkId == workId && x.WorkBudgetDataId == workBudgetDataId)
                     .OrderBy(x => x.Date)
                     .ToList();
             }
 
             return _context.WorkBudget
                 .Include(x => x.Work)
+                .Include(x => x.Invoices)
                 .OrderBy(x => x.Date)
                 .ToList();
         }
@@ -56,6 +78,7 @@ namespace SGDE.DataEFCoreMySQL.Repositories
         {
             return _context.WorkBudget
                 .Include(x => x.Work)
+                .Include(x => x.Invoices)
                 .FirstOrDefault(x => x.Id == id);
         }
 

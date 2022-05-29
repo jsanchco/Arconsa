@@ -43,8 +43,9 @@ namespace SGDE.API.Controllers
             {
                 var queryString = Request.Query;
                 var workId = Convert.ToInt32(queryString["workId"]);
+                var workBudgetDataId = Convert.ToInt32(queryString["workBudgetDataId"]);
 
-                var data = _supervisor.GetAllWorkBudget(workId).ToList();
+                var data = _supervisor.GetAllWorkBudget(workId, workBudgetDataId).ToList();
                 return new { Items = data, data.Count };
             }
             catch (Exception ex)

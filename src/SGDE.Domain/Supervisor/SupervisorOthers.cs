@@ -145,28 +145,20 @@
             //    _detailInvoiceRepository.Update(detailinvoice);
             //}
 
-            var invoices = _invoiceRepository.GetAll().Data;
-            foreach (var invoice in invoices)
+            var workBudgets = _workBudgetRepository.GetAll();
+            workBudgets = workBudgets.Where(x => x.Type == "Definitivo" || x.Type == "Complementario X").ToList();
+            workBudgets = workBudgets.Where(x => x.Invoices != null).ToList();
+            foreach (var workBudget in workBudgets)
             {
-                if (invoice.WorkBudget == null)
-                    continue;
-
-                if (invoice.WorkBudget.Type == "Definitivo" || invoice.WorkBudget.Type == "Complementario X")
+                var workBudgetData = _workBudgetDataRepository.Add(new WorkBudgetData
                 {
-                    var workBudgetData = _workBudgetDataRepository.Add(new WorkBudgetData
-                    {
-                        WorkId = invoice.WorkId.Value,
-                        Reference = invoice.WorkBudget.Reference,
-                        Description = invoice.Work.Name,
-                    });
+                    WorkId = workBudget.WorkId,
+                    Reference = workBudget.Reference,
+                    Description = workBudget.Name,
+                });
 
-                    var workBudget = _workBudgetRepository.GetById(invoice.WorkBudgetId.Value);
-                    if (workBudget != null)
-                    {
-                        workBudget.WorkBudgetDataId = workBudgetData.Id;
-                        _workBudgetRepository.Update(workBudget);
-                    }
-                }
+                workBudget.WorkBudgetDataId = workBudgetData.Id;
+                _workBudgetRepository.Update(workBudget);
             }
         }
     }

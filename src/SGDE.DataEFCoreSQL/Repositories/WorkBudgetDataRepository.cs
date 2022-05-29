@@ -59,6 +59,12 @@ namespace SGDE.DataEFCoreSQL.Repositories
                 .FirstOrDefault(x => x.Id == id);
         }
 
+        public WorkBudgetData GetByWorkIdAndReference(int workId, string reference)
+        {
+            return _context.WorkBudgetData
+                .FirstOrDefault(x => x.WorkId == workId && x.Reference == reference);
+        }
+
         public WorkBudgetData Add(WorkBudgetData newWorkBudgetData)
         {
             _context.WorkBudgetData.Add(newWorkBudgetData);
@@ -78,8 +84,15 @@ namespace SGDE.DataEFCoreSQL.Repositories
 
         public bool Delete(int id)
         {
-            if (!WorkBudgetDataExists(id))
+            var workBudgetDataFind = _context.WorkBudgetData
+                .Include(x => x.WorkBudgets)
+                .FirstOrDefault(x => x.Id == id);
+
+            if (workBudgetDataFind == null)
                 return false;
+
+            if (workBudgetDataFind.WorkBudgets != null)
+                throw new Exception("No puedes borrar este Dato de Presupuesto mientras tengas Presupuestos asociados");
 
             var toRemove = _context.WorkBudgetData.Find(id);
             _context.WorkBudgetData.Remove(toRemove);

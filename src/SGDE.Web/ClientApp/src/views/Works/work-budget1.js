@@ -9,13 +9,14 @@ import {
   Toolbar,
   Page,
   Aggregate,
+  DetailRow,
   AggregateColumnsDirective,
   AggregateColumnDirective,
   AggregateDirective,
   AggregatesDirective,
 } from "@syncfusion/ej2-react-grids";
 import { DataManager, WebApiAdaptor, Query } from "@syncfusion/ej2-data";
-import { config, WORKBUDGETS } from "../../constants";
+import { config, WORKBUDGETDATAS, WORKBUDGETS } from "../../constants";
 import { L10n } from "@syncfusion/ej2-base";
 import data from "../../locales/locale.json";
 import {
@@ -23,13 +24,25 @@ import {
   updateDocumentInWorkBudget,
   base64ToArrayBuffer,
   saveByteArray,
+  getWorkBudgetData,
 } from "../../services";
+import {
+  createSpinner,
+  showSpinner,
+  hideSpinner,
+} from "@syncfusion/ej2-popups";
 import ModalSelectWorkBudget from "../Modals/modal-select-work-budget";
 
 L10n.load(data);
 
 class WorkBudgets1 extends Component {
-  workbudgets = new DataManager({
+  workBudgetDatas = new DataManager({
+    adaptor: new WebApiAdaptor(),
+    url: `${config.URL_API}/${WORKBUDGETDATAS}`,
+    headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }],
+  });
+
+  workBudgets = new DataManager({
     adaptor: new WebApiAdaptor(),
     url: `${config.URL_API}/${WORKBUDGETS}`,
     headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }],
@@ -40,11 +53,11 @@ class WorkBudgets1 extends Component {
       decimals: 2,
       format: "N",
       validateDecimalOnType: true,
-      showSpinButton: false
+      showSpinButton: false,
     },
   };
 
-  grid = null;
+  gridWorkBudgetData = null;
 
   typeRules = { required: true };
   editType = {
@@ -62,37 +75,27 @@ class WorkBudgets1 extends Component {
       rowSelected: null,
     };
 
-    this.toolbarOptions = [
+    this.toolbarWorkBudgetDataOptions = [
       "Add",
-      // "Edit",
+      "Edit",
       "Delete",
       "Update",
       "Cancel",
-      {
-        text: "Subir Archivo",
-        tooltipText: "Subir Archivo",
-        prefixIcon: "e-custom-icons e-file-upload",
-        id: "UploadFile",
-      },
-      {
-        text: "Descargar Archivo(s)",
-        tooltipText: "Descargar Archivo",
-        prefixIcon: "e-custom-icons e-file-download",
-        id: "DownloadFile",
-      },
       "Print",
     ];
     this.editSettings = {
       showDeleteConfirmDialog: true,
-      // allowEditing: true,
+      allowEditing: true,
       allowAdding: true,
       allowDeleting: true,
       newRowPosition: "Top",
     };
     this.pageSettings = { pageCount: 10, pageSize: 10 };
-    this.actionFailure = this.actionFailure.bind(this);
-    this.actionComplete = this.actionComplete.bind(this);
-    this.actionBegin = this.actionBegin.bind(this);
+    this.actionFailureWorkBudgetData =
+      this.actionFailureWorkBudgetData.bind(this);
+    this.actionCompleteWorkBudgetData =
+      this.actionCompleteWorkBudgetData.bind(this);
+    this.actionBeginWorkBudgetData = this.actionBeginWorkBudgetData.bind(this);
     this.beforePrint = this.beforePrint.bind(this);
     this.footerSumEuros = this.footerSumEuros.bind(this);
     this.templateFile = this.templateFile.bind(this);
@@ -108,14 +111,131 @@ class WorkBudgets1 extends Component {
 
     this.format = { type: "dateTime", format: "dd/MM/yyyy" };
 
-    this.typeBudgets = [
-      { id: "Version X" },
-      { id: "Definitivo" },
-      { id: "Complementario X" },
-    ];
+    this.typeBudgets = [{ id: "Version X" }, { id: "Definitivo" }];
+
+    this.gridWorkBudget = {
+      columns: [
+        {
+          field: "id",
+          isPrimaryKey: true,
+          isIdentity: true,
+          visible: false,
+        },
+        {
+          field: "workBudgetDataId",
+          visible: false,
+        },
+        {
+          field: "type",
+          headerText: "Tipo",
+          width: "70",
+          editType: "dropdownedit",
+          foreignKeyValue: "id",
+          foreignKeyField: "id",
+          validationRules: this.typeRules,
+          dataSource: new DataManager(this.typeBudgets),
+          edit: this.editType,
+        },
+        {
+          field: "date",
+          headerText: "Fecha",
+          width: "100",
+          type: "date",
+          format: this.format,
+          editType: "datepickeredit",
+        },
+        {
+          field: "name",
+          headerText: "Nombre",
+          allowEditing: false,
+          width: "100"
+        },
+        {
+          field: "totalContract",
+          headerText: "Total Contrato",
+          width: "100",
+          editType: "numericedit",
+          textAlign: "right",
+          edit: this.numericParams,
+          validationRules: this.typeRules,
+        },
+        {
+          field: "fileName",
+          headerText: "Archivo",
+          width: "100",
+          template: this.templateFile,
+          textAlign: "Center",
+          allowEditing: false,
+        },
+        {
+          field: "hasFile",
+          headerText: "Presupuesto Adjunto",
+          width: "100",
+          visible: false,
+          template: this.templateHasFile,
+        },
+      ],
+      aggregates: [
+        {
+          columns: [
+            {
+              type: "Sum",
+              field: "units",
+              format: "N2",
+              footerTemplate: this.footerSumUnits,
+            },
+            {
+              type: "Sum",
+              field: "unitsAccumulated",
+              format: "N2",
+              footerTemplate: this.footerSumUnits,
+            },
+            {
+              type: "Sum",
+              field: "unitsTotal",
+              format: "N2",
+              footerTemplate: this.footerSumUnits,
+            },
+            {
+              type: "Sum",
+              field: "amountUnits",
+              format: "N2",
+              footerTemplate: this.footerSumAmountUnits,
+            },
+            {
+              type: "Sum",
+              field: "amountAccumulated",
+              format: "N2",
+              footerTemplate: this.footerSumAmountAccumulated,
+            },
+            {
+              type: "Sum",
+              field: "amountTotal",
+              format: "N2",
+              footerTemplate: this.footerSumAmountTotal,
+            },
+          ],
+        },
+      ],
+      dataSource: this.workBudgets,
+      queryString: "workBudgetDataId",
+      locale: "es-US",
+      toolbar: ["Add", "Edit", "Delete", "Update", "Cancel"],
+      actionFailure: this.actionFailureGridWorkBudget,
+      allowGrouping: false,
+      ref: (g) => (this.gridWorkBudget = g),
+      allowTextWrap: true,
+      textWrapSettings: this.wrapSettings,
+      actionComplete: this.actionCompleteGridWorkBudget,
+      actionBegin: this.actionBeginGridWorkBudget,
+      editSettings: this.editSettings,
+      toolbarClick: this.clickHandlerGridWorkBudget,
+      props: this.props,
+      load: this.loadGridWorkBudget,
+    };
   }
 
-  actionFailure(args) {
+  actionFailureWorkBudgetData(args) {
     let error = Array.isArray(args) ? args[0].error : args.error;
     let message = null;
     if (Array.isArray(error)) {
@@ -141,15 +261,13 @@ class WorkBudgets1 extends Component {
     }
   }
 
-  actionBegin(args) {
+  actionBeginWorkBudgetData(args) {
     if (args.requestType === "add") {
-      if (this.grid.getCurrentViewRecords().length !== 0) {
-        args.data.reference = this.grid.getCurrentViewRecords()[0].reference;
-      }
+      args.data.workId = this.props.workId;
     }
 
     if (args.requestType === "save") {
-      var cols = this.grid.columns;
+      var cols = this.gridWorkBudgetData.columns;
       for (var i = 0; i < cols.length; i++) {
         if (cols[i].type === "date") {
           var date = args.data[cols[i].field];
@@ -167,7 +285,7 @@ class WorkBudgets1 extends Component {
     }
   }
 
-  actionComplete(args) {
+  actionCompleteWorkBudgetData(args) {
     if (args.requestType === "save") {
       this.props.showMessage({
         statusText: "200",
@@ -175,7 +293,7 @@ class WorkBudgets1 extends Component {
         type: "success",
       });
       this.setState({ rowSelected: null });
-      this.grid.clearSelection();
+      this.gridWorkBudgetData.clearSelection();
     }
     if (args.requestType === "delete") {
       this.props.showMessage({
@@ -185,6 +303,119 @@ class WorkBudgets1 extends Component {
       });
       this.setState({ rowSelected: null });
     }
+  }
+
+  actionFailureGridWorkBudget(args) {
+    let error = Array.isArray(args) ? args[0].error : args.error;
+    if (Array.isArray(error)) {
+      error = error[0].error;
+    } else if (error.message != null) {
+      error.statusText = args.error.message;
+      error.responseText = args.error.message;
+    } else if (error.statusText == null) {
+      error.statusText = error.error.statusText;
+      error.responseText = JSON.parse(error.error.responseText).Message;
+    }
+
+    // this.query = [];
+    // this.query = new Query().addParams(
+    //   "invoiceId",
+    //   this.parentDetails.parentRowData.id
+    // );
+
+    this.props.showMessage({
+      statusText: error.statusText,
+      responseText: error.responseText,
+      type: "danger",
+    });
+  }
+
+  actionCompleteGridWorkBudget(args) {
+    if (args.requestType === "save") {
+      this.props.showMessage({
+        statusText: "200",
+        responseText: "Operación realizada con éxito",
+        type: "success",
+      });
+
+      getWorkBudgetData(args.data.workbudgetDataId).then((result) => {
+        this.gridWorkBudgetData.setRowData(args.data.workbudgetDataId, result);
+      });
+
+      var childGridElements =
+        this.gridInvoice.element.querySelectorAll(".e-detailrow");
+      for (var i = 0; i < childGridElements.length; i++) {
+        let element = childGridElements[i];
+        let childGridObj = element.querySelector(".e-grid").ej2_instances[0];
+        if (
+          childGridObj.parentDetails.parentRowData.id === args.data.invoiceId
+        ) {
+          childGridObj.refresh();
+          break;
+        }
+      }
+    }
+    if (args.requestType === "delete") {
+      this.props.showMessage({
+        statusText: "200",
+        responseText: "Operación realizada con éxito",
+        type: "success",
+      });
+
+      getWorkBudgetData(args.data[0].workbudgetDataId).then((result) => {
+        this.gridInvoice.setRowData(args.data[0].workbudgetDataId, result);
+      });
+    }
+    if (args.requestType === "refresh") {
+      var gridWorkBudgetData = document.getElementById("gridWorkBudgetData");
+
+      if (args.rows != null && Array.isArray(args.rows)) {
+        getWorkBudgetData(args.rows[0].data.workbudgetDataId).then((result) => {
+          this.gridInvoice.setRowData(
+            args.rows[0].data.workbudgetDataId,
+            result
+          );
+        });
+      } else if (gridWorkBudgetData.invoiceIdCleaned != null) {
+        getWorkBudgetData(gridWorkBudgetData.invoiceIdCleaned).then(
+          (result) => {
+            this.gridInvoice.setRowData(
+              gridWorkBudgetData.invoiceIdCleaned,
+              result
+            );
+          }
+        );
+      }
+    }
+  }
+
+  actionBeginGridWorkBudget(args) {
+    if (args.requestType === "add") {
+      args.data.work = this.parentDetails.parentRowData.id;
+      args.data.iva = this.parentDetails.parentRowData.ivaValue;
+    }
+    if (args.requestType === "save") {
+      this.query = [];
+      this.query = new Query().addParams(
+        "workBudgrDataId",
+        this.parentDetails.parentRowData.id
+      );
+    }
+    if (args.requestType === "delete") {
+      this.query = [];
+      this.query = new Query().addParams(
+        "workBudgrDataId",
+        this.parentDetails.parentRowData.id
+      );
+    }
+  }
+
+  loadGridWorkBudget() {
+    this.query = [];
+    this.query = new Query().addParams(
+      "workBudgetDataId",
+      this.parentDetails.parentRowData.id
+    );
   }
 
   beforePrint(args) {
@@ -274,7 +505,7 @@ class WorkBudgets1 extends Component {
 
   clickHandler(args) {
     if (args.item.id === "UploadFile") {
-      const selectedRecords = this.grid.getSelectedRecords();
+      const selectedRecords = this.gridWorkBudgetData.getSelectedRecords();
       if (Array.isArray(selectedRecords) && selectedRecords.length === 1) {
         this.setState({ rowSelected: selectedRecords[0] });
         this.toggleModal();
@@ -289,7 +520,7 @@ class WorkBudgets1 extends Component {
     }
 
     if (args.item.id === "DownloadFile") {
-      const selectedRecords = this.grid.getSelectedRecords();
+      const selectedRecords = this.gridWorkBudgetData.getSelectedRecords();
       if (Array.isArray(selectedRecords) && selectedRecords.length > 0) {
         this.downloadDocuments();
       } else {
@@ -299,6 +530,12 @@ class WorkBudgets1 extends Component {
           type: "danger",
         });
       }
+    }
+  }
+
+  clickHandlerGridWorkBudget(args) {
+    const selectedRecords = this.gridWorkBudget.getSelectedRecords();
+    if (args.item.id === "PrintInvoice") {
     }
   }
 
@@ -317,12 +554,15 @@ class WorkBudgets1 extends Component {
     documentSelected.typeFile = args.file.type;
 
     updateDocumentInWorkBudget(documentSelected).then(() => {
-      this.grid.setRowData(this.state.rowSelected.id, documentSelected);
+      this.gridWorkBudgetData.setRowData(
+        this.state.rowSelected.id,
+        documentSelected
+      );
     });
   }
 
   downloadDocuments() {
-    const selectedRecords = this.grid.getSelectedRecords();
+    const selectedRecords = this.gridWorkBudgetData.getSelectedRecords();
     let error = null;
 
     if (Array.isArray(selectedRecords) && selectedRecords.length > 0) {
@@ -368,11 +608,11 @@ class WorkBudgets1 extends Component {
             <div className="card-body"></div>
             <Row>
               <GridComponent
-                dataSource={this.workbudgets}
+                dataSource={this.workBudgetDatas}
                 locale="es-US"
                 allowPaging={true}
                 pageSettings={this.pageSettings}
-                toolbar={this.toolbarOptions}
+                toolbar={this.toolbarWorkBudgetDataOptions}
                 toolbarClick={this.clickHandler}
                 editSettings={this.editSettings}
                 style={{
@@ -381,13 +621,14 @@ class WorkBudgets1 extends Component {
                   marginTop: -20,
                   marginBottom: 20,
                 }}
-                actionFailure={this.actionFailure}
-                actionComplete={this.actionComplete}
-                actionBegin={this.actionBegin}
-                ref={(g) => (this.grid = g)}
+                actionFailure={this.actionFailureWorkBudgetData}
+                actionComplete={this.actionCompleteWorkBudgetData}
+                actionBegin={this.actionBeginWorkBudgetData}
+                ref={(g) => (this.gridWorkBudgetData = g)}
                 query={this.query}
                 beforePrint={this.beforePrint}
                 printComplete={this.printComplete}
+                childGrid={this.gridWorkBudget}
               >
                 <ColumnsDirective>
                   <ColumnDirective
@@ -398,83 +639,26 @@ class WorkBudgets1 extends Component {
                     isIdentity={true}
                     visible={false}
                   />
-                  <ColumnDirective
-                    field="type"
-                    headerText="Tipo"
-                    width="70"
-                    editType="dropdownedit"
-                    foreignKeyValue="id"
-                    foreignKeyField="id"
-                    validationRules={this.typeRules}
-                    dataSource={new DataManager(this.typeBudgets)}
-                    edit={this.editType}
-                  />
-                  <ColumnDirective
-                    field="date"
-                    headerText="Fecha"
-                    width="100"
-                    type="date"
-                    format={this.format}
-                    editType="datepickeredit"
-                  />
+                  <ColumnDirective field="workId" visible={false} />
                   <ColumnDirective
                     field="reference"
                     headerText="Referencia"
                     width="100"
                   />
                   <ColumnDirective
-                    field="name"
-                    headerText="Nombre"
+                    field="workName"
+                    headerText="Obra"
                     allowEditing={false}
                     width="100"
                   />
                   <ColumnDirective
-                    field="totalContract"
-                    headerText="Total Contrato"
+                    field="description"
+                    headerText="Descripción"
                     width="100"
-                    editType="numericedit"
-                    textAlign="right"
-                    edit={this.numericParams}
-                    validationRules={this.typeRules}
-                  />
-                  <ColumnDirective
-                    field="fileName"
-                    headerText="Archivo"
-                    width="100"
-                    template={this.templateFile}
-                    textAlign="Center"
-                    allowEditing={false}
-                  />
-                  <ColumnDirective
-                    field="hasFile"
-                    headerText="Presupuesto Adjunto"
-                    width="100"
-                    visible={false}
-                    template={this.templateHasFile}
-                  />
-                  <ColumnDirective
-                    field="workId"
-                    defaultValue={this.props.workId}
-                    visible={false}
                   />
                 </ColumnsDirective>
 
-                <AggregatesDirective>
-                  <AggregateDirective>
-                    <AggregateColumnsDirective>
-                      <AggregateColumnDirective
-                        field="totalContract"
-                        type="Custom"
-                        customAggregate={this.customAggregateTotalContract}
-                        footerTemplate={this.footerSumEuros}
-                      >
-                        {" "}
-                      </AggregateColumnDirective>
-                    </AggregateColumnsDirective>
-                  </AggregateDirective>
-                </AggregatesDirective>
-
-                <Inject services={[Page, Toolbar, Edit, Aggregate]} />
+                <Inject services={[Page, Toolbar, Edit, Aggregate, DetailRow]} />
               </GridComponent>
             </Row>
           </div>

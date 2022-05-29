@@ -177,7 +177,7 @@ class DetailWork extends Component {
                     />
                     <TabItemDirective
                       header={this.headerText[2]}
-                      content={this.contentTemplateWorkBudgets}
+                      content={this.contentTemplateWorkBudgets1}
                     />
                     <TabItemDirective
                       header={this.headerText[3]}

@@ -9,9 +9,9 @@ namespace SGDE.Domain.Supervisor
 {
     public partial class Supervisor
     {
-        public List<WorkBudgetViewModel> GetAllWorkBudget(int workId)
+        public List<WorkBudgetViewModel> GetAllWorkBudget(int workId = 0, int workBudgetDataId = 0)
         {
-            return WorkBudgetConverter.ConvertList(_workBudgetRepository.GetAll(workId));
+            return WorkBudgetConverter.ConvertList(_workBudgetRepository.GetAll(workId, workBudgetDataId));
         }
 
         public WorkBudgetViewModel GetWorkBudgetById(int id)
