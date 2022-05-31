@@ -44,6 +44,13 @@
 
                 if (filtersplits.Length == 5 && filtersplits[1].Equals("id", StringComparison.CurrentCultureIgnoreCase))
                     return filtersplits[3];
+
+                if (filtersplits.Length == 5 && filtersplits[2].Equals("name", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    var filterNameSplit = filtersplits[1].Split(",");
+                    if (filterNameSplit.Length == 2)
+                        return filterNameSplit[0].Replace("'", string.Empty);
+                }
             }
 
             return null;
