@@ -128,9 +128,13 @@
 
             if (filter != null)
             {
-                data = data
-                    .Where(x => x.Id == Convert.ToInt32(filter))
-                    .ToList();
+                data = int.TryParse(filter, out int number)
+                    ? data
+                        .Where(x => x.Id == number)
+                        .ToList()
+                    : data
+                        .Where(x => x.Name.Contains(filter, StringComparison.InvariantCultureIgnoreCase))
+                        .ToList();
             }
 
             return data;
