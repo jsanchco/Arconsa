@@ -27,7 +27,8 @@
                 reference = workBudgetData.Reference,
 
                 workId = workBudgetData.WorkId,
-                workName = workBudgetData.Work.Name
+                workName = workBudgetData.Work.Name,
+                total = workBudgetData.WorkBudgets.Where(x => x.Type == "Definitivo").Sum(x => x.TotalContract)
             };
 
             return workBudgetDataViewModel;
@@ -48,7 +49,8 @@
                     reference = workBudgetData.Reference,
 
                     workId = workBudgetData.WorkId,
-                    workName = workBudgetData.Work.Name
+                    workName = workBudgetData.Work.Name,
+                    total = workBudgetData.WorkBudgets.Where(x => x.Type == "Definitivo").Sum(x => x.TotalContract)
                 };
                 return model;
             })

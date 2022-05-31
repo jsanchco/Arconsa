@@ -41,6 +41,7 @@ namespace SGDE.DataEFCoreMySQL.Repositories
             {
                 return _context.WorkBudgetData
                     .Include(x => x.Work)
+                    .Include(x => x.WorkBudgets)
                     .Where(x => x.WorkId == workId)
                     .OrderBy(x => x.AddedDate)
                     .ToList();
@@ -48,6 +49,7 @@ namespace SGDE.DataEFCoreMySQL.Repositories
 
             return _context.WorkBudgetData
                 .Include(x => x.Work)
+                .Include(x => x.WorkBudgets)
                 .OrderBy(x => x.AddedDate)
                 .ToList();
         }
@@ -56,6 +58,7 @@ namespace SGDE.DataEFCoreMySQL.Repositories
         {
             return _context.WorkBudgetData
                 .Include(x => x.Work)
+                .Include(x => x.WorkBudgets)
                 .FirstOrDefault(x => x.Id == id);
         }
 

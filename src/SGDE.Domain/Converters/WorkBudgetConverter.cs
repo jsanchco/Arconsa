@@ -21,7 +21,7 @@ namespace SGDE.Domain.Converters
 
                 date = workBudget.Date,
                 name = workBudget.Name,
-                reference = workBudget.Reference,
+                reference = workBudget.WorkBudgetData.Reference,
                 type = workBudget.Type,
                 typeFile = workBudget.TypeFile,
                 file = workBudget.File,
@@ -49,7 +49,7 @@ namespace SGDE.Domain.Converters
 
                     date = workBudget.Date,
                     name = workBudget.Name,
-                    reference = workBudget.Reference,
+                    reference = workBudget.WorkBudgetData.Reference,
                     type = workBudget.Type,
                     typeFile = workBudget.TypeFile,
                     file = workBudget.File,

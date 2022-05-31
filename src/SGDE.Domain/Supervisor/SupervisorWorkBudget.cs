@@ -33,7 +33,6 @@ namespace SGDE.Domain.Supervisor
 
                 Date = newWorkBudgetViewModel.date,
                 WorkId = newWorkBudgetViewModel.workId,
-                Reference = newWorkBudgetViewModel.reference,
                 TotalContract = newWorkBudgetViewModel.totalContract,
                 Type = newWorkBudgetViewModel.type,
                 TypeFile = newWorkBudgetViewModel.typeFile,
@@ -61,7 +60,6 @@ namespace SGDE.Domain.Supervisor
 
             workBudget.Date = workBudgetViewModel.date;
             workBudget.WorkId = workBudgetViewModel.workId;
-            workBudget.Reference = workBudgetViewModel.reference;
             workBudget.TotalContract = workBudgetViewModel.totalContract;
             workBudget.Type = workBudgetViewModel.type;
             workBudget.Name = workBudgetViewModel.name;
@@ -119,41 +117,26 @@ namespace SGDE.Domain.Supervisor
         private void CheckAdd(WorkBudgetViewModel workBudget)
         {
             var workBudgets = GetAllWorkBudget(workBudget.workId);
+            workBudgets = workBudgets.Where(x => x.workBudgetDataId == workBudget.workBudgetDataId).ToList();
             if (workBudgets?.Count > 0 &&
                 workBudgets[workBudgets.Count - 1].date > workBudget.date)
             {
                 throw new Exception("Hay presupuestos con fecha mayor");
             }
 
-            if (workBudget.type == "Complementario Version X")
+            if (workBudget.type == "Version X")
             {
-                if (!workBudgets.Any(x => x.type == "Definitivo"))
+                if (workBudgets.Any(x => x.type == "Definitivo"))
                 {
                     throw new Exception("No puede haber un Complementario sin tener un Presupuesto Definitivo");
                 }
             }
 
-            if (workBudget.type == "Complementario Definitivo")
-            {
-                if (!workBudgets.Any(x => x.type == "Complementario Version X"))
-                {
-                    throw new Exception("No puede haber un Complementario Definitivo sin tener una Version del Complementario");
-                }
-            }
-
-            if (workBudget.type == "Definitivo Version")
-            {
-                if (workBudgets.Any(x => x.type == "Definitivo Version"))
-                {
-                    throw new Exception("No puede haber mas de un Presupuesto Definitivo");
-                }
-            }
-
-            if (workBudget.type == "Version X")
+            if (workBudget.type == "Definitivo")
             {
                 if (workBudgets.Any(x => x.type == "Definitivo"))
                 {
-                    throw new Exception("No puede haber mas de una Version de un Presupuesto teniendo un Presupuesto Definitivo");
+                    throw new Exception("No puede haber mas de un Presupuesto Definitivo");
                 }
             }
 

@@ -148,7 +148,7 @@ class WorkBudgets1 extends Component {
           field: "name",
           headerText: "Nombre",
           allowEditing: false,
-          width: "100"
+          width: "100",
         },
         {
           field: "totalContract",
@@ -391,23 +391,23 @@ class WorkBudgets1 extends Component {
 
   actionBeginGridWorkBudget(args) {
     if (args.requestType === "add") {
-      args.data.work = this.parentDetails.parentRowData.id;
-      args.data.iva = this.parentDetails.parentRowData.ivaValue;
+      args.data.workbudgetDataId = this.parentDetails.parentRowData.id;
+      args.data.workId = this.parentDetails.parentRowData.workId;
     }
-    if (args.requestType === "save") {
-      this.query = [];
-      this.query = new Query().addParams(
-        "workBudgrDataId",
-        this.parentDetails.parentRowData.id
-      );
-    }
-    if (args.requestType === "delete") {
-      this.query = [];
-      this.query = new Query().addParams(
-        "workBudgrDataId",
-        this.parentDetails.parentRowData.id
-      );
-    }
+    // if (args.requestType === "save") {
+    //   this.query = [];
+    //   this.query = new Query().addParams(
+    //     "workBudgrDataId",
+    //     this.parentDetails.parentRowData.id
+    //   );
+    // }
+    // if (args.requestType === "delete") {
+    //   this.query = [];
+    //   this.query = new Query().addParams(
+    //     "workBudgrDataId",
+    //     this.parentDetails.parentRowData.id
+    //   );
+    // }
   }
 
   loadGridWorkBudget() {
@@ -534,7 +534,7 @@ class WorkBudgets1 extends Component {
   }
 
   clickHandlerGridWorkBudget(args) {
-    const selectedRecords = this.gridWorkBudget.getSelectedRecords();
+    // const selectedRecords = this.gridWorkBudget.getSelectedRecords();
     if (args.item.id === "PrintInvoice") {
     }
   }
@@ -656,9 +656,18 @@ class WorkBudgets1 extends Component {
                     headerText="Descripción"
                     width="100"
                   />
+                  <ColumnDirective
+                    field="total"
+                    headerText="Total"
+                    width="100"
+                    textAlign="right"
+                    allowEditing={false}
+                  />
                 </ColumnsDirective>
 
-                <Inject services={[Page, Toolbar, Edit, Aggregate, DetailRow]} />
+                <Inject
+                  services={[Page, Toolbar, Edit, Aggregate, DetailRow]}
+                />
               </GridComponent>
             </Row>
           </div>

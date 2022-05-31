@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace SGDE.Domain.ViewModels
+﻿namespace SGDE.Domain.ViewModels
 {
     public class WorkBudgetDataViewModel : BaseEntityViewModel
     {
@@ -8,5 +6,6 @@ namespace SGDE.Domain.ViewModels
         public string reference { get; set; }
         public int workId { get; set; }
         public string workName { get; set; }
+        public double total { get; set; }
     }
 }

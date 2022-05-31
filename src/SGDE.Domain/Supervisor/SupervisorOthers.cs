@@ -153,7 +153,6 @@
                 var workBudgetData = _workBudgetDataRepository.Add(new WorkBudgetData
                 {
                     WorkId = workBudget.WorkId,
-                    Reference = workBudget.Reference,
                     Description = workBudget.Name,
                 });
 
