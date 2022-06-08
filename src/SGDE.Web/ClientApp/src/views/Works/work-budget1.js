@@ -106,7 +106,9 @@ class WorkBudgets1 extends Component {
     this.toggleModal = this.toggleModal.bind(this);
     this.updateDocument = this.updateDocument.bind(this);
     this.downloadDocuments = this.downloadDocuments.bind(this);
-
+    this.actionCompleteGridWorkBudget =
+      this.actionCompleteGridWorkBudget.bind(this);
+ 
     this.query = new Query().addParams("workId", props.workId);
 
     this.format = { type: "dateTime", format: "dd/MM/yyyy" };
@@ -220,7 +222,26 @@ class WorkBudgets1 extends Component {
       dataSource: this.workBudgets,
       queryString: "workBudgetDataId",
       locale: "es-US",
-      toolbar: ["Add", "Edit", "Delete", "Update", "Cancel"],
+      toolbar: [
+        "Add",
+        "Edit",
+        "Delete",
+        "Update",
+        "Cancel",
+        {
+          text: "Subir Archivo",
+          tooltipText: "Subir Archivo",
+          prefixIcon: "e-custom-icons e-file-upload",
+          id: "UploadFile",
+        },
+        {
+          text: "Descargar Archivo(s)",
+          tooltipText: "Descargar Archivo",
+          prefixIcon: "e-custom-icons e-file-download",
+          id: "DownloadFile",
+        },
+        "Print",
+      ],
       actionFailure: this.actionFailureGridWorkBudget,
       allowGrouping: false,
       ref: (g) => (this.gridWorkBudget = g),
@@ -232,6 +253,9 @@ class WorkBudgets1 extends Component {
       toolbarClick: this.clickHandlerGridWorkBudget,
       props: this.props,
       load: this.loadGridWorkBudget,
+      state: this.state, 
+      toggleModal: this.toggleModal,
+      downloadDocuments: this.downloadDocuments
     };
   }
 
@@ -317,12 +341,6 @@ class WorkBudgets1 extends Component {
       error.responseText = JSON.parse(error.error.responseText).Message;
     }
 
-    // this.query = [];
-    // this.query = new Query().addParams(
-    //   "invoiceId",
-    //   this.parentDetails.parentRowData.id
-    // );
-
     this.props.showMessage({
       statusText: error.statusText,
       responseText: error.responseText,
@@ -338,17 +356,18 @@ class WorkBudgets1 extends Component {
         type: "success",
       });
 
-      getWorkBudgetData(args.data.workbudgetDataId).then((result) => {
-        this.gridWorkBudgetData.setRowData(args.data.workbudgetDataId, result);
+      getWorkBudgetData(args.data.workBudgetDataId).then((result) => {
+        this.gridWorkBudgetData.setRowData(args.data.workBudgetDataId, result);
       });
 
       var childGridElements =
-        this.gridInvoice.element.querySelectorAll(".e-detailrow");
+        this.gridWorkBudgetData.element.querySelectorAll(".e-detailrow");
       for (var i = 0; i < childGridElements.length; i++) {
         let element = childGridElements[i];
         let childGridObj = element.querySelector(".e-grid").ej2_instances[0];
         if (
-          childGridObj.parentDetails.parentRowData.id === args.data.invoiceId
+          childGridObj.parentDetails.parentRowData.id ===
+          args.data.workBudgetDataId
         ) {
           childGridObj.refresh();
           break;
@@ -362,17 +381,20 @@ class WorkBudgets1 extends Component {
         type: "success",
       });
 
-      getWorkBudgetData(args.data[0].workbudgetDataId).then((result) => {
-        this.gridInvoice.setRowData(args.data[0].workbudgetDataId, result);
+      getWorkBudgetData(args.data[0].workBudgetDataId).then((result) => {
+        this.gridWorkBudgetData.setRowData(
+          args.data[0].workBudgetDataId,
+          result
+        );
       });
     }
     if (args.requestType === "refresh") {
       var gridWorkBudgetData = document.getElementById("gridWorkBudgetData");
 
       if (args.rows != null && Array.isArray(args.rows)) {
-        getWorkBudgetData(args.rows[0].data.workbudgetDataId).then((result) => {
-          this.gridInvoice.setRowData(
-            args.rows[0].data.workbudgetDataId,
+        getWorkBudgetData(args.rows[0].data.workBudgetDataId).then((result) => {
+          this.gridWorkBudgetData.setRowData(
+            args.rows[0].data.workBudgetDataId,
             result
           );
         });
@@ -391,23 +413,9 @@ class WorkBudgets1 extends Component {
 
   actionBeginGridWorkBudget(args) {
     if (args.requestType === "add") {
-      args.data.workbudgetDataId = this.parentDetails.parentRowData.id;
+      args.data.workBudgetDataId = this.parentDetails.parentRowData.id;
       args.data.workId = this.parentDetails.parentRowData.workId;
     }
-    // if (args.requestType === "save") {
-    //   this.query = [];
-    //   this.query = new Query().addParams(
-    //     "workBudgrDataId",
-    //     this.parentDetails.parentRowData.id
-    //   );
-    // }
-    // if (args.requestType === "delete") {
-    //   this.query = [];
-    //   this.query = new Query().addParams(
-    //     "workBudgrDataId",
-    //     this.parentDetails.parentRowData.id
-    //   );
-    // }
   }
 
   loadGridWorkBudget() {
@@ -503,14 +511,17 @@ class WorkBudgets1 extends Component {
     }
   }
 
-  clickHandler(args) {
+  clickHandler(args) {}
+
+  clickHandlerGridWorkBudget(args) {
     if (args.item.id === "UploadFile") {
-      const selectedRecords = this.gridWorkBudgetData.getSelectedRecords();
+      const selectedRecords = this.getSelectedRecords();
       if (Array.isArray(selectedRecords) && selectedRecords.length === 1) {
-        this.setState({ rowSelected: selectedRecords[0] });
+        this.state.rowSelected = selectedRecords[0];
         this.toggleModal();
       } else {
-        this.setState({ rowSelected: null });
+        this.state.rowSelected = null;
+        // this.setState({ rowSelected: null });
         this.props.showMessage({
           statusText: "Debes seleccionar un solo registro",
           responseText: "Debes seleccionar un solo registro",
@@ -520,7 +531,7 @@ class WorkBudgets1 extends Component {
     }
 
     if (args.item.id === "DownloadFile") {
-      const selectedRecords = this.gridWorkBudgetData.getSelectedRecords();
+      const selectedRecords = this.getSelectedRecords();
       if (Array.isArray(selectedRecords) && selectedRecords.length > 0) {
         this.downloadDocuments();
       } else {
@@ -530,12 +541,6 @@ class WorkBudgets1 extends Component {
           type: "danger",
         });
       }
-    }
-  }
-
-  clickHandlerGridWorkBudget(args) {
-    // const selectedRecords = this.gridWorkBudget.getSelectedRecords();
-    if (args.item.id === "PrintInvoice") {
     }
   }
 

@@ -88,29 +88,25 @@ namespace SGDE.Domain.Supervisor
         {
             if (workBudgetViewModel.type == "Version X")
             {
-                var workBudgets = GetAllWorkBudget(workBudgetViewModel.workId);
+                var workBudgets = GetAllWorkBudget(
+                    workBudgetViewModel.workId,
+                    workBudgetViewModel.workBudgetDataId.Value);
                 workBudgets = workBudgets.Where(x => x.type == "Version X").ToList();
 
-                workBudget.Name = $"{workBudgetViewModel.reference}_V{workBudgets.Count + 1}";
+                var workBudgetData = GetWorkBudgetDataById(workBudgetViewModel.workBudgetDataId.Value);
+                workBudget.Name = $"{workBudgetData.reference}_V{workBudgets.Count + 1}";
                 workBudget.NameInWork = $"Version {workBudgets.Count + 1}";
             }
 
             if (workBudgetViewModel.type == "Definitivo")
             {
-                var workBudgets = GetAllWorkBudget(workBudgetViewModel.workId);
+                var workBudgets = GetAllWorkBudget(
+                    workBudgetViewModel.workId,
+                    workBudgetViewModel.workBudgetDataId.Value);
 
-                workBudget.Name = $"{workBudgets.Last().name}.D";
+                var workBudgetData = GetWorkBudgetDataById(workBudgetViewModel.workBudgetDataId.Value);
+                workBudget.Name = $"{workBudgetData.reference}.D";
                 workBudget.NameInWork = $"Presupuesto Definitivo";
-            }
-
-            if (workBudgetViewModel.type == "Complementario X")
-            {
-                var workBudgets = GetAllWorkBudget(workBudgetViewModel.workId);
-                var workBudgetsComplementarios = workBudgets.Where(x => x.type == "Complementario X");
-                var budgetDefinitivo = workBudgets.FirstOrDefault(x => x.type == "Definitivo");
-
-                workBudget.Name = $"{budgetDefinitivo.name}.C{workBudgetsComplementarios.Count() + 1}";
-                workBudget.NameInWork = $"Complementario {workBudgetsComplementarios.Count() + 1}";
             }
         }
 

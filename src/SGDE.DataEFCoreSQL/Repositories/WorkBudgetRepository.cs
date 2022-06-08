@@ -42,6 +42,7 @@ namespace SGDE.DataEFCoreSQL.Repositories
                 return _context.WorkBudget
                     .Include(x => x.Work)
                     .Include(x => x.Invoices)
+                    .Include(x => x.WorkBudgetData)
                     .Where(x => x.WorkId == workId)
                     .OrderBy(x => x.Date)
                     .ToList();
@@ -52,6 +53,7 @@ namespace SGDE.DataEFCoreSQL.Repositories
                 return _context.WorkBudget
                     .Include(x => x.Work)
                     .Include(x => x.Invoices)
+                    .Include(x => x.WorkBudgetData)
                     .Where(x => x.WorkBudgetDataId == workBudgetDataId)
                     .OrderBy(x => x.Date)
                     .ToList();
@@ -62,6 +64,7 @@ namespace SGDE.DataEFCoreSQL.Repositories
                 return _context.WorkBudget
                     .Include(x => x.Work)
                     .Include(x => x.Invoices)
+                    .Include(x => x.WorkBudgetData)
                     .Where(x => x.WorkId == workId && x.WorkBudgetDataId == workBudgetDataId)
                     .OrderBy(x => x.Date)
                     .ToList();
@@ -70,6 +73,7 @@ namespace SGDE.DataEFCoreSQL.Repositories
             return _context.WorkBudget
                 .Include(x => x.Work)
                 .Include(x => x.Invoices)
+                .Include(x => x.WorkBudgetData)
                 .OrderBy(x => x.Date)
                 .ToList();
         }
@@ -79,6 +83,7 @@ namespace SGDE.DataEFCoreSQL.Repositories
             return _context.WorkBudget
                 .Include(x => x.Work)
                 .Include(x => x.Invoices)
+                .Include(x => x.WorkBudgetData)
                 .FirstOrDefault(x => x.Id == id);
         }
 
