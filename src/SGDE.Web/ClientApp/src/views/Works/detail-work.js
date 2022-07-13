@@ -24,7 +24,7 @@ class DetailWork extends Component {
     this.headerText = [
       { text: "Datos Básicos" },
       { text: "Presupuestos" },
-      { text: "Presupuestos1" },
+      { text: "Presupuestos" },
       { text: "Gastos Proveedores" },
       { text: "Gastos Trabajadores" },
       { text: "Facturas" },
@@ -174,6 +174,7 @@ class DetailWork extends Component {
                     <TabItemDirective
                       header={this.headerText[1]}
                       content={this.contentTemplateWorkBudgets}
+                      visible={false}
                     />
                     <TabItemDirective
                       header={this.headerText[2]}

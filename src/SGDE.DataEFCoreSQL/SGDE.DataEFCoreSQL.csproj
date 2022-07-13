@@ -40,6 +40,8 @@
     <Compile Remove="Migrations\20211024055724_Add_Field_ProfessionId_To_DailySigning.Designer.cs" />
     <Compile Remove="Migrations\20220526165830_Add_Relation_WorkBudgetDataId_To_Table_WorkBudget.cs" />
     <Compile Remove="Migrations\20220526165830_Add_Relation_WorkBudgetDataId_To_Table_WorkBudget.Designer.cs" />
+    <Compile Remove="Migrations\20220701185751_Add_Field_TypeFile_To_Table_WorkBudgetData.cs" />
+    <Compile Remove="Migrations\20220701185751_Add_Field_TypeFile_To_Table_WorkBudgetData.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

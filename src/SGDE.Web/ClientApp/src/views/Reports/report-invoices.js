@@ -313,6 +313,20 @@ class ReportInvoices extends Component {
     args.element.insertBefore(div, args.element.childNodes[0]);
   }
 
+  exportQueryCellInfo(args) {
+    if (args.name === "excelQueryCellInfo") {
+      if (args.column.headerText === "Pagado") {
+        if (args.value === false) {
+          args.value = "Pendiente";
+          args.style = { backColor: '#ff704d' };
+        }
+        if (args.value === true) {
+          args.value = "Cobrado";
+        }
+      }
+    }
+  }
+
   render() {
     return (
       <Fragment>
@@ -389,6 +403,7 @@ class ReportInvoices extends Component {
                   textWrapSettings={this.wrapSettings}
                   allowSorting={true}
                   beforePrint={this.beforePrint}
+                  excelQueryCellInfo={this.exportQueryCellInfo}
                 >
                   <ColumnsDirective>
                     <ColumnDirective

@@ -1655,6 +1655,47 @@ export const getWorkBudgetData = (workBudgetDataId) => {
   });
 };
 
+export const getWorkBudget = (workBudgetId) => {
+  return new Promise((resolve, reject) => {
+    const url = `${config.URL_API}/${WORKBUDGETS}/${workBudgetId}`;
+    fetch(url, {
+      headers: {
+        Accept: "text/plain",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`,
+      },
+      method: "GET",
+    })
+      .then((data) => data.json())
+      .then((result) => {
+        if (result.Message) {
+          console.log("error ->", result.Message);
+          store.dispatch(
+            ACTION_APPLICATION.showMessage({
+              statusText: result.Message,
+              responseText: result.Message,
+              type: "danger",
+            })
+          );
+          reject();
+        } else {
+          resolve(result);
+        }
+      })
+      .catch((error) => {
+        console.log("error ->", error);
+        store.dispatch(
+          ACTION_APPLICATION.showMessage({
+            statusText: error,
+            responseText: error,
+            type: "danger",
+          })
+        );
+        reject();
+      });
+  });
+};
+
 export const base64ToArrayBuffer = (base64) => {
   var binaryString = window.atob(base64);
   var binaryLen = binaryString.length;

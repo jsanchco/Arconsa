@@ -25,6 +25,7 @@ import {
   base64ToArrayBuffer,
   saveByteArray,
   getWorkBudgetData,
+  getWorkBudget,
 } from "../../services";
 import {
   createSpinner,
@@ -108,7 +109,7 @@ class WorkBudgets1 extends Component {
     this.downloadDocuments = this.downloadDocuments.bind(this);
     this.actionCompleteGridWorkBudget =
       this.actionCompleteGridWorkBudget.bind(this);
- 
+
     this.query = new Query().addParams("workId", props.workId);
 
     this.format = { type: "dateTime", format: "dd/MM/yyyy" };
@@ -253,7 +254,7 @@ class WorkBudgets1 extends Component {
       toolbarClick: this.clickHandlerGridWorkBudget,
       props: this.props,
       load: this.loadGridWorkBudget,
-      state: this.state, 
+      state: this.state,
       toggleModal: this.toggleModal,
       downloadDocuments: this.downloadDocuments
     };
@@ -533,7 +534,7 @@ class WorkBudgets1 extends Component {
     if (args.item.id === "DownloadFile") {
       const selectedRecords = this.getSelectedRecords();
       if (Array.isArray(selectedRecords) && selectedRecords.length > 0) {
-        this.downloadDocuments();
+        this.downloadDocuments(selectedRecords);
       } else {
         this.props.showMessage({
           statusText: "Debes seleccionar uno o más de un registro",
@@ -555,7 +556,7 @@ class WorkBudgets1 extends Component {
     let remove = args.fileUrl.indexOf("base64,") + 7;
 
     documentSelected.file = args.fileUrl.substring(remove);
-    documentSelected.fileName = args.name;
+    documentSelected.name = args.fileName;
     documentSelected.typeFile = args.file.type;
 
     updateDocumentInWorkBudget(documentSelected).then(() => {
@@ -563,11 +564,23 @@ class WorkBudgets1 extends Component {
         this.state.rowSelected.id,
         documentSelected
       );
+
+      var childGridElements =
+        this.gridWorkBudgetData.element.querySelectorAll(".e-detailrow");
+      for (var i = 0; i < childGridElements.length; i++) {
+        let element = childGridElements[i];
+        let childGridObj = element.querySelector(".e-grid").ej2_instances[0];
+        if (
+          childGridObj.parentDetails.parentRowData.id === documentSelected.workBudgetDataId
+        ) {
+          childGridObj.refresh();
+          break;
+        }
+      }
     });
   }
 
-  downloadDocuments() {
-    const selectedRecords = this.gridWorkBudgetData.getSelectedRecords();
+  downloadDocuments(selectedRecords) {
     let error = null;
 
     if (Array.isArray(selectedRecords) && selectedRecords.length > 0) {
