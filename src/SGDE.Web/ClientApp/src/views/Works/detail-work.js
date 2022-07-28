@@ -190,7 +190,7 @@ class DetailWork extends Component {
                     />
                     {user.roleId === 1 ? (
                       <TabItemDirective
-                        header={this.headerText[4]}
+                        header={this.headerText[5]}
                         content={this.contentTemplateInvoicesWork}
                       />
                     ) : null}
