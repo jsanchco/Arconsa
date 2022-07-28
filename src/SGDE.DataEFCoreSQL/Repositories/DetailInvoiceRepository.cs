@@ -2,12 +2,12 @@
 {
     #region Using
 
-    using System.Collections.Generic;
-    using System.Linq;
     using Domain.Entities;
     using Domain.Repositories;
-    using System;
     using Microsoft.EntityFrameworkCore;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
 
     #endregion
 
@@ -104,7 +104,7 @@
                     _context.DetailInvoice.Update(detailInvoice);
                     _context.SaveChanges();
 
-                    var total =_context.DetailInvoice
+                    var total = _context.DetailInvoice
                         .Where(x => x.InvoiceId == detailInvoice.InvoiceId)
                         .ToList()
                         .Sum(x => x.Total);
@@ -182,11 +182,13 @@
 
                     var invoiceFind = _context.Invoice
                         .Include(x => x.DetailsInvoice)
-                        .Where(x => x.WorkId == invoice.WorkId && 
+                        .Where(x => x.ClientId == invoice.ClientId &&
+                                    x.WorkId == invoice.WorkId &&
                                     x.WorkBudgetId == invoice.WorkBudgetId &&
-                                    x.EndDate < invoice.StartDate)
-                        .OrderByDescending(x => x.EndDate)
+                                    x.Id != invoice.Id)
+                        .OrderByDescending(x => x.Id)
                         .FirstOrDefault();
+
                     if (invoiceFind == null)
                         throw new Exception("Factura no encontrada");
 
