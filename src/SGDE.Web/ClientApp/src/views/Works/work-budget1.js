@@ -668,6 +668,7 @@ class WorkBudgets1 extends Component {
                     headerText="Obra"
                     allowEditing={false}
                     width="100"
+                    visible={false}
                   />
                   <ColumnDirective
                     field="description"

@@ -6,6 +6,6 @@
         public string reference { get; set; }
         public int workId { get; set; }
         public string workName { get; set; }
-        public double total { get; set; }
+        public double? total { get; set; }
     }
 }
