@@ -79,6 +79,8 @@ class CostWorkers extends Component {
   // ddlProfessions = null;
   wrapSettings = { wrapMode: "Content" };
 
+  proffesionIdRules = { required: true };
+
   constructor(props) {
     super(props);
 
@@ -247,6 +249,7 @@ class CostWorkers extends Component {
                     dataSource={this.professions}
                     edit={this.queryProfessions}
                     allowFiltering={true}
+                    validationRules={this.proffesionIdRules}
                   />
                   <ColumnDirective
                     headerText="Precio"
