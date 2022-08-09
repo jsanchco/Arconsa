@@ -62,7 +62,7 @@
                     userId = costWorker.UserId,
                     userName = costWorker.User.Name,
                     professionId = costWorker.ProfessionId,
-                    professionName = costWorker.Profession.Name
+                    professionName = costWorker.Profession?.Name
                 };
                 return model;
             })
