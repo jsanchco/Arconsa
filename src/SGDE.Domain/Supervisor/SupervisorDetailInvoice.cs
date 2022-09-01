@@ -154,6 +154,8 @@
                     return professionInClient.priceHourSaleExtra;
                 case 3:
                     return professionInClient.priceHourSaleFestive;
+                case 4:
+                    return professionInClient.priceHourSaleNocturnal;
 
                 default:
                     return 0;

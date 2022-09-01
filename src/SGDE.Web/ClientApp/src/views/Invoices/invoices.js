@@ -140,7 +140,7 @@ class Invoices extends Component {
     };
     this.numericParams = {
       params: {
-        decimals: 2,
+        decimals: 4,
         format: "N",
         validateDecimalOnType: true,
         showSpinButton: false,
@@ -148,7 +148,7 @@ class Invoices extends Component {
     };
     this.numericParamsIVA = {
       params: {
-        decimals: 2,
+        decimals: 4,
         format: "N",
         validateDecimalOnType: true,
         showSpinButton: false,
