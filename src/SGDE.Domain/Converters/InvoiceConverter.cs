@@ -7,6 +7,7 @@
     using Entities;
     using ViewModels;
     using System;
+    using System.Reflection;
 
     #endregion
 
@@ -34,7 +35,7 @@
                 //taxBase = Math.Round(invoice.TaxBase, 2),
                 iva = invoice.Iva,
                 typeInvoice = invoice.TypeInvoice,
-                retentions = invoice.Work.InvoiceToOrigin == true ? ((double)invoice.TaxBase * (double)invoice.Work.PercentageRetention) : 0,
+                //retentions = invoice.Work.InvoiceToOrigin == true ? ((double)invoice.TaxBase * (double)invoice.Work.PercentageRetention) : 0,
                 workId = invoice.WorkId,
                 workName = invoice.Work.Name,
                 clientId = invoice.Work.ClientId,
@@ -50,6 +51,7 @@
                         DetailInvoiceConverter.ConvertList(invoice.InvoiceToCancel.DetailsInvoice, true)
             };
 
+            invoiceViewModel.retentions = invoice.Work.InvoiceToOrigin == true ? (invoiceViewModel.detailInvoice.Sum(x => x.amountUnits) * (double)invoice.Work.PercentageRetention) : 0;
             invoiceViewModel.taxBase = Math.Round(invoiceViewModel.detailInvoice.Sum(x => x.amountUnits), 2);
             invoiceViewModel.ivaTaxBase = Math.Round(invoiceViewModel.detailInvoice.Sum(x => x.amountUnits * x.iva), 2);
             invoiceViewModel.total = Math.Round(invoiceViewModel.taxBase + invoiceViewModel.ivaTaxBase - invoiceViewModel.retentions, 2);
@@ -78,7 +80,7 @@
                     //taxBase = Math.Round(invoice.TaxBase, 2),
                     iva = invoice.Iva,
                     typeInvoice = invoice.TypeInvoice,
-                    retentions = invoice.Work.InvoiceToOrigin == true ? ((double)invoice.TaxBase * (double)invoice.Work.PercentageRetention) : 0,
+                    //retentions = invoice.Work.InvoiceToOrigin == true ? (invoice.DetailsInvoice.Sum(x => x.Units) * (double)invoice.Work.PercentageRetention) : 0,
                     workId = invoice.WorkId,
                     workName = invoice.Work.Name,
                     clientId = invoice.Work.ClientId,
@@ -93,6 +95,7 @@
                         DetailInvoiceConverter.ConvertList(invoice.DetailsInvoice) :
                         DetailInvoiceConverter.ConvertList(invoice.InvoiceToCancel.DetailsInvoice, true)
                 };
+                model.retentions = invoice.Work.InvoiceToOrigin == true ? (model.detailInvoice.Sum(x => x.amountUnits) * (double)invoice.Work.PercentageRetention) : 0;
                 model.taxBase = Math.Round(model.detailInvoice.Sum(x => x.amountUnits), 2);
                 model.ivaTaxBase = Math.Round(model.detailInvoice.Sum(x => x.amountUnits * x.iva), 2);
                 model.total = Math.Round(model.taxBase + model.ivaTaxBase - model.retentions, 2);
