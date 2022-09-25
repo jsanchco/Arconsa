@@ -52,7 +52,7 @@
 
             invoiceViewModel.taxBase = Math.Round(invoiceViewModel.detailInvoice.Sum(x => x.amountUnits), 2);
             invoiceViewModel.ivaTaxBase = Math.Round(invoiceViewModel.detailInvoice.Sum(x => x.amountUnits * x.iva), 2);
-            invoiceViewModel.total = Math.Round(invoiceViewModel.taxBase + invoiceViewModel.ivaTaxBase, 2);
+            invoiceViewModel.total = Math.Round(invoiceViewModel.taxBase + invoiceViewModel.ivaTaxBase - invoiceViewModel.retentions, 2);
             
             return invoiceViewModel;
         }
@@ -95,7 +95,7 @@
                 };
                 model.taxBase = Math.Round(model.detailInvoice.Sum(x => x.amountUnits), 2);
                 model.ivaTaxBase = Math.Round(model.detailInvoice.Sum(x => x.amountUnits * x.iva), 2);
-                model.total = Math.Round(model.taxBase + model.ivaTaxBase, 2);
+                model.total = Math.Round(model.taxBase + model.ivaTaxBase - model.retentions, 2);
 
                 return model;
             })
