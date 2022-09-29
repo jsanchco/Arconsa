@@ -41,6 +41,7 @@ import {
 import { Query } from "@syncfusion/ej2-data";
 import { DropDownList } from "@syncfusion/ej2-dropdowns";
 import { DialogComponent } from "@syncfusion/ej2-react-popups";
+import { DialogUtility } from "@syncfusion/ej2-popups";
 
 L10n.load(data);
 
@@ -591,10 +592,30 @@ class Invoices extends Component {
     }
 
     if (args.item.id === "PreviousInvoice") {
-      this.query = [];
-      this.query = new Query()
-        .addParams("invoiceId", this.parentDetails.parentRowData.id)
-        .addParams("previousInvoice", true);
+        var DialogObj = DialogUtility.confirm({
+          title: "ATENCION",
+          cancelButton: { text: "No" },
+          content:
+            "Si importas la Factura anterior perderás el detalle de factura que tienes en la actualidad, ¿Deseas continuar?",
+          okButton: {
+            text: "Si",
+            click: () => {
+              this.query = [];
+              this.query = new Query()
+                .addParams("invoiceId", this.parentDetails.parentRowData.id)
+                .addParams("previousInvoice", true);
+
+              DialogObj.close();
+            },
+          },
+          showCloseIcon: true,
+          position: { Y: 100 },
+        });
+
+      // this.query = [];
+      // this.query = new Query()
+      //   .addParams("invoiceId", this.parentDetails.parentRowData.id)
+      //   .addParams("previousInvoice", true);
     }
   }
 
