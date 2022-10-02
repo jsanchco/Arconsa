@@ -94,7 +94,7 @@ namespace SGDE.DataEFCoreSQL.Repositories
             if (workBudgetDataFind == null)
                 return false;
 
-            if (workBudgetDataFind.WorkBudgets != null)
+            if (workBudgetDataFind.WorkBudgets?.Count != 0)
                 throw new Exception("No puedes borrar este Dato de Presupuesto mientras tengas Presupuestos asociados");
 
             var toRemove = _context.WorkBudgetData.Find(id);

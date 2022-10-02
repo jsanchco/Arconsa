@@ -256,7 +256,8 @@ class WorkBudgets1 extends Component {
       load: this.loadGridWorkBudget,
       state: this.state,
       toggleModal: this.toggleModal,
-      downloadDocuments: this.downloadDocuments
+      downloadDocuments: this.downloadDocuments,
+      page: this
     };
   }
 
@@ -518,10 +519,12 @@ class WorkBudgets1 extends Component {
     if (args.item.id === "UploadFile") {
       const selectedRecords = this.getSelectedRecords();
       if (Array.isArray(selectedRecords) && selectedRecords.length === 1) {
-        this.state.rowSelected = selectedRecords[0];
+        this.page.setState( { rowSelected: selectedRecords[0] } );
+        // this.state.rowSelected = selectedRecords[0];
         this.toggleModal();
       } else {
-        this.state.rowSelected = null;
+        this.page.setState( { rowSelected: null } );
+        // this.state.rowSelected = null;
         // this.setState({ rowSelected: null });
         this.props.showMessage({
           statusText: "Debes seleccionar un solo registro",

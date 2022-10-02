@@ -2,12 +2,11 @@
 {
     #region Using
 
+    using Entities;
+    using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Entities;
     using ViewModels;
-    using System;
-    using System.Reflection;
 
     #endregion
 
@@ -55,7 +54,7 @@
             invoiceViewModel.taxBase = Math.Round(invoiceViewModel.detailInvoice.Sum(x => x.amountUnits), 2);
             invoiceViewModel.ivaTaxBase = Math.Round(invoiceViewModel.detailInvoice.Sum(x => x.amountUnits * x.iva), 2);
             invoiceViewModel.total = Math.Round(invoiceViewModel.taxBase + invoiceViewModel.ivaTaxBase - invoiceViewModel.retentions, 2);
-            
+
             return invoiceViewModel;
         }
 
@@ -91,7 +90,7 @@
                     invoiceToCancelName = invoice.InvoiceToCancel?.Name,
                     workBudgetId = invoice.WorkBudgetId,
                     workBudgetName = invoice.WorkBudget?.Name,
-                    detailInvoice = invoice.InvoiceToCancelId == null ? 
+                    detailInvoice = invoice.InvoiceToCancelId == null ?
                         DetailInvoiceConverter.ConvertList(invoice.DetailsInvoice) :
                         DetailInvoiceConverter.ConvertList(invoice.InvoiceToCancel.DetailsInvoice, true)
                 };
