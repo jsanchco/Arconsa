@@ -21,6 +21,7 @@ namespace SGDE.Domain.Converters
 
                 concessionDate = advance.ConcessionDate,
                 amount = advance.Amount,
+                observations = advance.Observations,
                 payDate = advance.PayDate,
                 userId = advance.UserId,
                 userName = $"{ advance.User.Name} { advance.User.Surname}"
@@ -42,6 +43,7 @@ namespace SGDE.Domain.Converters
 
                     concessionDate = advance.ConcessionDate,
                     amount = advance.Amount,
+                    observations = advance.Observations,
                     payDate = advance.PayDate,
                     userId = advance.UserId,
                     userName = $"{ advance.User.Name} { advance.User.Surname}"

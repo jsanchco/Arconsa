@@ -114,7 +114,7 @@ class WorkBudgets1 extends Component {
 
     this.format = { type: "dateTime", format: "dd/MM/yyyy" };
 
-    this.typeBudgets = [{ id: "Version X" }, { id: "Definitivo" }];
+    this.typeBudgets = [{ id: "Version X" }, { id: "Definitivo" }, { id: "Modificado" }];
 
     this.gridWorkBudget = {
       columns: [

@@ -7,6 +7,7 @@ namespace SGDE.Domain.Entities
         public DateTime ConcessionDate { get; set; }
         public DateTime? PayDate { get; set; }
         public double Amount { get; set; }
+        public string Observations { get; set; }
         public bool Paid => PayDate != null;
 
         public int UserId { get; set; }

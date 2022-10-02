@@ -36,6 +36,7 @@ namespace SGDE.Domain.Supervisor
 
                 ConcessionDate = newAdvanceViewModel.concessionDate,
                 Amount = newAdvanceViewModel.amount,
+                Observations = newAdvanceViewModel.observations,
                 PayDate = newAdvanceViewModel.payDate,
                 UserId = newAdvanceViewModel.userId
             };
@@ -58,6 +59,7 @@ namespace SGDE.Domain.Supervisor
 
             advance.ConcessionDate = advanceViewModel.concessionDate;
             advance.Amount = advanceViewModel.amount;
+            advance.Observations = advanceViewModel.observations;
             advance.PayDate = advanceViewModel.payDate;
             advance.UserId = advanceViewModel.userId;
 

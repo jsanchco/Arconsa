@@ -150,6 +150,11 @@ class Advances extends Component {
                     width="100"
                   />
                   <ColumnDirective
+                    field="observations"
+                    headerText="Observaciones"
+                    width="100"
+                  />                  
+                  <ColumnDirective
                     field="payDate"
                     headerText="Fecha Pago"
                     width="100"
