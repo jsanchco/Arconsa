@@ -49,6 +49,7 @@ const Roles = React.lazy(() => import('./views/Settings/roles'));
 const Professions = React.lazy(() => import('./views/Settings/professions'));
 const TypesDocument = React.lazy(() => import('./views/Settings/types-document'));
 const UsersNoWorker = React.lazy(() => import('./views/Settings/users-no-worker'));
+const Libraries = React.lazy(() => import('./views/Settings/libraries'));
 
 const Clients = React.lazy(() => import('./views/Clients/clients'));
 const DetailClient = React.lazy(() => import('./views/Clients/detail-client'));
@@ -130,6 +131,7 @@ const routes = [
   { path: '/settings/professions', exact: true, name: 'Puestos de Trabajo', component: Professions },
   { path: '/settings/typesdocument', exact: true, name: 'Tipos de Documento', component: TypesDocument },
   { path: '/settings/usersnoworker', exact: true, name: 'Usuarios', component: UsersNoWorker },
+  { path: '/settings/libraries', exact: true, name: 'Biblioteca', component: Libraries },
   { path: '/clients/clients', exact: true, name: 'Clientes', component: Clients },
   { path: '/clients/detailclient/:id', exact: true, name: 'Detalle Cliente', component: DetailClient },
   { path: '/works/works', exact: true, name: 'Obras', component: Works },

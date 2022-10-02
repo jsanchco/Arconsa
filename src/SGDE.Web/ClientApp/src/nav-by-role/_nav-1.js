@@ -54,7 +54,12 @@ export default {
           name: "Gestión de Usuarios",
           url: "/settings/usersnoworker",
           icon: "icon-people"
-        }
+        },
+        {
+          name: "Biblioteca",
+          url: "/settings/libraries",
+          icon: "icon-layers"
+        }        
       ]
     },
     {

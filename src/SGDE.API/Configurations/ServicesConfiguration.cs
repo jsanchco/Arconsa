@@ -52,7 +52,8 @@
                         .AddScoped<IWorkBudgetDataRepository, DataEFCoreSQL.Repositories.WorkBudgetDataRepository>()
                         .AddScoped<IWorkBudgetRepository, DataEFCoreSQL.Repositories.WorkBudgetRepository>()
                         .AddScoped<IIndirectCostRepository, DataEFCoreSQL.Repositories.IndirectCostRepository>()
-                        .AddScoped<IAdvanceRepository, DataEFCoreSQL.Repositories.AdvanceRepository>();
+                        .AddScoped<IAdvanceRepository, DataEFCoreSQL.Repositories.AdvanceRepository>()
+                        .AddScoped<ILibraryRepository, DataEFCoreSQL.Repositories.LibraryRepository>();
                     break;
                 case "MySQL":
                     services
@@ -112,7 +113,8 @@
                         .AddScoped<IWorkBudgetDataRepository, DataEFCoreSQL.Repositories.WorkBudgetDataRepository>()
                         .AddScoped<IWorkBudgetRepository, DataEFCoreSQL.Repositories.WorkBudgetRepository>()
                         .AddScoped<IIndirectCostRepository, DataEFCoreSQL.Repositories.IndirectCostRepository>()
-                        .AddScoped<IAdvanceRepository, DataEFCoreSQL.Repositories.AdvanceRepository>();
+                        .AddScoped<IAdvanceRepository, DataEFCoreSQL.Repositories.AdvanceRepository>()
+                        .AddScoped<ILibraryRepository, DataEFCoreSQL.Repositories.LibraryRepository>();
                     break;
             }
 

@@ -1,6 +1,5 @@
 ﻿using SGDE.Domain.Entities;
 using SGDE.Domain.Helpers;
-using System.Collections.Generic;
 
 namespace SGDE.Domain.Repositories
 {

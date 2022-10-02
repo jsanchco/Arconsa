@@ -357,6 +357,16 @@ namespace SGDE.Domain.Supervisor
 
         #endregion
 
+        #region Library
+
+        QueryResult<LibraryViewModel> GetAllLibrary(int skip = 0, int take = 0);
+        LibraryViewModel GetLibraryById(int id);
+        LibraryViewModel AddLibrary(LibraryViewModel newLibraryViewModel);
+        bool UpdateLibrary(LibraryViewModel libraryViewModel);
+        bool DeleteLibrary(int id);
+
+        #endregion
+
         void Update();
     }
 }
