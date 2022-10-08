@@ -65,6 +65,7 @@ namespace SGDE.Domain.Supervisor
             library.Description = libraryViewModel.description;
             library.Date = libraryViewModel.date;
             library.Edition = libraryViewModel.edition;
+            library.Active = libraryViewModel.active;
             library.File = libraryViewModel.file;
             library.TypeFile = libraryViewModel.typeFile;
             library.FileName = libraryViewModel.fileName;

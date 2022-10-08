@@ -15,11 +15,11 @@ import { L10n } from "@syncfusion/ej2-base";
 import data from "../../locales/locale.json";
 import {
   TOKEN_KEY,
-  updateDocument,
+  updateCompanyLibrary,
   base64ToArrayBuffer,
   saveByteArray,
 } from "../../services";
-import ModalSelectFile from "../Modals/modal-select-file";
+import ModalSelectLibrary from "../Modals/modal-select-library";
 import { connect } from "react-redux";
 import ACTION_APPLICATION from "../../actions/applicationAction";
 
@@ -178,7 +178,7 @@ class Libraries extends Component {
     documentSelected.fileName = args.fileName;
     documentSelected.typeFile = args.file.type;
 
-    updateDocument(documentSelected).then(() => {
+    updateCompanyLibrary(documentSelected).then(() => {
       this.grid.setRowData(this.state.rowSelected.id, documentSelected);
     });
   }
@@ -211,7 +211,7 @@ class Libraries extends Component {
   render() {
     return (
       <Fragment>
-        <ModalSelectFile
+        <ModalSelectLibrary
           isOpen={this.state.modal}
           toggle={this.toggleModal}
           updateDocument={this.updateDocument}
@@ -275,6 +275,11 @@ class Libraries extends Component {
                       width="100"
                     />
                     <ColumnDirective
+                      field="edition"
+                      headerText="Edición"
+                      width="100"
+                    />                    
+                    <ColumnDirective
                       field="department"
                       headerText="Departamento"
                       width="100"
@@ -292,6 +297,7 @@ class Libraries extends Component {
                       type="date"
                       format={this.format}
                       textAlign="Center"
+                      defaultValue={new Date()}
                     />
                     <ColumnDirective
                       field="fileName"
@@ -301,6 +307,16 @@ class Libraries extends Component {
                       textAlign="Center"
                       allowEditing={false}
                     />
+                    <ColumnDirective
+                      field="active"
+                      headerText="Activo"
+                      width="50"
+                      textAlign="Center"
+                      editType="booleanedit"
+                      type="boolean"
+                      displayAsCheckBox={true}
+                      defaultValue={true}
+                    />                    
                     <ColumnDirective field="typeFile" visible={false} />
                   </ColumnsDirective>
                   <Inject services={[Page, Toolbar, Edit]} />
