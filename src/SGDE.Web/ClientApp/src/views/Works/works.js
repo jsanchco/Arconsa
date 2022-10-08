@@ -126,6 +126,7 @@ class Works extends Component {
     this.contextMenuOpen = this.contextMenuOpen.bind(this);
     this.openTemplate = this.openTemplate.bind(this);
     this.dateTemplate = this.dateTemplate.bind(this);
+    this.clientTemplate = this.clientTemplate.bind(this);
     this.clickHandler = this.clickHandler.bind(this);
     this.toggleModal = this.toggleModal.bind(this);
     this.toggleModalTemplateSigning =
@@ -308,6 +309,14 @@ class Works extends Component {
       </div>
     );
   }
+
+  clientTemplate(args) {
+    return ( 
+      <div> 
+        <a rel='nofollow' href={"/#/clients/detailclient/" + args.clientId}>{args.clientName}</a> 
+      </div> 
+    ); 
+  }  
 
   contextMenuClick(args) {
     const workSelected = this.state.rowSelected;
@@ -563,6 +572,7 @@ class Works extends Component {
                       validationRules={this.clientIdRules}
                       dataSource={this.clients}
                       edit={this.editClients}
+                      template={this.clientTemplate}
                     />
                     <ColumnDirective
                       field="closeDate"

@@ -42,8 +42,9 @@ namespace SGDE.API.Controllers
                 var queryString = Request.Query;
                 var skip = Convert.ToInt32(queryString["$skip"]);
                 var take = Convert.ToInt32(queryString["$top"]);
+                var filter = Util.Helper.getSearch(queryString["$filter"]);
 
-                var queryResult = _supervisor.GetAllLibrary(skip, take);
+                var queryResult = _supervisor.GetAllLibrary(skip, take, filter);
                 return new { Items = queryResult.Data, Count = queryResult.Count };
             }
             catch (Exception ex)

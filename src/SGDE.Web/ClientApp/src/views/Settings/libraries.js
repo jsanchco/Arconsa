@@ -60,6 +60,7 @@ class Libraries extends Component {
         prefixIcon: "e-custom-icons e-file-download",
         id: "DownloadFile",
       },
+      "Search"
     ];
     this.editSettings = {
       showDeleteConfirmDialog: true,

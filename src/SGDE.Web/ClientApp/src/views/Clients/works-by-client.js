@@ -58,6 +58,7 @@ class WorksByClient extends Component {
     this.rowSelected = this.rowSelected.bind(this);
     this.openTemplate = this.openTemplate.bind(this);
     this.dateTemplate = this.dateTemplate.bind(this);
+    this.workTemplate = this.workTemplate.bind(this);
 
     this.query = new Query()
       .addParams("clientId", props.clientId)
@@ -118,6 +119,14 @@ class WorksByClient extends Component {
     );
   }
 
+  workTemplate(args) {
+    return ( 
+      <div> 
+        <a rel='nofollow' href={"/#/works/detailwork/" + args.id}>{args.name}</a> 
+      </div> 
+    ); 
+  }     
+
   rowSelected() {
     const selectedRecords = this.grid.getSelectedRecords();
     const selectedRowIndex = this.grid.getSelectedRowIndexes();
@@ -176,7 +185,12 @@ class WorksByClient extends Component {
               allowResizing={true}
             >
               <ColumnsDirective>
-                <ColumnDirective field="name" headerText="Nombre" width="100" />
+                <ColumnDirective 
+                  field="name" 
+                  headerText="Nombre" 
+                  width="100" 
+                  template={this.workTemplate}
+                />
                 <ColumnDirective
                   field="address"
                   headerText="Dirección"

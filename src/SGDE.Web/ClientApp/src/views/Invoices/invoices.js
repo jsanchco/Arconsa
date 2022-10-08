@@ -323,6 +323,8 @@ class Invoices extends Component {
     this.detailDataBound = this.detailDataBound.bind(this);
     this.clickHandlerGridInvoice = this.clickHandlerGridInvoice.bind(this);
     this.billPayment = this.billPayment.bind(this);
+    this.clientTemplate = this.clientTemplate.bind(this);
+    this.workTemplate = this.workTemplate.bind(this);
 
     this.gridDetailsInvoice = {
       columns: [
@@ -564,6 +566,22 @@ class Invoices extends Component {
   dataBoundDetailsInvoice(args) {
     console.log();
   }
+
+  clientTemplate(args) {
+    return ( 
+      <div> 
+        <a rel='nofollow' href={"/#/clients/detailclient/" + args.clientId}>{args.clientName}</a> 
+      </div> 
+    ); 
+  }
+
+  workTemplate(args) {
+    return ( 
+      <div> 
+        <a rel='nofollow' href={"/#/works/detailwork/" + args.workId}>{args.workName}</a> 
+      </div> 
+    ); 
+  }   
 
   loadGridDetailsInvoice() {
     this.query = [];
@@ -1076,6 +1094,7 @@ class Invoices extends Component {
                       validationRules={this.requeridIdRules}
                       dataSource={this.clients}
                       edit={this.editClients}
+                      template={this.clientTemplate}
                     />
                     <ColumnDirective
                       field="workId"
@@ -1086,6 +1105,7 @@ class Invoices extends Component {
                       validationRules={this.requeridIdRules}
                       dataSource={this.works}
                       edit={this.editWorks}
+                      template={this.workTemplate}
                     />
                     <ColumnDirective
                       field="workBudgetId"

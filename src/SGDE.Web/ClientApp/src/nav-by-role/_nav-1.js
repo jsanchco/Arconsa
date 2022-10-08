@@ -82,13 +82,13 @@ export default {
       url: "/signings/signings",
       icon: "icon-book-open"
     },
+    // {
+    //   name: "Facturas",
+    //   url: "/invoices/InvoicesCustom",
+    //   icon: "cui-file"
+    // },
     {
       name: "Facturas",
-      url: "/invoices/InvoicesCustom",
-      icon: "cui-file"
-    },
-    {
-      name: "Facturas New",
       url: "/invoices/Invoices",
       icon: "cui-file"
     },

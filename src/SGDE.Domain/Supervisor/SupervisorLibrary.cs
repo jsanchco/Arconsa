@@ -8,9 +8,9 @@ namespace SGDE.Domain.Supervisor
 {
     public partial class Supervisor
     {
-        public QueryResult<LibraryViewModel> GetAllLibrary(int skip = 0, int take = 0)
+        public QueryResult<LibraryViewModel> GetAllLibrary(int skip = 0, int take = 0, string filter = null)
         {
-            var queryResult = _libraryRepository.GetAll(skip, take);
+            var queryResult = _libraryRepository.GetAll(skip, take, filter);
             return new QueryResult<LibraryViewModel>
             {
                 Data = LibraryConverter.ConvertList(queryResult.Data),
