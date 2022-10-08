@@ -647,9 +647,10 @@ class Invoices extends Component {
       error = error[0].error;
     }
 
+    const errorJSON = JSON.parse(error.responseText);
     this.props.showMessage({
       statusText: error.statusText,
-      responseText: error.responseText,
+      responseText: errorJSON.Message,
       type: "danger",
     });
   }

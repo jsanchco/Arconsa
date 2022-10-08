@@ -417,6 +417,17 @@
             {
                 throw new Exception("Factura incompleta. Revisa los datos");
             }
+
+            var findWork = _context.Work.Find(invoice.WorkId);
+            if (findWork == null)
+            {
+                throw new Exception("Obra no encontrada");
+            }
+
+            if (findWork.WorksToRealize == "PA" && invoice.WorkBudgetId == null)
+            {
+                throw new Exception("Factura incompleta. Revisa los datos. Debes introducir el presupuesto");
+            }
         }
 
         #endregion
