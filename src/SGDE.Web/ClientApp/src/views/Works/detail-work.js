@@ -16,6 +16,8 @@ import WorkBudgets from "./work-budget";
 import WorkBudgets1 from "./work-budget1";
 
 class DetailWork extends Component {
+  tab = null;
+
   constructor(props) {
     super(props);
 
@@ -51,6 +53,11 @@ class DetailWork extends Component {
         },
       });
     });
+
+    const selectedTab = this.props.match.params.selectedTab;
+    if (selectedTab !== null) {
+      this.tab.selectedItem = parseInt(selectedTab);
+    }
   }
 
   contentTemplateWorkBudgets() {
@@ -96,10 +103,15 @@ class DetailWork extends Component {
   }
 
   contentTemplateWorkCosts() {
+    let workName = "";
+    if (this.state.work !== null && this.state.work !== undefined) {
+      workName = this.state.work.name;
+    }
+
     return (
       <WorkCosts
         workId={this.props.match.params.id}
-        workName={this.state.work.name}
+        workName={workName}
         history={this.props.history}
         showMessage={this.props.showMessage}
       />
@@ -107,10 +119,15 @@ class DetailWork extends Component {
   }
 
   contentTemplateAuthorizeCancelWorkers() {
+    let workName = "";
+    if (this.state.work !== null && this.state.work !== undefined) {
+      workName = this.state.work.name;
+    }
+
     return (
       <AuthorizeCancelWorkers
         workId={this.props.match.params.id}
-        workName={this.state.work.name}
+        workName={workName}
         history={this.props.history}
         showMessage={this.props.showMessage}
       />
@@ -118,10 +135,15 @@ class DetailWork extends Component {
   }
 
   contentTemplateInvoicesWork() {
+    let workName = "";
+    if (this.state.work !== null && this.state.work !== undefined) {
+      workName = this.state.work.name;
+    }
+
     return (
       <InvoicesWork
         workId={this.props.match.params.id}
-        workName={this.state.work.name}
+        workName={workName}
         history={this.props.history}
         showMessage={this.props.showMessage}
       />
@@ -165,6 +187,7 @@ class DetailWork extends Component {
                     marginTop: 0,
                     marginBottom: 20,
                   }}
+                  ref={(g) => (this.tab = g)}
                 >
                   <TabItemsDirective>
                     <TabItemDirective

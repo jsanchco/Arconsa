@@ -325,6 +325,7 @@ class Invoices extends Component {
     this.billPayment = this.billPayment.bind(this);
     this.clientTemplate = this.clientTemplate.bind(this);
     this.workTemplate = this.workTemplate.bind(this);
+    this.workBudgetTemplate = this.workBudgetTemplate.bind(this);
 
     this.gridDetailsInvoice = {
       columns: [
@@ -582,6 +583,14 @@ class Invoices extends Component {
       </div> 
     ); 
   }   
+
+  workBudgetTemplate(args) {
+    return ( 
+      <div> 
+        <a rel='nofollow' href={"/#/works/detailwork/" + args.workId + "/1"}>{args.workBudgetName}</a> 
+      </div> 
+    ); 
+  }  
 
   loadGridDetailsInvoice() {
     this.query = [];
@@ -1116,6 +1125,7 @@ class Invoices extends Component {
                       // validationRules={this.requeridIdRules}
                       dataSource={this.workBudgets}
                       edit={this.editWorkBudgets}
+                      template={this.workBudgetTemplate}
                     />
                     <ColumnDirective
                       field="taxBase"

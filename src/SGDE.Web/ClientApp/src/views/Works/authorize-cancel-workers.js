@@ -314,7 +314,7 @@ class AuthorizeCancelWorkers extends Component {
   }
 
   render() {
-    let title = ` Contratos [${this.props.workName}]`;
+    let title = ` Contratos`;
 
     return (
       <Fragment>

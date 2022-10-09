@@ -135,7 +135,7 @@ const routes = [
   { path: '/clients/clients', exact: true, name: 'Clientes', component: Clients },
   { path: '/clients/detailclient/:id', exact: true, name: 'Detalle Cliente', component: DetailClient },
   { path: '/works/works', exact: true, name: 'Obras', component: Works },
-  { path: '/works/detailwork/:id', exact: true, name: 'Detalle Obra', component: DetailWork },
+  { path: '/works/detailwork/:id/:selectedTab?', exact: true, name: 'Detalle Obra', component: DetailWork },
   { path: '/works/basicdatawork', exact: true, name: 'Datos Básicos', component: BasicDataWork },
   { path: '/signings/signings', exact: true, name: 'Fichajes', component: Signings },
   { path: '/reports/reporthoursuser', exact: true, name: 'Informe Horas Trabajador', component: ReportHoursUser },

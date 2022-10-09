@@ -28,8 +28,8 @@ namespace SGDE.API.Controllers
         }
 
         // GET api/work/5
-        [HttpGet("{id}")]
-        public object Get(int id)
+        [HttpGet("{id}/{selectedTab:int?}")]
+        public object Get(int id, int? selectedTab = null)
         {
             try
             {
