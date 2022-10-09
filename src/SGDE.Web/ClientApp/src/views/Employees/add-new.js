@@ -172,9 +172,9 @@ class AddNew extends Component {
         />
         <Fragment>
           <Breadcrumb>
-            <BreadcrumbItem>
-              <a href="#">Inicio</a>
-            </BreadcrumbItem>
+            {/*eslint-disable-next-line*/}
+            <BreadcrumbItem><a href="#">Inicio</a></BreadcrumbItem>
+            {/* eslint-disable-next-line*/}
             <BreadcrumbItem>
               <a href="#/employees/employees">Trabajadores</a>
             </BreadcrumbItem>

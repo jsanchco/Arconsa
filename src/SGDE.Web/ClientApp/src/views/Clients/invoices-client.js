@@ -3,7 +3,7 @@ import GridInvoice from "../../components/grid-invoices";
 
 class InvoicesClient extends Component {
   render() {
-    let title = ` Facturas [${this.props.clientName}]`;
+    let title = ` Facturas`;
 
     return (
       <Fragment>

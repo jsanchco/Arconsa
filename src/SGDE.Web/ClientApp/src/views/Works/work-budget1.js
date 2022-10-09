@@ -9,11 +9,7 @@ import {
   Toolbar,
   Page,
   Aggregate,
-  DetailRow,
-  AggregateColumnsDirective,
-  AggregateColumnDirective,
-  AggregateDirective,
-  AggregatesDirective,
+  DetailRow
 } from "@syncfusion/ej2-react-grids";
 import { DataManager, WebApiAdaptor, Query } from "@syncfusion/ej2-data";
 import { config, WORKBUDGETDATAS, WORKBUDGETS } from "../../constants";
@@ -24,14 +20,8 @@ import {
   updateDocumentInWorkBudget,
   base64ToArrayBuffer,
   saveByteArray,
-  getWorkBudgetData,
-  getWorkBudget,
+  getWorkBudgetData
 } from "../../services";
-import {
-  createSpinner,
-  showSpinner,
-  hideSpinner,
-} from "@syncfusion/ej2-popups";
 import ModalSelectWorkBudget from "../Modals/modal-select-work-budget";
 
 L10n.load(data);

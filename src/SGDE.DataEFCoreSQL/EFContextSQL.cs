@@ -42,6 +42,7 @@ namespace SGDE.DataEFCoreSQL
         public virtual DbSet<IndirectCost> IndirectCost { get; set; }
         public virtual DbSet<Advance> Advance { get; set; }
         public virtual DbSet<Library> Library { get; set; }
+        public virtual DbSet<CompanyData> CompanyData { get; set; }
 
         public static long InstanceCount;
 
@@ -79,6 +80,7 @@ namespace SGDE.DataEFCoreSQL
             new IndirectCostConfiguration(modelBuilder.Entity<IndirectCost>());
             new AdvanceConfiguration(modelBuilder.Entity<Advance>());
             new LibraryConfiguration(modelBuilder.Entity<Library>());
+            new CompanyDataConfiguration(modelBuilder.Entity<CompanyData>());
         }
 
         //public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<EFContextSQL>

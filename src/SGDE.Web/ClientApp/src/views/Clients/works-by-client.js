@@ -137,7 +137,7 @@ class WorksByClient extends Component {
   }
 
   render() {
-    let title = ` Obras [${this.props.clientName}]`;
+    let title = ` Obras`;
 
     return (
       <div className="animated fadeIn" id="target-works">

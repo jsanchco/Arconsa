@@ -17,24 +17,13 @@ export default {
       }
     },
     {
+      name: "ADECUA",
+      url: "/ADECUA/DetailCompany",
+    },    
+    {
       name: "Configuración",
       icon: "icon-settings",
       children: [
-        {
-          name: "Adecua",
-          children: [
-            {
-              name: "Datos de la Empresa",
-              url: "/settings/company/companydata",
-              icon: "icon-note"
-            },
-            {
-              name: "Gastos Indirectos",
-              url: "/settings/company/indirect-costs",
-              icon: "icon-note"
-            }         
-          ]
-        },
         {
           name: "Roles",
           url: "/settings/roles",

@@ -53,6 +53,7 @@ export const WORKBUDGETSLITE = "api/workbudgets/getallbudgetslite";
 export const COMPANY_INDIRECTCOSTS = "api/indirectCosts";
 export const COMPANY_ADD_INDIRECTCOSTS = "api/indirectCosts/addindirectcosts";
 export const COMPANY_LIBRARIES = "api/libraries";
+export const COMPANY_DOCUMENTS = "api/companydatas";
 export const COMPANY_DATA = "COMPANY_DATA";
 
 const dev = {

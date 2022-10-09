@@ -367,6 +367,16 @@ namespace SGDE.Domain.Supervisor
 
         #endregion
 
+        #region CompanyData
+
+        QueryResult<CompanyDataViewModel> GetAllCompanyData(int skip = 0, int take = 0, string filter = null);
+        CompanyDataViewModel GetCompanyDataById(int id);
+        CompanyDataViewModel AddCompanyData(CompanyDataViewModel newCompanyDataViewModel);
+        bool UpdateCompanyData(CompanyDataViewModel companyDataViewModel);
+        bool DeleteCompanyData(int id);
+
+        #endregion
+
         void Update();
     }
 }

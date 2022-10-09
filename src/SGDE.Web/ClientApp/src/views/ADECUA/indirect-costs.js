@@ -17,13 +17,13 @@ import {
   AggregatesDirective,
 } from "@syncfusion/ej2-react-grids";
 import { DataManager, WebApiAdaptor } from "@syncfusion/ej2-data";
-import { config, COMPANY_INDIRECTCOSTS } from "../../../constants";
+import { config, COMPANY_INDIRECTCOSTS } from "../../constants";
 import { L10n } from "@syncfusion/ej2-base";
-import data from "../../../locales/locale.json";
+import data from "../../locales/locale.json";
 import { connect } from "react-redux";
-import ACTION_APPLICATION from "../../../actions/applicationAction";
-import { TOKEN_KEY, addIndirectCosts } from "../../../services";
-import ModalSelectYearMonth from "../../Modals/modal-select-year-month";
+import ACTION_APPLICATION from "../../actions/applicationAction";
+import { TOKEN_KEY, addIndirectCosts } from "../../services";
+import ModalSelectYearMonth from "../Modals/modal-select-year-month";
 
 L10n.load(data);
 
@@ -81,7 +81,7 @@ class IndirectCosts extends Component {
         format: "N",
         min: 2020,
         validateDecimalOnType: true,
-        showSpinButton: false
+        showSpinButton: false,
       },
     };
 
@@ -226,135 +226,120 @@ class IndirectCosts extends Component {
           showMessage={this.props.showMessage}
         />
 
-        <Breadcrumb>
-          {/*eslint-disable-next-line*/}
-          <BreadcrumbItem>
-            <a href="/#">Inicio</a>
-          </BreadcrumbItem>
-          {/* eslint-disable-next-line*/}
-          <BreadcrumbItem active>Gestión de Usuarios</BreadcrumbItem>
-        </Breadcrumb>
-
-        <Container fluid>
-          <div className="animated fadeIn">
-            <div className="card">
-              <div className="card-header">
-                <i className="icon-layers"></i> Gastos Indirectos
-              </div>
-              <div className="card-body"></div>
-              <Row>
-                <GridComponent
-                  dataSource={this.indirectCosts}
-                  locale="es-US"
-                  allowPaging={true}
-                  pageSettings={this.pageSettings}
-                  toolbar={this.toolbarOptions}
-                  editSettings={this.editSettings}
-                  toolbarClick={this.clickHandler}
-                  style={{
-                    marginLeft: 30,
-                    marginRight: 30,
-                    marginTop: -20,
-                    marginBottom: 20,
-                  }}
-                  actionFailure={this.actionFailure}
-                  actionComplete={this.actionComplete}
-                  actionBegin={this.actionBegin}
-                  allowGrouping={true}
-                  rowSelected={this.rowSelected}
-                  ref={(g) => (this.grid = g)}
-                  groupSettings={this.groupOptions}
-                >
-                  <ColumnsDirective>
-                    <ColumnDirective
-                      field="id"
-                      headerText="Id"
-                      width="40"
-                      isPrimaryKey={true}
-                      isIdentity={true}
-                      visible={false}
-                    />
-                    <ColumnDirective
-                      field="year"
-                      headerText="Año"
-                      width="70"
-                      edit={this.editYear}
-                      textAlign="Right"
-                      editType="numericedit"
-                    />
-                    <ColumnDirective
-                      field="month"
-                      headerText="Mes"
-                      width="70"
-                      editType="dropdownedit"
-                      foreignKeyValue="value"
-                      foreignKeyField="id"
-                      validationRules={this.requiredRules}
-                      dataSource={new DataManager(this.months)}
-                      edit={this.editMonths}
-                    />
-                    <ColumnDirective
-                      field="accountNumber"
-                      headerText="Nº Cuenta"
-                      width="70"
-                    />
-                    <ColumnDirective
-                      field="description"
-                      headerText="Descripción"
-                      width="150"
-                    />
-                    <ColumnDirective
-                      field="amount"
-                      headerText="Cantidad"
-                      width="100"
-                      edit={this.editAmount}
-                      textAlign="Right"
-                      editType="numericedit"
-                    />
-                    <ColumnDirective
-                      field="key"
-                      headerText="Clave"
-                      width="100"
-                      allowEditing={false}
-                    />
-                    <ColumnDirective
-                      field="date"
-                      headerText="Fecha"
-                      width="100"
-                      visible={false}
-                    />
-                  </ColumnsDirective>
-
-                  <AggregatesDirective>
-                    <AggregateDirective>
-                      <AggregateColumnsDirective>
-                        <AggregateColumnDirective
-                          field="amount"
-                          type="Sum"
-                          format="N2"
-                          groupCaptionTemplate={this.footerSumEuros}
-                        >
-                          {" "}
-                        </AggregateColumnDirective>
-                      </AggregateColumnsDirective>
-                    </AggregateDirective>
-                  </AggregatesDirective>
-
-                  <Inject
-                    services={[
-                      ForeignKey,
-                      Group,
-                      Page,
-                      Toolbar,
-                      Edit,
-                      Aggregate,
-                    ]}
-                  />
-                </GridComponent>
-              </Row>
+        <div className="animated fadeIn">
+          <div
+            className="card"
+            style={{ marginRight: "60px", marginTop: "20px" }}
+          >
+            <div className="card-header">
+              <i className="icon-layers"></i> Gastos Indirectos
             </div>
+            <div className="card-body"></div>
+            <Row>
+              <GridComponent
+                dataSource={this.indirectCosts}
+                locale="es-US"
+                allowPaging={true}
+                pageSettings={this.pageSettings}
+                toolbar={this.toolbarOptions}
+                editSettings={this.editSettings}
+                toolbarClick={this.clickHandler}
+                style={{
+                  marginLeft: 30,
+                  marginRight: 30,
+                  marginTop: -20,
+                  marginBottom: 20,
+                }}
+                actionFailure={this.actionFailure}
+                actionComplete={this.actionComplete}
+                actionBegin={this.actionBegin}
+                allowGrouping={true}
+                rowSelected={this.rowSelected}
+                ref={(g) => (this.grid = g)}
+                groupSettings={this.groupOptions}
+              >
+                <ColumnsDirective>
+                  <ColumnDirective
+                    field="id"
+                    headerText="Id"
+                    width="40"
+                    isPrimaryKey={true}
+                    isIdentity={true}
+                    visible={false}
+                  />
+                  <ColumnDirective
+                    field="year"
+                    headerText="Año"
+                    width="70"
+                    edit={this.editYear}
+                    textAlign="Right"
+                    editType="numericedit"
+                  />
+                  <ColumnDirective
+                    field="month"
+                    headerText="Mes"
+                    width="70"
+                    editType="dropdownedit"
+                    foreignKeyValue="value"
+                    foreignKeyField="id"
+                    validationRules={this.requiredRules}
+                    dataSource={new DataManager(this.months)}
+                    edit={this.editMonths}
+                  />
+                  <ColumnDirective
+                    field="accountNumber"
+                    headerText="Nº Cuenta"
+                    width="70"
+                  />
+                  <ColumnDirective
+                    field="description"
+                    headerText="Descripción"
+                    width="150"
+                  />
+                  <ColumnDirective
+                    field="amount"
+                    headerText="Cantidad"
+                    width="100"
+                    edit={this.editAmount}
+                    textAlign="Right"
+                    editType="numericedit"
+                  />
+                  <ColumnDirective
+                    field="key"
+                    headerText="Clave"
+                    width="100"
+                    allowEditing={false}
+                  />
+                  <ColumnDirective
+                    field="date"
+                    headerText="Fecha"
+                    width="100"
+                    visible={false}
+                  />
+                </ColumnsDirective>
+
+                <AggregatesDirective>
+                  <AggregateDirective>
+                    <AggregateColumnsDirective>
+                      <AggregateColumnDirective
+                        field="amount"
+                        type="Sum"
+                        format="N2"
+                        groupCaptionTemplate={this.footerSumEuros}
+                      >
+                        {" "}
+                      </AggregateColumnDirective>
+                    </AggregateColumnsDirective>
+                  </AggregateDirective>
+                </AggregatesDirective>
+
+                <Inject
+                  services={[ForeignKey, Group, Page, Toolbar, Edit, Aggregate]}
+                />
+              </GridComponent>
+            </Row>
           </div>
-        </Container>
+        </div>
       </Fragment>
     );
   }
@@ -362,14 +347,4 @@ class IndirectCosts extends Component {
 
 IndirectCosts.propTypes = {};
 
-const mapStateToProps = (state) => {
-  return {
-    errorApplication: state.applicationReducer.error,
-  };
-};
-
-const mapDispatchToProps = (dispatch) => ({
-  showMessage: (message) => dispatch(ACTION_APPLICATION.showMessage(message)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(IndirectCosts);
+export default IndirectCosts;

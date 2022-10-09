@@ -90,7 +90,7 @@ class ProfessionInClient extends Component {
   }
 
   render() {
-    let title = ` Precios por Puesto [${this.props.clientName}]`;
+    let title = ` Precios por Puesto`;
 
     return (
       <Fragment>
