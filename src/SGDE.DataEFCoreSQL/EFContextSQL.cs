@@ -43,6 +43,7 @@ namespace SGDE.DataEFCoreSQL
         public virtual DbSet<Advance> Advance { get; set; }
         public virtual DbSet<Library> Library { get; set; }
         public virtual DbSet<CompanyData> CompanyData { get; set; }
+        public virtual DbSet<WorkHistory> WorkHistory { get; set; }
 
         public static long InstanceCount;
 
@@ -81,6 +82,7 @@ namespace SGDE.DataEFCoreSQL
             new AdvanceConfiguration(modelBuilder.Entity<Advance>());
             new LibraryConfiguration(modelBuilder.Entity<Library>());
             new CompanyDataConfiguration(modelBuilder.Entity<CompanyData>());
+            new WorkHistoryConfiguration(modelBuilder.Entity<WorkHistory>());
         }
 
         //public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<EFContextSQL>

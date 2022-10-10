@@ -377,6 +377,16 @@ namespace SGDE.Domain.Supervisor
 
         #endregion
 
+        #region WorkHistory
+
+        QueryResult<WorkHistoryViewModel> GetAllWorkHistory(int workId = 0, int skip = 0, int take = 0, string filter = null);
+        WorkHistoryViewModel GetWorkHistoryById(int id);
+        WorkHistoryViewModel AddWorkHistory(WorkHistoryViewModel newWorkHistoryViewModel);
+        bool UpdateWorkHistory(WorkHistoryViewModel workHistoryViewModel);
+        bool DeleteWorkHistory(int id);
+
+        #endregion
+
         void Update();
     }
 }

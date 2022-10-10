@@ -14,6 +14,7 @@ import InvoicesWork from "./invoices-work";
 import WorkCosts from "./work-cost";
 import WorkBudgets from "./work-budget";
 import WorkBudgets1 from "./work-budget1";
+import WorkHistory from "./work-history";
 
 class DetailWork extends Component {
   tab = null;
@@ -30,6 +31,7 @@ class DetailWork extends Component {
       { text: "Gastos Proveedores" },
       { text: "Gastos Trabajadores" },
       { text: "Facturas" },
+      { text: "Historia de Obra" }
     ];
 
     this.contentTemplateWorkBudgets =
@@ -43,6 +45,8 @@ class DetailWork extends Component {
       this.contentTemplateBasicDataWork.bind(this);
     this.contentTemplateInvoicesWork =
       this.contentTemplateInvoicesWork.bind(this);
+    this.contentTemplateWorkHistory =
+      this.contentTemplateWorkHistory.bind(this);
   }
 
   componentDidMount() {
@@ -150,6 +154,22 @@ class DetailWork extends Component {
     );
   }
 
+  contentTemplateWorkHistory() {
+    let workName = "";
+    if (this.state.work !== null && this.state.work !== undefined) {
+      workName = this.state.work.name;
+    }
+
+    return (
+      <WorkHistory
+        workId={this.props.match.params.id}
+        workName={workName}
+        history={this.props.history}
+        showMessage={this.props.showMessage}
+      />
+    );
+  }
+
   render() {
     const user = JSON.parse(localStorage.getItem("user"));
 
@@ -217,6 +237,12 @@ class DetailWork extends Component {
                         content={this.contentTemplateInvoicesWork}
                       />
                     ) : null}
+                    {user.roleId === 1 ? (
+                      <TabItemDirective
+                        header={this.headerText[6]}
+                        content={this.contentTemplateWorkHistory}
+                      />
+                    ) : null}                   
                   </TabItemsDirective>
                 </TabComponent>
               </div>

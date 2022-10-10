@@ -67,6 +67,7 @@ namespace SGDE.Tests
             var advanceRepository = new Mock<IAdvanceRepository>();
             var libraryRepository = new Mock<ILibraryRepository>();
             var companyDataRepository = new Mock<ICompanyDataRepository>();
+            var workHistoryRepository = new Mock<IWorkHistoryRepository>();
 
             _supervisor = new Supervisor(
                 userRepositoryMock.Object,
@@ -97,7 +98,8 @@ namespace SGDE.Tests
                 indirectCostRepository.Object,
                 advanceRepository.Object,
                 libraryRepository.Object,
-                companyDataRepository.Object);
+                companyDataRepository.Object,
+                workHistoryRepository.Object);
         }
 
         [TestMethod]
