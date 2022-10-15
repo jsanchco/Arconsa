@@ -221,6 +221,8 @@
             _pdf.Add(new Paragraph(" ", _STANDARFONT_14_BOLD));
             _pdf.Add(GetPayment());
             _pdf.Add(new Paragraph(" ", _STANDARFONT_14_BOLD));
+            _pdf.Add(GetPassiveSubject());
+            _pdf.Add(new Paragraph(" ", _STANDARFONT_14_BOLD));
             _pdf.Add(GetSignAndStamp());
 
             _pdf.Close();

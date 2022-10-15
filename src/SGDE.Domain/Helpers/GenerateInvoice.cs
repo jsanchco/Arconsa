@@ -13,6 +13,7 @@
     using System.Collections.Generic;
     using SGDE.Domain.Entities;
     using System.Linq;
+    using iTextSharp.text.rtf.table;
 
     #endregion
 
@@ -114,6 +115,8 @@
             _pdf.Add(GetPayment());
             _pdf.Add(new Paragraph(" ", _STANDARFONT_14_BOLD));
             _pdf.Add(GetSignAndStamp());
+            _pdf.Add(new Paragraph(" ", _STANDARFONT_14_BOLD));
+            _pdf.Add(GetPassiveSubject());
 
             _pdf.Close();
             pdfWriter.Close();
@@ -454,6 +457,19 @@
             pdfPTable.AddCell(pdfCell);
             pdfCell = new PdfPCell(new Phrase(" ", _STANDARFONT_10)) { BorderWidth = 0 };
             pdfPTable.AddCell(pdfCell);
+
+            return pdfPTable;
+        }
+
+        protected PdfPTable GetPassiveSubject()
+        {
+            var pdfPTable = new PdfPTable(1) { WidthPercentage = 100 };
+
+            if (_work.PassiveSubject)
+            {
+                var pdfCell = new PdfPCell(new Phrase("IVA Inversión del Sujeto Pasivo: ARTÍCULO 88 LEY INVERSIÓN SUJETO PASIVO", _STANDARFONT_10_BOLD)) { BorderWidth = 0 };
+                pdfPTable.AddCell(pdfCell);
+            }
 
             return pdfPTable;
         }
