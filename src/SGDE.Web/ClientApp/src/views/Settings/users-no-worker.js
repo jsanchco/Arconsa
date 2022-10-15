@@ -254,6 +254,7 @@ class UsersNoWorker extends Component {
                       field="name"
                       headerText="Nombre"
                       width="100"
+                      validationRules={{ required: true }}
                     />
                     <ColumnDirective
                       field="surname"
@@ -264,7 +265,7 @@ class UsersNoWorker extends Component {
                       field="username"
                       headerText="Código Acceso"
                       width="100"
-                      required={true}
+                      validationRules={{ required: true }}
                     />
                     <ColumnDirective
                       field="phoneNumber"
