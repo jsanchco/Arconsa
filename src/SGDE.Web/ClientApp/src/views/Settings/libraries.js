@@ -274,6 +274,7 @@ class Libraries extends Component {
                       field="reference"
                       headerText="Referencia"
                       width="100"
+                      validationRules={{ required: true }}
                     />
                     <ColumnDirective
                       field="edition"
@@ -284,6 +285,7 @@ class Libraries extends Component {
                       field="department"
                       headerText="Departamento"
                       width="100"
+                      validationRules={{ required: true }}
                     />
                     <ColumnDirective
                       field="description"
@@ -299,6 +301,7 @@ class Libraries extends Component {
                       format={this.format}
                       textAlign="Center"
                       defaultValue={new Date()}
+                      validationRules={{ required: true }}
                     />
                     <ColumnDirective
                       field="fileName"
