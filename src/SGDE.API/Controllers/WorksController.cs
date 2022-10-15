@@ -3,13 +3,12 @@ namespace SGDE.API.Controllers
 {
     #region Using
 
-    using Microsoft.AspNetCore.Mvc;
-    using Microsoft.AspNetCore.Authorization;
     using Domain.Supervisor;
+    using Domain.ViewModels;
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Logging;
     using System;
-    using Domain.ViewModels;
-    using System.Linq;
 
     #endregion
 
@@ -66,7 +65,7 @@ namespace SGDE.API.Controllers
         }
 
         [HttpPost]
-        public object Post([FromBody]WorkViewModel workViewModel)
+        public object Post([FromBody] WorkViewModel workViewModel)
         {
             try
             {
@@ -81,7 +80,7 @@ namespace SGDE.API.Controllers
         }
 
         [HttpPut]
-        public object Put([FromBody]WorkViewModel workViewModel)
+        public object Put([FromBody] WorkViewModel workViewModel)
         {
             try
             {
@@ -100,7 +99,7 @@ namespace SGDE.API.Controllers
         }
 
         [HttpPut("updatedateswork")]
-        public object UpdateDatesWork([FromBody]WorkViewModel workViewModel)
+        public object UpdateDatesWork([FromBody] WorkViewModel workViewModel)
         {
             try
             {
@@ -143,6 +142,20 @@ namespace SGDE.API.Controllers
                 var filter = Util.Helper.getSearchLite(queryString["$filter"]);
 
                 return _supervisor.GetAllWorkLite(filter, clientId);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Exception: ");
+                return StatusCode(500, ex);
+            }
+        }
+
+        [HttpGet("getclosepage/{workId:int}")]
+        public object GetClosePage(int workId)
+        {
+            try
+            {
+                return _supervisor.GetWorkClosePage(workId);
             }
             catch (Exception ex)
             {

@@ -15,6 +15,7 @@ import WorkCosts from "./work-cost";
 import WorkBudgets from "./work-budget";
 import WorkBudgets1 from "./work-budget1";
 import WorkHistory from "./work-history";
+import ClosePage from "./close-page";
 
 class DetailWork extends Component {
   tab = null;
@@ -31,9 +32,11 @@ class DetailWork extends Component {
       { text: "Gastos Proveedores" },
       { text: "Gastos Trabajadores" },
       { text: "Facturas" },
-      { text: "Historia de Obra" }
+      { text: "Historia de Obra" },
+      { text: "Hoja de Cierre" },
     ];
 
+    this.selectedTab = this.selectedTab.bind(this);
     this.contentTemplateWorkBudgets =
       this.contentTemplateWorkBudgets.bind(this);
     this.contentTemplateWorkBudgets1 =
@@ -47,6 +50,12 @@ class DetailWork extends Component {
       this.contentTemplateInvoicesWork.bind(this);
     this.contentTemplateWorkHistory =
       this.contentTemplateWorkHistory.bind(this);
+    this.contentTemplateClosePage = this.contentTemplateClosePage.bind(this);
+  }
+
+  selectedTab(args) {
+    this.setState({ tabSelected: args });
+    console.log("detail-work -> selectedTab");
   }
 
   componentDidMount() {
@@ -170,6 +179,23 @@ class DetailWork extends Component {
     );
   }
 
+  contentTemplateClosePage() {
+    let workName = "";
+    if (this.state.work !== null && this.state.work !== undefined) {
+      workName = this.state.work.name;
+    }
+
+    return (
+      <ClosePage
+        workId={this.props.match.params.id}
+        workName={workName}
+        history={this.props.history}
+        showMessage={this.props.showMessage}
+        tabSelected={this.state.tabSelected}
+      />
+    );
+  }
+
   render() {
     const user = JSON.parse(localStorage.getItem("user"));
 
@@ -208,6 +234,7 @@ class DetailWork extends Component {
                     marginBottom: 20,
                   }}
                   ref={(g) => (this.tab = g)}
+                  selected={this.selectedTab}
                 >
                   <TabItemsDirective>
                     <TabItemDirective
@@ -242,7 +269,14 @@ class DetailWork extends Component {
                         header={this.headerText[6]}
                         content={this.contentTemplateWorkHistory}
                       />
-                    ) : null}                   
+                    ) : null}
+                    {user.roleId === 1 ? (
+                      <TabItemDirective
+                        header={this.headerText[7]}
+                        content={this.contentTemplateClosePage}
+                        tabSelected={this.state.tabSelected}
+                      />
+                    ) : null}
                   </TabItemsDirective>
                 </TabComponent>
               </div>

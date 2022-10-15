@@ -136,6 +136,7 @@ class WorkBudgets1 extends Component {
           type: "date",
           format: this.format,
           editType: "datepickeredit",
+          validationRules: { required: true }
         },
         {
           field: "name",
@@ -440,11 +441,11 @@ class WorkBudgets1 extends Component {
     let values = null;
     if (args.result != null) {
       values = args.result.filter(
-        (item) => item.type === "Definitivo" || item.type === "Complementario X"
+        (item) => item.type === "Definitivo" || item.type === "Modificado"
       );
     } else if (Array.isArray(args)) {
       values = args.filter(
-        (item) => item.type === "Definitivo" || item.type === "Complementario X"
+        (item) => item.type === "Definitivo" || item.type === "Modificado"
       );
     }
 
@@ -655,6 +656,7 @@ class WorkBudgets1 extends Component {
                     field="reference"
                     headerText="Referencia"
                     width="100"
+                    validationRules={{ required: true }}
                   />
                   <ColumnDirective
                     field="workName"

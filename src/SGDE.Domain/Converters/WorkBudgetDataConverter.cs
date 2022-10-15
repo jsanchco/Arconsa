@@ -28,7 +28,9 @@
 
                 workId = workBudgetData.WorkId,
                 workName = workBudgetData.Work.Name,
-                total = workBudgetData.WorkBudgets.Where(x => x.Type == "Definitivo").Sum(x => x.TotalContract)
+                total = workBudgetData.WorkBudgets
+                    .Where(x => x.Type == "Definitivo" || x.Type == "Modificado")
+                    .Sum(x => x.TotalContract)
             };
 
             return workBudgetDataViewModel;
@@ -50,7 +52,9 @@
 
                     workId = workBudgetData.WorkId,
                     workName = workBudgetData.Work.Name,
-                    total = workBudgetData.WorkBudgets.Where(x => x.Type == "Definitivo").Sum(x => x.TotalContract)
+                    total = workBudgetData.WorkBudgets
+                    .Where(x => x.Type == "Definitivo" || x.Type == "Modificado")
+                    .Sum(x => x.TotalContract)
                 };
                 return model;
             })

@@ -138,6 +138,7 @@ class IndirectCosts extends Component {
         type: "success",
       });
       this.setState({ rowSelected: null });
+      this.grid.refresh();
     }
     if (args.requestType === "delete") {
       this.props.showMessage({
@@ -274,6 +275,7 @@ class IndirectCosts extends Component {
                     edit={this.editYear}
                     textAlign="Right"
                     editType="numericedit"
+                    validationRules={{ required: true }}
                   />
                   <ColumnDirective
                     field="month"
@@ -303,6 +305,7 @@ class IndirectCosts extends Component {
                     edit={this.editAmount}
                     textAlign="Right"
                     editType="numericedit"
+                    validationRules={{ required: true }}
                   />
                   <ColumnDirective
                     field="key"

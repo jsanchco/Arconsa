@@ -261,6 +261,7 @@ class WorkCosts extends Component {
       });
       this.setState({ rowSelected: null });
       this.grid.clearSelection();
+      this.grid.refresh();
     }
     if (args.requestType === "delete") {
       this.props.showMessage({
@@ -435,6 +436,7 @@ class WorkCosts extends Component {
                     type="date"
                     format={this.format}
                     editType="datepickeredit"
+                    validationRules={{ required: true }}
                   />
                   <ColumnDirective
                     field="description"
@@ -460,6 +462,7 @@ class WorkCosts extends Component {
                     editType="numericedit"
                     allowGrouping={false}
                     edit={this.numericParams}
+                    validationRules={{ required: true }}
                   />
                   <ColumnDirective
                     field="fileName"

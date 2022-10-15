@@ -9,6 +9,7 @@ import {
   Toolbar,
   Page,
 } from "@syncfusion/ej2-react-grids";
+import { getValue } from "@syncfusion/ej2-base";
 import { DataManager, WebApiAdaptor } from "@syncfusion/ej2-data";
 import { config, COMPANY_DOCUMENTS } from "../../constants";
 import { L10n } from "@syncfusion/ej2-base";
@@ -74,6 +75,7 @@ class DocumentsCompany extends Component {
     this.toggleModal = this.toggleModal.bind(this);
     this.updateDocument = this.updateDocument.bind(this);
     this.downloadDocuments = this.downloadDocuments.bind(this);
+    this.rowDataBound = this.rowDataBound.bind(this);
 
     this.template = this.gridTemplate;
 
@@ -140,7 +142,20 @@ class DocumentsCompany extends Component {
     let error = Array.isArray(args) ? args[0].error : args.error;
     if (Array.isArray(error)) {
       error = error[0].error;
+    } else if (error.message != null) {
+      error.statusText = args.error.message;
+      error.responseText = args.error.message;
+    } else if (error.responseText != null) {
+      let customError = JSON.parse(error.responseText).Message;
+      this.props.showMessage({
+        statusText: customError,
+        responseText: customError,
+        type: "danger",
+      });
+
+      return;
     }
+
     this.props.showMessage({
       statusText: error.statusText,
       responseText: error.responseText,
@@ -205,6 +220,15 @@ class DocumentsCompany extends Component {
     }
   }
 
+  rowDataBound(args) {
+    if (args.row) {
+      var alarm = getValue("alarm", args.data);
+      if (alarm) {
+        args.row.classList.add("color-orange");
+      }
+    }
+  }
+
   render() {
     return (
       <Fragment>
@@ -243,6 +267,7 @@ class DocumentsCompany extends Component {
                 actionFailure={this.actionFailure}
                 actionComplete={this.actionComplete}
                 allowGrouping={false}
+                rowDataBound={this.rowDataBound}
                 ref={(g) => (this.grid = g)}
                 query={this.query}
                 selectionSettings={this.selectionSettings}
@@ -261,6 +286,7 @@ class DocumentsCompany extends Component {
                     field="reference"
                     headerText="Referencia"
                     width="100"
+                    validationRules={{ required: true }}
                   />
                   <ColumnDirective
                     field="description"
@@ -281,10 +307,20 @@ class DocumentsCompany extends Component {
                     format={this.format}
                     textAlign="Center"
                     defaultValue={new Date()}
+                    validationRules={{ required: true }}
                   />
                   <ColumnDirective
                     field="dateExpiration"
                     headerText="Fecha Expiración"
+                    width="100"
+                    editType="datepickeredit"
+                    type="date"
+                    format={this.format}
+                    textAlign="Center"
+                  />
+                  <ColumnDirective
+                    field="dateWarning"
+                    headerText="Fecha Aviso"
                     width="100"
                     editType="datepickeredit"
                     type="date"
@@ -299,7 +335,7 @@ class DocumentsCompany extends Component {
                     textAlign="Center"
                     allowEditing={false}
                   />
-                  <ColumnDirective
+                  {/* <ColumnDirective
                     field="alarm"
                     headerText="Alarma"
                     width="50"
@@ -308,7 +344,7 @@ class DocumentsCompany extends Component {
                     type="boolean"
                     displayAsCheckBox={true}
                     allowEditing={false}
-                  />
+                  /> */}
                   <ColumnDirective field="typeFile" visible={false} />
                 </ColumnsDirective>
                 <Inject services={[Page, Toolbar, Edit]} />

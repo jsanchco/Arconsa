@@ -108,6 +108,17 @@ namespace SGDE.Domain.Supervisor
                 workBudget.Name = $"{workBudgetData.reference}.D";
                 workBudget.NameInWork = $"Presupuesto Definitivo";
             }
+
+            if (workBudgetViewModel.type == "Modificado")
+            {
+                var workBudgets = GetAllWorkBudget(
+                    workBudgetViewModel.workId,
+                    workBudgetViewModel.workBudgetDataId.Value);
+
+                var workBudgetData = GetWorkBudgetDataById(workBudgetViewModel.workBudgetDataId.Value);
+                workBudget.Name = $"{workBudgetData.reference}.MOD";
+                workBudget.NameInWork = $"Presupuesto Modificado";
+            }
         }
 
         private void CheckAdd(WorkBudgetViewModel workBudget)

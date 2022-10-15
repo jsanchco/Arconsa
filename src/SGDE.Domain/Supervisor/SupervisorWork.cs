@@ -2,12 +2,13 @@
 {
     #region Using
 
+    using Converters;
+    using Domain.Helpers;
+    using Entities;
     using System;
     using System.Collections.Generic;
-    using Converters;
-    using Entities;
+    using System.Linq;
     using ViewModels;
-    using Domain.Helpers;
 
     #endregion
 
@@ -38,7 +39,7 @@
 
             if (state == 0)
             {
-                foreach(var userHiring in userHirings)
+                foreach (var userHiring in userHirings)
                 {
                     AddUserToList(listUserViewModel, UserConverter.Convert(userHiring.User));
                 }
@@ -156,7 +157,7 @@
                 work.CloseDate = null;
             }
             else
-            { 
+            {
                 work.OpenDate = DateTime.Parse(workViewModel.openDate);
                 work.CloseDate = DateTime.Now;
             }
@@ -176,12 +177,57 @@
             return WorkConverter.ConvertListLite(_workRepository.GetAllLite(filter, clientId));
         }
 
+        public WorkClosePageViewModel GetWorkClosePage(int workId)
+        {
+            var work = _workRepository.GetById(workId);
+            if (work == null)
+                throw new Exception($"Work [{workId}] NOT found");
+
+            var authorizeCancelWorkers = GetHistoryByWorkId(workId);
+
+            var result = new WorkClosePageViewModel
+            {
+                workId = work.Id,
+                workName = work.Name,
+                workAddress = work.Address,
+                clientId = work.Client.Id,
+                clientName = work.Client.Name,
+                openDate = work.OpenDate.ToString("dd/MM/yyyy"),
+                closeDate = work.CloseDate?.ToString("dd/MM/yyyy"),
+                workBudgetsName = String.Join(", ", work.WorkBudgets
+                    .Where(x => x.Type == "Definitivo" || x.Type == "Modificado")
+                    .Select(x => x.Name)),
+                workBudgetsSumFormat = String.Join(" + ", work.WorkBudgets
+                    .Where(x => x.Type == "Definitivo" || x.Type == "Modificado")
+                    .Select(x=> x.TotalContract)) + " = " + work.WorkBudgets
+                    .Where(x => x.Type == "Definitivo" || x.Type == "Modificado")
+                    .Sum(x => x.TotalContract) + "€",
+                workBudgetsSum = work.WorkBudgets
+                    .Where(x => x.Type == "Definitivo" || x.Type == "Modificado")
+                    .Sum(x => x.TotalContract),
+                invoicesSum = work.Invoices.Sum(x => x.TaxBase),
+                workCostsSum = work.WorkCosts.Sum(x => x.TaxBase),
+                authorizeCancelWorkersCostsSum = authorizeCancelWorkers.Data.Sum(x => x.priceTotal),
+                authorizeCancelWorkersCostsSalesSum = authorizeCancelWorkers.Data.Sum(x => x.priceTotalSale),
+                indirectCostsSum = CalculateIndirectsCosts(workId)
+            };
+
+            return result;
+        }
+
         #region Auxiliary Methods
 
         private void AddUserToList(List<UserViewModel> listUserViewModel, UserViewModel userViewModel)
         {
             if (!listUserViewModel.Contains(userViewModel))
                 listUserViewModel.Add(userViewModel);
+        }
+
+        private double CalculateIndirectsCosts(int workId)
+        {
+            var result = 0;
+
+            return result;
         }
 
         #endregion

@@ -169,6 +169,7 @@
                 TaxBase = -invoiceParent.TaxBase,
                 WorkId = invoiceParent.WorkId,
                 ClientId = invoiceParent.ClientId,
+                WorkBudgetId = invoiceParent.WorkBudgetId,
                 UserId = invoiceParent.UserId,
                 StartDate = invoiceParent.StartDate,
                 EndDate = invoiceParent.EndDate,

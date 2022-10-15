@@ -7,6 +7,7 @@ export const CLIENTSLITE = "api/Clients/getallclientslite";
 export const WORKS = "api/Works";
 export const WORKSLITE = "api/Works/getallworkslite";
 export const UPDATEDATESWORK = "api/Works/updatedateswork";
+export const WORKCLOSEPAGE = "api/Works/getclosepage";
 export const TYPES_DOCUMENT = "api/TypesDocument";
 export const TRAININGS = "api/Trainings";
 export const COSTWORKERS = "api/CostWorkers";

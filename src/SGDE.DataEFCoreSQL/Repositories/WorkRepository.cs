@@ -101,6 +101,7 @@
                 .Include(x => x.UserHirings)
                 .Include(x => x.Invoices)
                 .Include(x => x.WorkBudgets)
+                .Include(x => x.WorkCosts)
                 .FirstOrDefault(x => x.Id == id);
         }
 

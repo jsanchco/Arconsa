@@ -105,6 +105,8 @@ namespace SGDE.Domain.Supervisor
         bool UpdateWork(WorkViewModel workViewModel);
         bool UpdateDatesWork(WorkViewModel workViewModel);
         bool DeleteWork(int id);
+        WorkClosePageViewModel GetWorkClosePage(int workId);
+
 
         #endregion
 

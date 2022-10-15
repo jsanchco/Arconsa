@@ -27,6 +27,8 @@ namespace SGDE.Domain.Supervisor
 
         public CompanyDataViewModel AddCompanyData(CompanyDataViewModel newCompanyDataViewModel)
         {
+            CheckDates(newCompanyDataViewModel);
+
             var companyData = new CompanyData
             {
                 AddedDate = DateTime.Now,
@@ -37,6 +39,8 @@ namespace SGDE.Domain.Supervisor
                 Description = newCompanyDataViewModel.description,
                 Observations = newCompanyDataViewModel.observations,
                 Date = newCompanyDataViewModel.date,
+                DateWarning = newCompanyDataViewModel.dateWarning,
+                DateExpiration = newCompanyDataViewModel.dateExpiration,
                 File = newCompanyDataViewModel.file,
                 TypeFile = newCompanyDataViewModel.typeFile,
                 FileName = newCompanyDataViewModel.fileName
@@ -51,6 +55,8 @@ namespace SGDE.Domain.Supervisor
             if (companyDataViewModel.id == null)
                 return false;
 
+            CheckDates(companyDataViewModel);
+
             var companyData = _companyDataRepository.GetById((int)companyDataViewModel.id);
 
             if (companyData == null) return false;
@@ -62,6 +68,7 @@ namespace SGDE.Domain.Supervisor
             companyData.Description = companyDataViewModel.description;
             companyData.Observations = companyDataViewModel.observations;
             companyData.Date = companyDataViewModel.date;
+            companyData.DateWarning = companyDataViewModel.dateWarning;
             companyData.DateExpiration = companyDataViewModel.dateExpiration;
             companyData.File = companyDataViewModel.file;
             companyData.TypeFile = companyDataViewModel.typeFile;
@@ -73,6 +80,28 @@ namespace SGDE.Domain.Supervisor
         public bool DeleteCompanyData(int id)
         {
             return _companyDataRepository.Delete(id);
+        }
+
+        private void CheckDates(CompanyDataViewModel newCompanyDataViewModel)
+        {
+            if (newCompanyDataViewModel.dateExpiration.HasValue && 
+                newCompanyDataViewModel.dateExpiration.Value < newCompanyDataViewModel.date)
+            {
+                throw new Exception("Fechas mal configuradas");
+            }
+
+            if (newCompanyDataViewModel.dateWarning.HasValue &&
+                newCompanyDataViewModel.dateWarning.Value < newCompanyDataViewModel.date)
+            {
+                throw new Exception("Fechas mal configuradas");
+            }
+
+            if (newCompanyDataViewModel.dateWarning.HasValue &&
+                newCompanyDataViewModel.dateExpiration.HasValue &&
+                newCompanyDataViewModel.dateWarning.Value > newCompanyDataViewModel.dateExpiration.Value)
+            {
+                throw new Exception("Fechas mal configuradas");
+            }
         }
     }
 }

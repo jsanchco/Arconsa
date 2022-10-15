@@ -33,7 +33,8 @@ import {
   DETAILSEMBARGO,
   COMPANY_LIBRARIES,
   COMPANY_DOCUMENTS,
-  WORKHISTORIES
+  WORKHISTORIES,
+  WORKCLOSEPAGE
 } from "../constants";
 import store from "../store/store";
 import ACTION_AUTHENTICATION from "../actions/authenticationAction";
@@ -961,6 +962,28 @@ export const getAllWorks = () => {
 export const getWork = (id) => {
   return new Promise((resolve, reject) => {
     const url = `${config.URL_API}/${WORKS}/${id}`;
+    fetch(url, {
+      headers: {
+        Accept: "text/plain",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`,
+      },
+      method: "GET",
+    })
+      .then((data) => data.json())
+      .then((result) => {
+        resolve(result);
+      })
+      .catch((error) => {
+        console.log("error ->", error);
+        reject();
+      });
+  });
+};
+
+export const getWorkClosePage = (id) => {
+  return new Promise((resolve, reject) => {
+    const url = `${config.URL_API}/${WORKCLOSEPAGE}/${id}`;
     fetch(url, {
       headers: {
         Accept: "text/plain",

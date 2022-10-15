@@ -114,7 +114,10 @@ class WorkHistory extends Component {
       { id: "Otros" }
     ];
     this.typeWorkHistoryParams = {
-      params: { sortOrder: "none" },
+      params: { 
+        sortOrder: "none",
+        popupWidth: "auto"
+      },
     };
   }
 
@@ -359,6 +362,7 @@ class WorkHistory extends Component {
                     field="reference"
                     headerText="Referencia"
                     width="100"
+                    validationRules={{ required: true }}
                   />                  
                   <ColumnDirective
                     field="type"
@@ -369,6 +373,7 @@ class WorkHistory extends Component {
                     foreignKeyField="id"
                     dataSource={new DataManager(this.typeWorkHistory)}
                     edit={this.typeWorkHistoryParams}
+                    validationRules={{ required: true }}
                   />
                   <ColumnDirective
                     field="date"
@@ -377,6 +382,7 @@ class WorkHistory extends Component {
                     type="date"
                     format={this.format}
                     editType="datepickeredit"
+                    validationRules={{ required: true }}
                   />
                   <ColumnDirective
                     field="description"
