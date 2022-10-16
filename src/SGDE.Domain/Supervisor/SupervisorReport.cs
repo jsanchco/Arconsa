@@ -2,13 +2,9 @@
 {
     #region Using
 
-    using System;
+    using Converters;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Threading;
-    using System.Threading.Tasks;
-    using Converters;
-    using Entities;
     using ViewModels;
 
     #endregion
@@ -17,7 +13,7 @@
     {
         public List<ReportResultViewModel> GetHoursByUser(ReportQueryViewModel reportViewModel)
         {
-             return ReportResultConverter.ConvertList(_dailySigningRepository.GetByUserId(reportViewModel.startDate, reportViewModel.endDate, (int)reportViewModel.workerId));
+            return ReportResultConverter.ConvertList(_dailySigningRepository.GetByUserId(reportViewModel.startDate, reportViewModel.endDate, (int)reportViewModel.workerId));
         }
 
         public List<ReportResultViewModel> GetHoursByWork(ReportQueryViewModel reportViewModel)
@@ -34,7 +30,7 @@
         {
             var users = _userRepository.GetAll(0, 0, null, null, new List<int> { 3 });
             var result = new List<ReportVariousInfoViewModel>();
-            foreach(var user in users.Data)
+            foreach (var user in users.Data)
             {
                 var listReportResultViewModel = ReportResultConverter.ConvertList(_dailySigningRepository.GetByUserId(reportAllViewModel.startDate, reportAllViewModel.endDate, user.Id));
                 result.Add(new ReportVariousInfoViewModel
@@ -83,9 +79,9 @@
                                                 .Where(x => x.hourTypeId == 5)
                                                 .Select(x => x.priceHourSale).Sum(),
                     totalEmbargos = user.Embargos.Where(x => !x.Paid)
-                                                .Sum(y => 
+                                                .Sum(y =>
                                                     y.DetailEmbargos
-                                                        .Where(w => w.DatePay <= reportAllViewModel.endDate && w.DatePay >= reportAllViewModel.startDate).Sum( x => x.Amount)),
+                                                        .Where(w => w.DatePay <= reportAllViewModel.endDate && w.DatePay >= reportAllViewModel.startDate).Sum(x => x.Amount)),
                     hasEmbargosPendings = user.Embargos.Any(x => x.Paid == false),
                     totalAdvances = user.Advances.Where(x => !x.Paid)
                                                 .Sum(y => y.Amount),
@@ -286,6 +282,37 @@
 
         public List<ReportResultsByWorkViewModel> GetAllResultsByWork(ReportQueryAllViewModel reportAllViewModel)
         {
+            return null;
+        }
+
+        public List<TracingViewModel> GetTracing(ReportQueryAllViewModel reportAllViewModel)
+        {
+            var result = _workBudgetRepository.GetByDates(
+                reportAllViewModel.startDate,
+                reportAllViewModel.endDate,
+                reportAllViewModel.filter);
+
+            if (result != null)
+            {
+                return result.Select(x => new TracingViewModel
+                {
+                    workBudgetId = x.Id,
+                    workBudgetName = x.Name,
+                    workId = x.WorkId,
+                    workName = x.Work?.Name,
+                    clientId = x.Work?.ClientId,
+                    clientName = x.Work?.Client?.Name,
+                    clientEmail = x.Work?.Client?.Email,
+                    dateAcceptanceWorkBudget = x.Date,
+                    dateOpenWork = x.Work?.OpenDate,
+                    dateCloseWork = x.Work?.CloseDate,
+                    dateSendWorkBudget = x.Date,
+                    workBudgetTotalContract = x.TotalContract,
+                    invoiceSum = x.Invoices?.Where(y => y.IsPaid).Sum(y => y.TaxBase),
+                    datesSendInvoices = string.Join(",", x.Invoices?.Where(y => y.IsPaid).Select(y => y.PayDate?.ToString("dd/MM/yyyy")))
+                }).ToList();
+            }
+
             return null;
         }
     }

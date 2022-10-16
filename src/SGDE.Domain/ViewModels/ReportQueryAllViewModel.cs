@@ -10,5 +10,6 @@ namespace SGDE.Domain.ViewModels
         public bool works { get; set; }
         public bool clients { get; set; }
         public bool showCeros { get; set; }
+        public string filter { get; set; }
     }
 }

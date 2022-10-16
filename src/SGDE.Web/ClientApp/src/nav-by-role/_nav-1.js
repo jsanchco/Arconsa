@@ -13,13 +13,13 @@ export default {
       url: "/dashboard",
       icon: "icon-speedometer",
       badge: {
-        variant: "info"
-      }
+        variant: "info",
+      },
     },
     {
       name: "ADECUA",
       url: "/ADECUA/DetailCompany",
-    },    
+    },
     {
       name: "Configuración",
       icon: "icon-settings",
@@ -27,49 +27,49 @@ export default {
         {
           name: "Roles",
           url: "/settings/roles",
-          icon: "icon-people"
+          icon: "icon-people",
         },
         {
           name: "Puestos de Trabajo",
           url: "/settings/professions",
-          icon: "icon-people"
+          icon: "icon-people",
         },
         {
           name: "Tipos de Documento",
           url: "/settings/typesdocument",
-          icon: "icon-layers"
+          icon: "icon-layers",
         },
         {
           name: "Gestión de Usuarios",
           url: "/settings/usersnoworker",
-          icon: "icon-people"
+          icon: "icon-people",
         },
         {
           name: "Biblioteca",
           url: "/settings/libraries",
-          icon: "icon-layers"
-        }        
-      ]
+          icon: "icon-layers",
+        },
+      ],
     },
     {
       name: "Trabajadores",
       url: "/employees/employees",
-      icon: "icon-people"
+      icon: "icon-people",
     },
     {
       name: "Clientes",
       url: "/clients/clients",
-      icon: "icon-chart"
+      icon: "icon-chart",
     },
     {
       name: "Obras",
       url: "/works/works",
-      icon: "icon-globe"
+      icon: "icon-globe",
     },
     {
       name: "Fichajes",
       url: "/signings/signings",
-      icon: "icon-book-open"
+      icon: "icon-book-open",
     },
     // {
     //   name: "Facturas",
@@ -79,7 +79,12 @@ export default {
     {
       name: "Facturas",
       url: "/invoices/Invoices",
-      icon: "cui-file"
+      icon: "cui-file",
+    },
+    {
+      name: "Seguimiento",
+      url: "/invoices/Tracing",
+      icon: "cui-file",
     },
     {
       name: "Informes",
@@ -89,22 +94,22 @@ export default {
         {
           name: "Trabajador",
           url: "/reports/ReportHoursUser",
-          icon: "icon-list"
+          icon: "icon-list",
         },
         {
           name: "Obra",
           url: "/reports/ReportHoursWork",
-          icon: "icon-list"
+          icon: "icon-list",
         },
         {
           name: "Cliente",
           url: "/reports/ReportHoursClient",
-          icon: "icon-list"
+          icon: "icon-list",
         },
         {
           name: "Facturas",
           url: "/reports/ReportInvoices",
-          icon: "icon-list"
+          icon: "icon-list",
         },
         // {
         //   name: "Resultados Obras",
@@ -114,9 +119,9 @@ export default {
         {
           name: "Varios",
           url: "/reports/ReportsVarious",
-          icon: "icon-list"
-        }
-      ]
+          icon: "icon-list",
+        },
+      ],
     },
     // {
     //   name: "Test",
@@ -128,5 +133,5 @@ export default {
     //   url: "/Pages/Tests/TestHierachical",
     //   icon: "cui-file"
     // }
-  ]
+  ],
 };

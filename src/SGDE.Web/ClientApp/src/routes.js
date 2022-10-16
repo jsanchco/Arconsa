@@ -45,7 +45,6 @@ const AddNewEmployee = React.lazy(() => import('./views/Employees/add-new'));
 
 const DetailCompany = React.lazy(() => import('./views/ADECUA/detail-company'));
 const BasicDataCompany = React.lazy(() => import('./views/ADECUA/basic-data-company'));
-const IndirectCosts = React.lazy(() => import('./views/ADECUA/indirect-costs'));
 const Roles = React.lazy(() => import('./views/Settings/roles'));
 const Professions = React.lazy(() => import('./views/Settings/professions'));
 const TypesDocument = React.lazy(() => import('./views/Settings/types-document'));
@@ -67,6 +66,7 @@ const ReportHoursClient = React.lazy(() => import('./views/Reports/report-hours-
 const ReportInvoices = React.lazy(() => import('./views/Reports/report-invoices'));
 const ReportResults = React.lazy(() => import('./views/Reports/report-results'));
 const ReportsVarious = React.lazy(() => import('./views/Reports/reports-various'));
+const Tracing = React.lazy(() => import('./views/Reports/report-tracing'));
 
 const Invoices = React.lazy(() => import('./views/Invoices/invoices'));
 const InvoicesCustom = React.lazy(() => import('./views/Invoices/invoices-custom'));
@@ -147,6 +147,7 @@ const routes = [
   { path: '/reports/reportresults', exact: true, name: 'Informe Resultados', component: ReportResults },
   { path: '/reports/reportsvarious', exact: true, name: 'Informes Varios', component: ReportsVarious },
   { path: '/invoices/invoices', exact: true, name: 'Facturas', component: Invoices },
+  { path: '/invoices/tracing', exact: true, name: 'Seguimiento', component: Tracing },
   { path: '/invoices/invoicescustom', exact: true, name: 'Facturas Personalizadas', component: InvoicesCustom },
   { path: '/pages/Tests/TestBlank', name: 'Test Blank', component: TestBlank },
   { path: '/pages/Tests/TestHierachical', name: 'Test Hierachical', component: TestHierachical }

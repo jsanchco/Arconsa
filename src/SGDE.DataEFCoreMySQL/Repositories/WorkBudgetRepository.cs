@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SGDE.Domain.Entities;
+using SGDE.Domain.Helpers;
 using SGDE.Domain.Repositories;
 using System;
 using System.Collections.Generic;
@@ -135,6 +136,35 @@ namespace SGDE.DataEFCoreMySQL.Repositories
             }
 
             return data;
+        }
+
+        public List<WorkBudget> GetByDates(DateTime? startDate = null, DateTime? endDate = null, string filter = null)
+        {
+            if (!startDate.HasValue)
+                startDate = DateTime.MinValue;
+
+            if (!endDate.HasValue)
+                endDate = DateTime.Now;
+
+            var result = _context.WorkBudget
+                .Where(x => x.Date >= startDate && x.Date <= endDate &&
+                            x.Type == "Definitivo" || x.Type == "Complementario X" || x.Type == "Modificado")
+                .Include(x => x.Invoices)
+                .Include(x => x.Work)
+                .ThenInclude(y => y.Client)
+                .ToList();
+
+            if (!string.IsNullOrEmpty(filter) && result != null)
+            {
+                result = result
+                    .Where(x =>
+                        Searcher.RemoveAccentsWithNormalization(x.Name?.ToLower()).Contains(filter) ||
+                        Searcher.RemoveAccentsWithNormalization(x.Work?.Name.ToLower()).Contains(filter) ||
+                        Searcher.RemoveAccentsWithNormalization(x.Work?.Client?.Name.ToLower()).Contains(filter))
+                    .ToList();
+            }
+
+            return result;
         }
     }
 }
