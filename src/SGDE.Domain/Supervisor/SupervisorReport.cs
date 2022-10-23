@@ -3,6 +3,7 @@
     #region Using
 
     using Converters;
+    using SGDE.Domain.Entities;
     using System.Collections.Generic;
     using System.Linq;
     using ViewModels;
@@ -272,7 +273,9 @@
 
         public List<InvoiceViewModel> GetAllInvoice(ReportQueryAllViewModel reportAllViewModel)
         {
-            var invoices = _invoiceRepository.GetAll().Data;
+            List<Invoice> invoices = !string.IsNullOrEmpty(reportAllViewModel.filter)
+                ? _invoiceRepository.GetAll(0, 0, reportAllViewModel.filter).Data
+                : _invoiceRepository.GetAll().Data;
             var result = InvoiceConverter.ConvertList(invoices.Where(x => x.IssueDate >= reportAllViewModel.startDate &&
                                                                           x.IssueDate <= reportAllViewModel.endDate)
                                                               .ToList());
@@ -308,7 +311,7 @@
                     dateCloseWork = x.Work?.CloseDate,
                     dateSendWorkBudget = x.Date,
                     workBudgetTotalContract = x.TotalContract,
-                    invoiceSum = x.Invoices?.Where(y => y.IsPaid).Sum(y => y.TaxBase),
+                    invoiceSum = x.Invoices?.Where(y => y.IsPaid).Sum(y => y.Total),
                     datesSendInvoices = string.Join(",", x.Invoices?.Where(y => y.IsPaid).Select(y => y.PayDate?.ToString("dd/MM/yyyy")))
                 }).ToList();
             }

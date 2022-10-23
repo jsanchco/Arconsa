@@ -138,6 +138,7 @@
                 var queryString = Request.Query;
                 var startDate = queryString["startDate"];
                 var endDate = queryString["endDate"];
+                var filter = queryString["filter"];
 
                 if (string.IsNullOrEmpty(startDate) || string.IsNullOrEmpty(endDate))
                     throw new Exception("Informe mal configurado");
@@ -145,7 +146,8 @@
                 var reportAllViewModel = new ReportQueryAllViewModel
                 {
                     startDate = DateTime.ParseExact(startDate, "dd/MM/yyyy", null),
-                    endDate = DateTime.ParseExact(endDate, "dd/MM/yyyy", null)
+                    endDate = DateTime.ParseExact(endDate, "dd/MM/yyyy", null),
+                    filter = filter
                 };
 
                 var data = _supervisor.GetAllInvoice(reportAllViewModel);

@@ -7,6 +7,7 @@ import {
   Form,
   FormGroup,
   Label,
+  Input,
   Button,
   Col,
 } from "reactstrap";
@@ -26,11 +27,6 @@ import {
   AggregateDirective,
   AggregatesDirective,
 } from "@syncfusion/ej2-react-grids";
-import {
-  createSpinner,
-  showSpinner,
-  hideSpinner,
-} from "@syncfusion/ej2-popups";
 import { connect } from "react-redux";
 import { DataManager, WebApiAdaptor, Query } from "@syncfusion/ej2-data";
 import { config, REPORT_INVOICES, COMPANY_DATA } from "../../constants";
@@ -98,6 +94,7 @@ class ReportInvoices extends Component {
   handleOnClick() {
     const valueDtpStartDate = this.formatDate(this.dtpStartDate.value);
     const valueDtpEndDate = this.formatDate(this.dtpEndDate.value);
+    const valueFilter = document.getElementById("filter").value;
 
     if (
       valueDtpStartDate === null ||
@@ -129,7 +126,8 @@ class ReportInvoices extends Component {
         });
         this.grid.query = new Query()
           .addParams("startDate", valueDtpStartDate)
-          .addParams("endDate", valueDtpEndDate);
+          .addParams("endDate", valueDtpEndDate)
+          .addParams("filter", valueFilter);
 
         this.grid.refresh();
       }
@@ -318,7 +316,7 @@ class ReportInvoices extends Component {
       if (args.column.headerText === "Pagado") {
         if (args.value === false) {
           args.value = "Pendiente";
-          args.style = { backColor: '#ff704d' };
+          args.style = { backColor: "#ff704d" };
         }
         if (args.value === true) {
           args.value = "Cobrado";
@@ -349,7 +347,7 @@ class ReportInvoices extends Component {
               <div>
                 <Form style={{ marginLeft: "20px" }}>
                   <Row>
-                    <Col xs="5">
+                    <Col xs="3">
                       <FormGroup>
                         <Label for="startDate">Fecha Inicio</Label>
                         <DatePickerComponent
@@ -359,13 +357,24 @@ class ReportInvoices extends Component {
                         />
                       </FormGroup>
                     </Col>
-                    <Col xs="5">
+                    <Col xs="3">
                       <FormGroup style={{ marginLeft: "20px" }}>
                         <Label for="endDate">Fecha Fin</Label>
                         <DatePickerComponent
                           id="endDate"
                           ref={(g) => (this.dtpEndDate = g)}
                           format="dd/MM/yyyy"
+                        />
+                      </FormGroup>
+                    </Col>
+                    <Col xs="5">
+                      <FormGroup style={{ marginLeft: "20px" }}>
+                        <Label for="filter">Filtrar por Cliente u Obra</Label>
+                        <Input
+                          type="text"
+                          id="filter"
+                          name="filter"
+                          placeholder="Por favor seleccione Cliente u Obra"
                         />
                       </FormGroup>
                     </Col>
