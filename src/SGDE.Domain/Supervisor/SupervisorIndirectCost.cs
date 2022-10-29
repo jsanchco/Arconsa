@@ -8,9 +8,9 @@ namespace SGDE.Domain.Supervisor
 {
     public partial class Supervisor
     {
-        public QueryResult<IndirectCostViewModel> GetAllIndirectCost(int skip = 0, int take = 0)
+        public QueryResult<IndirectCostViewModel> GetAllIndirectCost(int skip = 0, int take = 0, string filter = null)
         {
-            var queryResult = _indirectCostRepository.GetAll(skip, take);
+            var queryResult = _indirectCostRepository.GetAll(skip, take, filter);
             return new QueryResult<IndirectCostViewModel>
             {
                 Data = IndirectCostConverter.ConvertList(queryResult.Data),

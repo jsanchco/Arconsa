@@ -3,13 +3,12 @@ namespace SGDE.API.Controllers
 {
     #region Using
 
-    using Microsoft.AspNetCore.Mvc;
-    using Microsoft.AspNetCore.Authorization;
     using Domain.Supervisor;
+    using Domain.ViewModels;
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Logging;
     using System;
-    using Domain.ViewModels;
-    using System.Linq;
 
     #endregion
 
@@ -50,8 +49,9 @@ namespace SGDE.API.Controllers
                 var queryString = Request.Query;
                 var skip = Convert.ToInt32(queryString["$skip"]);
                 var take = Convert.ToInt32(queryString["$top"]);
+                var filter = Util.Helper.getSearch(queryString["$filter"]);
 
-                var queryResult = _supervisor.GetAllIndirectCost(skip, take);
+                var queryResult = _supervisor.GetAllIndirectCost(skip, take, filter);
 
                 return new { Items = queryResult.Data, Count = queryResult.Count };
             }
@@ -63,7 +63,7 @@ namespace SGDE.API.Controllers
         }
 
         [HttpPost]
-        public object Post([FromBody]IndirectCostViewModel indirectCostViewModel)
+        public object Post([FromBody] IndirectCostViewModel indirectCostViewModel)
         {
             try
             {
@@ -78,7 +78,7 @@ namespace SGDE.API.Controllers
         }
 
         [HttpPut]
-        public object Put([FromBody]IndirectCostViewModel indirectCostViewModel)
+        public object Put([FromBody] IndirectCostViewModel indirectCostViewModel)
         {
             try
             {

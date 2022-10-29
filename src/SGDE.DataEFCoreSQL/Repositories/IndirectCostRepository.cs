@@ -1,19 +1,19 @@
 ﻿namespace SGDE.DataEFCoreSQL.Repositories
-{    
+{
     #region Using
 
-    using System.Collections.Generic;
-    using System.Linq;
     using Domain.Entities;
     using Domain.Repositories;
-    using Microsoft.EntityFrameworkCore;
     using SGDE.Domain.Helpers;
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
 
     #endregion
 
     public class IndirectCostRepository : IIndirectCostRepository, IDisposable
     {
+        private static readonly string[] MONTHS = { "ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO", "JULIO", "AGOSTO", "SEPTIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE" };
         private readonly EFContextSQL _context;
 
         public IndirectCostRepository(EFContextSQL context)
@@ -40,22 +40,47 @@
             return GetById(id) != null;
         }
 
-        public QueryResult<IndirectCost> GetAll(int skip = 0, int take = 0)
+        public QueryResult<IndirectCost> GetAll(int skip = 0, int take = 0, string filter = null)
         {
             var data = _context.IndirectCost
-                .ToList()
-                .OrderByDescending(x => x.Key);
+                .ToList();
 
-            var count = data.Count();
+            if (!string.IsNullOrEmpty(filter))
+            {
+                var filterSplit = filter.Split(",");
+                if (filterSplit.Count() == 2)
+                {
+                    if (!Int32.TryParse(filterSplit[0].Trim(), out int year))
+                        throw new Exception("Año mal configurado");
+
+                    var month = filterSplit[1].Trim();
+                    var index = Array.FindIndex(MONTHS, x => x == month.ToUpper());
+                    if (index == -1)
+                        throw new Exception("Mes mal configurado");
+
+                    index++;
+                    data = data.Where(x => x.Date >= new DateTime(year, index, 1) &&
+                                           x.Date <= new DateTime(year, index, DateTime.DaysInMonth(year, index)))
+                               .ToList();
+                }
+                else
+                {
+                    throw new Exception("Búsqueda mal configurada");
+                }
+            }
+
+            var result = data.OrderByDescending(x => x.Date);
+
+            var count = result.Count();
             return (skip != 0 || take != 0)
                 ? new QueryResult<IndirectCost>
                 {
-                    Data = data.Skip(skip).Take(take).ToList(),
+                    Data = result.Skip(skip).Take(take).ToList(),
                     Count = count
                 }
                 : new QueryResult<IndirectCost>
                 {
-                    Data = data.Skip(0).Take(count).ToList(),
+                    Data = result.Skip(0).Take(count).ToList(),
                     Count = count
                 };
         }

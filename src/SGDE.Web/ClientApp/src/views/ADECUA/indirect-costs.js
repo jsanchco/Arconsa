@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react";
-import { Breadcrumb, BreadcrumbItem, Container, Row } from "reactstrap";
+import { Label, Row, Col } from "reactstrap";
 import {
   ColumnDirective,
   ColumnsDirective,
@@ -58,6 +58,7 @@ class IndirectCosts extends Component {
         prefixIcon: "e-custom-icons e-file-workers",
         id: "copyMonth",
       },
+      "Search",
     ];
     this.editSettings = {
       showDeleteConfirmDialog: true,
@@ -236,6 +237,12 @@ class IndirectCosts extends Component {
               <i className="icon-layers"></i> Gastos Indirectos
             </div>
             <div className="card-body"></div>
+            <div style={{ marginTop: -35, marginRight: 20, textAlign: "right" }}>
+              <Label style={{ fontWeight: "bold", fontSize: "x-small" }}>
+                Para hacer búsquedas debes formatearlas mediante [año, mes].
+                Ejemplo: 2022,enero
+              </Label>
+            </div>
             <Row>
               <GridComponent
                 dataSource={this.indirectCosts}
@@ -248,7 +255,7 @@ class IndirectCosts extends Component {
                 style={{
                   marginLeft: 30,
                   marginRight: 30,
-                  marginTop: -20,
+                  marginTop: -10,
                   marginBottom: 20,
                 }}
                 actionFailure={this.actionFailure}
