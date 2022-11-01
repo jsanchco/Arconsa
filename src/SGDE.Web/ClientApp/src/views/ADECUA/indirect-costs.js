@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react";
-import { Label, Row, Col } from "reactstrap";
+import { Label, Row } from "reactstrap";
 import {
   ColumnDirective,
   ColumnsDirective,
@@ -20,8 +20,6 @@ import { DataManager, WebApiAdaptor } from "@syncfusion/ej2-data";
 import { config, COMPANY_INDIRECTCOSTS } from "../../constants";
 import { L10n } from "@syncfusion/ej2-base";
 import data from "../../locales/locale.json";
-import { connect } from "react-redux";
-import ACTION_APPLICATION from "../../actions/applicationAction";
 import { TOKEN_KEY, addIndirectCosts } from "../../services";
 import ModalSelectYearMonth from "../Modals/modal-select-year-month";
 
@@ -237,7 +235,9 @@ class IndirectCosts extends Component {
               <i className="icon-layers"></i> Gastos Indirectos
             </div>
             <div className="card-body"></div>
-            <div style={{ marginTop: -35, marginRight: 20, textAlign: "right" }}>
+            <div
+              style={{ marginTop: -35, marginRight: 20, textAlign: "right" }}
+            >
               <Label style={{ fontWeight: "bold", fontSize: "x-small" }}>
                 Para hacer búsquedas debes formatearlas mediante [año, mes].
                 Ejemplo: 2022,enero

@@ -242,7 +242,7 @@ namespace SGDE.Domain.Supervisor
         bool UpdateInvoice(InvoiceViewModel invoiceViewModel);
         bool DeleteInvoice(int id);
         InvoiceResponseViewModel PrintInvoice(int invoiceId);
-        InvoiceViewModel BillPayment(int invoiceId);
+        InvoiceViewModel BillPayment(CancelInvoiceWithAmount cancelInvoiceWithAmount);
         InvoiceViewModel GetPreviousInvoice(InvoiceViewModel invoiceViewModel);
 
         #endregion

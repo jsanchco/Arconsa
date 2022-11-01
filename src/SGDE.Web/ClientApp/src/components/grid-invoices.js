@@ -29,8 +29,7 @@ import { TOKEN_KEY } from "../services";
 import {
   base64ToArrayBuffer,
   saveByteArray,
-  printInvoice,
-  billPayment,
+  printInvoice
 } from "../services";
 
 L10n.load(data);
@@ -64,12 +63,12 @@ class GridInvoice extends Component {
         prefixIcon: "e-custom-icons e-print",
         id: "PrintInvoice",
       },
-      {
-        text: "Anular Factura",
-        tooltipText: "Anular Factura",
-        prefixIcon: "e-custom-icons e-empty",
-        id: "CancelInvoice",
-      },
+      // {
+      //   text: "Anular Factura",
+      //   tooltipText: "Anular Factura",
+      //   prefixIcon: "e-custom-icons e-empty",
+      //   id: "CancelInvoice",
+      // },
       "Search",
     ];
     if (props.showViewInvoice === true) {
@@ -98,7 +97,7 @@ class GridInvoice extends Component {
     this.actionFailure = this.actionFailure.bind(this);
     this.actionComplete = this.actionComplete.bind(this);
     this.clickHandler = this.clickHandler.bind(this);
-    this.billPayment = this.billPayment.bind(this);
+    // this.billPayment = this.billPayment.bind(this);
     this.rowSelected = this.rowSelected.bind(this);
     this.beforePrint = this.beforePrint.bind(this);
 
@@ -106,7 +105,7 @@ class GridInvoice extends Component {
       {
         click: () => {
           this.setState({ hideConfirmDialog: false });
-          this.billPayment();
+          // this.billPayment();
         },
         buttonModel: { content: "Si", isPrimary: true },
       },
@@ -227,33 +226,33 @@ class GridInvoice extends Component {
     }
   }
 
-  billPayment() {
-    const element = document.getElementById("gridInvoices");
+  // billPayment() {
+  //   const element = document.getElementById("gridInvoices");
 
-    createSpinner({
-      target: element,
-    });
-    showSpinner(element);
+  //   createSpinner({
+  //     target: element,
+  //   });
+  //   showSpinner(element);
 
-    billPayment(this.grid.getSelectedRecords()[0].id)
-      .then(() => {
-        this.props.showMessage({
-          statusText: "200",
-          responseText: "Operación realizada con éxito",
-          type: "success",
-        });
-        this.grid.refresh();
-        hideSpinner(element);
-      })
-      .catch((error) => {
-        this.props.showMessage({
-          statusText: "Ha ocurrido un error en la operación",
-          responseText: "Ha ocurrido un error en la operación",
-          type: "danger",
-        });
-        hideSpinner(element);
-      });
-  }
+  //   billPayment(this.grid.getSelectedRecords()[0].id)
+  //     .then(() => {
+  //       this.props.showMessage({
+  //         statusText: "200",
+  //         responseText: "Operación realizada con éxito",
+  //         type: "success",
+  //       });
+  //       this.grid.refresh();
+  //       hideSpinner(element);
+  //     })
+  //     .catch((error) => {
+  //       this.props.showMessage({
+  //         statusText: "Ha ocurrido un error en la operación",
+  //         responseText: "Ha ocurrido un error en la operación",
+  //         type: "danger",
+  //       });
+  //       hideSpinner(element);
+  //     });
+  // }
 
   footerSumEuros(args) {
     let title = args.Sum;

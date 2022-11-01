@@ -45,9 +45,7 @@
                 invoiceToCancelName = invoice.InvoiceToCancel?.Name,
                 workBudgetId = invoice.WorkBudgetId,
                 workBudgetName = invoice.WorkBudget?.Name,
-                detailInvoice = invoice.InvoiceToCancelId == null ?
-                        DetailInvoiceConverter.ConvertList(invoice.DetailsInvoice) :
-                        DetailInvoiceConverter.ConvertList(invoice.InvoiceToCancel.DetailsInvoice, true)
+                detailInvoice = DetailInvoiceConverter.ConvertList(invoice.DetailsInvoice)
             };
 
             invoiceViewModel.retentions = invoice.Work.InvoiceToOrigin == true ? (invoiceViewModel.detailInvoice.Sum(x => x.amountUnits) * (double)invoice.Work.PercentageRetention) : 0;
@@ -90,9 +88,7 @@
                     invoiceToCancelName = invoice.InvoiceToCancel?.Name,
                     workBudgetId = invoice.WorkBudgetId,
                     workBudgetName = invoice.WorkBudget?.Name,
-                    detailInvoice = invoice.InvoiceToCancelId == null ?
-                        DetailInvoiceConverter.ConvertList(invoice.DetailsInvoice) :
-                        DetailInvoiceConverter.ConvertList(invoice.InvoiceToCancel.DetailsInvoice, true)
+                    detailInvoice = DetailInvoiceConverter.ConvertList(invoice.DetailsInvoice)
                 };
                 model.retentions = invoice.Work.InvoiceToOrigin == true ? (model.detailInvoice.Sum(x => x.amountUnits) * (double)invoice.Work.PercentageRetention) : 0;
                 model.taxBase = Math.Round(model.detailInvoice.Sum(x => x.amountUnits), 2);

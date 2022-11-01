@@ -149,9 +149,9 @@
             return generateInvoice._invoiceResponseViewModel;
         }
 
-        public InvoiceViewModel BillPayment(int invoiceId)
+        public InvoiceViewModel BillPayment(CancelInvoiceWithAmount cancelInvoiceWithAmount)
         {
-            var invoiceParent = _invoiceRepository.GetById(invoiceId);
+            var invoiceParent = _invoiceRepository.GetById(cancelInvoiceWithAmount.invoiceId);
             if (invoiceParent == null)
                 throw new Exception("Factura no encontrada");
 
@@ -160,13 +160,16 @@
 
             var invoiceNumber = _invoiceRepository.CountInvoicesInYear(DateTime.Now.Year);
 
+            if (cancelInvoiceWithAmount.amount < -invoiceParent.TaxBase)
+                throw new Exception("No de puede anular una Factura con importe mayor de la Base Imponible");
+
             var newInvoice = new Invoice
             {
                 Name = $"AB_{invoiceNumber:0000}_{DateTime.Now.Year.ToString().Substring(2, 2)}",
                 InvoiceNumber = invoiceNumber,
-                InvoiceToCancelId = invoiceId,
+                InvoiceToCancelId = cancelInvoiceWithAmount.invoiceId,
                 IssueDate = DateTime.Now,
-                TaxBase = -invoiceParent.TaxBase,
+                TaxBase = cancelInvoiceWithAmount.amount,
                 WorkId = invoiceParent.WorkId,
                 ClientId = invoiceParent.ClientId,
                 WorkBudgetId = invoiceParent.WorkBudgetId,
@@ -180,6 +183,20 @@
             };
 
             var addInvoice = _invoiceRepository.Add(newInvoice);
+
+            var newDeatilInvoice = new DetailInvoice
+            {
+                InvoiceId = addInvoice.Id,
+                NameUnit = "UD",
+                ServicesPerformed = cancelInvoiceWithAmount.description,
+                PriceUnity = cancelInvoiceWithAmount.amount,
+                Units = 1,
+                UnitsAccumulated = 0,
+                Iva = cancelInvoiceWithAmount.iva                
+            };
+
+            var addDeatilInvoice = _detailInvoiceRepository.Add(newDeatilInvoice);
+
             return InvoiceConverter.Convert(addInvoice);
         }
 

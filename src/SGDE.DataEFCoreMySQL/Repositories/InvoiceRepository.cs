@@ -122,8 +122,22 @@
 
         public Invoice Add(Invoice newInvoice)
         {
+            Validate(newInvoice);
+
+            var invoiceNumber = CountInvoicesInYear(newInvoice.IssueDate.Year);
+            var work = _context.Work.FirstOrDefault(x => x.Id == newInvoice.WorkId);
+
+            newInvoice.InvoiceNumber = invoiceNumber;
+            if (newInvoice.InvoiceToCancelId == null)
+            {
+                newInvoice.Name = work != null
+                    ? $"{work.WorksToRealize}{invoiceNumber:0000}_{newInvoice.IssueDate.Year.ToString().Substring(2, 2)}"
+                    : $"{invoiceNumber:0000}_{newInvoice.IssueDate.Year.ToString().Substring(2, 2)}";
+            }
+
             _context.Invoice.Add(newInvoice);
             _context.SaveChanges();
+
             return newInvoice;
         }
 
@@ -357,5 +371,29 @@
 
             return invoiceNumber;
         }
+
+        #region Auxiliary Methods
+
+        private void Validate(Invoice invoice)
+        {
+            if (invoice.ClientId == null ||
+                invoice.WorkId == null)
+            {
+                throw new Exception("Factura incompleta. Revisa los datos");
+            }
+
+            var findWork = _context.Work.Find(invoice.WorkId);
+            if (findWork == null)
+            {
+                throw new Exception("Obra no encontrada");
+            }
+
+            if (findWork.WorksToRealize == "PA" && invoice.WorkBudgetId == null)
+            {
+                throw new Exception("Factura incompleta. Revisa los datos. Debes introducir el presupuesto");
+            }
+        }
+
+        #endregion
     }
 }

@@ -129,12 +129,12 @@
             }
         }
 
-        [HttpGet("billpayment/{invoiceId:int}")]
-        public object BillPayment(int invoiceId)
+        [HttpPost("billpaymentwithamount")]
+        public object BillPaymentWithAmount(CancelInvoiceWithAmount cancelInvoiceWithAmount)
         {
             try
             {
-                return _supervisor.BillPayment(invoiceId);
+                return _supervisor.BillPayment(cancelInvoiceWithAmount);
             }
             catch (Exception ex)
             {

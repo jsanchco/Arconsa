@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react";
+import React, { Component, Fragment, isValidElement } from "react";
 import { Breadcrumb, BreadcrumbItem, Container, Row } from "reactstrap";
 import {
   ColumnDirective,
@@ -36,12 +36,13 @@ import {
   base64ToArrayBuffer,
   saveByteArray,
   printInvoice,
-  billPayment,
+  billPaymentWithAmount
 } from "../../services";
 import { Query } from "@syncfusion/ej2-data";
 import { DropDownList } from "@syncfusion/ej2-dropdowns";
 import { DialogComponent } from "@syncfusion/ej2-react-popups";
 import { DialogUtility } from "@syncfusion/ej2-popups";
+import ModalCancelInvoice from "../Modals/modal-cancel-invoice";
 
 L10n.load(data);
 
@@ -87,6 +88,8 @@ class Invoices extends Component {
 
     this.state = {
       hideConfirmDialog: false,
+      modalCancelInvoice: false,
+      invoiceSelected: null
     };
 
     this.clientsElem = null;
@@ -161,7 +164,7 @@ class Invoices extends Component {
       {
         click: () => {
           this.setState({ hideConfirmDialog: false });
-          this.billPayment();
+          // this.billPayment();
         },
         buttonModel: { content: "Si", isPrimary: true },
       },
@@ -322,10 +325,12 @@ class Invoices extends Component {
       this.gridDetailsInvoiceActionComplete.bind(this);
     this.detailDataBound = this.detailDataBound.bind(this);
     this.clickHandlerGridInvoice = this.clickHandlerGridInvoice.bind(this);
-    this.billPayment = this.billPayment.bind(this);
+    // this.billPayment = this.billPayment.bind(this);
+    this.billPaymentWithAmount = this.billPaymentWithAmount.bind(this);
     this.clientTemplate = this.clientTemplate.bind(this);
     this.workTemplate = this.workTemplate.bind(this);
     this.workBudgetTemplate = this.workBudgetTemplate.bind(this);
+    this.toggleModalCancelInvoice = this.toggleModalCancelInvoice.bind(this);
 
     this.gridDetailsInvoice = {
       columns: [
@@ -536,7 +541,41 @@ class Invoices extends Component {
     });
   }
 
-  billPayment() {
+  toggleModalCancelInvoice() {
+    this.setState({
+      modalCancelInvoice: !this.state.modalCancelInvoice,
+    });
+  }
+
+  // billPayment() {
+  //   const element = document.getElementById("gridInvoices");
+
+  //   createSpinner({
+  //     target: element,
+  //   });
+  //   showSpinner(element);
+
+  //   billPayment(this.gridInvoice.getSelectedRecords()[0].id)
+  //     .then(() => {
+  //       this.props.showMessage({
+  //         statusText: "200",
+  //         responseText: "Operación realizada con éxito",
+  //         type: "success",
+  //       });
+  //       this.gridInvoice.refresh();
+  //       hideSpinner(element);
+  //     })
+  //     .catch((error) => {
+  //       this.props.showMessage({
+  //         statusText: "Ha ocurrido un error en la operación",
+  //         responseText: "Ha ocurrido un error en la operación",
+  //         type: "danger",
+  //       });
+  //       hideSpinner(element);
+  //     });
+  // }
+
+  billPaymentWithAmount(amount, iva, description) {
     const element = document.getElementById("gridInvoices");
 
     createSpinner({
@@ -544,7 +583,7 @@ class Invoices extends Component {
     });
     showSpinner(element);
 
-    billPayment(this.gridInvoice.getSelectedRecords()[0].id)
+    billPaymentWithAmount({ invoiceId: this.gridInvoice.getSelectedRecords()[0].id, amount: amount, iva: iva, description: description })
       .then(() => {
         this.props.showMessage({
           statusText: "200",
@@ -965,7 +1004,9 @@ class Invoices extends Component {
           type: "danger",
         });
       } else {
-        this.setState({ hideConfirmDialog: true });
+        this.setState({ invoiceSelected: selectedRecords[0] });
+        this.toggleModalCancelInvoice();  
+        // this.setState({ hideConfirmDialog: true });
       }
     }
   }
@@ -991,6 +1032,14 @@ class Invoices extends Component {
           {/* eslint-disable-next-line*/}
           <BreadcrumbItem active>Facturas</BreadcrumbItem>
         </Breadcrumb>
+
+        <ModalCancelInvoice
+          isOpen={this.state.modalCancelInvoice}
+          toggle={this.toggleModalCancelInvoice}
+          invoice={this.state.invoiceSelected}
+          billPaymentWithAmount={this.billPaymentWithAmount}
+          showMessage={this.props.showMessage}
+        />
 
         <DialogComponent
           id="confirmDialog"
