@@ -16,5 +16,6 @@
         Work Add(Work newWork);
         bool Update(Work work);
         bool Delete(int id);
+        int Count();
     }
 }

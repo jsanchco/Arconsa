@@ -197,5 +197,10 @@
 
             return data;
         }
+
+        public int Count()
+        {
+            return _context.Work.Count();
+        }
     }
 }

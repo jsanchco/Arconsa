@@ -87,6 +87,11 @@ export default {
       icon: "cui-file",
     },
     {
+      name: "Resultados",
+      url: "/reports/ReportCurrentStatus",
+      icon: "cui-file",
+    },    
+    {
       name: "Informes",
       url: "/reports",
       icon: "icon-info",

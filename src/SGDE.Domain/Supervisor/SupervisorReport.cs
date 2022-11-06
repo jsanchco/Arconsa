@@ -4,6 +4,7 @@
 
     using Converters;
     using SGDE.Domain.Entities;
+    using SGDE.Domain.Helpers;
     using System.Collections.Generic;
     using System.Linq;
     using ViewModels;
@@ -317,6 +318,44 @@
             }
 
             return null;
+        }
+
+        public QueryResult<WorkClosePageViewModel> GetAllCurrentStatus(int skip = 0, int take = 0, string filter = null)
+        {
+            var works = GetAllWork(skip, take, filter).Data;
+            var data = new List<WorkClosePageViewModel>();
+            foreach (var work in works)
+            {
+                if (!work.id.HasValue)
+                    continue;
+
+                var workClosePageViewModel = GetWorkClosePage(work.id.Value);
+                data.Add(workClosePageViewModel);
+            }
+
+            if (!string.IsNullOrEmpty(filter))
+            {
+                filter = filter.ToLower();
+                data = data
+                    .Where(x =>
+                        Searcher.RemoveAccentsWithNormalization(x.clientName?.ToLower()).Contains(filter) ||
+                        Searcher.RemoveAccentsWithNormalization(x.workName.ToLower()).Contains(filter) ||
+                        Searcher.RemoveAccentsWithNormalization(x.workBudgetsName?.ToLower()).Contains(filter))
+                    .ToList();
+            }
+
+            var count = _workRepository.Count();
+            return (skip != 0 || take != 0)
+                ? new QueryResult<WorkClosePageViewModel>
+                {
+                    Data = data.ToList(),
+                    Count = count
+                }
+                : new QueryResult<WorkClosePageViewModel>
+                {
+                    Data = data.ToList(),
+                    Count = count
+                };
         }
     }
 }

@@ -218,5 +218,26 @@
                 return StatusCode(500, ex);
             }
         }
+
+        [HttpGet("GetReportCurrentStatus")]
+        public object GetReportCurrentStatus()
+        {
+            try
+            {
+                var queryString = Request.Query;
+                var skip = Convert.ToInt32(queryString["$skip"]);
+                var take = Convert.ToInt32(queryString["$top"]);
+                var filter = Util.Helper.getSearch(queryString["$filter"]);
+
+                var data = _supervisor.GetAllCurrentStatus(skip, take, filter);
+
+                return new { Items = data.Data, data.Count };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Exception: ");
+                return StatusCode(500, ex);
+            }
+        }
     }
 }

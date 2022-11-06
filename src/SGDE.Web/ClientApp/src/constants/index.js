@@ -23,6 +23,7 @@ export const REPORTS_ALL= "api/Reports/GetReportAll";
 export const REPORT_INVOICES = "api/Reports/GetReportInvoices";
 export const REPORT_TRACING = "api/Reports/GetReportTracing";
 export const REPORT_RESULTS = "api/Reports/GetReportResults";
+export const REPORT_CURRENT_STATUS = "api/Reports/GetReportCurrentStatus";
 export const AUTHENTICATE = "api/Users/authenticate";
 export const UPDATEPASSWORD = "api/Users/updatepassword";
 export const INVOICERESPONSES = "api/InvoiceResponses";
