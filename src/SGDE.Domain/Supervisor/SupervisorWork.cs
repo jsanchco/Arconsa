@@ -205,11 +205,11 @@
                 workBudgetsSum = work.WorkBudgets
                     .Where(x => x.Type == "Definitivo" || x.Type == "Modificado")
                     .Sum(x => x.TotalContract),
-                invoicesSum = work.Invoices.Sum(x => x.TaxBase),
-                workCostsSum = work.WorkCosts.Sum(x => x.TaxBase),
-                authorizeCancelWorkersCostsSum = authorizeCancelWorkers.Data.Sum(x => x.priceTotal),
-                authorizeCancelWorkersCostsSalesSum = authorizeCancelWorkers.Data.Sum(x => x.priceTotalSale),
-                indirectCostsSum = CalculateIndirectsCosts(workId)
+                invoicesSum = Math.Round(work.Invoices.Sum(x => x.TaxBase), 2),
+                workCostsSum = Math.Round(work.WorkCosts.Sum(x => x.TaxBase), 2),
+                authorizeCancelWorkersCostsSum = Math.Round(authorizeCancelWorkers.Data.Sum(x => x.priceTotal), 2),
+                authorizeCancelWorkersCostsSalesSum = Math.Round(authorizeCancelWorkers.Data.Sum(x => x.priceTotalSale), 2),
+                indirectCostsSum = Math.Round(CalculateIndirectCostsByWork(workId), 2)
             };
 
             return result;
@@ -221,13 +221,6 @@
         {
             if (!listUserViewModel.Contains(userViewModel))
                 listUserViewModel.Add(userViewModel);
-        }
-
-        private double CalculateIndirectsCosts(int workId)
-        {
-            var result = 0;
-
-            return result;
         }
 
         #endregion

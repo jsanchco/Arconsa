@@ -124,5 +124,12 @@
                 .Where(x => x.Date == date)
                 .ToList();
         }
+
+        public List<IndirectCost> GetAllBetweenDates(DateTime start, DateTime end)
+        {
+            return _context.IndirectCost
+                .Where(x => x.Date >= start && x.Date <= end)
+                .ToList();
+        }
     }
 }

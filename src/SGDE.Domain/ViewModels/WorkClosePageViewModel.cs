@@ -24,7 +24,7 @@ namespace SGDE.Domain.ViewModels
         {
             get
             {
-                return invoicesSum - workCostsSum - authorizeCancelWorkersCostsSum - indirectCostsSum;
+                return Math.Round(invoicesSum - workCostsSum - authorizeCancelWorkersCostsSum - indirectCostsSum, 2);
             }
         }
     }

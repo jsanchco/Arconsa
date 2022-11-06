@@ -408,6 +408,87 @@
             return invoiceNumber;
         }
 
+        public List<Invoice> GetAllBetweenDates(DateTime startDate, DateTime endDate, int workId = 0, int clientId = 0)
+        {
+            List<Invoice> data = new List<Invoice>();
+
+            if (workId == 0 && clientId == 0)
+            {
+                data = _context.Invoice
+                    .Include(x => x.Work)
+                    .ThenInclude(x => x.Client)
+                    .Include(x => x.Work)
+                    .Include(x => x.DetailsInvoice)
+                    .Where(x => x.IssueDate >= startDate && x.IssueDate <= endDate)
+                    .ToList()
+                    .OrderByDescending(x => x.KeyOrder)
+                    .ToList();
+            }
+            if (workId != 0 && clientId == 0)
+            {
+                data = _context.Invoice
+                    .Include(x => x.Work)
+                    .ThenInclude(x => x.Client)
+                    .Include(x => x.Work)
+                    .Include(x => x.DetailsInvoice)
+                    .Where(x => x.IssueDate >= startDate && x.IssueDate <= endDate && x.WorkId == workId)
+                    .ToList()
+                    .OrderByDescending(x => x.KeyOrder)
+                    .ToList();
+            }
+            if (workId == 0 && clientId != 0)
+            {
+                data = _context.Invoice
+                    .Include(x => x.Work)
+                    .ThenInclude(x => x.Client)
+                    .Include(x => x.Work)
+                    .Include(x => x.DetailsInvoice)
+                    .Where(x => x.IssueDate >= startDate && x.IssueDate <= endDate && x.Work.ClientId == clientId)
+                    .ToList()
+                    .OrderByDescending(x => x.KeyOrder)
+                    .ToList();
+            }
+            if (workId != 0 && clientId != 0)
+            {
+                data = _context.Invoice
+                    .Include(x => x.Work)
+                    .ThenInclude(x => x.Client)
+                    .Include(x => x.Work)
+                    .Include(x => x.DetailsInvoice)
+                    .Where(x => x.IssueDate >= startDate && x.IssueDate <= endDate && x.WorkId == workId && x.Work.ClientId == clientId)
+                    .ToList()
+                    .OrderByDescending(x => x.KeyOrder)
+                    .ToList();
+            }
+
+            return data;
+        }
+
+        public List<Invoice> GetAllLite()
+        {
+            var watch = System.Diagnostics.Stopwatch.StartNew();
+            var result = _context.Invoice
+                .Include(x => x.Work)
+                .Include(x => x.DetailsInvoice)
+                .ToList()
+                .OrderBy(x => x.IssueDate)
+                .Select(x => new Invoice
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    WorkId = x.WorkId,
+                    IssueDate = x.IssueDate,
+                    Total = GetTotalDetailInvoice(x, x.DetailsInvoice),
+                    DetailsInvoice = x.DetailsInvoice
+                })
+                .ToList();
+            watch.Stop();
+            var elapsedMs = watch.ElapsedMilliseconds;
+            System.Diagnostics.Debug.WriteLine($"Elapsed time for GetAllLite [Invoices] -> {elapsedMs}ms.");
+
+            return result;
+        }
+
         #region Auxiliary Methods
 
         private void Validate(Invoice invoice)
@@ -428,6 +509,21 @@
             {
                 throw new Exception("Factura incompleta. Revisa los datos. Debes introducir el presupuesto");
             }
+        }
+
+        private double GetTotalDetailInvoice(Invoice invoice, ICollection<DetailInvoice> detailsInvoices)
+        {
+            if (detailsInvoices?.Count() == 0)
+                return 0;
+
+            //var retentions = invoice.Work.InvoiceToOrigin == true ? (invoiceViewModel.detailInvoice.Sum(x => x.amountUnits) * (double)invoice.Work.PercentageRetention) : 0;
+            var retentions = 0;
+            var taxBase = Math.Round(detailsInvoices.Sum(x => x.Units * x.PriceUnity), 2);
+            //var ivaTaxBase = Math.Round(detailsInvoices.Sum(x => x.Units * x.PriceUnity * x.Iva), 2);
+            var ivaTaxBase = 0;
+            var total = Math.Round(taxBase + ivaTaxBase - retentions, 2);
+
+            return total;
         }
 
         #endregion

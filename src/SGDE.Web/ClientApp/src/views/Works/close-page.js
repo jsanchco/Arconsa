@@ -292,7 +292,7 @@ class ClosePage extends Component {
                   textAlign: "right",
                 }}
               >
-                <Label>¿?€</Label>
+                <Label>{this.state?.closePageData?.indirectCostsSum}€</Label>
               </Col>
             </Row>
             <Row>

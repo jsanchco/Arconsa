@@ -13,5 +13,6 @@ namespace SGDE.Domain.Repositories
         bool Update(IndirectCost indirectCost);
         bool Delete(int id);
         List<IndirectCost> GetAllInDate(DateTime date);
+        List<IndirectCost> GetAllBetweenDates(DateTime start, DateTime end);
     }
 }

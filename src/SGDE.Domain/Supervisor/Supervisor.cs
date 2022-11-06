@@ -4,9 +4,6 @@ namespace SGDE.Domain.Supervisor
     #region Using
 
     using Repositories;
-    using SGDE.Domain.Helpers;
-    using SGDE.Domain.ViewModels;
-    using System.Collections.Generic;
 
     #endregion
 
