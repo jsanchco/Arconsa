@@ -355,7 +355,7 @@ class ReportCurrentStatus extends Component {
     return (
       <div>
         <a rel="nofollow" href={"/#/works/detailwork/" + args.workId + "/1"}>
-          {args.workBudgetName}
+          {args.workBudgetsName}
         </a>
       </div>
     );
@@ -477,7 +477,7 @@ class ReportCurrentStatus extends Component {
                     <ColumnDirective
                       field="workBudgetsName"
                       headerText="Presupuesto(s)"
-                      width="100"
+                      width="150"
                       template={this.workBudgetTemplate}
                     />
                     <ColumnDirective
@@ -494,7 +494,7 @@ class ReportCurrentStatus extends Component {
                     />
                     <ColumnDirective
                       field="workBudgetsSum"
-                      headerText="Total Presupuestos"
+                      headerText="Total Presupuesto(s)"
                       width="180"
                       textAlign="right"
                     />
