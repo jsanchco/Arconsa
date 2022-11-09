@@ -313,7 +313,7 @@ class Works extends Component {
   clientTemplate(args) {
     return ( 
       <div> 
-        <a rel='nofollow' href={"/#/clients/detailclient/" + args.clientId}>{args.clientName}</a> 
+        <a rel='nofollow' href={"/#/clients/detailclient/" + args.clientId}>{args.clientName}</a>
       </div> 
     ); 
   }  
@@ -504,7 +504,7 @@ class Works extends Component {
                   contextMenuItems={this.contextMenuItems}
                   contextMenuOpen={this.contextMenuOpen}
                   contextMenuClick={this.contextMenuClick}
-                  selectionSettings={this.selectionSettings}
+                  // selectionSettings={this.selectionSettings}
                   headerCellInfo={this.headerCellInfo}
                   allowTextWrap={true}
                   textWrapSettings={this.wrapSettings}
@@ -514,10 +514,10 @@ class Works extends Component {
                   dataBound={this.dataBound}
                 >
                   <ColumnsDirective>
-                    <ColumnDirective
+                    {/* <ColumnDirective
                       type="checkbox"
                       width="50"
-                    ></ColumnDirective>
+                    ></ColumnDirective> */}
                     <ColumnDirective
                       field="id"
                       headerText="Id"
