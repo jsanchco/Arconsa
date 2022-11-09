@@ -11,6 +11,7 @@
     public interface IWorkRepository
     {
         List<Work> GetAllLite(string filter = null, int clientId = 0);
+        List<Work> GetAllLiteIncludeClient(string filter = null);
         QueryResult<Work> GetAll(int skip = 0, int take = 0, string filter = null, int clientId = 0, bool showCloseWorks = true);
         Work GetById(int id);
         Work Add(Work newWork);

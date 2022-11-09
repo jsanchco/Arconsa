@@ -93,16 +93,37 @@
                 };
         }
 
+        public List<Work> GetAllLiteIncludeClient(string filter = null)
+        {
+            var result = _context.Work
+                    .Include(x => x.Client)
+                    .ToList();
+
+            if (!string.IsNullOrEmpty(filter))
+            {
+                result = result
+                    .Where(x =>
+                        Searcher.RemoveAccentsWithNormalization(x.Address?.ToLower()).Contains(filter) ||
+                        Searcher.RemoveAccentsWithNormalization(x.Name.ToLower()).Contains(filter) ||
+                        Searcher.RemoveAccentsWithNormalization(x.Client?.Name.ToLower()).Contains(filter))
+                    .ToList();
+            }
+
+            return result;
+        }
+
         public Work GetById(int id)
         {
-            return _context.Work
+            var result = _context.Work
                 .Include(x => x.Client)
                 .ThenInclude(x => x.ProfessionInClients)
                 .Include(x => x.UserHirings)
                 .Include(x => x.Invoices)
                 .Include(x => x.WorkBudgets)
-                .Include(x => x.WorkCosts)
+                //.Include(x => x.WorkCosts)
                 .FirstOrDefault(x => x.Id == id);
+
+            return result;
         }
 
         public Work Add(Work newWork)

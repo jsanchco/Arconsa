@@ -25,6 +25,7 @@ import {
   HISTORYHIRINGUPDATEINWORK,
   PROFESSIONSBYUSER,
   WORKCOSTS,
+  WORKCOSTBYID,
   WORKBUDGETDATAS,
   WORKBUDGETS,
   REMOVEALLWORKCOSTS,
@@ -963,6 +964,28 @@ export const getAllWorks = () => {
 export const getWork = (id) => {
   return new Promise((resolve, reject) => {
     const url = `${config.URL_API}/${WORKS}/${id}`;
+    fetch(url, {
+      headers: {
+        Accept: "text/plain",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`,
+      },
+      method: "GET",
+    })
+      .then((data) => data.json())
+      .then((result) => {
+        resolve(result);
+      })
+      .catch((error) => {
+        console.log("error ->", error);
+        reject();
+      });
+  });
+};
+
+export const getWorkCost = (id) => {
+  return new Promise((resolve, reject) => {
+    const url = `${config.URL_API}/${WORKCOSTBYID}/${id}`;
     fetch(url, {
       headers: {
         Accept: "text/plain",

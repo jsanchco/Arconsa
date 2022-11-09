@@ -206,7 +206,7 @@
                     .Where(x => x.Type == "Definitivo" || x.Type == "Modificado")
                     .Sum(x => x.TotalContract),
                 invoicesSum = Math.Round(work.Invoices.Sum(x => x.TaxBase), 2),
-                workCostsSum = Math.Round(work.WorkCosts.Sum(x => x.TaxBase), 2),
+                workCostsSum = Math.Round(_workCostRepository.SumAll(workId), 2),
                 authorizeCancelWorkersCostsSum = Math.Round(authorizeCancelWorkers.Data.Sum(x => x.priceTotal), 2),
                 authorizeCancelWorkersCostsSalesSum = Math.Round(authorizeCancelWorkers.Data.Sum(x => x.priceTotalSale), 2),
                 indirectCostsSum = Math.Round(CalculateIndirectCostsByWork(workId), 2)

@@ -379,12 +379,14 @@ class GridInvoice extends Component {
               headerText="Cliente"
               width="100"
               allowEditing={false}
+              visible={this.props.clientId === null}
             />
             <ColumnDirective
               field="workName"
               headerText="Obra"
               width="100"
               allowEditing={false}
+              visible={this.props.workId === null}
             />
             <ColumnDirective
               field="taxBase"

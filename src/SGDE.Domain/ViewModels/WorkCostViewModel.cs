@@ -15,6 +15,6 @@ namespace SGDE.Domain.ViewModels
         public byte[] file { get; set; }
         public int workId { get; set; }
         public string workName { get; set; }
-        public bool hasFile => file != null;
+        public bool hasFile { get; set; }
     }
 }

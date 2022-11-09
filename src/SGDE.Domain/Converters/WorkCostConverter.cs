@@ -2,6 +2,7 @@
 using SGDE.Domain.ViewModels;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 namespace SGDE.Domain.Converters
 {
@@ -33,6 +34,9 @@ namespace SGDE.Domain.Converters
                 workName = workCost.Work.Name
             };
 
+            if (workCost.File != null && workCost.File.Length > 0)
+                workCostViewModel.hasFile = true;
+
             return workCostViewModel;
         }
 
@@ -54,12 +58,14 @@ namespace SGDE.Domain.Converters
                     typeWorkCost = workCost.TypeWorkCost,
                     fileName = workCost.FileName,
                     description = workCost.Description,
-                    file = workCost.File,
                     typeFile = workCost.TypeFile,
 
                     workId = workCost.WorkId,
                     workName = workCost.Work.Name
                 };
+                if (workCost.File != null && workCost.File.Length > 0)
+                    model.hasFile = true;
+
                 return model;
             })
                 .ToList();

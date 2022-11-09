@@ -26,7 +26,7 @@ import {
 } from "../../services";
 import ModalSelectWorkCost from "../Modals/modal-select-work-cost";
 import { DialogComponent } from "@syncfusion/ej2-react-popups";
-import { removeAllWorkCosts } from "../../services";
+import { removeAllWorkCosts, getWorkCost } from "../../services";
 import "../Modals/modal-worker.css";
 
 L10n.load(data);
@@ -147,7 +147,7 @@ class WorkCosts extends Component {
   }
 
   templateFile(args) {
-    if (args.file !== null && args.file !== "") {
+    if (args.hasFile) {
       return (
         <div>
           <span className="dot-green"></span>
@@ -292,9 +292,16 @@ class WorkCosts extends Component {
 
     if (Array.isArray(selectedRecords) && selectedRecords.length > 0) {
       selectedRecords.forEach((document) => {
-        if (document.file !== null && document.file !== undefined) {
-          const fileArr = base64ToArrayBuffer(document.file);
-          saveByteArray(document.fileName, fileArr, document.typeFile);
+        if (document.hasFile) {
+          getWorkCost(document.id)
+          .then((workCost) => {
+            const fileArr = base64ToArrayBuffer(workCost.file);
+            saveByteArray(workCost.fileName, fileArr, workCost.typeFile);
+          })
+          .catch(() => {
+            this.setState({ hideConfirmDialog: false });
+            this.updateWorkCosts();
+          });
         } else {
           error =
             "Algunos de los registros seleccionados no tienen el archivo subido";

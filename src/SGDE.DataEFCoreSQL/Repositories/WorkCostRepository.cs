@@ -52,6 +52,13 @@ namespace SGDE.DataEFCoreSQL.Repositories
                 .ToList();
         }
 
+        public double SumAll(int workId)
+        {
+            return _context.WorkCost
+                .Where(x => x.WorkId == workId)
+                .Sum(x => x.TaxBase);
+        }
+
         public WorkCost GetById(int id)
         {
             return _context.WorkCost

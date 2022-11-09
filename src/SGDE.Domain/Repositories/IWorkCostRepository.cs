@@ -6,6 +6,7 @@ namespace SGDE.Domain.Repositories
     public interface IWorkCostRepository
     {
         List<WorkCost> GetAll(int workId);
+        double SumAll(int workId);
         WorkCost GetById(int id);
         WorkCost Add(WorkCost newWorkCost);
         bool Update(WorkCost workCost);

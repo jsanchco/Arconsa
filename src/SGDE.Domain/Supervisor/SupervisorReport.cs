@@ -322,14 +322,12 @@
 
         public QueryResult<WorkClosePageViewModel> GetAllCurrentStatus(int skip = 0, int take = 0, string filter = null)
         {
-            var works = GetAllWork(skip, take, filter).Data;
+            var worksWithFilter = _workRepository.GetAllLiteIncludeClient(filter);
+            var worksWithSkipAndTake = worksWithFilter.Skip(skip).Take(take);
             var data = new List<WorkClosePageViewModel>();
-            foreach (var work in works)
+            foreach (var work in worksWithSkipAndTake)
             {
-                if (!work.id.HasValue)
-                    continue;
-
-                var workClosePageViewModel = GetWorkClosePage(work.id.Value);
+                var workClosePageViewModel = GetWorkClosePage(work.Id);
                 data.Add(workClosePageViewModel);
             }
 
@@ -344,7 +342,7 @@
                     .ToList();
             }
 
-            var count = _workRepository.Count();
+            var count = worksWithFilter.Count();
             return (skip != 0 || take != 0)
                 ? new QueryResult<WorkClosePageViewModel>
                 {
