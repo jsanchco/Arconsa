@@ -69,7 +69,9 @@
                 }
             }
 
-            var result = data.OrderByDescending(x => x.Date);
+            var result = data
+                .OrderByDescending(x => x.Date)
+                .ThenBy(x => x.AccountNumber);
 
             var count = result.Count();
             return (skip != 0 || take != 0)

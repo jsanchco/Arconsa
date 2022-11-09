@@ -257,6 +257,7 @@ class IndirectCosts extends Component {
                   marginRight: 30,
                   marginTop: -10,
                   marginBottom: 20,
+                  overflow: "auto",
                 }}
                 actionFailure={this.actionFailure}
                 actionComplete={this.actionComplete}
