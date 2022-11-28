@@ -317,7 +317,7 @@ class IndirectCosts extends Component {
                   />
                   <ColumnDirective
                     field="key"
-                    headerText="Clave"
+                    headerText="Año/Mes"
                     width="100"
                     allowEditing={false}
                   />

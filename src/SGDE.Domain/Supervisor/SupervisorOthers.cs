@@ -145,19 +145,52 @@
             //    _detailInvoiceRepository.Update(detailinvoice);
             //}
 
-            var workBudgets = _workBudgetRepository.GetAll();
-            workBudgets = workBudgets.Where(x => x.Type == "Definitivo" || x.Type == "Complementario X").ToList();
-            workBudgets = workBudgets.Where(x => x.Invoices != null).ToList();
-            foreach (var workBudget in workBudgets)
-            {
-                var workBudgetData = _workBudgetDataRepository.Add(new WorkBudgetData
-                {
-                    WorkId = workBudget.WorkId,
-                    Description = workBudget.Name,
-                });
+            //var workBudgets = _workBudgetRepository.GetAll();
+            //workBudgets = workBudgets.Where(x => x.Type == "Definitivo" || x.Type == "Complementario X").ToList();
+            //workBudgets = workBudgets.Where(x => x.Invoices != null).ToList();
+            //foreach (var workBudget in workBudgets)
+            //{
+            //    var workBudgetData = _workBudgetDataRepository.Add(new WorkBudgetData
+            //    {
+            //        WorkId = workBudget.WorkId,
+            //        Description = workBudget.Name,
+            //    });
 
-                workBudget.WorkBudgetDataId = workBudgetData.Id;
-                _workBudgetRepository.Update(workBudget);
+            //    workBudget.WorkBudgetDataId = workBudgetData.Id;
+            //    _workBudgetRepository.Update(workBudget);
+            //}
+
+            var works = _workRepository.GetAll();
+            foreach (var work in works.Data)
+            {
+                if (work.CloseDate is null)
+                {
+                    _workStatusHistoryRepository.Add(new WorkStatusHistory
+                    {
+                        WorkId = work.Id,
+                        DateChange = work.OpenDate,
+                        Value = "Abierta",
+                        Observations = "Apertura de Obra"
+                    });
+                }
+                else
+                {
+                    _workStatusHistoryRepository.Add(new WorkStatusHistory
+                    {
+                        WorkId = work.Id,
+                        DateChange = work.OpenDate,
+                        Value = "Abierta",
+                        Observations = "Apertura de Obra"
+                    });
+
+                    _workStatusHistoryRepository.Add(new WorkStatusHistory
+                    {
+                        WorkId = work.Id,
+                        DateChange = work.CloseDate.Value,
+                        Value = "Cerrada",
+                        Observations = "Cierre de Obra"
+                    });
+                }
             }
         }
     }

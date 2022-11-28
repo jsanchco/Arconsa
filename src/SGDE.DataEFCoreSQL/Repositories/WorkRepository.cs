@@ -50,6 +50,7 @@
                         .Include(x => x.Client)
                         .Include(x => x.UserHirings)
                         .Include(x => x.WorkBudgets)
+                        .Include(x => x.WorkStatusHistories)
                         .ToList();
             }
             else
@@ -58,6 +59,7 @@
                         .Include(x => x.Client)
                         .Include(x => x.UserHirings)
                         .Include(x => x.WorkBudgets)
+                        .Include(x => x.WorkStatusHistories)
                         .Where(x => x.ClientId == clientId)
                         .ToList();
             }
@@ -120,6 +122,7 @@
                 .Include(x => x.UserHirings)
                 .Include(x => x.Invoices)
                 .Include(x => x.WorkBudgets)
+                .Include(x => x.WorkStatusHistories)
                 //.Include(x => x.WorkCosts)
                 .FirstOrDefault(x => x.Id == id);
 
@@ -128,8 +131,32 @@
 
         public Work Add(Work newWork)
         {
-            _context.Work.Add(newWork);
-            _context.SaveChanges();
+            using (var transaction = _context.Database.BeginTransaction())
+            {
+                try
+                {
+                    _context.Work.Add(newWork);
+                    _context.SaveChanges();
+
+                    _context.WorkStatusHistory.Add(new WorkStatusHistory
+                    {
+                        WorkId = newWork.Id,
+                        AddedDate = DateTime.Now,
+                        Observations = "Apertura de Obra",
+                        Value = "Abierta",
+                        DateChange = DateTime.Now
+                    });
+                    _context.SaveChanges();
+
+                    transaction.Commit();
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    throw ex;
+                }
+            }
+
             return newWork;
         }
 

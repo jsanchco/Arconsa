@@ -44,6 +44,7 @@ namespace SGDE.DataEFCoreMySQL
         public virtual DbSet<WorkBudget> WorkBudget { get; set; }
         public virtual DbSet<IndirectCost> IndirectCost { get; set; }
         public virtual DbSet<Advance> Advance { get; set; }
+        public virtual DbSet<WorkStatusHistory> WorkStatusHistory { get; set; }
 
         public static long InstanceCount;
 

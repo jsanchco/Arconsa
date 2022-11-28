@@ -16,6 +16,7 @@ import WorkBudgets from "./work-budget";
 import WorkBudgets1 from "./work-budget1";
 import WorkHistory from "./work-history";
 import ClosePage from "./close-page";
+import WorkStatusHistory from "./work-status-history";
 
 class DetailWork extends Component {
   tab = null;
@@ -27,8 +28,9 @@ class DetailWork extends Component {
 
     this.headerText = [
       { text: "Datos Básicos" },
+      { text: "Estado" },
       { text: "Presupuestos" },
-      { text: "Presupuestos" },
+      // { text: "Presupuestos" },
       { text: "Gastos Proveedores" },
       { text: "Gastos Trabajadores" },
       { text: "Facturas" },
@@ -51,6 +53,8 @@ class DetailWork extends Component {
     this.contentTemplateWorkHistory =
       this.contentTemplateWorkHistory.bind(this);
     this.contentTemplateClosePage = this.contentTemplateClosePage.bind(this);
+    this.contentTemplateWorkStatusHistory =
+      this.contentTemplateWorkStatusHistory.bind(this);
   }
 
   selectedTab(args) {
@@ -71,6 +75,22 @@ class DetailWork extends Component {
     if (selectedTab !== null) {
       this.tab.selectedItem = parseInt(selectedTab);
     }
+  }
+
+  contentTemplateWorkStatusHistory() {
+    let workName = "";
+    if (this.state.work !== null && this.state.work !== undefined) {
+      workName = this.state.work.name;
+    }
+
+    return (
+      <WorkStatusHistory
+        workId={this.props.match.params.id}
+        workName={workName}
+        history={this.props.history}
+        showMessage={this.props.showMessage}
+      />
+    );
   }
 
   contentTemplateWorkBudgets() {
@@ -191,7 +211,6 @@ class DetailWork extends Component {
         workName={workName}
         history={this.props.history}
         showMessage={this.props.showMessage}
-        tabSelected={this.state.tabSelected}
       />
     );
   }
@@ -243,9 +262,13 @@ class DetailWork extends Component {
                     />
                     <TabItemDirective
                       header={this.headerText[1]}
+                      content={this.contentTemplateWorkStatusHistory}
+                    />                    
+                    {/* <TabItemDirective
+                      header={this.headerText[2]}
                       content={this.contentTemplateWorkBudgets}
                       visible={false}
-                    />
+                    /> */}
                     <TabItemDirective
                       header={this.headerText[2]}
                       content={this.contentTemplateWorkBudgets1}
@@ -274,7 +297,6 @@ class DetailWork extends Component {
                       <TabItemDirective
                         header={this.headerText[7]}
                         content={this.contentTemplateClosePage}
-                        tabSelected={this.state.tabSelected}
                       />
                     ) : null}
                   </TabItemsDirective>

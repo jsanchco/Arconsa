@@ -55,7 +55,8 @@
                         .AddScoped<IAdvanceRepository, DataEFCoreSQL.Repositories.AdvanceRepository>()
                         .AddScoped<ILibraryRepository, DataEFCoreSQL.Repositories.LibraryRepository>()
                         .AddScoped<ICompanyDataRepository, DataEFCoreSQL.Repositories.CompanyDataRepository>()
-                        .AddScoped<IWorkHistoryRepository, DataEFCoreSQL.Repositories.WorkHistoryRepository>();
+                        .AddScoped<IWorkHistoryRepository, DataEFCoreSQL.Repositories.WorkHistoryRepository>()
+                        .AddScoped<IWorkStatusHistoryRepository, DataEFCoreSQL.Repositories.WorkStatusHistoryRepository>();
                     break;
                 case "MySQL":
                     services
@@ -118,7 +119,8 @@
                         .AddScoped<IAdvanceRepository, DataEFCoreSQL.Repositories.AdvanceRepository>()
                         .AddScoped<ILibraryRepository, DataEFCoreSQL.Repositories.LibraryRepository>()
                         .AddScoped<ICompanyDataRepository, DataEFCoreSQL.Repositories.CompanyDataRepository>()
-                        .AddScoped<IWorkHistoryRepository, DataEFCoreSQL.Repositories.WorkHistoryRepository>();
+                        .AddScoped<IWorkHistoryRepository, DataEFCoreSQL.Repositories.WorkHistoryRepository>()
+                        .AddScoped<IWorkStatusHistoryRepository, DataEFCoreSQL.Repositories.WorkStatusHistoryRepository>();
                     break;
             }
 

@@ -82,7 +82,7 @@ export default {
       icon: "cui-file",
     },
     {
-      name: "Seguimiento",
+      name: "Seguimiento PA",
       url: "/invoices/Tracing",
       icon: "cui-file",
     },

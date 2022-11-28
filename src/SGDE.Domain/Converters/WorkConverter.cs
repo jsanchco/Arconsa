@@ -40,6 +40,8 @@
                 closeDate = work.CloseDate?.ToString("dd/MM/yyyy"),
 
                 passiveSubject = work.PassiveSubject,
+                status = work.WorkStatusHistories
+                    .OrderBy(x => x.DateChange).FirstOrDefault()?.Value,
 
                 clientId = work.ClientId,
                 clientName = work.Client.Name,
@@ -78,6 +80,8 @@
                     closeDate = work.CloseDate?.ToString("dd/MM/yyyy"),
 
                     passiveSubject = work.PassiveSubject,
+                    status = work.WorkStatusHistories
+                        .OrderBy(x => x.DateChange).FirstOrDefault()?.Value,
 
                     clientId = work.ClientId,
                     clientName = work.Client.Name

@@ -42,6 +42,8 @@
     <Compile Remove="Migrations\20220526165830_Add_Relation_WorkBudgetDataId_To_Table_WorkBudget.Designer.cs" />
     <Compile Remove="Migrations\20220701185751_Add_Field_TypeFile_To_Table_WorkBudgetData.cs" />
     <Compile Remove="Migrations\20220701185751_Add_Field_TypeFile_To_Table_WorkBudgetData.Designer.cs" />
+    <Compile Remove="Migrations\20221127115337_Add_Table_WorkStatusHistory.cs" />
+    <Compile Remove="Migrations\20221127115337_Add_Table_WorkStatusHistory.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

@@ -33,5 +33,6 @@
         public virtual ICollection<WorkBudgetData> WorkBudgetDatas { get; set; } = new HashSet<WorkBudgetData>();
         public virtual ICollection<WorkBudget> WorkBudgets { get; set; } = new HashSet<WorkBudget>();
         public virtual ICollection<WorkHistory> WorkHistories { get; set; } = new HashSet<WorkHistory>();
+        public virtual ICollection<WorkStatusHistory> WorkStatusHistories { get; set; } = new HashSet<WorkStatusHistory>();
     }
 }

@@ -39,6 +39,7 @@ namespace SGDE.Domain.Supervisor
         private readonly ILibraryRepository _libraryRepository;
         private readonly ICompanyDataRepository _companyDataRepository;
         private readonly IWorkHistoryRepository _workHistoryRepository;
+        private readonly IWorkStatusHistoryRepository _workStatusHistoryRepository;
 
         public Supervisor()
         {
@@ -74,7 +75,8 @@ namespace SGDE.Domain.Supervisor
             IAdvanceRepository advanceRepository,
             ILibraryRepository libraryRepository,
             ICompanyDataRepository companyDataRepository,
-            IWorkHistoryRepository workHistoryRepository)
+            IWorkHistoryRepository workHistoryRepository,
+            IWorkStatusHistoryRepository workStatusHistoryRepository)
         {
             _userRepository = userRepository;
             _professionRepository = professionRepository;
@@ -106,6 +108,7 @@ namespace SGDE.Domain.Supervisor
             _libraryRepository = libraryRepository;
             _companyDataRepository = companyDataRepository;
             _workHistoryRepository = workHistoryRepository;
+            _workStatusHistoryRepository = workStatusHistoryRepository;
         }
     }
 }

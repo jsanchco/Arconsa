@@ -390,6 +390,16 @@ namespace SGDE.Domain.Supervisor
 
         #endregion
 
+        #region WorkStatusHistory
+
+        List<WorkStatusHistoryViewModel> GetAllWorkStatusHistory(int workId = 0);
+        WorkStatusHistoryViewModel GetWorkStatusHistoryById(int id);
+        WorkStatusHistoryViewModel AddWorkStatusHistory(WorkStatusHistoryViewModel newWorkStatusHistoryViewModel);
+        bool UpdateWorkStatusHistory(WorkStatusHistoryViewModel workHistoryStatusViewModel);
+        bool DeleteWorkStatusHistory(int id);
+
+        #endregion
+
         double CalculateIndirectCostsByWork(int workId);
 
         void Update();

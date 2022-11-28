@@ -393,7 +393,7 @@ class WorkCosts extends Component {
             style={{ marginRight: "60px", marginTop: "20px" }}
           >
             <div className="card-header">
-              <i className="icon-layers"></i> Gastos
+              <i className="icon-layers"></i> Gastos Proveedores
             </div>
             <div className="card-body"></div>
             <Row>

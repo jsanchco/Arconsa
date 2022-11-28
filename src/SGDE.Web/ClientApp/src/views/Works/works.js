@@ -124,7 +124,7 @@ class Works extends Component {
     this.contextMenuClick = this.contextMenuClick.bind(this);
     this.rowSelected = this.rowSelected.bind(this);
     this.contextMenuOpen = this.contextMenuOpen.bind(this);
-    this.openTemplate = this.openTemplate.bind(this);
+    this.statusTemplate = this.statusTemplate.bind(this);
     this.dateTemplate = this.dateTemplate.bind(this);
     this.clientTemplate = this.clientTemplate.bind(this);
     this.clickHandler = this.clickHandler.bind(this);
@@ -257,19 +257,42 @@ class Works extends Component {
     }
   }
 
-  openTemplate(args) {
-    if (args.open === true) {
-      return (
-        <div>
-          <span className="dot-green"></span>
-        </div>
-      );
-    } else {
-      return (
-        <div>
-          <span className="dot-red"></span>
-        </div>
-      );
+  statusTemplate(args) {
+    switch (args.status) {
+      case "Abierta":
+        return (
+          <div>
+            <span className="dot-green"></span>
+          </div>
+        );
+
+      case "Cerrada":
+        return (
+          <div>
+            <span className="dot-red"></span>
+          </div>
+        );
+          
+      case "Juridico":
+        return (
+          <div>
+            <span className="dot-yellow"></span>
+          </div>
+        );
+
+      case "Problemas":
+        return (
+          <div>
+            <span className="dot-orange"></span>
+          </div>
+        );
+        
+      default:
+        return (
+          <div>
+            <span className="dot-green"></span>
+          </div>
+        );  
     }
   }
 
@@ -448,8 +471,10 @@ class Works extends Component {
                   <Col xs="9">
                     <Legend
                       elements={[
-                        { color: "dot-green", text: "Obra Abierta" },
-                        { color: "dot-red", text: "Obra Cerrada" },
+                        { color: "dot-green", text: "Abierta" },
+                        { color: "dot-yellow", text: "Juridico" },
+                        { color: "dot-orange", text: "Problemas" },
+                        { color: "dot-red", text: "Cerrada" },
                       ]}
                     />
                   </Col>
@@ -584,15 +609,16 @@ class Works extends Component {
                       defaultValue={true}
                     />
                     <ColumnDirective
-                      field="open"
+                      field="status"
                       headerText="Estado"
                       width="100"
-                      template={this.openTemplate}
+                      template={this.statusTemplate}
                       textAlign="Center"
                       allowEditing={false}
                     />
                     <ColumnDirective field="openDate" visible={false} />
                     <ColumnDirective field="closeDate" visible={false} />
+                    <ColumnDirective field="percentageIVA" visible={false} />
                   </ColumnsDirective>
                   <Inject
                     services={[

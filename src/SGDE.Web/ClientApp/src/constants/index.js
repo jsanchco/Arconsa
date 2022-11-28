@@ -52,6 +52,7 @@ export const SSHIRINGS = "api/sshirings";
 export const WORKCOSTS = "api/workcosts";
 export const WORKCOSTBYID = "api/workcosts";
 export const WORKHISTORIES = "api/workhistories";
+export const WORKSTATUSHISTORIES = "api/workstatushistories";
 export const REMOVEALLWORKCOSTS = "api/workcosts/removeall";
 export const WORKBUDGETDATAS = "api/workbudgetdatas";
 export const WORKBUDGETS = "api/workbudgets";

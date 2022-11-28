@@ -116,7 +116,7 @@ class BasicDataWork extends Component {
     }
 
     if (name === "passiveSubject") {
-      this.ntbPercentageIVA.enabled = !target.checked
+      this.ntbPercentageIVA.enabled = !target.checked;
     }
   }
 
@@ -217,221 +217,226 @@ class BasicDataWork extends Component {
 
   render() {
     return (
-      <div
-        style={{
-          marginLeft: 10,
-          marginRight: 60,
-          marginTop: 20,
-          marginBottom: 20,
-        }}
-        id="container"
-      >
-        <Form>
-          <Row>
-            <Col xs="4">
-              <FormGroup>
-                <Label htmlFor="name">Nombre</Label>
-                <Input
-                  type="text"
-                  id="name"
-                  name="name"
-                  placeholder="nombre"
-                  required
-                  value={this.state.name}
-                  onChange={this.handleInputChange}
-                />
-              </FormGroup>
-            </Col>
-            <Col xs="4">
-              <FormGroup>
-                <Label htmlFor="address">Dirección</Label>
-                <Input
-                  type="text"
-                  id="address"
-                  name="address"
-                  placeholder="dirección"
-                  required
-                  value={this.state.address || ""}
-                  onChange={this.handleInputChange}
-                />
-              </FormGroup>
-            </Col>
-            <Col xs="4">
-              <FormGroup>
-                <Label htmlFor="worksToRealize">Tipo de Trabajo</Label>
-                <DropDownListComponent
-                  id="worksToRealize"
-                  dataSource={this.typeWork}
-                  placeholder={`Selecciona Tipo de Obra`}
-                  fields={{ text: "id", value: "id" }}
-                  ref={(g) => (this.ddlTypeWork = g)}
-                  value={this.state.worksToRealize || ""}
-                />
-              </FormGroup>
-            </Col>
-          </Row>
-          <Row>
-            <Col xs="2">
-              <FormGroup>
-                <Label
-                  htmlFor="passiveSubject"
-                  style={{ verticalAlign: "bottom" }}
-                >
-                  Sujeto Pasivo&nbsp;
-                </Label>
-                <AppSwitch
-                  className={"mx-1 mt-4"}
-                  variant={"pill"}
-                  color={"primary"}
-                  label
-                  checked={this.state.passiveSubject}
-                  id="passiveSubject"
-                  name="passiveSubject"
-                  placeholder="sujeto pasivo"
-                  onChange={this.handleInputChange}
-                  dataOn="Si"
-                  dataOff="No"
-                />
-              </FormGroup>
-            </Col>
-            <Col xs="2">
-              <FormGroup>
-                <Label htmlFor="estimatedDuration">T. Estimado</Label>
-                <Input
-                  type="text"
-                  id="estimatedDuration"
-                  name="estimatedDuration"
-                  placeholder="tiempo estimado"
-                  value={this.state.estimatedDuration}
-                  onChange={this.handleInputChange}
-                />
-              </FormGroup>
-            </Col>
-            <Col xs="4">
-              <FormGroup>
-                <Label htmlFor="openDate">Fecha de Apertura de Obra</Label>
-                <DatePickerComponent
-                  id="openDate"
-                  name="openDate"
-                  placeholder="fecha de apertura"
-                  required
-                  format="dd/MM/yyyy"
-                  value={this.state.openDate}
-                  onChange={this.handleInputChange}
-                />
-              </FormGroup>
-            </Col>
-            <Col xs="4">
-              <FormGroup>
-                <Label htmlFor="address">Fecha de Cierre de Obra</Label>
-                <DatePickerComponent
-                  id="closeDate"
-                  name="closeDate"
-                  placeholder="fecha de cierre"
-                  format="dd/MM/yyyy"
-                  value={this.state.closeDate}
-                  onChange={this.handleInputChange}
-                />
-              </FormGroup>
-            </Col>
-          </Row>
-          <Row>
-            <Col xs="4">
-              <FormGroup>
-                <Label
-                  htmlFor="invoiceToOrigin"
-                  style={{ verticalAlign: "bottom" }}
-                >
-                  Factura a Origen&nbsp;
-                </Label>
-                <AppSwitch
-                  className={"mx-1 mt-4"}
-                  variant={"pill"}
-                  color={"primary"}
-                  label
-                  checked={this.state.invoiceToOrigin}
-                  id="invoiceToOrigin"
-                  name="invoiceToOrigin"
-                  placeholder="factura a origen"
-                  onChange={this.handleInputChange}
-                  dataOn="Si"
-                  dataOff="No"
-                />
-              </FormGroup>
-            </Col>
-            <Col xs="4">
-              <FormGroup>
-                <Label htmlFor="percentageRetention">Retención</Label>
-                <NumericTextBoxComponent
-                  format="p2"
-                  id="percentageRetention"
-                  name="percentageRetention"
-                  value={this.state.percentageRetention}
-                  min={0}
-                  max={1}
-                  step={0.01}
-                  showSpinButton={false}
-                  placeholder="porcentaje retención"
-                  change={this.handleChangePercentageRetention}
-                  ref={(g) => (this.ntbPercentageRetention = g)}
-                />
-              </FormGroup>
-            </Col>
-            <Col xs="4">
-              <FormGroup>
-                <Label htmlFor="percentageIVA">IVA</Label>
-                <NumericTextBoxComponent
-                  format="p2"
-                  id="percentageIVA"
-                  name="percentageIVA"
-                  value={this.state.percentageIVA}
-                  min={0}
-                  max={1}
-                  step={0.01}
-                  showSpinButton={false}
-                  placeholder="porcentaje IVA"
-                  change={this.handleChangePercentageIVA}
-                  ref={(g) => (this.ntbPercentageIVA = g)}
-                />
-              </FormGroup>
-            </Col>
-          </Row>
-          <Row>
-            <Col xs="12">
-              <hr></hr>
-            </Col>
-          </Row>
-          <Row>
-            <Col xs="3"></Col>
-            <Col xs="5">
-              <br></br>
-              <FormGroup>
-                <Label
-                  htmlFor="totalContract"
-                  style={{
-                    fontSize: "Medium",
-                    textAlign: "Center",
-                    display: "block",
-                    marginRight: "140px",
-                  }}
-                >
-                  <b>Total Contrato</b>
-                </Label>
-                {this.renderTotalContratc()}
-              </FormGroup>
-            </Col>
-          </Row>
-          <Row>
-            <Col xs="12" style={{ marginTop: "20px", textAlign: "right" }}>
-              <div className="form-actions">
-                <Button color="primary" onClick={this.handleSubmit}>
-                  Guardar
-                </Button>
-              </div>
-            </Col>
-          </Row>
-        </Form>
-      </div>
+      <Fragment>
+        <div
+          style={{
+            marginLeft: 10,
+            marginRight: 60,
+            marginTop: 20,
+            marginBottom: 20,
+          }}
+          id="container"
+        >
+          <Form>
+            <Row>
+              <Col style={{ background: "red" }}>&nbsp;</Col>
+            </Row>
+            <Row>
+              <Col xs="4">
+                <FormGroup>
+                  <Label htmlFor="name">Nombre</Label>
+                  <Input
+                    type="text"
+                    id="name"
+                    name="name"
+                    placeholder="nombre"
+                    required
+                    value={this.state.name}
+                    onChange={this.handleInputChange}
+                  />
+                </FormGroup>
+              </Col>
+              <Col xs="4">
+                <FormGroup>
+                  <Label htmlFor="address">Dirección</Label>
+                  <Input
+                    type="text"
+                    id="address"
+                    name="address"
+                    placeholder="dirección"
+                    required
+                    value={this.state.address || ""}
+                    onChange={this.handleInputChange}
+                  />
+                </FormGroup>
+              </Col>
+              <Col xs="4">
+                <FormGroup>
+                  <Label htmlFor="worksToRealize">Tipo de Trabajo</Label>
+                  <DropDownListComponent
+                    id="worksToRealize"
+                    dataSource={this.typeWork}
+                    placeholder={`Selecciona Tipo de Obra`}
+                    fields={{ text: "id", value: "id" }}
+                    ref={(g) => (this.ddlTypeWork = g)}
+                    value={this.state.worksToRealize || ""}
+                  />
+                </FormGroup>
+              </Col>
+            </Row>
+            <Row>
+              <Col xs="2">
+                <FormGroup>
+                  <Label
+                    htmlFor="passiveSubject"
+                    style={{ verticalAlign: "bottom" }}
+                  >
+                    Sujeto Pasivo&nbsp;
+                  </Label>
+                  <AppSwitch
+                    className={"mx-1 mt-4"}
+                    variant={"pill"}
+                    color={"primary"}
+                    label
+                    checked={this.state.passiveSubject}
+                    id="passiveSubject"
+                    name="passiveSubject"
+                    placeholder="sujeto pasivo"
+                    onChange={this.handleInputChange}
+                    dataOn="Si"
+                    dataOff="No"
+                  />
+                </FormGroup>
+              </Col>
+              <Col xs="2">
+                <FormGroup>
+                  <Label htmlFor="estimatedDuration">T. Estimado</Label>
+                  <Input
+                    type="text"
+                    id="estimatedDuration"
+                    name="estimatedDuration"
+                    placeholder="tiempo estimado"
+                    value={this.state.estimatedDuration}
+                    onChange={this.handleInputChange}
+                  />
+                </FormGroup>
+              </Col>
+              <Col xs="4">
+                <FormGroup>
+                  <Label htmlFor="openDate">Fecha de Apertura de Obra</Label>
+                  <DatePickerComponent
+                    id="openDate"
+                    name="openDate"
+                    placeholder="fecha de apertura"
+                    required
+                    format="dd/MM/yyyy"
+                    value={this.state.openDate}
+                    onChange={this.handleInputChange}
+                  />
+                </FormGroup>
+              </Col>
+              <Col xs="4">
+                <FormGroup>
+                  <Label htmlFor="address">Fecha de Cierre de Obra</Label>
+                  <DatePickerComponent
+                    id="closeDate"
+                    name="closeDate"
+                    placeholder="fecha de cierre"
+                    format="dd/MM/yyyy"
+                    value={this.state.closeDate}
+                    onChange={this.handleInputChange}
+                  />
+                </FormGroup>
+              </Col>
+            </Row>
+            <Row>
+              <Col xs="4">
+                <FormGroup>
+                  <Label
+                    htmlFor="invoiceToOrigin"
+                    style={{ verticalAlign: "bottom" }}
+                  >
+                    Factura a Origen&nbsp;
+                  </Label>
+                  <AppSwitch
+                    className={"mx-1 mt-4"}
+                    variant={"pill"}
+                    color={"primary"}
+                    label
+                    checked={this.state.invoiceToOrigin}
+                    id="invoiceToOrigin"
+                    name="invoiceToOrigin"
+                    placeholder="factura a origen"
+                    onChange={this.handleInputChange}
+                    dataOn="Si"
+                    dataOff="No"
+                  />
+                </FormGroup>
+              </Col>
+              <Col xs="4">
+                <FormGroup>
+                  <Label htmlFor="percentageRetention">Retención</Label>
+                  <NumericTextBoxComponent
+                    format="p2"
+                    id="percentageRetention"
+                    name="percentageRetention"
+                    value={this.state.percentageRetention}
+                    min={0}
+                    max={1}
+                    step={0.01}
+                    showSpinButton={false}
+                    placeholder="porcentaje retención"
+                    change={this.handleChangePercentageRetention}
+                    ref={(g) => (this.ntbPercentageRetention = g)}
+                  />
+                </FormGroup>
+              </Col>
+              <Col xs="4">
+                <FormGroup>
+                  <Label htmlFor="percentageIVA">IVA</Label>
+                  <NumericTextBoxComponent
+                    format="p2"
+                    id="percentageIVA"
+                    name="percentageIVA"
+                    value={this.state.percentageIVA}
+                    min={0}
+                    max={1}
+                    step={0.01}
+                    showSpinButton={false}
+                    placeholder="porcentaje IVA"
+                    change={this.handleChangePercentageIVA}
+                    ref={(g) => (this.ntbPercentageIVA = g)}
+                  />
+                </FormGroup>
+              </Col>
+            </Row>
+            <Row>
+              <Col xs="12">
+                <hr></hr>
+              </Col>
+            </Row>
+            <Row>
+              <Col xs="3"></Col>
+              <Col xs="5">
+                <br></br>
+                <FormGroup>
+                  <Label
+                    htmlFor="totalContract"
+                    style={{
+                      fontSize: "Medium",
+                      textAlign: "Center",
+                      display: "block",
+                      marginRight: "140px",
+                    }}
+                  >
+                    <b>Total Contrato</b>
+                  </Label>
+                  {this.renderTotalContratc()}
+                </FormGroup>
+              </Col>
+            </Row>
+            <Row>
+              <Col xs="12" style={{ marginTop: "20px", textAlign: "right" }}>
+                <div className="form-actions">
+                  <Button color="primary" onClick={this.handleSubmit}>
+                    Guardar
+                  </Button>
+                </div>
+              </Col>
+            </Row>
+          </Form>
+        </div>
+      </Fragment>
     );
   }
 }

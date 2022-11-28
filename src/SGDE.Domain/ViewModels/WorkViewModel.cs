@@ -23,7 +23,7 @@
         public double percentageRetention { get; set; }
         public double percentageIVA { get; set; }
         public List<(string name, double value)> workBudgets { get; set; }
-
+        public string status { get; set; } 
         public int clientId { get; set; }
         public string clientName { get; set; }
     }

@@ -88,13 +88,13 @@ class AuthorizeCancelWorkers extends Component {
   }
 
   componentDidMount() {
-    getUser(this.props.userId).then((result) => {
-      this.setState({
-        user: {
-          fullname: result.fullname,
-        },
-      });
-    });
+    // getUser(this.props.userId).then((result) => {
+    //   this.setState({
+    //     user: {
+    //       fullname: result.fullname,
+    //     },
+    //   });
+    // });
   }
 
   contextMenuOpen() {
@@ -314,7 +314,7 @@ class AuthorizeCancelWorkers extends Component {
   }
 
   render() {
-    let title = ` Contratos`;
+    let title = ` Gastos Trabajadores`;
 
     return (
       <Fragment>
