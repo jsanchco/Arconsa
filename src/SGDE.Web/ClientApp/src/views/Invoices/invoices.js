@@ -626,7 +626,7 @@ class Invoices extends Component {
   workBudgetTemplate(args) {
     return ( 
       <div> 
-        <a rel='nofollow' href={"/#/works/detailwork/" + args.workId + "/1"}>{args.workBudgetName}</a> 
+        <a rel='nofollow' href={"/#/works/detailwork/" + args.workId + "/2"}>{args.workBudgetName}</a> 
       </div> 
     ); 
   }  

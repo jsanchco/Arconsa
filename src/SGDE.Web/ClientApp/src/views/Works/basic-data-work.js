@@ -35,6 +35,7 @@ class BasicDataWork extends Component {
         open: result.open,
         clientId: result.clientId,
         workBudgets: result.workBudgets,
+        status: result.status
       });
     });
 
@@ -62,7 +63,31 @@ class BasicDataWork extends Component {
     this.updateFromInvoiceToOrigin();
   }
 
-  componentDidUpdate(prevState) {
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.refreshStatus !== prevProps.refreshStatus) {
+      getWork(this.props.workId).then((result) => {
+        this.setState({
+          id: result.id,
+          name: result.name,
+          address: result.address,
+          worksToRealize: result.worksToRealize,
+          numberPersonsRequested: result.numberPersonsRequested,
+          estimatedDuration: result.estimatedDuration,
+          openDate: result.openDate,
+          closeDate: result.closeDate,
+          passiveSubject: result.passiveSubject,
+          invoiceToOrigin: result.invoiceToOrigin,
+          totalContract: result.totalContract,
+          percentageRetention: result.percentageRetention,
+          percentageIVA: result.percentageIVA,
+          open: result.open,
+          clientId: result.clientId,
+          workBudgets: result.workBudgets,
+          status: result.status
+        });
+      });
+    }
+
     if (this.state.invoiceToOrigin !== prevState.invoiceToOrigin) {
       this.updateFromInvoiceToOrigin();
     }
@@ -168,6 +193,7 @@ class BasicDataWork extends Component {
       open: this.state.open,
       clientId: this.state.clientId,
       workBudgets: this.state.workBudgets,
+      status:  this.state.status
     };
   }
 
@@ -216,6 +242,29 @@ class BasicDataWork extends Component {
   }
 
   render() {
+    let color = '';
+    switch (this.state.status) {
+      case "Abierta":
+        color = "#16a085";
+        break;
+
+      case "Cerrada":
+        color = "#e74c3c";
+        break;
+          
+      case "Juridico":
+        color = "#f5fe00";
+        break;
+
+      case "Problemas":
+        color = "#ff8000";
+        break;
+        
+      default:
+        color = "#16a085";
+        break;
+    }
+
     return (
       <Fragment>
         <div
@@ -229,8 +278,11 @@ class BasicDataWork extends Component {
         >
           <Form>
             <Row>
-              <Col style={{ background: "red" }}>&nbsp;</Col>
+              <Col style={{ background: color }}>&nbsp;</Col>
             </Row>
+            <Row>
+              <Col>&nbsp;</Col>
+            </Row>            
             <Row>
               <Col xs="4">
                 <FormGroup>

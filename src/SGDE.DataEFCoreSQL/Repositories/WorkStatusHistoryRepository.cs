@@ -113,5 +113,14 @@
             _context.SaveChanges();
             return true;
         }
+
+        #region Auxiliary Methods
+
+        private void CheckAdd(WorkStatusHistory newWorkStatusHistory)
+        {
+
+        }
+
+        #endregion
     }
 }

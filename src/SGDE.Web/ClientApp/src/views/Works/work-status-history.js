@@ -63,7 +63,7 @@ class WorkStatusHistory extends Component {
 
     this.typeWorkStatusHistory = [
       { id: "Abierta" },
-      { id: "Problema" },
+      { id: "Problemas" },
       { id: "Juridico" },
       { id: "Otros" },
       { id: "Cerrada" },

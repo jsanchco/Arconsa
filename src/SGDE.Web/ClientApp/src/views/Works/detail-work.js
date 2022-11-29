@@ -58,7 +58,8 @@ class DetailWork extends Component {
   }
 
   selectedTab(args) {
-    this.setState({ tabSelected: args });
+    // this.setState({ tabSelected: args });
+    this.tab.refresh();
     console.log("detail-work -> selectedTab");
   }
 
@@ -131,6 +132,7 @@ class DetailWork extends Component {
         workId={this.props.match.params.id}
         history={this.props.history}
         showMessage={this.props.showMessage}
+        refreshStatus={this.state.tabSelected}
       />
     );
   }

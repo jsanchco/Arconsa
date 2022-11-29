@@ -41,7 +41,7 @@
 
                 passiveSubject = work.PassiveSubject,
                 status = work.WorkStatusHistories
-                    .OrderBy(x => x.DateChange).FirstOrDefault()?.Value,
+                    .OrderByDescending(x => x.DateChange).FirstOrDefault()?.Value,
 
                 clientId = work.ClientId,
                 clientName = work.Client.Name,
@@ -81,7 +81,7 @@
 
                     passiveSubject = work.PassiveSubject,
                     status = work.WorkStatusHistories
-                        .OrderBy(x => x.DateChange).FirstOrDefault()?.Value,
+                        .OrderByDescending(x => x.DateChange).FirstOrDefault()?.Value,
 
                     clientId = work.ClientId,
                     clientName = work.Client.Name
