@@ -1,13 +1,5 @@
 export default {
   items: [
-    // {
-    //   name: "Blank Page",
-    //   url: "/pages/blank/blank",
-    //   icon: "icon-speedometer",
-    //   badge: {
-    //     variant: "info"
-    //   }
-    // },
     {
       name: "Inicio",
       url: "/dashboard",
@@ -71,60 +63,64 @@ export default {
       url: "/signings/signings",
       icon: "icon-book-open",
     },
-    // {
-    //   name: "Facturas",
-    //   url: "/invoices/InvoicesCustom",
-    //   icon: "cui-file"
-    // },
     {
       name: "Facturas",
       url: "/invoices/Invoices",
       icon: "cui-file",
     },
     {
-      name: "Seguimiento PA",
-      url: "/invoices/Tracing",
-      icon: "cui-file",
-    },
-    {
-      name: "Resultados",
-      url: "/reports/ReportCurrentStatus",
-      icon: "cui-file",
-    },    
-    {
       name: "Informes",
-      url: "/reports",
-      icon: "icon-info",
+      icon: "cui-map",
       children: [
         {
-          name: "Trabajador",
-          url: "/reports/ReportHoursUser",
-          icon: "icon-list",
+          name: "Resultados",
+          url: "/reports/ReportCurrentStatus",
+          icon: "cui-file",
         },
         {
-          name: "Obra",
-          url: "/reports/ReportHoursWork",
-          icon: "icon-list",
+          name: "Obras",
+          children: [
+            {
+              name: "Partidas",
+              url: "/invoices/Tracing",
+              icon: "cui-file",
+            },
+            {
+              name: "Abiertas",
+              url: "/reports/ReportWorks",
+              icon: "cui-file",
+            },
+          ]
         },
         {
-          name: "Cliente",
-          url: "/reports/ReportHoursClient",
-          icon: "icon-list",
-        },
-        {
-          name: "Facturas",
-          url: "/reports/ReportInvoices",
-          icon: "icon-list",
-        },
-        // {
-        //   name: "Resultados Obras",
-        //   url: "/reports/ReportResults",
-        //   icon: "icon-list"
-        // },
-        {
-          name: "Varios",
-          url: "/reports/ReportsVarious",
-          icon: "icon-list",
+          name: "Por Horas",
+          children: [
+            {
+              name: "Trabajador",
+              url: "/reports/ReportHoursUser",
+              icon: "cui-file",
+            },
+            {
+              name: "Obra",
+              url: "/reports/ReportHoursWork",
+              icon: "cui-file",
+            },
+            {
+              name: "Cliente",
+              url: "/reports/ReportHoursClient",
+              icon: "cui-file",
+            },
+            {
+              name: "Facturas",
+              url: "/reports/ReportInvoices",
+              icon: "cui-file",
+            },
+            {
+              name: "Varios",
+              url: "/reports/ReportsVarious",
+              icon: "cui-file",
+            },
+          ],
         },
       ],
     },

@@ -472,8 +472,7 @@ class Works extends Component {
                     <Legend
                       elements={[
                         { color: "dot-green", text: "Abierta" },
-                        { color: "dot-yellow", text: "Juridico" },
-                        { color: "dot-orange", text: "Problemas" },
+                        { color: "dot-orange", text: "Juridico" },
                         { color: "dot-red", text: "Cerrada" },
                       ]}
                     />

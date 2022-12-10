@@ -304,6 +304,7 @@
                     workBudgetName = x.Name,
                     workId = x.WorkId,
                     workName = x.Work?.Name,
+                    workStatus = x.Work?.WorkStatusHistories.OrderByDescending(y => y.DateChange).FirstOrDefault().Value,
                     clientId = x.Work?.ClientId,
                     clientName = x.Work?.Client?.Name,
                     clientEmail = x.Work?.Client?.Email,

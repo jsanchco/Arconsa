@@ -7,6 +7,7 @@ import {
   Form,
   FormGroup,
   Label,
+  Input,
   Button,
   Col,
 } from "reactstrap";
@@ -25,21 +26,14 @@ import {
   AggregateColumnDirective,
   AggregateDirective,
   AggregatesDirective,
-  Page,
 } from "@syncfusion/ej2-react-grids";
 import { connect } from "react-redux";
 import { DataManager, WebApiAdaptor, Query } from "@syncfusion/ej2-data";
-import { config, COMPANY_DATA, REPORT_CURRENT_STATUS } from "../../constants";
+import { config, REPORT_WORKS, COMPANY_DATA } from "../../constants";
 import { TOKEN_KEY, getSettings } from "../../services";
 import ACTION_APPLICATION from "../../actions/applicationAction";
 
-class ReportCurrentStatus extends Component {
-  currentStatus = new DataManager({
-    adaptor: new WebApiAdaptor(),
-    url: `${config.URL_API}/${REPORT_CURRENT_STATUS}`,
-    headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }],
-  });
-
+class ReportWorks extends Component {
   dtpStartDate = null;
   dtpEndDate = null;
   grid = null;
@@ -49,12 +43,16 @@ class ReportCurrentStatus extends Component {
   constructor(props) {
     super(props);
 
-    this.toolbarOptions = ["Print", "ExcelExport", "Search"];
-
-    this.pageSettings = {
-      pageCount: 10,
-      pageSize: 10,
-    };
+    this.toolbarOptions = [
+      "Print",
+      "ExcelExport",
+      {
+        text: "Colapsar",
+        tooltipText: "Colapsar todas las Filas",
+        prefixIcon: "e-custom-icons e-file-upload",
+        id: "CollapseAll",
+      },
+    ];
 
     this.templateIsPaid = this.templateIsPaid.bind(this);
     this.handleOnClick = this.handleOnClick.bind(this);
@@ -96,42 +94,19 @@ class ReportCurrentStatus extends Component {
   handleOnClick() {
     const valueDtpStartDate = this.formatDate(this.dtpStartDate.value);
     const valueDtpEndDate = this.formatDate(this.dtpEndDate.value);
+    const valueFilter = document.getElementById("filter").value;
 
-    if (
-      valueDtpStartDate === null ||
-      valueDtpStartDate === "" ||
-      valueDtpEndDate === null ||
-      valueDtpEndDate === ""
-    ) {
-      this.props.showMessage({
-        statusText: "Consulta mal configurada",
-        responseText: "Consulta mal configurada",
-        type: "danger",
-      });
-    } else {
-      if (this.dtpStartDate.value > this.dtpEndDate.value) {
-        this.props.showMessage({
-          statusText: "Consulta mal configurada",
-          responseText: "Consulta mal configurada",
-          type: "danger",
-        });
-      } else {
-        // showSpinner(this.element);
+    this.grid.dataSource = new DataManager({
+      adaptor: new WebApiAdaptor(),
+      url: `${config.URL_API}/${REPORT_WORKS}`,
+      headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }],
+    });
+    this.grid.query = new Query()
+      .addParams("startDate", valueDtpStartDate)
+      .addParams("endDate", valueDtpEndDate)
+      .addParams("filter", valueFilter);
 
-        this.grid.dataSource = new DataManager({
-          adaptor: new WebApiAdaptor(),
-          url: `${config.URL_API}/${REPORT_CURRENT_STATUS}`,
-          headers: [
-            { Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) },
-          ],
-        });
-        this.grid.query = new Query()
-          .addParams("startDate", valueDtpStartDate)
-          .addParams("endDate", valueDtpEndDate);
-
-        this.grid.refresh();
-      }
-    }
+    this.grid.refresh();
   }
 
   clickHandler(args) {
@@ -180,12 +155,10 @@ class ReportCurrentStatus extends Component {
   }
 
   getExcelExportProperties() {
-    let title = "INFORME del ESTADO ACTUAL de OBRAS";
-    let type = "ESTADO ACTUAL";
-    let fileName = "Inf_Seg.xlsx";
+    let title = "INFORME de OBRAS Abiertas";
+    let type = "OBRAS";
+    let fileName = "Inf_Obras_Abiertas.xlsx";
     const date = this.formatDate(new Date());
-    const valueDtpStartDate = this.formatDate(this.dtpStartDate.value);
-    const valueDtpEndDate = this.formatDate(this.dtpEndDate.value);
 
     return {
       header: {
@@ -252,12 +225,12 @@ class ReportCurrentStatus extends Component {
               },
               {
                 index: 5,
-                value: "Fecha Inicio",
+                value: "",
                 style: { fontColor: "#C67878", bold: true },
               },
               {
                 index: 6,
-                value: "Fecha Fin",
+                value: "",
                 width: 150,
                 style: { fontColor: "#C67878", bold: true },
               },
@@ -266,8 +239,8 @@ class ReportCurrentStatus extends Component {
           {
             index: 6,
             cells: [
-              { index: 5, value: valueDtpStartDate },
-              { index: 6, value: valueDtpEndDate, width: 150 },
+              { index: 5, value: "" },
+              { index: 6, value: "", width: 150 },
             ],
           },
         ],
@@ -305,7 +278,7 @@ class ReportCurrentStatus extends Component {
 
     var div = document.createElement("Div");
     div.innerHTML =
-      "ESTADO ACTUAL desde el " + valueDtpStartDate + " al " + valueDtpEndDate;
+      "OBRAS Abiertas desde el " + valueDtpStartDate + " al " + valueDtpEndDate;
     div.style.textAlign = "center";
     div.style.color = "red";
     div.style.padding = "10px 0";
@@ -325,10 +298,6 @@ class ReportCurrentStatus extends Component {
         }
       }
     }
-  }
-
-  dataBound(args) {
-    console.log("Count Items");
   }
 
   clientTemplate(args) {
@@ -370,46 +339,47 @@ class ReportCurrentStatus extends Component {
             <a href="#">Inicio</a>
           </BreadcrumbItem>
           {/* eslint-disable-next-line*/}
-          <BreadcrumbItem active>
-            Informe de Resultados
-          </BreadcrumbItem>
+          <BreadcrumbItem active>Informe de Obras Abiertas entre dos Fechas</BreadcrumbItem>
         </Breadcrumb>
 
         <Container fluid>
           <div className="animated fadeIn" id="selection-report">
             <div className="card">
               <div className="card-header">
-                <i className="icon-list"></i> Informe de Resultados
+                <i className="icon-list"></i> Informe de Obras Abiertas entre dos Fechas
               </div>
               <div className="card-body"></div>
-              {/* <div>
+              <div>
                 <Form style={{ marginLeft: "20px" }}>
                   <Row>
-                    <Col xs="5">
+                    <Col xs="3">
                       <FormGroup>
                         <Label for="startDate">Fecha Inicio</Label>
                         <DatePickerComponent
                           id="startDate"
                           ref={(g) => (this.dtpStartDate = g)}
                           format="dd/MM/yyyy"
-                          value={
-                            new Date(
-                              new Date().getFullYear(),
-                              new Date().getMonth(),
-                              1
-                            )
-                          }
                         />
                       </FormGroup>
                     </Col>
-                    <Col xs="5">
+                    <Col xs="3">
                       <FormGroup style={{ marginLeft: "20px" }}>
                         <Label for="endDate">Fecha Fin</Label>
                         <DatePickerComponent
                           id="endDate"
                           ref={(g) => (this.dtpEndDate = g)}
                           format="dd/MM/yyyy"
-                          value={new Date()}
+                        />
+                      </FormGroup>
+                    </Col>
+                    <Col xs="5">
+                      <FormGroup style={{ marginLeft: "20px" }}>
+                        <Label for="filter">Filtrar</Label>
+                        <Input
+                          type="text"
+                          id="filter"
+                          name="filter"
+                          placeholder="Por favor seleccione filtro"
                         />
                       </FormGroup>
                     </Col>
@@ -427,23 +397,19 @@ class ReportCurrentStatus extends Component {
                     </Col>
                   </Row>
                 </Form>
-              </div> */}
-
+              </div>
               <Row>
                 <GridComponent
-                  dataSource={this.currentStatus}
-                  id="GridCurrentStatus"
+                  id="GridWorksReports"
                   locale="es-US"
-                  allowPaging={true}
-                  pageSettings={this.pageSettings}
                   toolbar={this.toolbarOptions}
                   toolbarClick={this.clickHandler}
                   style={{
                     marginLeft: 30,
                     marginRight: 30,
-                    marginTop: -20,
+                    marginTop: 10,
                     marginBottom: 20,
-                    overflow: "auto",
+                    overflow: "auto"
                   }}
                   allowGrouping={true}
                   allowExcelExport={true}
@@ -453,19 +419,12 @@ class ReportCurrentStatus extends Component {
                   allowSorting={true}
                   beforePrint={this.beforePrint}
                   excelQueryCellInfo={this.exportQueryCellInfo}
-                  dataBound={this.dataBound}
                 >
                   <ColumnsDirective>
                     <ColumnDirective
-                      field="workId"
-                      isPrimaryKey={true}
-                      isIdentity={true}
-                      visible={false}
-                    />
-                    <ColumnDirective
                       field="workName"
                       headerText="Obra"
-                      width="110"
+                      width="100"
                       template={this.workTemplate}
                     />
                     <ColumnDirective
@@ -475,58 +434,49 @@ class ReportCurrentStatus extends Component {
                       template={this.clientTemplate}
                     />
                     <ColumnDirective
-                      field="workBudgetsName"
+                      field="workBudgetName"
                       headerText="Presupuesto(s)"
-                      width="150"
-                      template={this.workBudgetTemplate}
+                      width="140"
                     />
                     <ColumnDirective
-                      field="openDate"
-                      headerText="Apert. Obra"
-                      // format={this.format}
-                      width="150"
+                      field="workType"
+                      headerText="Tipo"
+                      width="80"
+                    /> 
+                    <ColumnDirective
+                      field="dateOpenWork"
+                      headerText="Apertura"
+                      format={this.format}
+                      width="110"
                     />
                     <ColumnDirective
-                      field="closeDate"
-                      headerText="Cierre Obra"
-                      // format={this.format}
-                      width="150"
+                      field="dateCloseWork"
+                      headerText="Cierre"
+                      format={this.format}
+                      width="110"
                     />
                     <ColumnDirective
-                      field="workBudgetsSum"
+                      field="workBudgetTotalContract"
                       headerText="Total Presupuesto(s)"
-                      width="180"
-                      textAlign="right"
+                      width="160"
                     />
                     <ColumnDirective
-                      field="invoicesSum"
-                      headerText="Facturación"
-                      width="180"
-                      textAlign="right"
+                      field="invoicePaidSum"
+                      headerText="Total Pagadas"
+                      width="130"
+                      format="N2"
                     />
                     <ColumnDirective
-                      field="workCostsSum"
-                      headerText="Gastos Prov."
-                      width="180"
-                      textAlign="right"
-                    />
-                    <ColumnDirective
-                      field="authorizeCancelWorkersCostsSum"
-                      headerText="Gastos Trab."
-                      width="180"
-                      textAlign="right"
-                    />
-                    <ColumnDirective
-                      field="indirectCostsSum"
-                      headerText="Gastos Indirect."
-                      width="180"
-                      textAlign="right"
-                    />
-                    <ColumnDirective
-                      field="total"
+                      field="invoiceSum"
                       headerText="Total"
-                      width="180"
-                      textAlign="right"
+                      width="100"
+                      format="N2"
+                    />
+                    <ColumnDirective
+                      field="status"
+                      headerText="Estado"
+                      width="100"
+                      format="N2"
                     />
                   </ColumnsDirective>
 
@@ -534,7 +484,7 @@ class ReportCurrentStatus extends Component {
                     <AggregateDirective>
                       <AggregateColumnsDirective>
                         <AggregateColumnDirective
-                          field="workBudgetsSum"
+                          field="workBudgetTotalContract"
                           type="Sum"
                           format="N2"
                           footerTemplate={this.footerSumEuros}
@@ -544,7 +494,7 @@ class ReportCurrentStatus extends Component {
                         </AggregateColumnDirective>
 
                         <AggregateColumnDirective
-                          field="invoicesSum"
+                          field="invoicePaidSum"
                           type="Sum"
                           format="N2"
                           footerTemplate={this.footerSumEuros}
@@ -554,27 +504,7 @@ class ReportCurrentStatus extends Component {
                         </AggregateColumnDirective>
 
                         <AggregateColumnDirective
-                          field="workCostsSum"
-                          type="Sum"
-                          format="N2"
-                          footerTemplate={this.footerSumEuros}
-                          groupCaptionTemplate={this.footerSumEuros}
-                        >
-                          {" "}
-                        </AggregateColumnDirective>
-
-                        <AggregateColumnDirective
-                          field="authorizeCancelWorkersCostsSum"
-                          type="Sum"
-                          format="N2"
-                          footerTemplate={this.footerSumEuros}
-                          groupCaptionTemplate={this.footerSumEuros}
-                        >
-                          {" "}
-                        </AggregateColumnDirective>
-
-                        <AggregateColumnDirective
-                          field="indirectCostsSum"
+                          field="invoiceSum"
                           type="Sum"
                           format="N2"
                           footerTemplate={this.footerSumEuros}
@@ -597,14 +527,7 @@ class ReportCurrentStatus extends Component {
                   </AggregatesDirective>
 
                   <Inject
-                    services={[
-                      Page,
-                      Group,
-                      ExcelExport,
-                      Toolbar,
-                      Sort,
-                      Aggregate,
-                    ]}
+                    services={[Group, ExcelExport, Toolbar, Sort, Aggregate]}
                   />
                 </GridComponent>
               </Row>
@@ -616,7 +539,7 @@ class ReportCurrentStatus extends Component {
   }
 }
 
-ReportCurrentStatus.propTypes = {};
+ReportWorks.propTypes = {};
 
 const mapStateToProps = (state) => {
   return {
@@ -628,7 +551,4 @@ const mapDispatchToProps = (dispatch) => ({
   showMessage: (message) => dispatch(ACTION_APPLICATION.showMessage(message)),
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ReportCurrentStatus);
+export default connect(mapStateToProps, mapDispatchToProps)(ReportWorks);

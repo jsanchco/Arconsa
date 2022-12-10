@@ -68,6 +68,7 @@ const ReportResults = React.lazy(() => import('./views/Reports/report-results'))
 const ReportCurrentStatus = React.lazy(() => import('./views/Reports/report-current-status'));
 const ReportsVarious = React.lazy(() => import('./views/Reports/reports-various'));
 const Tracing = React.lazy(() => import('./views/Reports/report-tracing'));
+const ReportWorks = React.lazy(() => import('./views/Reports/report-works'));
 
 const Invoices = React.lazy(() => import('./views/Invoices/invoices'));
 const InvoicesCustom = React.lazy(() => import('./views/Invoices/invoices-custom'));
@@ -147,9 +148,10 @@ const routes = [
   { path: '/reports/reportinvoices', exact: true, name: 'Informe Facturas', component: ReportInvoices },
   { path: '/reports/reportcurrentstatus', exact: true, name: 'Resultados Actuales', component: ReportCurrentStatus },
   { path: '/reports/reportresults', exact: true, name: 'Informe Resultados', component: ReportResults },
+  { path: '/reports/reportworks', exact: true, name: 'Informe Resultados', component: ReportWorks },
   { path: '/reports/reportsvarious', exact: true, name: 'Informes Varios', component: ReportsVarious },
   { path: '/invoices/invoices', exact: true, name: 'Facturas', component: Invoices },
-  { path: '/invoices/tracing', exact: true, name: 'Seguimiento', component: Tracing },
+  { path: '/invoices/tracing', exact: true, name: 'Seguimiento', component: Tracing },  
   { path: '/invoices/invoicescustom', exact: true, name: 'Facturas Personalizadas', component: InvoicesCustom },
   { path: '/pages/Tests/TestBlank', name: 'Test Blank', component: TestBlank },
   { path: '/pages/Tests/TestHierachical', name: 'Test Hierachical', component: TestHierachical }

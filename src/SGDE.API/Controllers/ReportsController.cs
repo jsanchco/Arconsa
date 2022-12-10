@@ -239,5 +239,41 @@
                 return StatusCode(500, ex);
             }
         }
+
+
+        [HttpGet("GetWorkReportBetweenDates")]
+        public object GetWorkReportBetweenDates()
+        {
+            try
+            {
+                var queryString = Request.Query;
+                var startDate = queryString["startDate"].ToString();
+                var endDate = queryString["endDate"].ToString();
+                var filter = queryString["filter"].ToString();
+
+                var reportAllViewModel = new ReportQueryAllViewModel
+                {
+                    filter = filter
+                };
+                if (string.IsNullOrEmpty(startDate))
+                    reportAllViewModel.startDate = DateTime.MinValue;
+                else
+                    reportAllViewModel.startDate = DateTime.ParseExact(startDate, "dd/MM/yyyy", null);
+
+                if (string.IsNullOrEmpty(endDate))
+                    reportAllViewModel.endDate = DateTime.Now;
+                else
+                    reportAllViewModel.endDate = DateTime.ParseExact(endDate, "dd/MM/yyyy", null);
+
+                var data = _supervisor.GetAllWorkBetweenDates(reportAllViewModel);
+
+                return new { Items = data, data.Count };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Exception: ");
+                return StatusCode(500, ex);
+            }
+        }
     }
 }

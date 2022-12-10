@@ -253,10 +253,6 @@ class BasicDataWork extends Component {
         break;
           
       case "Juridico":
-        color = "#f5fe00";
-        break;
-
-      case "Problemas":
         color = "#ff8000";
         break;
         

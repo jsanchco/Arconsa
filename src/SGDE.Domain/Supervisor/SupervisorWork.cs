@@ -24,6 +24,46 @@
             };
         }
 
+        public List<WorkReportViewModel> GetAllWorkBetweenDates(ReportQueryAllViewModel reportQueryAllViewModel)
+        {
+            var works = _workRepository.GetAllWorkBetweenDates(reportQueryAllViewModel.startDate, reportQueryAllViewModel.endDate);
+
+            var result = new List<WorkReportViewModel>();
+            if (works != null)
+            {
+                result = works.Select(x => new WorkReportViewModel
+                {                    
+                    workBudgetName = string.Join(", ", x.WorkBudgets
+                        .Where(y => y.Type == "Definitivo" || y.Type == "Complementario X" || y.Type == "Modificado")
+                        .Select(z => z.Name)),
+                    workId = x.Id,
+                    workName = x.Name,
+                    status = x.WorkStatusHistories.OrderByDescending(y => y.DateChange).FirstOrDefault()?.Value,
+                    clientId = x.ClientId,
+                    clientName = x.Client?.Name,
+                    dateOpenWork = x.OpenDate,
+                    dateCloseWork = x.CloseDate,
+                    workBudgetTotalContract = x.TotalContract,
+                    invoicePaidSum = x.Invoices?.Where(y => y.IsPaid).Sum(y => y.TaxBase),
+                    invoiceSum = x.Invoices?.Sum(y => y.TaxBase),
+                    workType = x.WorksToRealize
+                }).ToList();
+
+                if (!string.IsNullOrEmpty(reportQueryAllViewModel.filter))
+                {
+                    result = result
+                        .Where(x =>
+                            Searcher.RemoveAccentsWithNormalization(x.workName.ToLower()).Contains(reportQueryAllViewModel.filter) ||
+                            Searcher.RemoveAccentsWithNormalization(x.clientName.ToLower()).Contains(reportQueryAllViewModel.filter) ||
+                            Searcher.RemoveAccentsWithNormalization(x.status.ToLower()).Contains(reportQueryAllViewModel.filter) ||
+                            Searcher.RemoveAccentsWithNormalization(x.workBudgetName.ToLower()).Contains(reportQueryAllViewModel.filter))
+                        .ToList();
+                }
+            }
+
+            return result;
+        }
+
         public WorkViewModel GetWorkById(int id)
         {
             var workViewModel = WorkConverter.Convert(_workRepository.GetById(id));

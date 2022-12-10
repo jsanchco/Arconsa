@@ -4,6 +4,8 @@
 
     using SGDE.Domain.Entities;
     using SGDE.Domain.Helpers;
+    using SGDE.Domain.ViewModels;
+    using System;
     using System.Collections.Generic;
 
     #endregion
@@ -13,6 +15,7 @@
         List<Work> GetAllLite(string filter = null, int clientId = 0);
         List<Work> GetAllLiteIncludeClient(string filter = null);
         QueryResult<Work> GetAll(int skip = 0, int take = 0, string filter = null, int clientId = 0, bool showCloseWorks = true);
+        List<Work> GetAllWorkBetweenDates(DateTime startDate, DateTime endDate);
         Work GetById(int id);
         Work Add(Work newWork);
         bool Update(Work work);

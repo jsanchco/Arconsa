@@ -114,6 +114,19 @@
             return result;
         }
 
+        public List<Work> GetAllWorkBetweenDates(DateTime startDate, DateTime endDate)
+        {
+            List<Work> data = _context.Work
+                        .Include(x => x.Client)
+                        .Include(x => x.Invoices)
+                        .Include(x => x.WorkBudgets)
+                        .Include(x => x.WorkStatusHistories)
+                        .Where(x => x.OpenDate >= startDate && x.OpenDate <= endDate)
+                        .ToList();
+
+            return data;
+        }
+
         public Work GetById(int id)
         {
             var result = _context.Work

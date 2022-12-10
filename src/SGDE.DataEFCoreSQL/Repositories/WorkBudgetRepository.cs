@@ -157,6 +157,8 @@ namespace SGDE.DataEFCoreSQL.Repositories
                 .Include(x => x.Invoices)
                 .Include(x => x.Work)
                 .ThenInclude(y => y.Client)
+                .Include(x => x.Work)
+                .ThenInclude(y => y.WorkStatusHistories)
                 .ToList();
 
             if (!string.IsNullOrEmpty(filter) && result != null)

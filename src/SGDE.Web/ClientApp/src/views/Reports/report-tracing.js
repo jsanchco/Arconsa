@@ -354,14 +354,14 @@ class ReportTracing extends Component {
             <a href="#">Inicio</a>
           </BreadcrumbItem>
           {/* eslint-disable-next-line*/}
-          <BreadcrumbItem active>Informe de Seguimiento</BreadcrumbItem>
+          <BreadcrumbItem active>Informe de Obras por Partidas entre dos Fechas</BreadcrumbItem>
         </Breadcrumb>
 
         <Container fluid>
           <div className="animated fadeIn" id="selection-report">
             <div className="card">
               <div className="card-header">
-                <i className="icon-list"></i> Informe de Seguimiento
+                <i className="icon-list"></i> Informe de Obras por Partidas entre dos Fechas
               </div>
               <div className="card-body"></div>
               <div>
@@ -434,9 +434,9 @@ class ReportTracing extends Component {
                 >
                   <ColumnsDirective>
                     <ColumnDirective
-                      field="situation"
-                      headerText="Situación"
-                      width="110"
+                      field="workStatus"
+                      headerText="Estado"
+                      width="100"
                     />
                     <ColumnDirective
                       field="workBudgetName"
@@ -505,7 +505,7 @@ class ReportTracing extends Component {
                       field="clientEmail"
                       headerText="Correo"
                       width="100"
-                    />
+                    />               
                   </ColumnsDirective>
 
                   <AggregatesDirective>
