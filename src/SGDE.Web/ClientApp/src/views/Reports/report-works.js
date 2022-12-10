@@ -27,6 +27,11 @@ import {
   AggregateDirective,
   AggregatesDirective,
 } from "@syncfusion/ej2-react-grids";
+import {
+  createSpinner,
+  showSpinner,
+  hideSpinner,
+} from "@syncfusion/ej2-popups";
 import { connect } from "react-redux";
 import { DataManager, WebApiAdaptor, Query } from "@syncfusion/ej2-data";
 import { config, REPORT_WORKS, COMPANY_DATA } from "../../constants";
@@ -95,6 +100,13 @@ class ReportWorks extends Component {
     const valueDtpStartDate = this.formatDate(this.dtpStartDate.value);
     const valueDtpEndDate = this.formatDate(this.dtpEndDate.value);
     const valueFilter = document.getElementById("filter").value;
+
+    // const element = document.getElementById("container-report-works");
+
+    // createSpinner({
+    //   target: element,
+    // });
+    // showSpinner(element);
 
     this.grid.dataSource = new DataManager({
       adaptor: new WebApiAdaptor(),
@@ -339,14 +351,17 @@ class ReportWorks extends Component {
             <a href="#">Inicio</a>
           </BreadcrumbItem>
           {/* eslint-disable-next-line*/}
-          <BreadcrumbItem active>Informe de Obras Abiertas entre dos Fechas</BreadcrumbItem>
+          <BreadcrumbItem active>
+            Informe de Obras Abiertas entre dos Fechas
+          </BreadcrumbItem>
         </Breadcrumb>
 
-        <Container fluid>
+        <Container fluid id="container-report-works">
           <div className="animated fadeIn" id="selection-report">
             <div className="card">
               <div className="card-header">
-                <i className="icon-list"></i> Informe de Obras Abiertas entre dos Fechas
+                <i className="icon-list"></i> Informe de Obras Abiertas entre
+                dos Fechas
               </div>
               <div className="card-body"></div>
               <div>
@@ -400,7 +415,8 @@ class ReportWorks extends Component {
               </div>
               <Row>
                 <GridComponent
-                  id="GridWorksReports"
+                  id="gridWorksReports"
+                  name="gridWorksReports"
                   locale="es-US"
                   toolbar={this.toolbarOptions}
                   toolbarClick={this.clickHandler}
@@ -409,7 +425,7 @@ class ReportWorks extends Component {
                     marginRight: 30,
                     marginTop: 10,
                     marginBottom: 20,
-                    overflow: "auto"
+                    overflow: "auto",
                   }}
                   allowGrouping={true}
                   allowExcelExport={true}
@@ -442,7 +458,7 @@ class ReportWorks extends Component {
                       field="workType"
                       headerText="Tipo"
                       width="80"
-                    /> 
+                    />
                     <ColumnDirective
                       field="dateOpenWork"
                       headerText="Apertura"
