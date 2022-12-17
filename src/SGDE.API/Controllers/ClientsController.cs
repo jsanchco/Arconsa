@@ -3,13 +3,12 @@ namespace SGDE.API.Controllers
 {
     #region Using
 
-    using Microsoft.AspNetCore.Mvc;
-    using Microsoft.AspNetCore.Authorization;
     using Domain.Supervisor;
+    using Domain.ViewModels;
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Logging;
     using System;
-    using Domain.ViewModels;
-    using System.Linq;
 
     #endregion
 
@@ -80,7 +79,7 @@ namespace SGDE.API.Controllers
         }
 
         [HttpPost]
-        public object Post([FromBody]ClientViewModel clientViewModel)
+        public object Post([FromBody] ClientViewModel clientViewModel)
         {
             try
             {
@@ -95,7 +94,7 @@ namespace SGDE.API.Controllers
         }
 
         [HttpPut]
-        public object Put([FromBody]ClientViewModel clientViewModel)
+        public object Put([FromBody] ClientViewModel clientViewModel)
         {
             try
             {

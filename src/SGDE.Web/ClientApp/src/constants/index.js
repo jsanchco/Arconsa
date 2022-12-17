@@ -38,7 +38,6 @@ export const SENDMASSIVESIGNING = "api/dailysignings/sendmassivesigning";
 export const REMOVEALLDAILYSIGNING = "api/dailysignings/removeall";
 export const INVOICES = "api/Invoices";
 export const PRINTINVOICE = "api/Invoices/print";
-// export const BILLPAYMENT = "api/Invoices/billpayment";
 export const BILLPAYMENTWITHAMOUNT = "api/Invoices/billpaymentwithamount";
 export const IMPORTPREVIOUSINVOICE = "api/Invoices/importpreviousinvoice";
 export const DETAILSINVOICE = "api/DetailsInvoice";
@@ -62,6 +61,7 @@ export const COMPANY_INDIRECTCOSTS = "api/indirectCosts";
 export const COMPANY_ADD_INDIRECTCOSTS = "api/indirectCosts/addindirectcosts";
 export const COMPANY_LIBRARIES = "api/libraries";
 export const COMPANY_DOCUMENTS = "api/companydatas";
+export const DASHBOARD = "api/dashboard";
 export const COMPANY_DATA = "COMPANY_DATA";
 
 const dev = {

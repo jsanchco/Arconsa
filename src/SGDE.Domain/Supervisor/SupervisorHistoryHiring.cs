@@ -137,6 +137,34 @@
                 };
         }
 
+        public List<HistoryHiringViewModel> GetHistoryBetweenDates(DateTime startDate, DateTime endDate)
+        {
+            var listHistoryHiringViewModel = new List<HistoryHiringViewModel>();
+            var dailySignings = _dailySigningRepository.GetHistoryBetweenDates(startDate, endDate);
+
+            if (dailySignings == null || dailySignings.Count == 0)
+                return new List<HistoryHiringViewModel>();
+
+
+            listHistoryHiringViewModel = dailySignings
+                .OrderBy(x => x.UserHiring.StartDate)
+                .GroupBy(x => x.UserHiring.UserId)
+                .Select(x => new HistoryHiringViewModel
+                {
+                    userName = $"{x.FirstOrDefault().UserHiring.User.Name} {x.FirstOrDefault().UserHiring.User.Surname}",
+                    userHiringId = x.FirstOrDefault().UserHiring.Id,
+                    userId = x.FirstOrDefault().UserHiring.UserId,
+                    dtStartDate = (DateTime)x.FirstOrDefault().StartHour,
+                    dtEndDate = x.LastOrDefault().EndHour ?? x.LastOrDefault().StartHour,
+
+                    priceTotal = SumPriceTotal(x),
+                    priceTotalSale = SumPriceSaleTotal(x)
+                })
+                .ToList();
+
+            return listHistoryHiringViewModel.OrderBy(x => x.dtStartDate).ToList();
+        }
+
         public double SumPriceTotal(IEnumerable<DailySigning> dailySignings)
         {
             double result = 0;

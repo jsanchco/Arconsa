@@ -6,6 +6,7 @@
     using Domain.Repositories;
     using Microsoft.EntityFrameworkCore;
     using SGDE.Domain.Helpers;
+    using SGDE.Domain.ViewModels;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -75,6 +76,13 @@
                     Data = data.Skip(0).Take(count).ToList(),
                     Count = count
                 };
+        }
+
+        public List<CostWorker> GetCostWorkerBetweenDates(DateTime startDate, DateTime endDate)
+        {
+            return _context.CostWorker
+                .Where(x => x.StartDate >= startDate && x.EndDate <= endDate)
+                .ToList();
         }
 
         public CostWorker GetById(int id)

@@ -276,13 +276,6 @@ class Works extends Component {
       case "Juridico":
         return (
           <div>
-            <span className="dot-yellow"></span>
-          </div>
-        );
-
-      case "Problemas":
-        return (
-          <div>
             <span className="dot-orange"></span>
           </div>
         );

@@ -117,6 +117,23 @@
                 .ToList();
         }
 
+        public List<DailySigning> GetHistoryBetweenDates(DateTime startDate, DateTime endDate)
+        {
+            return _context.DailySigning
+                .Include(x => x.UserHiring)
+                .ThenInclude(y => y.Work)
+                .ThenInclude(v => v.Client)
+                .ThenInclude(vp => vp.ProfessionInClients)
+                .Include(z => z.UserHiring)
+                .ThenInclude(w => w.User)
+                .ThenInclude(ux => ux.CostWorkers)
+                .Include(x => x.Profession)
+                .Include(r => r.UserHiring)
+                .ThenInclude(s => s.Profession)
+                .Where(x => x.StartHour >= startDate && x.StartHour <= endDate)
+                .ToList();
+        }
+
         public DailySigning GetById(int id)
         {
             return _context.DailySigning

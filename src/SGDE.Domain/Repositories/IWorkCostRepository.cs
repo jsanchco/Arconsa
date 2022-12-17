@@ -1,4 +1,5 @@
 ﻿using SGDE.Domain.Entities;
+using System;
 using System.Collections.Generic;
 
 namespace SGDE.Domain.Repositories
@@ -6,6 +7,7 @@ namespace SGDE.Domain.Repositories
     public interface IWorkCostRepository
     {
         List<WorkCost> GetAll(int workId);
+        List<WorkCost> GetBetweenDates(DateTime startDate, DateTime endDate);
         double SumAll(int workId);
         WorkCost GetById(int id);
         WorkCost Add(WorkCost newWorkCost);

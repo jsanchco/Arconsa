@@ -83,6 +83,13 @@
                 };
         }
 
+        public List<CostWorker> GetCostWorkerBetweenDates(DateTime startDate, DateTime endDate)
+        {
+            return _context.CostWorker
+                .Where(x => x.StartDate >= startDate && x.EndDate <= endDate)
+                .ToList();
+        }
+
         public CostWorker GetById(int id)
         {
             return _context.CostWorker

@@ -6,6 +6,10 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+// import { registerLicense } from '@syncfusion/ej2-base';
+
+// // Registering Syncfusion license key
+// registerLicense('NTg0NUAzMjMwMkUzMzJFMzBkNm9FSEk1YjRsU203NnpOdzNjeXNVMGtHM2g3Y05QMlZkbWFWY1FpL3NjPQ==');
 
 ReactDOM.render(<App />, document.getElementById('root'));
 

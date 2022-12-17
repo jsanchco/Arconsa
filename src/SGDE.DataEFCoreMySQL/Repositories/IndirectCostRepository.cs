@@ -85,6 +85,13 @@
                 };
         }
 
+        public List<IndirectCost> GetBetweeenDates(DateTime startDate, DateTime endDate)
+        {
+            return _context.IndirectCost
+                .Where(x => x.Date >= startDate && x.Date <= endDate)
+                .ToList();
+        }
+
         public IndirectCost GetById(int id)
         {
             return _context.IndirectCost.FirstOrDefault(x => x.Id == id);

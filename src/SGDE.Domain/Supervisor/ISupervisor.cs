@@ -276,6 +276,7 @@ namespace SGDE.Domain.Supervisor
 
         QueryResult<HistoryHiringViewModel> GetHistoryByUserId(int userId, int skip = 0, int take = 0);
         QueryResult<HistoryHiringViewModel> GetHistoryByWorkId(int workId, int skip = 0, int take = 0);
+        List<HistoryHiringViewModel> GetHistoryBetweenDates(DateTime startDate, DateTime endDate);
         bool UpdateHistoryInWork(HistoryHiringViewModel historyHiringViewModel);
 
         #endregion
@@ -399,6 +400,12 @@ namespace SGDE.Domain.Supervisor
         WorkStatusHistoryViewModel AddWorkStatusHistory(WorkStatusHistoryViewModel newWorkStatusHistoryViewModel);
         bool UpdateWorkStatusHistory(WorkStatusHistoryViewModel workHistoryStatusViewModel);
         bool DeleteWorkStatusHistory(int id);
+
+        #endregion
+
+        #region Dashboard
+
+        (BarItemViewModel costsAndIncomes, BarItemViewModel worksOpenedAndClosed) GetDashboard();
 
         #endregion
 
