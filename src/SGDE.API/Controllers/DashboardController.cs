@@ -36,6 +36,40 @@ namespace SGDE.API.Controllers
         }
 
         [HttpGet]
+        [Route("costsandincomes")]
+        public object GetCostsAndIncomes()
+        {
+            try
+            {
+                var result = _supervisor.GetCostsAndIncomes();
+
+                return new { chart = result };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Exception: ");
+                return StatusCode(500, ex);
+            }
+        }
+
+        [HttpGet]
+        [Route("worksopenedandclosed")]
+        public object GetWorksOpenedAndClosed()
+        {
+            try
+            {
+                var result = _supervisor.GetWorksOpenedAndClosed();
+
+                return new { chart = result };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Exception: ");
+                return StatusCode(500, ex);
+            }
+        }
+
+        [HttpGet]
         [Route("dates/{start}/{end}")]
         public object GetWithDates(string start, string end)
         {

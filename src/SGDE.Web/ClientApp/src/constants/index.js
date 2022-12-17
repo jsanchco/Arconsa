@@ -62,6 +62,8 @@ export const COMPANY_ADD_INDIRECTCOSTS = "api/indirectCosts/addindirectcosts";
 export const COMPANY_LIBRARIES = "api/libraries";
 export const COMPANY_DOCUMENTS = "api/companydatas";
 export const DASHBOARD = "api/dashboard";
+export const DASHBOARD_COSTANDINCOMES = "api/dashboard/costsandincomes";
+export const DASHBOARD_WORKSOPENEDANDCLOSED = "api/dashboard/worksopenedandclosed";
 export const COMPANY_DATA = "COMPANY_DATA";
 
 const dev = {

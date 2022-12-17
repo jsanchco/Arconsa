@@ -15,10 +15,13 @@ import {
   hideSpinner,
 } from "@syncfusion/ej2-popups";
 import { connect } from "react-redux";
-import { getDashboard } from "../../services";
+import {
+  getDashboard,
+  getCostsAndIncomes,
+  getWorksOpenedAndClosed,
+} from "../../services";
 import ACTION_APPLICATION from "../../actions/applicationAction";
 import { CustomTooltips } from "@coreui/coreui-plugin-chartjs-custom-tooltips";
-import { select } from "@syncfusion/ej2-react-schedule";
 
 const options = {
   tooltips: {
@@ -54,12 +57,27 @@ class Dashboard extends Component {
       showSpinner(element);
     }
 
-    getDashboard()
+    getWorksOpenedAndClosed()
       .then((result) => {
         this.setState({
-          charts: result.data,
+          chartWorksOpenedAndClosed: result.chart,
         });
-        hideSpinner(element);
+
+        getCostsAndIncomes()
+        .then((result) => {
+          this.setState({
+            chartCostsAndIncomes: result.chart,
+          });
+          hideSpinner(element);
+        })
+        .catch((error) => {
+          this.props.showMessage({
+            statusText: error,
+            responseText: error,
+            type: "danger",
+          });
+          hideSpinner(element);
+        });        
       })
       .catch((error) => {
         this.props.showMessage({
@@ -67,7 +85,6 @@ class Dashboard extends Component {
           responseText: error,
           type: "danger",
         });
-        hideSpinner(element);
       });
   }
 
@@ -111,22 +128,42 @@ class Dashboard extends Component {
             {/* <CardColumns className="cols-1"> */}
             <Card>
               <CardHeader>
-                <strong>{this.state.charts.Item1.name}</strong>
+                <strong>
+                  {this.state.chartWorksOpenedAndClosed != null
+                    ? this.state.chartWorksOpenedAndClosed.name
+                    : ""}
+                </strong>
               </CardHeader>
               <CardBody>
                 <div className="chart-wrapper">
-                  <Bar data={this.state.charts.Item1} options={options} height={300} />
+                  <Bar
+                    data={
+                      this.state.chartWorksOpenedAndClosed != null
+                        ? this.state.chartWorksOpenedAndClosed
+                        : ""
+                    }
+                    options={options}
+                    height={300}
+                  />
                 </div>
               </CardBody>
             </Card>
 
             <Card>
               <CardHeader>
-                <strong>{this.state.charts.Item2.name}</strong>
+              <strong>
+                  {this.state.chartCostsAndIncomes != null
+                    ? this.state.chartCostsAndIncomes.name
+                    : ""}
+                </strong>
               </CardHeader>
               <CardBody>
                 <div className="chart-wrapper">
-                  <Bar data={this.state.charts.Item2} options={options} height={300} />
+                  <Bar
+                    data={this.state.chartCostsAndIncomes}
+                    options={options}
+                    height={300}
+                  />
                 </div>
               </CardBody>
             </Card>

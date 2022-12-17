@@ -406,6 +406,8 @@ namespace SGDE.Domain.Supervisor
         #region Dashboard
 
         (BarItemViewModel costsAndIncomes, BarItemViewModel worksOpenedAndClosed) GetDashboard();
+        BarItemViewModel GetCostsAndIncomes();
+        BarItemViewModel GetWorksOpenedAndClosed();
 
         #endregion
 
