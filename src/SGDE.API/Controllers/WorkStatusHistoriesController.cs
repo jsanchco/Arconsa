@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SGDE.Domain.Supervisor;
 using SGDE.Domain.ViewModels;
@@ -9,6 +10,7 @@ namespace SGDE.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class WorkStatusHistoriesController : ControllerBase
     {
         private readonly ISupervisor _supervisor;

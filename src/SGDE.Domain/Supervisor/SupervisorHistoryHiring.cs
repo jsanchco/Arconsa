@@ -151,18 +151,20 @@
                 .GroupBy(x => x.UserHiring.UserId)
                 .Select(x => new HistoryHiringViewModel
                 {
-                    userName = $"{x.FirstOrDefault().UserHiring.User.Name} {x.FirstOrDefault().UserHiring.User.Surname}",
-                    userHiringId = x.FirstOrDefault().UserHiring.Id,
-                    userId = x.FirstOrDefault().UserHiring.UserId,
+                    //userName = $"{x.FirstOrDefault().UserHiring.User.Name} {x.FirstOrDefault().UserHiring.User.Surname}",
+                    //userHiringId = x.FirstOrDefault().UserHiring.Id,
+                    //userId = x.FirstOrDefault().UserHiring.UserId,
                     dtStartDate = (DateTime)x.FirstOrDefault().StartHour,
                     dtEndDate = x.LastOrDefault().EndHour ?? x.LastOrDefault().StartHour,
 
                     priceTotal = SumPriceTotal(x),
-                    priceTotalSale = SumPriceSaleTotal(x)
+                    //priceTotalSale = SumPriceSaleTotal(x)
                 })
                 .ToList();
 
-            return listHistoryHiringViewModel.OrderBy(x => x.dtStartDate).ToList();
+            return listHistoryHiringViewModel;
+
+            //return listHistoryHiringViewModel.OrderBy(x => x.dtStartDate).ToList();
         }
 
         public double SumPriceTotal(IEnumerable<DailySigning> dailySignings)

@@ -43,9 +43,11 @@
                 EndHour = newDailySigningViewModel.endHour,
 
                 UserHiringId = newDailySigningViewModel.userHiringId,
+                UserHiring = _userHiringRepository.GetById(newDailySigningViewModel.userHiringId),
                 ProfessionId = newDailySigningViewModel.professionId,
                 HourTypeId = newDailySigningViewModel.hourTypeId
             };
+
 
             if (!_dailySigningRepository.ValidateDalilySigning(dailySigning))
                 throw new Exception("El fichaje está mal configurado");
