@@ -119,17 +119,29 @@
 
         public List<DailySigning> GetHistoryBetweenDates(DateTime startDate, DateTime endDate)
         {
+            //return _context.DailySigning
+            //    .Include(x => x.UserHiring)
+            //    .ThenInclude(y => y.Work)
+            //    .ThenInclude(v => v.Client)
+            //    .ThenInclude(vp => vp.ProfessionInClients)
+            //    .Include(z => z.UserHiring)
+            //    .ThenInclude(w => w.User)
+            //    .ThenInclude(ux => ux.CostWorkers)
+            //    .Include(x => x.Profession)
+            //    .Include(r => r.UserHiring)
+            //    .ThenInclude(s => s.Profession)
+            //    .Where(x => x.StartHour >= startDate && x.StartHour <= endDate)
+            //    .OrderBy(ox => ox.UserHiring.UserId)
+            //    .ThenBy(oy => oy.StartHour)
+            //    .ToList();
+
             return _context.DailySigning
-                .Include(x => x.UserHiring)
-                .ThenInclude(y => y.Work)
-                .ThenInclude(v => v.Client)
-                .ThenInclude(vp => vp.ProfessionInClients)
-                .Include(z => z.UserHiring)
-                .ThenInclude(w => w.User)
-                .ThenInclude(ux => ux.CostWorkers)
                 .Include(x => x.Profession)
-                .Include(r => r.UserHiring)
-                .ThenInclude(s => s.Profession)
+                .Include(x => x.UserHiring)
+                .ThenInclude(y => y.Profession)
+                .Include(x => x.UserHiring)
+                .ThenInclude(y => y.User)
+                .ThenInclude(ux => ux.CostWorkers)
                 .Where(x => x.StartHour >= startDate && x.StartHour <= endDate)
                 .ToList();
         }
