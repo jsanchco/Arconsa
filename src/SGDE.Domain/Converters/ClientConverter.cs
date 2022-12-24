@@ -33,7 +33,8 @@
                 typeClientId = client.TypeClientId,
                 typeClientName = client.TypeClient?.Name,
                 email = client.Email,
-                emailInvoice = client.EmailInvoice
+                emailInvoice = client.EmailInvoice,
+                active= client.Active
             };
 
             return clientViewModel;
@@ -60,7 +61,8 @@
                     typeClientId = client.TypeClientId,
                     typeClientName = client.TypeClient?.Name,
                     email = client.Email,
-                    emailInvoice = client.EmailInvoice
+                    emailInvoice = client.EmailInvoice,
+                    active = client.Active
                 };
                 return model;
             })

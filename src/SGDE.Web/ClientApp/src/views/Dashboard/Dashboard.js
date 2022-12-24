@@ -15,11 +15,7 @@ import {
   hideSpinner,
 } from "@syncfusion/ej2-popups";
 import { connect } from "react-redux";
-import {
-  getDashboard,
-  getCostsAndIncomes,
-  getWorksOpenedAndClosed,
-} from "../../services";
+import { getCostsAndIncomes, getWorksOpenedAndClosed } from "../../services";
 import ACTION_APPLICATION from "../../actions/applicationAction";
 import { CustomTooltips } from "@coreui/coreui-plugin-chartjs-custom-tooltips";
 
@@ -29,6 +25,15 @@ const options = {
     custom: CustomTooltips,
   },
   maintainAspectRatio: false,
+  plugins: {
+    datalabels: {
+      display: true,
+      color: "black",
+    },
+  },
+  legend: {
+    display: true,
+  },
 };
 
 class Dashboard extends Component {
@@ -64,20 +69,20 @@ class Dashboard extends Component {
         });
 
         getCostsAndIncomes()
-        .then((result) => {
-          this.setState({
-            chartCostsAndIncomes: result.chart,
+          .then((result) => {
+            this.setState({
+              chartCostsAndIncomes: result.chart,
+            });
+            hideSpinner(element);
+          })
+          .catch((error) => {
+            this.props.showMessage({
+              statusText: error,
+              responseText: error,
+              type: "danger",
+            });
+            hideSpinner(element);
           });
-          hideSpinner(element);
-        })
-        .catch((error) => {
-          this.props.showMessage({
-            statusText: error,
-            responseText: error,
-            type: "danger",
-          });
-          hideSpinner(element);
-        });        
       })
       .catch((error) => {
         this.props.showMessage({
@@ -151,7 +156,7 @@ class Dashboard extends Component {
 
             <Card>
               <CardHeader>
-              <strong>
+                <strong>
                   {this.state.chartCostsAndIncomes != null
                     ? this.state.chartCostsAndIncomes.name
                     : ""}

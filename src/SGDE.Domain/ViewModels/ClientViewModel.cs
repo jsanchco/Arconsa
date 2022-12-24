@@ -13,5 +13,6 @@
         public string typeClientName { get; set; }
         public string email { get; set; }
         public string emailInvoice { get; set; }
+        public bool active { get; set; }
     }
 }

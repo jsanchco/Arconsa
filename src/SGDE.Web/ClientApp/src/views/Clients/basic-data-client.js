@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from "react";
 import { Form, Col, FormGroup, Input, Label, Row, Button } from "reactstrap";
+import { AppSwitch } from "@coreui/react";
 import {
   MaskedTextBoxComponent,
   NumericTextBoxComponent,
@@ -30,6 +31,7 @@ class BasicDataClient extends Component {
         accountNumber: result.accountNumber,
         email: result.email,
         emailInvoice: result.emailInvoice,
+        active: result.active,
       });
     });
 
@@ -44,9 +46,15 @@ class BasicDataClient extends Component {
     const target = event.target;
     const name = target.name;
 
-    this.setState({
-      [name]: target.value,
-    });
+    if (name === "active") {
+      this.setState({
+        [name]: target.checked,
+      });
+    } else {
+      this.setState({
+        [name]: target.value,
+      });
+    }
   }
 
   handleChangeExpirationDays(args) {
@@ -65,6 +73,7 @@ class BasicDataClient extends Component {
       accountNumber: this.state.accountNumber,
       email: this.state.email,
       emailInvoice: this.state.emailInvoice,
+      active: this.state.active,
     };
   }
 
@@ -97,6 +106,28 @@ class BasicDataClient extends Component {
       >
         <Fragment>
           <Form>
+            <Row style={{ textAlign: "right" }}>
+              <Col xs="12">
+                <FormGroup>
+                  <Label htmlFor="active" style={{ verticalAlign: "bottom" }}>
+                    Activo&nbsp;
+                  </Label>
+                  <AppSwitch
+                    className={"mx-1 mt-4"}
+                    variant={"pill"}
+                    color={"primary"}
+                    label
+                    checked={this.state.active}
+                    id="active"
+                    name="active"
+                    placeholder="Activo"
+                    onChange={this.handleInputChange}
+                    dataOn="Si"
+                    dataOff="No"
+                  />
+                </FormGroup>
+              </Col>
+            </Row>
             <Row>
               <Col xs="4">
                 <FormGroup>

@@ -198,6 +198,10 @@ class Clients extends Component {
                       headerText="Dirección"
                       width="100"
                     />
+                    <ColumnDirective
+                      field="active"
+                      visible={false}
+                    />                    
                   </ColumnsDirective>
                   <Inject services={[Page, Toolbar, Edit]} />
                 </GridComponent>

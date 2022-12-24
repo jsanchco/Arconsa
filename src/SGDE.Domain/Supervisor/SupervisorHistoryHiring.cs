@@ -1,9 +1,9 @@
 ﻿namespace SGDE.Domain.Supervisor
 {
-    using SGDE.Domain.Converters;
-    using SGDE.Domain.Entities;
     #region Using
 
+    using SGDE.Domain.Converters;
+    using SGDE.Domain.Entities;
     using SGDE.Domain.Helpers;
     using SGDE.Domain.ViewModels;
     using System;
@@ -219,7 +219,7 @@
                 result += dailySigning.HourTypeId != 5 ?
                     !dailySigning.EndHour.HasValue ? 0 :
                                 ((DateTime)dailySigning.EndHour - (DateTime)dailySigning.StartHour).TotalHours * (double)ReportResultConverter.GetPriceHourSale(dailySigning.UserHiring.Work.Client, dailySigning.HourTypeId, dailySigning.ProfessionId) :
-                                (double)ReportResultConverter.GetPriceHourSale(dailySigning.UserHiring.Work.Client, dailySigning.HourTypeId, dailySigning.ProfessionId);        
+                                (double)ReportResultConverter.GetPriceHourSale(dailySigning.UserHiring.Work.Client, dailySigning.HourTypeId, dailySigning.ProfessionId);
             }
 
             return result;

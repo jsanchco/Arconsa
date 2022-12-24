@@ -51,7 +51,8 @@
                 ExpirationDays = newClientViewModel.expirationDays,
                 AccountNumber = newClientViewModel.accountNumber,
                 Email = newClientViewModel.email,
-                EmailInvoice = newClientViewModel.emailInvoice
+                EmailInvoice = newClientViewModel.emailInvoice,
+                Active = newClientViewModel.active
             };
 
             _clientRepository.Add(client);
@@ -79,6 +80,7 @@
             client.AccountNumber = clientViewModel.accountNumber;
             client.Email = clientViewModel.email;
             client.EmailInvoice = clientViewModel.emailInvoice;
+            client.Active = clientViewModel.active;
 
             return _clientRepository.Update(client);
         }
