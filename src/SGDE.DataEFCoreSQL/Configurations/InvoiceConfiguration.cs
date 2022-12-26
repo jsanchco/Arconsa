@@ -18,7 +18,7 @@
             entity.Property(x => x.Id).ValueGeneratedOnAdd();
             entity.Property(x => x.Name).IsRequired();
             entity.Ignore(x => x.State);
-            entity.Ignore(x => x.IvaTaxBase);
+            //entity.Ignore(x => x.IvaTaxBase);
             entity.Ignore(x => x.Total);
             entity.Ignore(x => x.KeyOrder);
             entity.Ignore(x => x.IsPaid);

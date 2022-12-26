@@ -73,6 +73,8 @@
                     _context.DetailInvoice.Add(newDetailInvoice);
 
                     invoice.TaxBase += newDetailInvoice.Units * newDetailInvoice.PriceUnity;
+                    invoice.IvaTaxBase += (newDetailInvoice.Units * newDetailInvoice.PriceUnity) * newDetailInvoice.Iva;
+
                     _context.Invoice.Update(invoice);
 
                     _context.SaveChanges();
@@ -104,12 +106,18 @@
                     _context.DetailInvoice.Update(detailInvoice);
                     _context.SaveChanges();
 
-                    var total = _context.DetailInvoice
+                    var taxBase = _context.DetailInvoice
                         .Where(x => x.InvoiceId == detailInvoice.InvoiceId)
                         .ToList()
-                        .Sum(x => x.Total);
+                        .Sum(x => x.TaxBase);
+                    invoice.TaxBase = taxBase;
 
-                    invoice.TaxBase = total;
+                    var totalIva = _context.DetailInvoice
+                        .Where(x => x.InvoiceId == detailInvoice.InvoiceId)
+                        .ToList()
+                        .Sum(x => x.TotalIva);
+                    invoice.IvaTaxBase = totalIva;
+
                     _context.Invoice.Update(invoice);
                     _context.SaveChanges();
 
@@ -142,12 +150,18 @@
                     _context.DetailInvoice.Remove(toRemove);
                     _context.SaveChanges();
 
-                    var total = _context.DetailInvoice
+                    var taxBase = _context.DetailInvoice
                         .Where(x => x.InvoiceId == toRemove.InvoiceId)
                         .ToList()
-                        .Sum(x => x.Total);
+                        .Sum(x => x.TaxBase);
+                    invoice.TaxBase = taxBase;
 
-                    invoice.TaxBase = total;
+                    var totalIva = _context.DetailInvoice
+                        .Where(x => x.InvoiceId == toRemove.InvoiceId)
+                        .ToList()
+                        .Sum(x => x.TotalIva);
+                    invoice.IvaTaxBase = totalIva;
+
                     _context.Invoice.Update(invoice);
                     _context.SaveChanges();
 

@@ -17,6 +17,8 @@
             entity.HasKey(x => x.Id);
             entity.Property(x => x.Id).ValueGeneratedOnAdd();
             entity.Ignore(x => x.Total);
+            entity.Ignore(x => x.TotalIva);
+            entity.Ignore(x => x.TaxBase);
 
             entity.HasIndex(x => x.InvoiceId).HasName("IFK_Invoice_DetailInvoice");
             entity.HasOne(u => u.Invoice).WithMany(a => a.DetailsInvoice).HasForeignKey(a => a.InvoiceId).HasConstraintName("FK__DetailInvoice__InvoiceId");

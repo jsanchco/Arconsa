@@ -10,8 +10,8 @@ using SGDE.DataEFCoreSQL;
 namespace SGDE.DataEFCoreSQL.Migrations
 {
     [DbContext(typeof(EFContextSQL))]
-    [Migration("20221218124749_Add_Field_Active_To_Table_Client")]
-    partial class Add_Field_Active_To_Table_Client
+    [Migration("20221226103614_Add_Fields_ToTable_Invoice")]
+    partial class Add_Fields_ToTable_Invoice
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -508,6 +508,9 @@ namespace SGDE.DataEFCoreSQL.Migrations
                     b.Property<bool>("Iva")
                         .HasColumnType("bit");
 
+                    b.Property<double>("IvaTaxBase")
+                        .HasColumnType("float");
+
                     b.Property<DateTime?>("ModifiedDate")
                         .HasColumnType("datetime2");
 
@@ -525,6 +528,9 @@ namespace SGDE.DataEFCoreSQL.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<double>("TaxBase")
+                        .HasColumnType("float");
+
+                    b.Property<double>("Total")
                         .HasColumnType("float");
 
                     b.Property<int>("TypeInvoice")

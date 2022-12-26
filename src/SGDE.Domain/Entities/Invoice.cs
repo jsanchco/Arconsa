@@ -17,7 +17,7 @@
         public DateTime? PayDate { get; set; }
         public double TaxBase { get; set; }
         public double IvaTaxBase { get; set; }
-        public double Total { get; set; }
+        public double Total => Math.Round(TaxBase + IvaTaxBase, 4);
         public bool Iva { get; set; }
         public int TypeInvoice { get; set; } // 1 = por horas, 2 = custom
         public string KeyOrder => $"{IssueDate.Year.ToString().Substring(2, 2)}{InvoiceNumber:0000}";

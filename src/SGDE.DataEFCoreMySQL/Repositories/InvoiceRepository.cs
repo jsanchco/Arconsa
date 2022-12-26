@@ -162,8 +162,8 @@
                             invoice.Iva = true;
                         }
 
-                        invoice.IvaTaxBase = invoice.Iva == true ? Math.Round((double)invoice.TaxBase * 0.21, 2) : 0;
-                        invoice.Total = invoice.IvaTaxBase + (double)invoice.TaxBase;
+                        invoice.IvaTaxBase = invoice.DetailsInvoice.Sum(x => x.TotalIva);
+                        invoice.TaxBase = invoice.DetailsInvoice.Sum(x => x.TaxBase);
 
                         var countInvoice = _context.Invoice.Count();
                         var invoiceNumber = countInvoice == 0 ? 1060 : (1060 + countInvoice);
@@ -220,8 +220,7 @@
                         findInvoice.IssueDate = invoice.IssueDate;
 
                         findInvoice.TaxBase = invoice.TaxBase;
-                        findInvoice.IvaTaxBase = invoice.Iva == true ? Math.Round((double)invoice.TaxBase * 0.21, 2) : 0;
-                        findInvoice.Total = findInvoice.IvaTaxBase + (double)findInvoice.TaxBase;
+                        findInvoice.IvaTaxBase = invoice.IvaTaxBase;
 
                         _context.Invoice.Update(findInvoice);
                         _context.SaveChanges();
@@ -278,8 +277,7 @@
                         _context.SaveChanges();
 
                         findInvoice.TaxBase = invoice.TaxBase;
-                        findInvoice.IvaTaxBase = invoice.Iva == true ? Math.Round((double)invoice.TaxBase * 0.21, 2) : 0;
-                        findInvoice.Total = findInvoice.IvaTaxBase + (double)findInvoice.TaxBase;
+                        findInvoice.IvaTaxBase = invoice.IvaTaxBase;
 
                         foreach (var detailInvoice in invoice.DetailsInvoice)
                         {
@@ -440,7 +438,8 @@
                 {
                     WorkId = x.WorkId,
                     IssueDate = x.IssueDate,
-                    Total = GetTotalDetailInvoice(x, x.DetailsInvoice)
+                    TaxBase= x.TaxBase,
+                    IvaTaxBase = x.IvaTaxBase
                 })
                 .ToList();
 

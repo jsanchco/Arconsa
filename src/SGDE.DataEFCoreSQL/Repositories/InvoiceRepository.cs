@@ -148,9 +148,9 @@
             if (invoice == null)
                 return null;
 
-            var ivaTaxBase = Math.Round(invoice.DetailsInvoice.Sum(x => x.Units * x.PriceUnity * x.Iva), 2);
-            invoice.IvaTaxBase = ivaTaxBase;
-            invoice.Total = invoice.IvaTaxBase + (double)invoice.TaxBase;
+            //var ivaTaxBase = Math.Round(invoice.DetailsInvoice.Sum(x => x.Units * x.PriceUnity * x.Iva), 2);
+            //invoice.IvaTaxBase = ivaTaxBase;
+            //invoice.Total = invoice.IvaTaxBase + (double)invoice.TaxBase;
 
             return invoice;
         }
@@ -196,9 +196,6 @@
                         {
                             invoice.Iva = true;
                         }
-
-                        invoice.IvaTaxBase = invoice.Iva == true ? Math.Round((double)invoice.TaxBase * 0.21, 2) : 0;
-                        invoice.Total = invoice.IvaTaxBase + (double)invoice.TaxBase;
 
                         var invoiceNumber = CountInvoicesInYear(invoice.IssueDate.Year);
 
@@ -255,8 +252,7 @@
                         findInvoice.IssueDate = invoice.IssueDate;
 
                         findInvoice.TaxBase = invoice.TaxBase;
-                        findInvoice.IvaTaxBase = invoice.Iva == true ? Math.Round((double)invoice.TaxBase * 0.21, 2) : 0;
-                        findInvoice.Total = findInvoice.IvaTaxBase + (double)findInvoice.TaxBase;
+                        findInvoice.IvaTaxBase = invoice.IvaTaxBase;
 
                         _context.Invoice.Update(findInvoice);
                         _context.SaveChanges();
@@ -313,8 +309,7 @@
                         _context.SaveChanges();
 
                         findInvoice.TaxBase = invoice.TaxBase;
-                        findInvoice.IvaTaxBase = invoice.Iva == true ? Math.Round((double)invoice.TaxBase * 0.21, 2) : 0;
-                        findInvoice.Total = findInvoice.IvaTaxBase + (double)findInvoice.TaxBase;
+                        findInvoice.IvaTaxBase = invoice.IvaTaxBase;
 
                         foreach (var detailInvoice in invoice.DetailsInvoice)
                         {
@@ -478,7 +473,8 @@
                     Name = x.Name,
                     WorkId = x.WorkId,
                     IssueDate = x.IssueDate,
-                    Total = GetTotalDetailInvoice(x, x.DetailsInvoice),
+                    TaxBase= x.TaxBase,
+                    IvaTaxBase = x.IvaTaxBase,
                     DetailsInvoice = x.DetailsInvoice
                 })
                 .ToList();

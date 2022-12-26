@@ -14,7 +14,9 @@
         public double PriceUnity { get; set; }
         public string NameUnit { get; set; }
         public double Iva { get; set; }
-        public double Total => Math.Round(((double)Units * (double)PriceUnity) * (1 + Iva), 4);
+        public double TaxBase => Math.Round((double)Units * (double)PriceUnity, 4);
+        public double TotalIva => Math.Round(((double)Units * (double)PriceUnity) * (Iva), 4);
+        public double Total => Math.Round(TaxBase + TotalIva, 4);
 
         public int InvoiceId { get; set; }
         public virtual Invoice Invoice { get; set; }

@@ -160,36 +160,45 @@
             //    _workBudgetRepository.Update(workBudget);
             //}
 
-            var works = _workRepository.GetAll();
-            foreach (var work in works.Data)
-            {
-                if (work.CloseDate is null)
-                {
-                    _workStatusHistoryRepository.Add(new WorkStatusHistory
-                    {
-                        WorkId = work.Id,
-                        DateChange = work.OpenDate,
-                        Value = "Abierta",
-                        Observations = "Apertura de Obra"
-                    });
-                }
-                else
-                {
-                    _workStatusHistoryRepository.Add(new WorkStatusHistory
-                    {
-                        WorkId = work.Id,
-                        DateChange = work.OpenDate,
-                        Value = "Abierta",
-                        Observations = "Apertura de Obra"
-                    });
+            //var works = _workRepository.GetAll();
+            //foreach (var work in works.Data)
+            //{
+            //    if (work.CloseDate is null)
+            //    {
+            //        _workStatusHistoryRepository.Add(new WorkStatusHistory
+            //        {
+            //            WorkId = work.Id,
+            //            DateChange = work.OpenDate,
+            //            Value = "Abierta",
+            //            Observations = "Apertura de Obra"
+            //        });
+            //    }
+            //    else
+            //    {
+            //        _workStatusHistoryRepository.Add(new WorkStatusHistory
+            //        {
+            //            WorkId = work.Id,
+            //            DateChange = work.OpenDate,
+            //            Value = "Abierta",
+            //            Observations = "Apertura de Obra"
+            //        });
 
-                    _workStatusHistoryRepository.Add(new WorkStatusHistory
-                    {
-                        WorkId = work.Id,
-                        DateChange = work.CloseDate.Value,
-                        Value = "Cerrada",
-                        Observations = "Cierre de Obra"
-                    });
+            //        _workStatusHistoryRepository.Add(new WorkStatusHistory
+            //        {
+            //            WorkId = work.Id,
+            //            DateChange = work.CloseDate.Value,
+            //            Value = "Cerrada",
+            //            Observations = "Cierre de Obra"
+            //        });
+            //    }
+            //}
+
+            foreach (var invoice in _invoiceRepository.GetAllLite())
+            {
+                if (invoice.DetailsInvoice.Count > 0)
+                {
+                    var detailInvoice = invoice.DetailsInvoice.FirstOrDefault();
+                    _detailInvoiceRepository.Update(detailInvoice);
                 }
             }
         }
