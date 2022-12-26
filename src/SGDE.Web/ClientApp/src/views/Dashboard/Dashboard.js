@@ -134,22 +134,24 @@ class Dashboard extends Component {
             <Card>
               <CardHeader>
                 <strong>
-                  {this.state.chartWorksOpenedAndClosed != null
+                  {this.state?.chartWorksOpenedAndClosed != null
                     ? this.state.chartWorksOpenedAndClosed.name
                     : ""}
                 </strong>
               </CardHeader>
               <CardBody>
                 <div className="chart-wrapper">
-                  <Bar
-                    data={
-                      this.state.chartWorksOpenedAndClosed != null
-                        ? this.state.chartWorksOpenedAndClosed
-                        : ""
-                    }
-                    options={options}
-                    height={300}
-                  />
+                  {this.state?.chartWorksOpenedAndClosed == null ? null : (
+                    <Bar
+                      data={
+                        this.state?.chartWorksOpenedAndClosed != null
+                          ? this.state?.chartWorksOpenedAndClosed
+                          : null
+                      }
+                      options={options}
+                      height={300}
+                    />
+                  )}
                 </div>
               </CardBody>
             </Card>
@@ -157,18 +159,24 @@ class Dashboard extends Component {
             <Card>
               <CardHeader>
                 <strong>
-                  {this.state.chartCostsAndIncomes != null
+                  {this.state?.chartCostsAndIncomes != null
                     ? this.state.chartCostsAndIncomes.name
                     : ""}
                 </strong>
               </CardHeader>
               <CardBody>
                 <div className="chart-wrapper">
-                  <Bar
-                    data={this.state.chartCostsAndIncomes}
-                    options={options}
-                    height={300}
-                  />
+                  {this.state?.chartCostsAndIncomes == null ? null : (
+                    <Bar
+                      data={
+                        this.state?.chartCostsAndIncomes != null
+                          ? this.state?.chartCostsAndIncomes
+                          : null
+                      }
+                      options={options}
+                      height={300}
+                    />
+                  )}
                 </div>
               </CardBody>
             </Card>
