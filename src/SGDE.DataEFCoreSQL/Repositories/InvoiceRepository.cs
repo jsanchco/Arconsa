@@ -57,7 +57,7 @@
                     //.Include(x => x.Work)
                     //.ThenInclude(x => x.WorkBudgets)
                     //.Include(x => x.DetailsInvoice)
-                    //.Include(x => x.WorkBudget)
+                    .Include(x => x.WorkBudget)
                     .ToList()
                     .OrderByDescending(x => x.KeyOrder)
                     .ToList();
@@ -73,7 +73,7 @@
                     //.Include(x => x.Work)
                     //.ThenInclude(x => x.WorkBudgets)
                     //.Include(x => x.DetailsInvoice)
-                    //.Include(x => x.WorkBudget)
+                    .Include(x => x.WorkBudget)
                     .Where(x => x.WorkId == workId)                    
                     .ToList()
                     .OrderByDescending(x => x.KeyOrder)
@@ -90,7 +90,7 @@
                     //.Include(x => x.Work)
                     //.ThenInclude(x => x.WorkBudgets)
                     //.Include(x => x.DetailsInvoice)
-                    //.Include(x => x.WorkBudget)
+                    .Include(x => x.WorkBudget)
                     .Where(x => x.Work.ClientId == clientId)
                     .ToList()
                     .OrderByDescending(x => x.KeyOrder)
@@ -104,7 +104,7 @@
                         Searcher.RemoveAccentsWithNormalization(x.Work.Name?.ToLower()).Contains(filter) ||
                         Searcher.RemoveAccentsWithNormalization(x.Work.Client.Name.ToLower()).Contains(filter) ||
                         Searcher.RemoveAccentsWithNormalization(x.Name.ToLower()).Contains(filter) ||
-                        //Searcher.RemoveAccentsWithNormalization(x.WorkBudget?.Name.ToLower()).Contains(filter) ||
+                        Searcher.RemoveAccentsWithNormalization(x.WorkBudget?.Name.ToLower()).Contains(filter) ||
                         x.TaxBase.ToString().Contains(filter) ||
                         Searcher.RemoveAccentsWithNormalization(x.TaxBase.ToString()).Contains(filter) ||
                         Searcher.RemoveAccentsWithNormalization(x.Total.ToString()).Contains(filter) ||
