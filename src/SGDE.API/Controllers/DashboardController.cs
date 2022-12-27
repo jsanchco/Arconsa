@@ -87,7 +87,7 @@ namespace SGDE.API.Controllers
                 var take = Convert.ToInt32(queryString["$top"]);
                 var filter = Util.Helper.getSearch(queryString["$filter"]);
 
-                var queryResult = _supervisor.GetAllClient(skip, take, filter);
+                var queryResult = _supervisor.GetAllClient(skip, take, true, filter);
 
                 return new { Items = queryResult.Data, Count = queryResult.Count };
             }

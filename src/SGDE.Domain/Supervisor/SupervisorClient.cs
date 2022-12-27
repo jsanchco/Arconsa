@@ -18,9 +18,9 @@
             return ClientConverter.ConvertList(_clientRepository.GetAllWithoutFilter());
         }
 
-        public QueryResult<ClientViewModel> GetAllClient(int skip = 0, int take = 0, string filter = null)
+        public QueryResult<ClientViewModel> GetAllClient(int skip = 0, int take = 0, bool allClients = true, string filter = null)
         {
-            var queryResult = _clientRepository.GetAll(skip, take, filter);
+            var queryResult = _clientRepository.GetAll(skip, take, allClients, filter);
             return new QueryResult<ClientViewModel>
             {
                 Data = ClientConverter.ConvertList(queryResult.Data),

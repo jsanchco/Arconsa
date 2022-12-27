@@ -56,7 +56,7 @@ namespace SGDE.Domain.Supervisor
 
         List<ClientViewModel> GetAllClientWithoutFilter();
         List<ClientViewModel> GetAllClientLite(string filter = null);
-        QueryResult<ClientViewModel> GetAllClient(int skip = 0, int take = 0, string filter = null);
+        QueryResult<ClientViewModel> GetAllClient(int skip = 0, int take = 0, bool allClients = true, string filter = null);
         ClientViewModel GetClientById(int id);
         ClientViewModel AddClient(ClientViewModel newClientViewModel);
         bool UpdateClient(ClientViewModel clientViewModel);

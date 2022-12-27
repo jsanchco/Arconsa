@@ -42,6 +42,9 @@
 
         public QueryResult<Invoice> GetAll(int skip = 0, int take = 0, string filter = null, int workId = 0, int clientId = 0)
         {
+            if (filter != null)
+                filter = filter.ToLower();
+
             List<Invoice> data = new List<Invoice>();
 
             if (workId == 0 && clientId == 0)

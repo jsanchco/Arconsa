@@ -195,7 +195,7 @@
 
         public List<ReportVariousInfoViewModel> GetHoursByAllClient(ReportQueryAllViewModel reportAllViewModel)
         {
-            var clients = _clientRepository.GetAll(0, 0, null);
+            var clients = _clientRepository.GetAll(0, 0, true, null);
             var result = new List<ReportVariousInfoViewModel>();
             foreach (var client in clients.Data)
             {
