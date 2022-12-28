@@ -88,6 +88,7 @@ class DetailCompany extends Component {
                     marginRight: 30,
                     marginTop: 0,
                     marginBottom: 20,
+                    overflow: "auto",
                   }}
                 >
                   <TabItemsDirective>

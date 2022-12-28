@@ -77,7 +77,8 @@
                     .Where(x =>
                         Searcher.RemoveAccentsWithNormalization(x.Address?.ToLower()).Contains(filter) ||
                         Searcher.RemoveAccentsWithNormalization(x.Name.ToLower()).Contains(filter) ||
-                        Searcher.RemoveAccentsWithNormalization(x.Client?.Name.ToLower()).Contains(filter))
+                        Searcher.RemoveAccentsWithNormalization(x.Client?.Name.ToLower()).Contains(filter) ||
+                        Searcher.RemoveAccentsWithNormalization(x.Status?.ToLower()).Contains(filter))
                     .ToList();
             }
 

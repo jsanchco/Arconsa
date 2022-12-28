@@ -59,7 +59,7 @@ class Works extends Component {
       decimals: 0,
       format: "N",
       validateDecimalOnType: true,
-      showSpinButton: false
+      showSpinButton: false,
     },
   };
   wrapSettings = { wrapMode: "Content" };
@@ -133,6 +133,7 @@ class Works extends Component {
       this.toggleModalTemplateSigning.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
     this.dataBound = this.dataBound.bind(this);
+    this.printComplete = this.printComplete.bind(this);
 
     this.selectionSettings = {
       checkboxMode: "ResetOnRowClick",
@@ -272,20 +273,20 @@ class Works extends Component {
             <span className="dot-red"></span>
           </div>
         );
-          
+
       case "Juridico":
         return (
           <div>
             <span className="dot-orange"></span>
           </div>
         );
-        
+
       default:
         return (
           <div>
             <span className="dot-green"></span>
           </div>
-        );  
+        );
     }
   }
 
@@ -327,12 +328,14 @@ class Works extends Component {
   }
 
   clientTemplate(args) {
-    return ( 
-      <div> 
-        <a rel='nofollow' href={"/#/clients/detailclient/" + args.clientId}>{args.clientName}</a>
-      </div> 
-    ); 
-  }  
+    return (
+      <div>
+        <a rel="nofollow" href={"/#/clients/detailclient/" + args.clientId}>
+          {args.clientName}
+        </a>
+      </div>
+    );
+  }
 
   contextMenuClick(args) {
     const workSelected = this.state.rowSelected;
@@ -412,6 +415,20 @@ class Works extends Component {
       this.setState({
         showWorksClosed: !target.checked,
       });
+    }
+  }
+
+  printComplete(args) {
+    if (this.grid) {
+      const cols = this.grid.getColumns();
+      for (const col of cols) {
+        if (col.field === "status" && col.template != null) {
+          col.visible = false;
+        }
+        if (col.field === "status" && col.template == null) {
+          col.visible = true;
+        }
+      }
     }
   }
 
@@ -529,6 +546,7 @@ class Works extends Component {
                   query={this.query}
                   // enablePersistence={true}
                   dataBound={this.dataBound}
+                  printComplete={this.printComplete}
                 >
                   <ColumnsDirective>
                     {/* <ColumnDirective
@@ -607,6 +625,15 @@ class Works extends Component {
                       template={this.statusTemplate}
                       textAlign="Center"
                       allowEditing={false}
+                    />
+                    <ColumnDirective
+                      field="status"
+                      headerText="Estado"
+                      width="100"
+                      // template={this.statusTemplate}
+                      textAlign="Center"
+                      allowEditing={false}
+                      visible={false}
                     />
                     <ColumnDirective field="openDate" visible={false} />
                     <ColumnDirective field="closeDate" visible={false} />

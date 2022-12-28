@@ -4,6 +4,7 @@
 
     using System.Collections.Generic;
     using System;
+    using System.Linq;
 
     #endregion
 
@@ -21,6 +22,20 @@
         public double TotalContract { get; set; }
         public double PercentageRetention { get; set; }
         public double PercentageIVA { get; set; }
+
+        public string Status
+        {
+            get
+            {
+                if (WorkStatusHistories != null)
+                {
+                    return WorkStatusHistories
+                        .OrderByDescending(x => x.DateChange).FirstOrDefault()?.Value;
+                }
+
+                return string.Empty;
+            }
+        }
 
         public int ClientId { get; set; }
         public virtual Client Client { get; set; }

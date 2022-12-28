@@ -78,6 +78,7 @@ class Invoices extends Component {
   });
 
   gridInvoice = null;
+  gridDetailsInvoice = null;
 
   requeridIdRules = { required: true };
 
@@ -608,28 +609,28 @@ class Invoices extends Component {
   }
 
   clientTemplate(args) {
-    return ( 
-      <div> 
-        <a rel='nofollow' href={"/#/clients/detailclient/" + args.clientId}>{args.clientName}</a> 
-      </div> 
-    ); 
+    return (
+      <div>
+        <a rel='nofollow' href={"/#/clients/detailclient/" + args.clientId}>{args.clientName}</a>
+      </div>
+    );
   }
 
   workTemplate(args) {
-    return ( 
-      <div> 
-        <a rel='nofollow' href={"/#/works/detailwork/" + args.workId}>{args.workName}</a> 
-      </div> 
-    ); 
-  }   
+    return (
+      <div>
+        <a rel='nofollow' href={"/#/works/detailwork/" + args.workId}>{args.workName}</a>
+      </div>
+    );
+  }
 
   workBudgetTemplate(args) {
-    return ( 
-      <div> 
-        <a rel='nofollow' href={"/#/works/detailwork/" + args.workId + "/2"}>{args.workBudgetName}</a> 
-      </div> 
-    ); 
-  }  
+    return (
+      <div>
+        <a rel='nofollow' href={"/#/works/detailwork/" + args.workId + "/2"}>{args.workBudgetName}</a>
+      </div>
+    );
+  }
 
   loadGridDetailsInvoice() {
     this.query = [];
@@ -1005,7 +1006,7 @@ class Invoices extends Component {
         });
       } else {
         this.setState({ invoiceSelected: selectedRecords[0] });
-        this.toggleModalCancelInvoice();  
+        this.toggleModalCancelInvoice();
         // this.setState({ hideConfirmDialog: true });
       }
     }

@@ -38,7 +38,7 @@
                         .Select(z => z.Name)),
                     workId = x.Id,
                     workName = x.Name,
-                    status = x.WorkStatusHistories.OrderByDescending(y => y.DateChange).FirstOrDefault()?.Value,
+                    status = x.Status,
                     clientId = x.ClientId,
                     clientName = x.Client?.Name,
                     dateOpenWork = x.OpenDate,

@@ -37,6 +37,7 @@ import { DataManager, WebApiAdaptor, Query } from "@syncfusion/ej2-data";
 import { config, REPORT_WORKS, COMPANY_DATA } from "../../constants";
 import { TOKEN_KEY, getSettings } from "../../services";
 import ACTION_APPLICATION from "../../actions/applicationAction";
+import Legend from "../../components/legend";
 
 class ReportWorks extends Component {
   dtpStartDate = null;
@@ -64,6 +65,7 @@ class ReportWorks extends Component {
     this.clickHandler = this.clickHandler.bind(this);
     this.getExcelExportProperties = this.getExcelExportProperties.bind(this);
     this.beforePrint = this.beforePrint.bind(this);
+    this.printComplete = this.printComplete.bind(this);
 
     this.format = { type: "dateTime", format: "dd/MM/yyyy" };
   }
@@ -342,6 +344,52 @@ class ReportWorks extends Component {
     );
   }
 
+  statusTemplate(args) {
+    switch (args.status) {
+      case "Abierta":
+        return (
+          <div>
+            <span className="dot-green"></span>
+          </div>
+        );
+
+      case "Cerrada":
+        return (
+          <div>
+            <span className="dot-red"></span>
+          </div>
+        );
+
+      case "Juridico":
+        return (
+          <div>
+            <span className="dot-orange"></span>
+          </div>
+        );
+
+      default:
+        return (
+          <div>
+            <span className="dot-green"></span>
+          </div>
+        );
+    }
+  }
+
+  printComplete(args) {
+    if (this.grid) {
+      const cols = this.grid.getColumns();
+      for (const col of cols) {
+        if (col.field === "status" && col.template != null) {
+          col.visible = false;
+        }
+        if (col.field === "status" && col.template == null) {
+          col.visible = true;
+        }
+      }
+    }
+  }
+
   render() {
     return (
       <Fragment>
@@ -387,7 +435,7 @@ class ReportWorks extends Component {
                         />
                       </FormGroup>
                     </Col>
-                    <Col xs="5">
+                    <Col xs="3">
                       <FormGroup style={{ marginLeft: "20px" }}>
                         <Label for="filter">Filtrar</Label>
                         <Input
@@ -398,10 +446,14 @@ class ReportWorks extends Component {
                         />
                       </FormGroup>
                     </Col>
-                  </Row>
-                  <Row>
-                    <Col xs="10"></Col>
-                    <Col xs="2">
+                    <Col
+                      xs="3"
+                      style={{
+                        textAlign: "right",
+                        marginLeft: "-10px",
+                        marginTop: "30px",
+                      }}
+                    >
                       <Button
                         color="primary"
                         style={{ marginLeft: "30px", textAlign: "left" }}
@@ -413,6 +465,21 @@ class ReportWorks extends Component {
                   </Row>
                 </Form>
               </div>
+              <Row>
+                <Col>&nbsp;</Col>
+              </Row>
+              <Row>
+                <Col xs="3"></Col>
+                <Col xs="9">
+                  <Legend
+                    elements={[
+                      { color: "dot-green", text: "Abierta" },
+                      { color: "dot-orange", text: "Juridico" },
+                      { color: "dot-red", text: "Cerrada" },
+                    ]}
+                  />
+                </Col>
+              </Row>
               <Row>
                 <GridComponent
                   id="gridWorksReports"
@@ -435,6 +502,7 @@ class ReportWorks extends Component {
                   allowSorting={true}
                   beforePrint={this.beforePrint}
                   excelQueryCellInfo={this.exportQueryCellInfo}
+                  printComplete={this.printComplete}
                 >
                   <ColumnsDirective>
                     <ColumnDirective
@@ -492,7 +560,14 @@ class ReportWorks extends Component {
                       field="status"
                       headerText="Estado"
                       width="100"
-                      format="N2"
+                      template={this.statusTemplate}
+                      textAlign="Center"
+                    />
+                    <ColumnDirective
+                      field="status"
+                      headerText="Estado"
+                      width="100"
+                      visible={false}
                     />
                   </ColumnsDirective>
 
