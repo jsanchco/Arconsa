@@ -1,4 +1,4 @@
-import React, { Component, Fragment, isValidElement } from "react";
+import React, { Component, Fragment } from "react";
 import { Breadcrumb, BreadcrumbItem, Container, Row } from "reactstrap";
 import {
   ColumnDirective,
@@ -36,7 +36,7 @@ import {
   base64ToArrayBuffer,
   saveByteArray,
   printInvoice,
-  billPaymentWithAmount
+  billPaymentWithAmount,
 } from "../../services";
 import { Query } from "@syncfusion/ej2-data";
 import { DropDownList } from "@syncfusion/ej2-dropdowns";
@@ -53,23 +53,23 @@ class Invoices extends Component {
     headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }],
   });
 
-  clients = new DataManager({
-    adaptor: new WebApiAdaptor(),
-    url: `${config.URL_API}/${CLIENTSLITE}`,
-    headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }],
-  });
+  // clients = new DataManager({
+  //   adaptor: new WebApiAdaptor(),
+  //   url: `${config.URL_API}/${CLIENTSLITE}`,
+  //   headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }],
+  // });
 
-  works = new DataManager({
-    adaptor: new WebApiAdaptor(),
-    url: `${config.URL_API}/${WORKSLITE}`,
-    headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }],
-  });
+  // works = new DataManager({
+  //   adaptor: new WebApiAdaptor(),
+  //   url: `${config.URL_API}/${WORKSLITE}`,
+  //   headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }],
+  // });
 
-  workBudgets = new DataManager({
-    adaptor: new WebApiAdaptor(),
-    url: `${config.URL_API}/${WORKBUDGETSLITE}`,
-    headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }],
-  });
+  // workBudgets = new DataManager({
+  //   adaptor: new WebApiAdaptor(),
+  //   url: `${config.URL_API}/${WORKBUDGETSLITE}`,
+  //   headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }],
+  // });
 
   detailsInvoice = new DataManager({
     adaptor: new WebApiAdaptor(),
@@ -90,7 +90,7 @@ class Invoices extends Component {
     this.state = {
       hideConfirmDialog: false,
       modalCancelInvoice: false,
-      invoiceSelected: null
+      invoiceSelected: null,
     };
 
     this.clientsElem = null;
@@ -584,7 +584,12 @@ class Invoices extends Component {
     });
     showSpinner(element);
 
-    billPaymentWithAmount({ invoiceId: this.gridInvoice.getSelectedRecords()[0].id, amount: amount, iva: iva, description: description })
+    billPaymentWithAmount({
+      invoiceId: this.gridInvoice.getSelectedRecords()[0].id,
+      amount: amount,
+      iva: iva,
+      description: description,
+    })
       .then(() => {
         this.props.showMessage({
           statusText: "200",
@@ -605,13 +610,15 @@ class Invoices extends Component {
   }
 
   dataBoundDetailsInvoice(args) {
-    console.log();
+    // console.log();
   }
 
   clientTemplate(args) {
     return (
       <div>
-        <a rel='nofollow' href={"/#/clients/detailclient/" + args.clientId}>{args.clientName}</a>
+        <a rel="nofollow" href={"/#/clients/detailclient/" + args.clientId}>
+          {args.clientName}
+        </a>
       </div>
     );
   }
@@ -619,7 +626,9 @@ class Invoices extends Component {
   workTemplate(args) {
     return (
       <div>
-        <a rel='nofollow' href={"/#/works/detailwork/" + args.workId}>{args.workName}</a>
+        <a rel="nofollow" href={"/#/works/detailwork/" + args.workId}>
+          {args.workName}
+        </a>
       </div>
     );
   }
@@ -627,7 +636,9 @@ class Invoices extends Component {
   workBudgetTemplate(args) {
     return (
       <div>
-        <a rel='nofollow' href={"/#/works/detailwork/" + args.workId + "/2"}>{args.workBudgetName}</a>
+        <a rel="nofollow" href={"/#/works/detailwork/" + args.workId + "/2"}>
+          {args.workBudgetName}
+        </a>
       </div>
     );
   }
@@ -659,25 +670,25 @@ class Invoices extends Component {
     }
 
     if (args.item.id === "PreviousInvoice") {
-        var DialogObj = DialogUtility.confirm({
-          title: "ATENCION",
-          cancelButton: { text: "No" },
-          content:
-            "Si importas la Factura anterior perderás el detalle de factura que tienes en la actualidad, ¿Deseas continuar?",
-          okButton: {
-            text: "Si",
-            click: () => {
-              this.query = [];
-              this.query = new Query()
-                .addParams("invoiceId", this.parentDetails.parentRowData.id)
-                .addParams("previousInvoice", true);
+      var DialogObj = DialogUtility.confirm({
+        title: "ATENCION",
+        cancelButton: { text: "No" },
+        content:
+          "Si importas la Factura anterior perderás el detalle de factura que tienes en la actualidad, ¿Deseas continuar?",
+        okButton: {
+          text: "Si",
+          click: () => {
+            this.query = [];
+            this.query = new Query()
+              .addParams("invoiceId", this.parentDetails.parentRowData.id)
+              .addParams("previousInvoice", true);
 
-              DialogObj.close();
-            },
+            DialogObj.close();
           },
-          showCloseIcon: true,
-          position: { Y: 100 },
-        });
+        },
+        showCloseIcon: true,
+        position: { Y: 100 },
+      });
 
       // this.query = [];
       // this.query = new Query()
