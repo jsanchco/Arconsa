@@ -255,7 +255,8 @@
                         .FirstOrDefault(x => x.Id == invoiceId);
                     if (findInvoice != null)
                     {
-                        findInvoice.TaxBase = detailsInvoice.Sum(x => x.Total);
+                        findInvoice.TaxBase = detailsInvoice.Sum(x => x.TaxBase);
+                        findInvoice.IvaTaxBase = detailsInvoice.Sum(x => x.TotalIva);
                     }
 
                     _context.SaveChanges();
@@ -286,6 +287,7 @@
                     if (findInvoice != null)
                     {
                         findInvoice.TaxBase = 0;
+                        findInvoice.IvaTaxBase = 0;
                     }
 
                     _context.SaveChanges();
