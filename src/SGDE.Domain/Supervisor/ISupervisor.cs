@@ -397,6 +397,7 @@ namespace SGDE.Domain.Supervisor
         #region WorkStatusHistory
 
         List<WorkStatusHistoryViewModel> GetAllWorkStatusHistory(int workId = 0);
+        List<WorkStatusHistoryViewModel> GetAllWorkStatusHistoryBetweenDates(DateTime startDate, DateTime endDate); 
         WorkStatusHistoryViewModel GetWorkStatusHistoryById(int id);
         WorkStatusHistoryViewModel AddWorkStatusHistory(WorkStatusHistoryViewModel newWorkStatusHistoryViewModel);
         bool UpdateWorkStatusHistory(WorkStatusHistoryViewModel workHistoryStatusViewModel);

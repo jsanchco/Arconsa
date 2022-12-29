@@ -53,6 +53,14 @@ namespace SGDE.DataEFCoreMySQL.Repositories
                 .ToList();
         }
 
+        public List<WorkStatusHistory> GetAllBetweenDates(DateTime startDate, DateTime endDate)
+        {
+            return _context.WorkStatusHistory
+                        .Include(x => x.Work)
+                        .Where(x => x.DateChange >= startDate && x.DateChange <= endDate)
+                        .ToList();
+        }
+
         public List<WorkCost> GetBetweenDates(DateTime startDate, DateTime endDate)
         {
             return _context.WorkCost

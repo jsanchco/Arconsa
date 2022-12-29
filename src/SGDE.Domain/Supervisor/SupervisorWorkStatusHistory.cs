@@ -13,6 +13,11 @@ namespace SGDE.Domain.Supervisor
             return WorkStatusHistoryConverter.ConvertList(_workStatusHistoryRepository.GetAll(workStatusHistoryId));
         }
 
+        public List<WorkStatusHistoryViewModel> GetAllWorkStatusHistoryBetweenDates(DateTime startDate, DateTime endDate)
+        {
+            return WorkStatusHistoryConverter.ConvertList(_workStatusHistoryRepository.GetAllBetweenDates(startDate, endDate));
+        }
+
         public WorkStatusHistoryViewModel GetWorkStatusHistoryById(int id)
         {
             var workStatusHistoryViewModel = WorkStatusHistoryConverter.Convert(_workStatusHistoryRepository.GetById(id));

@@ -61,6 +61,14 @@
             return data;
         }
 
+        public List<WorkStatusHistory> GetAllBetweenDates(DateTime startDate, DateTime endDate)
+        {
+            return _context.WorkStatusHistory
+                        .Include(x => x.Work)
+                        .Where(x => x.DateChange >= startDate && x.DateChange <= endDate)
+                        .ToList();
+        }
+
         public WorkStatusHistory GetById(int id)
         {
             var result = _context.WorkStatusHistory

@@ -49,7 +49,7 @@
                 data = _context.Work
                         .Include(x => x.Client)
                         .Include(x => x.UserHirings)
-                        .Include(x => x.WorkBudgets)
+                        //.Include(x => x.WorkBudgets)
                         .Include(x => x.WorkStatusHistories)
                         .ToList();
             }
@@ -58,7 +58,7 @@
                 data = _context.Work
                         .Include(x => x.Client)
                         .Include(x => x.UserHirings)
-                        .Include(x => x.WorkBudgets)
+                        //.Include(x => x.WorkBudgets)
                         .Include(x => x.WorkStatusHistories)
                         .Where(x => x.ClientId == clientId)
                         .ToList();
