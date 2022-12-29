@@ -126,6 +126,35 @@
             return DetailInvoiceConverter.ConvertList(result);
         }
 
+        public List<DetailInvoiceViewModel> GetDetailInvoiceFromPartidas(int invoiceId)
+        {
+            var invoice = GetInvoice(invoiceId);
+            if (invoice == null)
+                throw new Exception("Factura no encontrada");
+
+            var listReportResultViewModel = GetHoursByWork(new ReportQueryViewModel
+            {
+                startDate = invoice.StartDate,
+                endDate = invoice.EndDate.AddDays(1).AddSeconds(-1),
+                workId = invoice.WorkId
+            });
+
+            var result = _detailInvoiceRepository.UpdateFromWork(
+                invoiceId,
+                new List<DetailInvoice> {
+                    new DetailInvoice
+                    {
+                        ServicesPerformed = $"Por servicios prestados de albañilería en el periodo del {invoice.StartDate:dd/MM/yyyy} al {invoice.EndDate:dd/MM/yyyy}",
+                        PriceUnity = listReportResultViewModel.Sum(x => x.priceHourSale),
+                        Units = 1,
+                        NameUnit = "",
+                        Iva = invoice.Work.PercentageIVA
+                    }
+                });
+
+            return DetailInvoiceConverter.ConvertList(result);
+        }
+
         public List<DetailInvoiceViewModel> GetEmptyDetails(int invoiceId)
         {
             return DetailInvoiceConverter.ConvertList(_detailInvoiceRepository.UpdateToEmptyDetails(invoiceId));

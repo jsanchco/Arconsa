@@ -258,6 +258,7 @@ namespace SGDE.Domain.Supervisor
         bool DeleteDetailInvoice(int id);
         List<DetailInvoiceViewModel> GetDetailInvoiceFromPreviousInvoice(int invoiceId);
         List<DetailInvoiceViewModel> GetDetailInvoiceFromWork(int invoiceId);
+        List<DetailInvoiceViewModel> GetDetailInvoiceFromPartidas(int invoiceId);
         List<DetailInvoiceViewModel> GetEmptyDetails(int invoiceId);
 
         #endregion

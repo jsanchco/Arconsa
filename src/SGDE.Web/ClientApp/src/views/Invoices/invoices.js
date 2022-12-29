@@ -193,6 +193,13 @@ class Invoices extends Component {
         return this.clientsObj.value;
       },
       write: (args) => {
+        let clients = new DataManager({
+          adaptor: new WebApiAdaptor(),
+          url: `${config.URL_API}/${CLIENTSLITE}`,
+          headers: [
+            { Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) },
+          ],
+        });
         this.clientsObj = new DropDownList({
           change: () => {
             this.worksObj.enabled = true;
@@ -207,19 +214,13 @@ class Invoices extends Component {
             this.workBudgetsObj.value = null;
             this.worksObj.dataBind();
           },
-          dataSource: new DataManager({
-            adaptor: new WebApiAdaptor(),
-            url: `${config.URL_API}/${CLIENTSLITE}`,
-            headers: [
-              { Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) },
-            ],
-          }),
+          dataSource: clients,
           fields: { value: "id", text: "name" },
           floatLabelType: "Never",
           placeholder: "Selecciona Cliente",
           popupWidth: "auto",
           allowFiltering: true,
-          filtering: this.handleFilteringClients.bind(this),
+          filtering: this.handleFilteringClients.bind(this, clients),
         });
         this.clientsObj.appendTo(this.clientsElem);
         if (
@@ -243,6 +244,13 @@ class Invoices extends Component {
         return this.worksObj.value;
       },
       write: (args) => {
+        let works = new DataManager({
+          adaptor: new WebApiAdaptor(),
+          url: `${config.URL_API}/${WORKSLITE}`,
+          headers: [
+            { Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) },
+          ],
+        });
         this.worksObj = new DropDownList({
           change: () => {
             this.workBudgetsObj.enabled = true;
@@ -255,20 +263,18 @@ class Invoices extends Component {
             this.workBudgetsObj.value = null;
             this.workBudgetsObj.dataBind();
           },
-          dataSource: new DataManager({
-            adaptor: new WebApiAdaptor(),
-            url: `${config.URL_API}/${WORKSLITE}`,
-            headers: [
-              { Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) },
-            ],
-          }),
+          dataSource: works,
           enabled: false,
           fields: { value: "id", text: "name" },
           floatLabelType: "Never",
           placeholder: "Selecciona Obra",
           popupWidth: "auto",
           allowFiltering: true,
-          filtering: this.handleFilteringWorks.bind(this),
+          filtering: this.handleFilteringWorks.bind(
+            this,
+            works,
+            this.clientsObj
+          ),
         });
         this.worksObj.appendTo(this.worksElem);
         if (
@@ -502,10 +508,16 @@ class Invoices extends Component {
         "Update",
         "Cancel",
         {
-          text: "Detalle por Horas",
+          text: "Det. por Horas",
           tooltipText: "detalle por horas",
           prefixIcon: "e-custom-icons e-details",
           id: "DetailByHours",
+        },
+        {
+          text: "Det. por Partidas",
+          tooltipText: "detalle por partidas",
+          prefixIcon: "e-custom-icons e-details",
+          id: "DetailByPartidas",
         },
         {
           text: "Limpiar",
@@ -657,6 +669,13 @@ class Invoices extends Component {
       this.query = new Query()
         .addParams("invoiceId", this.parentDetails.parentRowData.id)
         .addParams("detailByHours", true);
+    }
+
+    if (args.item.id === "DetailByPartidas") {
+      this.query = [];
+      this.query = new Query()
+        .addParams("invoiceId", this.parentDetails.parentRowData.id)
+        .addParams("detailByPartidas", true);
     }
 
     if (args.item.id === "EmptyDetails") {
@@ -869,18 +888,26 @@ class Invoices extends Component {
     }
   }
 
-  handleFilteringClients(e) {
+  handleFilteringClients(clients, e) {
     let query = new Query();
     query =
       e.text !== "" ? query.where("name", "contains", e.text, true) : query;
-    e.updateData(this.clients, query);
+    e.updateData(clients, query);
   }
 
-  handleFilteringWorks(e) {
+  handleFilteringWorks(works, clientObj, e) {
     let query = new Query();
     query =
       e.text !== "" ? query.where("name", "contains", e.text, true) : query;
-    e.updateData(this.works, query);
+
+    if (
+      clientObj != null &&
+      clientObj.itemData != null &&
+      clientObj.itemData.id != null
+    ) {
+      query.addParams("clientId", clientObj.itemData.id);
+    }    
+    e.updateData(works, query);
   }
 
   templateIVA(args) {
