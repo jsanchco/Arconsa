@@ -360,7 +360,7 @@ class WorkHistory extends Component {
                   />
                   <ColumnDirective
                     field="reference"
-                    headerText="Referencia"
+                    headerText="Departamento"
                     width="100"
                     validationRules={{ required: true }}
                   />                  

@@ -576,7 +576,7 @@
 
             // 1º Trimestre año anterior
             startDate = new DateTime(actualYear - 1, 1, 1);
-            endDate = new DateTime(actualYear - 1, 3, 31);
+            endDate = new DateTime(actualYear - 1, 3, 31, 23, 59, 59);
             var sumOpen = worksStatusHistory.Where(x => x.DateChange >= startDate && x.DateChange <= endDate && x.Value == "Abierta").Count();
             dataOpenPrevious.Add(sumOpen);
             var sumJuridic = worksStatusHistory.Where(x => x.DateChange >= startDate && x.DateChange <= endDate && x.Value == "Juridico").Count();
@@ -586,7 +586,7 @@
 
             // 2º Trimestre año anterior
             startDate = new DateTime(actualYear - 1, 4, 1);
-            endDate = new DateTime(actualYear - 1, 6, 30);
+            endDate = new DateTime(actualYear - 1, 6, 30, 23, 59, 59);
             sumOpen = worksStatusHistory.Where(x => x.DateChange >= startDate && x.DateChange <= endDate && x.Value == "Abierta").Count();
             dataOpenPrevious.Add(sumOpen);
             sumJuridic = worksStatusHistory.Where(x => x.DateChange >= startDate && x.DateChange <= endDate && x.Value == "Juridico").Count();
@@ -596,7 +596,7 @@
 
             // 3º Trimestre año anterior
             startDate = new DateTime(actualYear - 1, 7, 1);
-            endDate = new DateTime(actualYear - 1, 9, 30);
+            endDate = new DateTime(actualYear - 1, 9, 30, 23, 59, 59);
             sumOpen = worksStatusHistory.Where(x => x.DateChange >= startDate && x.DateChange <= endDate && x.Value == "Abierta").Count();
             dataOpenPrevious.Add(sumOpen);
             sumJuridic = worksStatusHistory.Where(x => x.DateChange >= startDate && x.DateChange <= endDate && x.Value == "Juridico").Count();
@@ -606,7 +606,7 @@
 
             // 4º Trimestre año anterior
             startDate = new DateTime(actualYear - 1, 10, 1);
-            endDate = new DateTime(actualYear - 1, 12, 31);
+            endDate = new DateTime(actualYear - 1, 12, 31, 23, 59, 59);
             sumOpen = worksStatusHistory.Where(x => x.DateChange >= startDate && x.DateChange <= endDate && x.Value == "Abierta").Count();
             dataOpenPrevious.Add(sumOpen);
             sumJuridic = worksStatusHistory.Where(x => x.DateChange >= startDate && x.DateChange <= endDate && x.Value == "Juridico").Count();
@@ -616,7 +616,7 @@
 
             // 1º Trimestre año actual
             startDate = new DateTime(actualYear, 1, 1);
-            endDate = new DateTime(actualYear, 3, 31);
+            endDate = new DateTime(actualYear, 3, 31, 23, 59, 59);
             sumOpen = worksStatusHistory.Where(x => x.DateChange >= startDate && x.DateChange <= endDate && x.Value == "Abierta").Count();
             dataOpenActual.Add(sumOpen);
             sumJuridic = worksStatusHistory.Where(x => x.DateChange >= startDate && x.DateChange <= endDate && x.Value == "Juridico").Count();
@@ -626,7 +626,7 @@
 
             // 2º Trimestre año actual
             startDate = new DateTime(actualYear, 4, 1);
-            endDate = new DateTime(actualYear, 6, 30);
+            endDate = new DateTime(actualYear, 6, 30, 23, 59, 59);
             sumOpen = worksStatusHistory.Where(x => x.DateChange >= startDate && x.DateChange <= endDate && x.Value == "Abierta").Count();
             dataOpenActual.Add(sumOpen);
             sumJuridic = worksStatusHistory.Where(x => x.DateChange >= startDate && x.DateChange <= endDate && x.Value == "Juridico").Count();
@@ -636,7 +636,7 @@
 
             // 3º Trimestre año actual
             startDate = new DateTime(actualYear, 7, 1);
-            endDate = new DateTime(actualYear, 9, 30);
+            endDate = new DateTime(actualYear, 9, 30, 23, 59, 59);
             sumOpen = worksStatusHistory.Where(x => x.DateChange >= startDate && x.DateChange <= endDate && x.Value == "Abierta").Count();
             dataOpenActual.Add(sumOpen);
             sumJuridic = worksStatusHistory.Where(x => x.DateChange >= startDate && x.DateChange <= endDate && x.Value == "Juridico").Count();
@@ -646,7 +646,7 @@
 
             // 4º Trimestre año actual
             startDate = new DateTime(actualYear, 10, 1);
-            endDate = new DateTime(actualYear, 12, 31);
+            endDate = new DateTime(actualYear, 12, 31, 23, 59, 59);
             sumOpen = worksStatusHistory.Where(x => x.DateChange >= startDate && x.DateChange <= endDate && x.Value == "Abierta").Count();
             dataOpenActual.Add(sumOpen);
             sumJuridic = worksStatusHistory.Where(x => x.DateChange >= startDate && x.DateChange <= endDate && x.Value == "Juridico").Count();
