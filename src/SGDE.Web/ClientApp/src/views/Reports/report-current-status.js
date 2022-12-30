@@ -184,8 +184,8 @@ class ReportCurrentStatus extends Component {
     let type = "ESTADO ACTUAL";
     let fileName = "Inf_Seg.xlsx";
     const date = this.formatDate(new Date());
-    const valueDtpStartDate = this.formatDate(this.dtpStartDate.value);
-    const valueDtpEndDate = this.formatDate(this.dtpEndDate.value);
+    const valueDtpStartDate = this.formatDate(new Date(2021, 0, 1));
+    const valueDtpEndDate = this.formatDate(new Date());
 
     return {
       header: {
@@ -300,12 +300,12 @@ class ReportCurrentStatus extends Component {
   }
 
   beforePrint(args) {
-    const valueDtpStartDate = this.formatDate(this.dtpStartDate.value);
-    const valueDtpEndDate = this.formatDate(this.dtpEndDate.value);
+    const valueDtpStartDate = this.formatDate(new Date(2021, 0, 1));
+    const valueDtpEndDate = this.formatDate(new Date());
 
     var div = document.createElement("Div");
     div.innerHTML =
-      "ESTADO ACTUAL desde el " + valueDtpStartDate + " al " + valueDtpEndDate;
+      "ESTADO ACTUAL de OBRAS del " + valueDtpStartDate + " al " + valueDtpEndDate;
     div.style.textAlign = "center";
     div.style.color = "red";
     div.style.padding = "10px 0";

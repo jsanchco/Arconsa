@@ -630,9 +630,7 @@ class Works extends Component {
                       field="status"
                       headerText="Estado"
                       width="100"
-                      // template={this.statusTemplate}
                       textAlign="Center"
-                      allowEditing={false}
                       visible={false}
                     />
                     <ColumnDirective field="openDate" visible={false} />
