@@ -221,7 +221,7 @@
             var dataCostsPrevious = new List<double>();
             // 1º Trimestre
             startDate = new DateTime(actualYear - 1, 1, 1);
-            endDate = new DateTime(actualYear - 1, 3, 31);
+            endDate = new DateTime(actualYear - 1, 3, 31, 23, 59, 59);
             var sumCostsWorkers = 0.0;
             //var sumCostsWorkers = costsWorkers.Where(x => x.dtStartDate >= startDate && x.dtStartDate <= endDate).Sum(x => x.priceTotal);
             var sumCostsProviders = _workCostRepository.GetBetweenDates(startDate, endDate).Sum(x => x.TaxBase);
@@ -237,7 +237,7 @@
 
             // 2º Trimestre
             startDate = new DateTime(actualYear - 1, 4, 1);
-            endDate = new DateTime(actualYear - 1, 6, 30);
+            endDate = new DateTime(actualYear - 1, 6, 30, 23, 59, 59);
             sumCostsWorkers = 0;
             sumCostsProviders = _workCostRepository.GetBetweenDates(startDate, endDate).Sum(x => x.TaxBase);
             sumCostsIndirects = _indirectCostRepository.GetBetweeenDates(startDate, endDate).Sum(x => x.Amount);
@@ -251,7 +251,7 @@
 
             // 3º Trimestre
             startDate = new DateTime(actualYear - 1, 7, 1);
-            endDate = new DateTime(actualYear - 1, 9, 30);
+            endDate = new DateTime(actualYear - 1, 9, 30, 23, 59, 59);
             sumCostsWorkers = 0;
             sumCostsProviders = _workCostRepository.GetBetweenDates(startDate, endDate).Sum(x => x.TaxBase);
             sumCostsIndirects = _indirectCostRepository.GetBetweeenDates(startDate, endDate).Sum(x => x.Amount);
@@ -264,7 +264,7 @@
 
             // 4º Trimestre
             startDate = new DateTime(actualYear - 1, 10, 1);
-            endDate = new DateTime(actualYear - 1, 12, 31);
+            endDate = new DateTime(actualYear - 1, 12, 31, 23, 59, 59);
             sumCostsWorkers = 0;
             sumCostsProviders = _workCostRepository.GetBetweenDates(startDate, endDate).Sum(x => x.TaxBase);
             sumCostsIndirects = _indirectCostRepository.GetBetweeenDates(startDate, endDate).Sum(x => x.Amount);
@@ -299,7 +299,7 @@
             var dataCostsActual = new List<double>();
             // 1º Trimestre
             startDate = new DateTime(actualYear, 1, 1);
-            endDate = new DateTime(actualYear, 3, 31);
+            endDate = new DateTime(actualYear, 3, 31, 23, 59, 59);
             sumCostsWorkers = 0;
             sumCostsProviders = _workCostRepository.GetBetweenDates(startDate, endDate).Sum(x => x.TaxBase);
             sumCostsIndirects = _indirectCostRepository.GetBetweeenDates(startDate, endDate).Sum(x => x.Amount);
@@ -313,7 +313,7 @@
 
             // 2º Trimestre
             startDate = new DateTime(actualYear, 4, 1);
-            endDate = new DateTime(actualYear, 6, 30);
+            endDate = new DateTime(actualYear, 6, 30, 23, 59, 59);
             sumCostsWorkers = 0;
             sumCostsProviders = _workCostRepository.GetBetweenDates(startDate, endDate).Sum(x => x.TaxBase);
             sumCostsIndirects = _indirectCostRepository.GetBetweeenDates(startDate, endDate).Sum(x => x.Amount);
@@ -326,7 +326,7 @@
 
             // 3º Trimestre
             startDate = new DateTime(actualYear, 7, 1);
-            endDate = new DateTime(actualYear, 9, 30);
+            endDate = new DateTime(actualYear, 9, 30, 23, 59, 59);
             sumCostsWorkers = 0;
             sumCostsProviders = _workCostRepository.GetBetweenDates(startDate, endDate).Sum(x => x.TaxBase);
             sumCostsIndirects = _indirectCostRepository.GetBetweeenDates(startDate, endDate).Sum(x => x.Amount);
@@ -339,7 +339,7 @@
 
             // 4º Trimestre
             startDate = new DateTime(actualYear, 10, 1);
-            endDate = new DateTime(actualYear, 12, 31);
+            endDate = new DateTime(actualYear, 12, 31, 23, 59, 59);
             sumCostsWorkers = 0;
             sumCostsProviders = _workCostRepository.GetBetweenDates(startDate, endDate).Sum(x => x.TaxBase);
             sumCostsIndirects = _indirectCostRepository.GetBetweeenDates(startDate, endDate).Sum(x => x.Amount);
@@ -353,8 +353,8 @@
             var dataSetCostsActual = new Dataset
             {
                 label = $"Gastos {actualYear}",
-                backgroundColor = "rgba(179,181,198,0.2)",
-                borderColor = "rgba(179,181,198,1)",
+                backgroundColor = "rgba(255,99,132,0.2)",
+                borderColor = "rgba(255,99,132,1)",
                 data = dataCostsActual
             };
             result.datasets.Add(dataSetCostsActual);
@@ -362,8 +362,8 @@
             var dataSetInvoicesActual = new Dataset
             {
                 label = $"Ingresos {actualYear}",
-                backgroundColor = "rgb(54, 162, 235, 0.2)",
-                borderColor = "rgba(54, 162, 235,1)",
+                backgroundColor = "rgba(255, 206, 86,0.2)",
+                borderColor = "rgba(255, 206, 86,1)",
                 data = dataInvoicesActual
             };
             result.datasets.Add(dataSetInvoicesActual);
