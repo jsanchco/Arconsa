@@ -2,15 +2,13 @@
 {
     #region Using
 
-    using Microsoft.AspNetCore.Mvc;
-    using Microsoft.AspNetCore.Authorization;
     using Domain.Supervisor;
+    using Domain.ViewModels;
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Logging;
     using System;
-    using Domain.ViewModels;
-    using System.Linq;
     using System.Collections.Generic;
-    using Newtonsoft.Json;
 
     #endregion
 
