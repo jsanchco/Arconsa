@@ -3,13 +3,13 @@ namespace SGDE.DataEFCoreMySQL
 {
     #region Using
 
-    using System.Threading;
+    using Configurations;
     using Domain.Entities;
     using Microsoft.EntityFrameworkCore;
-    using Configurations;
     using Microsoft.EntityFrameworkCore.Design;
     using Microsoft.Extensions.Configuration;
     using System.IO;
+    using System.Threading;
 
     #endregion
 
@@ -45,6 +45,7 @@ namespace SGDE.DataEFCoreMySQL
         public virtual DbSet<IndirectCost> IndirectCost { get; set; }
         public virtual DbSet<Advance> Advance { get; set; }
         public virtual DbSet<WorkStatusHistory> WorkStatusHistory { get; set; }
+        public virtual DbSet<InvoicePaymentHistory> InvoicePaymentHistory { get; set; }
 
         public static long InstanceCount;
 
@@ -81,6 +82,7 @@ namespace SGDE.DataEFCoreMySQL
             new WorkBudgetConfiguration(modelBuilder.Entity<WorkBudget>());
             new IndirectCostConfiguration(modelBuilder.Entity<IndirectCost>());
             new AdvanceConfiguration(modelBuilder.Entity<Advance>());
+            new InvoicePaymentHistoryConfiguration(modelBuilder.Entity<InvoicePaymentHistory>());
         }
 
         public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<EFContextMySQL>

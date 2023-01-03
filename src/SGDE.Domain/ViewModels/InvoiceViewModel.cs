@@ -25,6 +25,7 @@
         public int typeInvoice { get; set; }  // 1 = por horas, 2 = custom
         public double retentions { get; set; }
         public bool isPaid => payDate != null;
+        public double totalPayment { get; set; }
 
 
         public int? workId { get; set; }

@@ -354,14 +354,17 @@ class ReportTracing extends Component {
             <a href="#">Inicio</a>
           </BreadcrumbItem>
           {/* eslint-disable-next-line*/}
-          <BreadcrumbItem active>Informe de Obras por Partidas entre dos Fechas</BreadcrumbItem>
+          <BreadcrumbItem active>
+            Informe de Obras por Partidas entre dos Fechas
+          </BreadcrumbItem>
         </Breadcrumb>
 
         <Container fluid>
           <div className="animated fadeIn" id="selection-report">
             <div className="card">
               <div className="card-header">
-                <i className="icon-list"></i> Informe de Obras por Partidas entre dos Fechas
+                <i className="icon-list"></i> Informe de Obras por Partidas
+                entre dos Fechas
               </div>
               <div className="card-body"></div>
               <div>
@@ -497,6 +500,12 @@ class ReportTracing extends Component {
                       textAlign="right"
                     />
                     <ColumnDirective
+                      field="invoiceTotalPaymentSum"
+                      headerText="Importe Pagado"
+                      width="180"
+                      textAlign="right"
+                    />
+                    <ColumnDirective
                       field="datesSendInvoices"
                       headerText="Fecha Envio Fact."
                       width="180"
@@ -505,7 +514,7 @@ class ReportTracing extends Component {
                       field="clientEmail"
                       headerText="Correo"
                       width="100"
-                    />               
+                    />
                   </ColumnsDirective>
 
                   <AggregatesDirective>
@@ -523,6 +532,16 @@ class ReportTracing extends Component {
 
                         <AggregateColumnDirective
                           field="invoiceSum"
+                          type="Sum"
+                          format="N2"
+                          footerTemplate={this.footerSumEuros}
+                          groupCaptionTemplate={this.footerSumEuros}
+                        >
+                          {" "}
+                        </AggregateColumnDirective>
+
+                        <AggregateColumnDirective
+                          field="invoiceTotalPaymentSum"
                           type="Sum"
                           format="N2"
                           footerTemplate={this.footerSumEuros}

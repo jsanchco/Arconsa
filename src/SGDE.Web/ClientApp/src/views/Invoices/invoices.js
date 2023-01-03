@@ -43,6 +43,7 @@ import { DropDownList } from "@syncfusion/ej2-dropdowns";
 import { DialogComponent } from "@syncfusion/ej2-react-popups";
 import { DialogUtility } from "@syncfusion/ej2-popups";
 import ModalCancelInvoice from "../Modals/modal-cancel-invoice";
+import ModalInvoicePaymentsHistory from "../Modals/modal-invoice-payments-history";
 
 L10n.load(data);
 
@@ -90,6 +91,7 @@ class Invoices extends Component {
     this.state = {
       hideConfirmDialog: false,
       modalCancelInvoice: false,
+      modalInvoicePaymentsHistory: false,
       invoiceSelected: null,
     };
 
@@ -124,6 +126,12 @@ class Invoices extends Component {
         tooltipText: "Anular Factura",
         prefixIcon: "e-custom-icons e-empty",
         id: "CancelInvoice",
+      },
+      {
+        text: "Det. Pagos",
+        tooltipText: "Detalle de Pagos de Factura",
+        prefixIcon: "e-custom-icons e-file-workers",
+        id: "detailPayment",
       },
       "Search",
     ];
@@ -338,6 +346,8 @@ class Invoices extends Component {
     this.workTemplate = this.workTemplate.bind(this);
     this.workBudgetTemplate = this.workBudgetTemplate.bind(this);
     this.toggleModalCancelInvoice = this.toggleModalCancelInvoice.bind(this);
+    this.toggleModalInvoicePaymentsHistory =
+      this.toggleModalInvoicePaymentsHistory.bind(this);
 
     this.gridDetailsInvoice = {
       columns: [
@@ -557,6 +567,15 @@ class Invoices extends Component {
   toggleModalCancelInvoice() {
     this.setState({
       modalCancelInvoice: !this.state.modalCancelInvoice,
+    });
+  }
+
+  toggleModalInvoicePaymentsHistory() {
+    if (this.state.modalInvoicePaymentsHistory === true) {
+      this.gridInvoice.refresh();
+    }
+    this.setState({
+      modalInvoicePaymentsHistory: !this.state.modalInvoicePaymentsHistory,
     });
   }
 
@@ -906,12 +925,17 @@ class Invoices extends Component {
       clientObj.itemData.id != null
     ) {
       query.addParams("clientId", clientObj.itemData.id);
-    }    
+    }
     e.updateData(works, query);
   }
 
   templateIVA(args) {
     let total = Math.round((args.ivaTaxBase + Number.EPSILON) * 100) / 100;
+    return <span>{total}</span>;
+  }
+
+  templateTotalPayment(args) {
+    let total = Math.round((args.totalPayment + Number.EPSILON) * 100) / 100;
     return <span>{total}</span>;
   }
 
@@ -1048,6 +1072,20 @@ class Invoices extends Component {
         // this.setState({ hideConfirmDialog: true });
       }
     }
+
+    if (args.item.id === "detailPayment") {
+      if (selectedRecords.length === 0) {
+        this.props.showMessage({
+          statusText: "Debes seleccionar una factura",
+          responseText: "Debes seleccionar una factura",
+          type: "danger",
+        });
+      } else {
+        this.setState({ invoiceSelected: selectedRecords[0] });
+        this.toggleModalInvoicePaymentsHistory();
+        // this.setState({ hideConfirmDialog: true });
+      }
+    }
   }
 
   beforePrint(args) {
@@ -1077,6 +1115,13 @@ class Invoices extends Component {
           toggle={this.toggleModalCancelInvoice}
           invoice={this.state.invoiceSelected}
           billPaymentWithAmount={this.billPaymentWithAmount}
+          showMessage={this.props.showMessage}
+        />
+
+        <ModalInvoicePaymentsHistory
+          isOpen={this.state.modalInvoicePaymentsHistory}
+          toggle={this.toggleModalInvoicePaymentsHistory}
+          invoice={this.state.invoiceSelected}
           showMessage={this.props.showMessage}
         />
 
@@ -1149,13 +1194,13 @@ class Invoices extends Component {
                     <ColumnDirective
                       field="name"
                       headerText="Nº Factura"
-                      width="100"
+                      width="120"
                       allowEditing={false}
                     />
                     <ColumnDirective
                       field="startDate"
                       headerText="F. Inicio"
-                      width="100"
+                      width="120"
                       type="date"
                       format={this.formatDate}
                       editType="datepickeredit"
@@ -1165,7 +1210,7 @@ class Invoices extends Component {
                     <ColumnDirective
                       field="endDate"
                       headerText="F. Fin"
-                      width="100"
+                      width="120"
                       type="date"
                       format={this.formatDate}
                       editType="datepickeredit"
@@ -1175,7 +1220,7 @@ class Invoices extends Component {
                     <ColumnDirective
                       field="issueDate"
                       headerText="F. Emisión"
-                      width="100"
+                      width="120"
                       type="date"
                       format={this.formatDate}
                       editType="datepickeredit"
@@ -1221,6 +1266,8 @@ class Invoices extends Component {
                       width="100"
                       allowEditing={false}
                       defaultValue={0}
+                      textAlign="Right"
+                      headerTextAlign="Left"
                     />
                     <ColumnDirective
                       field="ivaTaxBase"
@@ -1236,6 +1283,8 @@ class Invoices extends Component {
                       width="100"
                       allowEditing={false}
                       defaultValue={0}
+                      textAlign="Right"
+                      headerTextAlign="Left"
                     />
                     <ColumnDirective
                       field="retentions"
@@ -1246,11 +1295,22 @@ class Invoices extends Component {
                       // edit={this.numericParams}
                       allowEditing={false}
                       defaultValue={0}
+                      textAlign="Right"
+                      headerTextAlign="Left"
+                    />
+                    <ColumnDirective
+                      field="totalPayment"
+                      headerText="Tot. Pagado"
+                      width="120"
+                      allowEditing={false}
+                      template={this.templateTotalPayment}
+                      textAlign="Right"
+                      headerTextAlign="Left"
                     />
                     <ColumnDirective
                       field="payDate"
                       headerText="F. Pago"
-                      width="100"
+                      width="120"
                       type="date"
                       format={this.formatDate}
                       editType="datepickeredit"
@@ -1269,8 +1329,7 @@ class Invoices extends Component {
                       Toolbar,
                       Edit,
                       Resize,
-                      DetailRow,
-                      Aggregate,
+                      DetailRow
                     ]}
                   />
                 </GridComponent>

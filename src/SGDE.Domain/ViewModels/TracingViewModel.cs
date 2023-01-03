@@ -35,6 +35,7 @@ namespace SGDE.Domain.ViewModels
         }
         public double? workBudgetTotalContract { get; set; }
         public double? invoiceSum { get; set; }
+        public double? invoiceTotalPaymentSum { get; set; }
         public string datesSendInvoices { get; set; }
     }
 }

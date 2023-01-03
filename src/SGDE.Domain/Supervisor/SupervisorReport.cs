@@ -314,6 +314,7 @@
                     dateSendWorkBudget = x.Date,
                     workBudgetTotalContract = x.TotalContract,
                     invoiceSum = x.Invoices?.Where(y => y.IsPaid).Sum(y => y.Total),
+                    invoiceTotalPaymentSum = x.Invoices?.Sum(y => y.TotalPayment),
                     datesSendInvoices = string.Join(",", x.Invoices?.Where(y => y.IsPaid).Select(y => y.PayDate?.ToString("dd/MM/yyyy")))
                 }).ToList();
             }

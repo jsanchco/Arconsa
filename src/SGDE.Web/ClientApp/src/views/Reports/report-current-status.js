@@ -305,7 +305,10 @@ class ReportCurrentStatus extends Component {
 
     var div = document.createElement("Div");
     div.innerHTML =
-      "ESTADO ACTUAL de OBRAS del " + valueDtpStartDate + " al " + valueDtpEndDate;
+      "ESTADO ACTUAL de OBRAS del " +
+      valueDtpStartDate +
+      " al " +
+      valueDtpEndDate;
     div.style.textAlign = "center";
     div.style.color = "red";
     div.style.padding = "10px 0";
@@ -370,9 +373,7 @@ class ReportCurrentStatus extends Component {
             <a href="#">Inicio</a>
           </BreadcrumbItem>
           {/* eslint-disable-next-line*/}
-          <BreadcrumbItem active>
-            Informe de Resultados
-          </BreadcrumbItem>
+          <BreadcrumbItem active>Informe de Resultados</BreadcrumbItem>
         </Breadcrumb>
 
         <Container fluid>
@@ -505,6 +506,12 @@ class ReportCurrentStatus extends Component {
                       textAlign="right"
                     />
                     <ColumnDirective
+                      field="invoiceTotalPaymentSum"
+                      headerText="Cobrado"
+                      width="120"
+                      textAlign="right"
+                    />
+                    <ColumnDirective
                       field="workCostsSum"
                       headerText="Gastos Prov."
                       width="180"
@@ -545,6 +552,16 @@ class ReportCurrentStatus extends Component {
 
                         <AggregateColumnDirective
                           field="invoicesSum"
+                          type="Sum"
+                          format="N2"
+                          footerTemplate={this.footerSumEuros}
+                          groupCaptionTemplate={this.footerSumEuros}
+                        >
+                          {" "}
+                        </AggregateColumnDirective>
+
+                        <AggregateColumnDirective
+                          field="invoiceTotalPaymentSum"
                           type="Sum"
                           format="N2"
                           footerTemplate={this.footerSumEuros}

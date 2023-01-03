@@ -193,12 +193,26 @@
             //    }
             //}
 
+            //foreach (var invoice in _invoiceRepository.GetAllLite())
+            //{
+            //    if (invoice.DetailsInvoice.Count > 0)
+            //    {
+            //        var detailInvoice = invoice.DetailsInvoice.FirstOrDefault();
+            //        _detailInvoiceRepository.Update(detailInvoice);
+            //    }
+            //}
+
             foreach (var invoice in _invoiceRepository.GetAllLite())
             {
-                if (invoice.DetailsInvoice.Count > 0)
+                if (invoice.IsPaid)
                 {
-                    var detailInvoice = invoice.DetailsInvoice.FirstOrDefault();
-                    _detailInvoiceRepository.Update(detailInvoice);
+                    var invoicePaymentHistory = new InvoicePaymentHistory
+                    {
+                        InvoiceId = invoice.Id,
+                        DatePayment = invoice.PayDate.Value,
+                        Amount = invoice.Total
+                    };
+                    _invoicePaymentHistoryRepository.Add(invoicePaymentHistory);
                 }
             }
         }

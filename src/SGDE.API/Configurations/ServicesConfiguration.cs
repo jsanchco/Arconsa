@@ -2,15 +2,15 @@
 {
     #region Using
 
+    using Domain.Helpers;
     using Domain.Repositories;
     using Domain.Supervisor;
-    using Microsoft.Extensions.DependencyInjection;
-    using Newtonsoft.Json;
-    using Microsoft.Extensions.Configuration;
-    using Microsoft.IdentityModel.Tokens;
-    using Domain.Helpers;
-    using System.Text;
     using Microsoft.AspNetCore.Authentication.JwtBearer;
+    using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.IdentityModel.Tokens;
+    using Newtonsoft.Json;
+    using System.Text;
 
     #endregion
 
@@ -56,7 +56,8 @@
                         .AddScoped<ILibraryRepository, DataEFCoreSQL.Repositories.LibraryRepository>()
                         .AddScoped<ICompanyDataRepository, DataEFCoreSQL.Repositories.CompanyDataRepository>()
                         .AddScoped<IWorkHistoryRepository, DataEFCoreSQL.Repositories.WorkHistoryRepository>()
-                        .AddScoped<IWorkStatusHistoryRepository, DataEFCoreSQL.Repositories.WorkStatusHistoryRepository>();
+                        .AddScoped<IWorkStatusHistoryRepository, DataEFCoreSQL.Repositories.WorkStatusHistoryRepository>()
+                        .AddScoped<IInvoicePaymentHistoryRepository, DataEFCoreSQL.Repositories.InvoicePaymentHistoryRepository>();
                     break;
                 case "MySQL":
                     services
@@ -86,7 +87,8 @@
                         .AddScoped<IWorkBudgetDataRepository, DataEFCoreMySQL.Repositories.WorkBudgetDataRepository>()
                         .AddScoped<IWorkBudgetRepository, DataEFCoreMySQL.Repositories.WorkBudgetRepository>()
                         .AddScoped<IIndirectCostRepository, DataEFCoreMySQL.Repositories.IndirectCostRepository>()
-                        .AddScoped<IAdvanceRepository, DataEFCoreMySQL.Repositories.AdvanceRepository>();
+                        .AddScoped<IAdvanceRepository, DataEFCoreMySQL.Repositories.AdvanceRepository>()
+                        .AddScoped<IInvoicePaymentHistoryRepository, DataEFCoreMySQL.Repositories.InvoicePaymentHistoryRepository>();
                     break;
 
                 default:
@@ -120,7 +122,8 @@
                         .AddScoped<ILibraryRepository, DataEFCoreSQL.Repositories.LibraryRepository>()
                         .AddScoped<ICompanyDataRepository, DataEFCoreSQL.Repositories.CompanyDataRepository>()
                         .AddScoped<IWorkHistoryRepository, DataEFCoreSQL.Repositories.WorkHistoryRepository>()
-                        .AddScoped<IWorkStatusHistoryRepository, DataEFCoreSQL.Repositories.WorkStatusHistoryRepository>();
+                        .AddScoped<IWorkStatusHistoryRepository, DataEFCoreSQL.Repositories.WorkStatusHistoryRepository>()
+                        .AddScoped<IInvoicePaymentHistoryRepository, DataEFCoreSQL.Repositories.InvoicePaymentHistoryRepository>();
                     break;
             }
 
@@ -136,7 +139,7 @@
 
         public static IServiceCollection AddMiddleware(this IServiceCollection services)
         {
-            services.AddMvc().AddNewtonsoftJson(options => 
+            services.AddMvc().AddNewtonsoftJson(options =>
                 options.SerializerSettings.ReferenceLoopHandling = new ReferenceLoopHandling());
 
             return services;

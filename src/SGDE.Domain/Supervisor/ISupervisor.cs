@@ -405,6 +405,16 @@ namespace SGDE.Domain.Supervisor
 
         #endregion
 
+        #region InvoicePaymentHistory
+
+        List<InvoicePaymentHistoryViewModel> GetAllInvoicePaymentHistory(int invoice = 0);
+        InvoicePaymentHistoryViewModel GetInvoicePaymentHistoryById(int id);
+        InvoicePaymentHistoryViewModel AddInvoicePaymentHistory(InvoicePaymentHistoryViewModel newInvoicePaymentHistory);
+        bool UpdateInvoicePaymentHistory(InvoicePaymentHistoryViewModel invoicePaymentHistoryViewModel);
+        bool DeleteInvoicePaymentHistory(int id);
+
+        #endregion
+
         #region Dashboard
 
         (BarItemViewModel costsAndIncomes, BarItemViewModel worksOpenedAndClosed) GetDashboard();

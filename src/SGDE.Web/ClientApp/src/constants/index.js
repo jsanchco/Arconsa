@@ -64,6 +64,7 @@ export const COMPANY_DOCUMENTS = "api/companydatas";
 export const DASHBOARD = "api/dashboard";
 export const DASHBOARD_COSTANDINCOMES = "api/dashboard/costsandincomes";
 export const DASHBOARD_WORKSOPENEDANDCLOSED = "api/dashboard/worksopenedandclosed";
+export const INVOICEPAYMENTSHISTORY = "api/InvoicePaymentsHistory";
 export const COMPANY_DATA = "COMPANY_DATA";
 
 const dev = {

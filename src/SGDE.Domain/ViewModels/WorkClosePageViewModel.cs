@@ -15,6 +15,7 @@ namespace SGDE.Domain.ViewModels
         public string workBudgetsSumFormat { get; set; }
         public double workBudgetsSum { get; set; }
         public double invoicesSum { get; set; }
+        public double? invoiceTotalPaymentSum { get; set; }
         public double workCostsSum { get; set; }
         public double authorizeCancelWorkersCostsSum { get; set; }
         public double authorizeCancelWorkersCostsSalesSum { get; set; }

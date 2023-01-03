@@ -47,6 +47,7 @@
                 workBudgetName = invoice.WorkBudget?.Name,
                 ivaTaxBase = invoice.IvaTaxBase,
                 taxBase = invoice.TaxBase,
+                totalPayment = invoice.TotalPayment,
 
                 //detailInvoice = DetailInvoiceConverter.ConvertList(invoice.DetailsInvoice)
             };
@@ -91,6 +92,7 @@
                     workBudgetName = invoice.WorkBudget?.Name,
                     ivaTaxBase = invoice.IvaTaxBase,
                     taxBase = invoice.TaxBase,
+                    totalPayment = invoice.TotalPayment,
 
                     //detailInvoice = DetailInvoiceConverter.ConvertList(invoice.DetailsInvoice)
                 };
