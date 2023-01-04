@@ -1252,7 +1252,7 @@ class Invoices extends Component {
                     <ColumnDirective
                       field="workBudgetId"
                       headerText="Presupuesto"
-                      width="100"
+                      width="120"
                       foreignKeyValue="name"
                       foreignKeyField="id"
                       // validationRules={this.requeridIdRules}

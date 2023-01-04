@@ -77,7 +77,9 @@ namespace SGDE.DataEFCoreSQL.Repositories
                     _context.InvoicePaymentHistory.Add(newInvoicePaymentHistory);
                     _context.SaveChanges();
 
-                    var total = _context.InvoicePaymentHistory.Sum(x => x.Amount);
+                    var total = _context.InvoicePaymentHistory
+                        .Where(x => x.InvoiceId == newInvoicePaymentHistory.InvoiceId)
+                        .Sum(x => x.Amount);
 
                     invoice.ModifiedDate = DateTime.Now;
                     invoice.TotalPayment = total;
@@ -113,7 +115,9 @@ namespace SGDE.DataEFCoreSQL.Repositories
                     _context.InvoicePaymentHistory.Update(invoicePaymentHistory);
                     _context.SaveChanges();
 
-                    var total = _context.InvoicePaymentHistory.Sum(x => x.Amount);
+                    var total = _context.InvoicePaymentHistory
+                        .Where(x => x.InvoiceId == invoicePaymentHistory.InvoiceId)
+                        .Sum(x => x.Amount);
 
                     invoice.ModifiedDate = DateTime.Now;
                     invoice.TotalPayment = total;
@@ -160,7 +164,9 @@ namespace SGDE.DataEFCoreSQL.Repositories
                     if (invoice == null)
                         throw new Exception($"Invoice [{id}] NOT Found");
 
-                    var total = _context.InvoicePaymentHistory.Sum(x => x.Amount);
+                    var total = _context.InvoicePaymentHistory
+                        .Where(x => x.InvoiceId == toRemove.InvoiceId)
+                        .Sum(x => x.Amount);
 
                     invoice.ModifiedDate = DateTime.Now;
                     invoice.TotalPayment = total;

@@ -65,8 +65,36 @@ namespace SGDE.DataEFCoreMySQL.Repositories
 
         public InvoicePaymentHistory Add(InvoicePaymentHistory newInvoicePaymentHistory)
         {
-            _context.InvoicePaymentHistory.Add(newInvoicePaymentHistory);
-            _context.SaveChanges();
+            using (var transaction = _context.Database.BeginTransaction())
+            {
+                try
+                {
+                    var invoice = _context.Invoice
+                        .FirstOrDefault(x => x.Id == newInvoicePaymentHistory.InvoiceId);
+                    if (invoice == null)
+                        throw new Exception($"Invoice [{newInvoicePaymentHistory.InvoiceId}] NOT Found");
+
+                    _context.InvoicePaymentHistory.Add(newInvoicePaymentHistory);
+                    _context.SaveChanges();
+
+                    var total = _context.InvoicePaymentHistory
+                        .Where(x => x.InvoiceId == newInvoicePaymentHistory.InvoiceId)
+                        .Sum(x => x.Amount);
+
+                    invoice.ModifiedDate = DateTime.Now;
+                    invoice.TotalPayment = total;
+                    invoice.PayDate = newInvoicePaymentHistory.DatePayment;
+
+                    _context.SaveChanges();
+
+                    transaction.Commit();
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    throw ex;
+                }
+            }
             return newInvoicePaymentHistory;
         }
 
@@ -79,9 +107,31 @@ namespace SGDE.DataEFCoreMySQL.Repositories
             {
                 try
                 {
-                    var workOld = GetById(invoicePaymentHistory.Id);
+                    var invoice = _context.Invoice
+                        .FirstOrDefault(x => x.Id == invoicePaymentHistory.InvoiceId);
+                    if (invoice == null)
+                        throw new Exception($"Invoice [{invoicePaymentHistory.InvoiceId}] NOT Found");
 
                     _context.InvoicePaymentHistory.Update(invoicePaymentHistory);
+                    _context.SaveChanges();
+
+                    var total = _context.InvoicePaymentHistory
+                        .Where(x => x.InvoiceId == invoicePaymentHistory.InvoiceId)
+                        .Sum(x => x.Amount);
+
+                    invoice.ModifiedDate = DateTime.Now;
+                    invoice.TotalPayment = total;
+
+                    if (_context.InvoicePaymentHistory.Count() == 0)
+                    {
+                        invoice.PayDate = null;
+                    }
+                    else
+                    {
+                        var maxDate = _context.InvoicePaymentHistory.Max(x => x.DatePayment);
+                        invoice.PayDate = maxDate;
+                    }
+
                     _context.SaveChanges();
 
                     transaction.Commit();
@@ -101,10 +151,48 @@ namespace SGDE.DataEFCoreMySQL.Repositories
             if (!InvoicePaymentHistoryExists(id))
                 return false;
 
-            var toRemove = _context.InvoicePaymentHistory.Find(id);
-            _context.InvoicePaymentHistory.Remove(toRemove);
-            _context.SaveChanges();
-            return true;
+            using (var transaction = _context.Database.BeginTransaction())
+            {
+                try
+                {
+                    var toRemove = _context.InvoicePaymentHistory.Find(id);
+                    _context.InvoicePaymentHistory.Remove(toRemove);
+                    _context.SaveChanges();
+
+                    var invoice = _context.Invoice
+                        .FirstOrDefault(x => x.Id == toRemove.InvoiceId);
+                    if (invoice == null)
+                        throw new Exception($"Invoice [{id}] NOT Found");
+
+                    var total = _context.InvoicePaymentHistory
+                        .Where(x => x.InvoiceId == toRemove.InvoiceId)
+                        .Sum(x => x.Amount);
+
+                    invoice.ModifiedDate = DateTime.Now;
+                    invoice.TotalPayment = total;
+
+                    if (_context.InvoicePaymentHistory.Count() == 0)
+                    {
+                        invoice.PayDate = null;
+                    }
+                    else
+                    {
+                        var maxDate = _context.InvoicePaymentHistory.Max(x => x.DatePayment);
+                        invoice.PayDate = maxDate;
+                    }
+
+                    _context.SaveChanges();
+
+                    transaction.Commit();
+
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    throw ex;
+                }
+            }
         }
     }
 }

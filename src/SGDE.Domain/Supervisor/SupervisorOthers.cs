@@ -202,7 +202,7 @@
             //    }
             //}
 
-            foreach (var invoice in _invoiceRepository.GetAllLite())
+            foreach (var invoice in _invoiceRepository.GetAll().Data)
             {
                 if (invoice.IsPaid)
                 {
