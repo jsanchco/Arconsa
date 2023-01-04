@@ -101,6 +101,7 @@ class Invoices extends Component {
     this.worksObj = null;
     this.workBudgetsElem = null;
     this.worksBudgetObj = null;
+    this.loadFirstTime = true;
 
     this.toolbarOptions = [
       "Add",
@@ -456,7 +457,7 @@ class Invoices extends Component {
             {
               field: "amountTotal",
               headerText: "Origen",
-              width: "100",
+              width: "130",
               fotmat: "N2",
               textAlign: "right",
               editType: "numericedit",
@@ -564,7 +565,7 @@ class Invoices extends Component {
     });
   }
 
-  toggleModalCancelInvoice() {
+  toggleModalCancelInvoice() {  
     this.setState({
       modalCancelInvoice: !this.state.modalCancelInvoice,
     });
@@ -743,7 +744,7 @@ class Invoices extends Component {
 
     if (this.expandGridRow != null) {
       let rowIndex = parseInt(this.expandGridRow.getAttribute("aria-rowindex"));
-      this.gridInvoice.detailRowModule.expand(rowIndex);
+      this.gridInvoice.detailRowModule.expand(rowIndex);      
     }
   }
 
