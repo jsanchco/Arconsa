@@ -509,14 +509,14 @@ class GridSelection extends Component {
                   <ColumnDirective
                     field="priceHour"
                     headerText="Precio Coste"
-                    width="70"
+                    width="110"
                     template={this.tamplateNumericHour}
 
                   />
                   <ColumnDirective
                     field="priceHourSale"
                     headerText="Precio Venta"
-                    width="70"
+                    width="110"
                     template={this.tamplateNumericHourSale}
                   />
                 </ColumnsDirective>

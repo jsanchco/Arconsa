@@ -230,7 +230,7 @@ class WorksByClient extends Component {
                   headerText="Fechas"
                   width="120"
                   template={this.dateTemplate}
-                  textAlign="Center"
+                  textAlign="Left"
                   allowEditing={false}
                 />
                 <ColumnDirective

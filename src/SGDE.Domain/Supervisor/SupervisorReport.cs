@@ -5,6 +5,7 @@
     using Converters;
     using SGDE.Domain.Entities;
     using SGDE.Domain.Helpers;
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using ViewModels;
@@ -38,48 +39,48 @@
                 result.Add(new ReportVariousInfoViewModel
                 {
                     workerName = $"{user.Name} {user.Surname}",
-                    totalHoursOrdinary = listReportResultViewModel
+                    totalHoursOrdinary = Math.Round(listReportResultViewModel
                                                 .Where(x => x.hourTypeId == 1)
-                                                .Select(x => x.hours).Sum(),
-                    totalHoursExtraordinary = listReportResultViewModel
+                                                .Select(x => x.hours).Sum(), 3),
+                    totalHoursExtraordinary = Math.Round(listReportResultViewModel
                                                 .Where(x => x.hourTypeId == 2)
-                                                .Select(x => x.hours).Sum(),
-                    totalHoursFestive = listReportResultViewModel
+                                                .Select(x => x.hours).Sum(), 3),
+                    totalHoursFestive = Math.Round(listReportResultViewModel
                                                 .Where(x => x.hourTypeId == 3)
-                                                .Select(x => x.hours).Sum(),
-                    totalHoursNocturnal = listReportResultViewModel
+                                                .Select(x => x.hours).Sum(), 3),
+                    totalHoursNocturnal = Math.Round(listReportResultViewModel
                                                 .Where(x => x.hourTypeId == 4)
-                                                .Select(x => x.hours).Sum(),
-                    priceTotalHoursOrdinary = (double)listReportResultViewModel
+                                                .Select(x => x.hours).Sum(), 3),
+                    priceTotalHoursOrdinary = Math.Round((double)listReportResultViewModel
                                                 .Where(x => x.hourTypeId == 1)
-                                                .Select(x => x.priceHour).Sum(),
-                    priceTotalHoursSaleOrdinary = (double)listReportResultViewModel
+                                                .Select(x => x.priceHour).Sum(), 3),
+                    priceTotalHoursSaleOrdinary = Math.Round((double)listReportResultViewModel
                                                 .Where(x => x.hourTypeId == 1)
-                                                .Select(x => x.priceHourSale).Sum(),
-                    priceTotalHoursExtraordinary = (double)listReportResultViewModel
+                                                .Select(x => x.priceHourSale).Sum(), 3),
+                    priceTotalHoursExtraordinary = Math.Round((double)listReportResultViewModel
                                                 .Where(x => x.hourTypeId == 2)
-                                                .Select(x => x.priceHour).Sum(),
-                    priceTotalHoursSaleExtraordinary = (double)listReportResultViewModel
+                                                .Select(x => x.priceHour).Sum(), 3),
+                    priceTotalHoursSaleExtraordinary = Math.Round((double)listReportResultViewModel
                                                 .Where(x => x.hourTypeId == 2)
-                                                .Select(x => x.priceHourSale).Sum(),
-                    priceTotalHoursFestive = (double)listReportResultViewModel
+                                                .Select(x => x.priceHourSale).Sum(), 3),
+                    priceTotalHoursFestive = Math.Round((double)listReportResultViewModel
                                                 .Where(x => x.hourTypeId == 3)
-                                                .Select(x => x.priceHour).Sum(),
-                    priceTotalHoursSaleFestive = (double)listReportResultViewModel
+                                                .Select(x => x.priceHour).Sum(), 3),
+                    priceTotalHoursSaleFestive = Math.Round((double)listReportResultViewModel
                                                 .Where(x => x.hourTypeId == 3)
-                                                .Select(x => x.priceHourSale).Sum(),
-                    priceTotalHoursNocturnal = (double)listReportResultViewModel
+                                                .Select(x => x.priceHourSale).Sum(), 3),
+                    priceTotalHoursNocturnal = Math.Round((double)listReportResultViewModel
                                                 .Where(x => x.hourTypeId == 4)
-                                                .Select(x => x.priceHour).Sum(),
-                    priceTotalHoursSaleNocturnal = (double)listReportResultViewModel
+                                                .Select(x => x.priceHour).Sum(), 3),
+                    priceTotalHoursSaleNocturnal = Math.Round((double)listReportResultViewModel
                                                 .Where(x => x.hourTypeId == 4)
-                                                .Select(x => x.priceHourSale).Sum(),
-                    priceDiary = (double)listReportResultViewModel
+                                                .Select(x => x.priceHourSale).Sum(), 3),
+                    priceDiary = Math.Round((double)listReportResultViewModel
                                                 .Where(x => x.hourTypeId == 5)
-                                                .Select(x => x.priceHour).Sum(),
-                    priceSaleDiary = (double)listReportResultViewModel
+                                                .Select(x => x.priceHour).Sum(), 3),
+                    priceSaleDiary = Math.Round((double)listReportResultViewModel
                                                 .Where(x => x.hourTypeId == 5)
-                                                .Select(x => x.priceHourSale).Sum(),
+                                                .Select(x => x.priceHourSale).Sum(), 3),
                     totalEmbargos = user.Embargos.Where(x => !x.Paid)
                                                 .Sum(y =>
                                                     y.DetailEmbargos
@@ -125,48 +126,48 @@
                 {
                     workName = work.Name,
                     totalWorkers = listReportResultViewModel.Select(x => x.userName).Distinct().Count(),
-                    totalHoursOrdinary = listReportResultViewModel
+                    totalHoursOrdinary = Math.Round(listReportResultViewModel
                                                 .Where(x => x.hourTypeId == 1)
-                                                .Select(x => x.hours).Sum(),
-                    totalHoursExtraordinary = listReportResultViewModel
+                                                .Select(x => x.hours).Sum(), 3),
+                    totalHoursExtraordinary = Math.Round(listReportResultViewModel
                                                 .Where(x => x.hourTypeId == 2)
-                                                .Select(x => x.hours).Sum(),
-                    totalHoursFestive = listReportResultViewModel
+                                                .Select(x => x.hours).Sum(), 3),
+                    totalHoursFestive = Math.Round(listReportResultViewModel
                                                 .Where(x => x.hourTypeId == 3)
-                                                .Select(x => x.hours).Sum(),
-                    totalHoursNocturnal = listReportResultViewModel
+                                                .Select(x => x.hours).Sum(), 3),
+                    totalHoursNocturnal = Math.Round(listReportResultViewModel
                                                 .Where(x => x.hourTypeId == 4)
-                                                .Select(x => x.hours).Sum(),
-                    priceTotalHoursOrdinary = (double)listReportResultViewModel
+                                                .Select(x => x.hours).Sum(), 3),
+                    priceTotalHoursOrdinary = Math.Round((double)listReportResultViewModel
                                                 .Where(x => x.hourTypeId == 1)
-                                                .Select(x => x.priceHour).Sum(),
-                    priceTotalHoursSaleOrdinary = (double)listReportResultViewModel
+                                                .Select(x => x.priceHour).Sum(), 3),
+                    priceTotalHoursSaleOrdinary = Math.Round((double)listReportResultViewModel
                                                 .Where(x => x.hourTypeId == 1)
-                                                .Select(x => x.priceHourSale).Sum(),
-                    priceTotalHoursExtraordinary = (double)listReportResultViewModel
+                                                .Select(x => x.priceHourSale).Sum(), 3),
+                    priceTotalHoursExtraordinary = Math.Round((double)listReportResultViewModel
                                                 .Where(x => x.hourTypeId == 2)
-                                                .Select(x => x.priceHour).Sum(),
-                    priceTotalHoursSaleExtraordinary = (double)listReportResultViewModel
+                                                .Select(x => x.priceHour).Sum(), 3),
+                    priceTotalHoursSaleExtraordinary = Math.Round((double)listReportResultViewModel
                                                 .Where(x => x.hourTypeId == 2)
-                                                .Select(x => x.priceHourSale).Sum(),
-                    priceTotalHoursFestive = (double)listReportResultViewModel
+                                                .Select(x => x.priceHourSale).Sum(), 3),
+                    priceTotalHoursFestive = Math.Round((double)listReportResultViewModel
                                                 .Where(x => x.hourTypeId == 3)
-                                                .Select(x => x.priceHour).Sum(),
-                    priceTotalHoursSaleFestive = (double)listReportResultViewModel
+                                                .Select(x => x.priceHour).Sum(), 3),
+                    priceTotalHoursSaleFestive = Math.Round((double)listReportResultViewModel
                                                 .Where(x => x.hourTypeId == 3)
-                                                .Select(x => x.priceHourSale).Sum(),
-                    priceTotalHoursNocturnal = (double)listReportResultViewModel
+                                                .Select(x => x.priceHourSale).Sum(), 3),
+                    priceTotalHoursNocturnal = Math.Round((double)listReportResultViewModel
                                                 .Where(x => x.hourTypeId == 4)
-                                                .Select(x => x.priceHour).Sum(),
-                    priceTotalHoursSaleNocturnal = (double)listReportResultViewModel
+                                                .Select(x => x.priceHour).Sum(), 3),
+                    priceTotalHoursSaleNocturnal = Math.Round((double)listReportResultViewModel
                                                 .Where(x => x.hourTypeId == 4)
-                                                .Select(x => x.priceHourSale).Sum(),
-                    priceDiary = (double)listReportResultViewModel
+                                                .Select(x => x.priceHourSale).Sum(), 3),
+                    priceDiary = Math.Round((double)listReportResultViewModel
                                                 .Where(x => x.hourTypeId == 5)
-                                                .Select(x => x.priceHour).Sum(),
-                    priceSaleDiary = (double)listReportResultViewModel
+                                                .Select(x => x.priceHour).Sum(), 3),
+                    priceSaleDiary = Math.Round((double)listReportResultViewModel
                                                 .Where(x => x.hourTypeId == 5)
-                                                .Select(x => x.priceHourSale).Sum()
+                                                .Select(x => x.priceHourSale).Sum(), 3)
                 });
             }
 
@@ -204,48 +205,48 @@
                 {
                     clientName = client.Name,
                     totalWorkers = listReportResultViewModel.Select(x => x.userName).Distinct().Count(),
-                    totalHoursOrdinary = listReportResultViewModel
+                    totalHoursOrdinary = Math.Round(listReportResultViewModel
                                                 .Where(x => x.hourTypeId == 1)
-                                                .Select(x => x.hours).Sum(),
-                    totalHoursExtraordinary = listReportResultViewModel
+                                                .Select(x => x.hours).Sum(), 3),
+                    totalHoursExtraordinary = Math.Round(listReportResultViewModel
                                                 .Where(x => x.hourTypeId == 2)
-                                                .Select(x => x.hours).Sum(),
-                    totalHoursFestive = listReportResultViewModel
+                                                .Select(x => x.hours).Sum(), 3),
+                    totalHoursFestive = Math.Round(listReportResultViewModel
                                                 .Where(x => x.hourTypeId == 3)
-                                                .Select(x => x.hours).Sum(),
-                    totalHoursNocturnal = listReportResultViewModel
+                                                .Select(x => x.hours).Sum(), 3),
+                    totalHoursNocturnal = Math.Round(listReportResultViewModel
                                                 .Where(x => x.hourTypeId == 4)
-                                                .Select(x => x.hours).Sum(),
-                    priceTotalHoursOrdinary = (double)listReportResultViewModel
+                                                .Select(x => x.hours).Sum(), 3),
+                    priceTotalHoursOrdinary = Math.Round((double)listReportResultViewModel
                                                 .Where(x => x.hourTypeId == 1)
-                                                .Select(x => x.priceHour).Sum(),
-                    priceTotalHoursSaleOrdinary = (double)listReportResultViewModel
+                                                .Select(x => x.priceHour).Sum(), 3),
+                    priceTotalHoursSaleOrdinary = Math.Round((double)listReportResultViewModel
                                                 .Where(x => x.hourTypeId == 1)
-                                                .Select(x => x.priceHourSale).Sum(),
-                    priceTotalHoursExtraordinary = (double)listReportResultViewModel
+                                                .Select(x => x.priceHourSale).Sum(), 3),
+                    priceTotalHoursExtraordinary = Math.Round((double)listReportResultViewModel
                                                 .Where(x => x.hourTypeId == 2)
-                                                .Select(x => x.priceHour).Sum(),
-                    priceTotalHoursSaleExtraordinary = (double)listReportResultViewModel
+                                                .Select(x => x.priceHour).Sum(), 3),
+                    priceTotalHoursSaleExtraordinary = Math.Round((double)listReportResultViewModel
                                                 .Where(x => x.hourTypeId == 2)
-                                                .Select(x => x.priceHourSale).Sum(),
-                    priceTotalHoursFestive = (double)listReportResultViewModel
+                                                .Select(x => x.priceHourSale).Sum(), 3),
+                    priceTotalHoursFestive = Math.Round((double)listReportResultViewModel
                                                 .Where(x => x.hourTypeId == 3)
-                                                .Select(x => x.priceHour).Sum(),
-                    priceTotalHoursSaleFestive = (double)listReportResultViewModel
+                                                .Select(x => x.priceHour).Sum(), 3),
+                    priceTotalHoursSaleFestive = Math.Round((double)listReportResultViewModel
                                                 .Where(x => x.hourTypeId == 3)
-                                                .Select(x => x.priceHourSale).Sum(),
-                    priceTotalHoursNocturnal = (double)listReportResultViewModel
+                                                .Select(x => x.priceHourSale).Sum(), 3),
+                    priceTotalHoursNocturnal = Math.Round((double)listReportResultViewModel
                                                 .Where(x => x.hourTypeId == 4)
-                                                .Select(x => x.priceHour).Sum(),
-                    priceTotalHoursSaleNocturnal = (double)listReportResultViewModel
+                                                .Select(x => x.priceHour).Sum(), 3),
+                    priceTotalHoursSaleNocturnal = Math.Round((double)listReportResultViewModel
                                                 .Where(x => x.hourTypeId == 4)
-                                                .Select(x => x.priceHourSale).Sum(),
-                    priceDiary = (double)listReportResultViewModel
+                                                .Select(x => x.priceHourSale).Sum(), 3),
+                    priceDiary = Math.Round((double)listReportResultViewModel
                                                 .Where(x => x.hourTypeId == 5)
-                                                .Select(x => x.priceHour).Sum(),
-                    priceSaleDiary = (double)listReportResultViewModel
+                                                .Select(x => x.priceHour).Sum(), 3),
+                    priceSaleDiary = Math.Round((double)listReportResultViewModel
                                                 .Where(x => x.hourTypeId == 5)
-                                                .Select(x => x.priceHourSale).Sum()
+                                                .Select(x => x.priceHourSale).Sum(), 3)
                 });
             }
 

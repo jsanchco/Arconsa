@@ -332,6 +332,7 @@ class Embargos extends Component {
                   marginRight: 30,
                   marginTop: -20,
                   marginBottom: 20,
+                  overflow: "auto",
                 }}
                 actionFailure={this.actionFailure}
                 actionComplete={this.actionComplete}
@@ -375,7 +376,7 @@ class Embargos extends Component {
                   <ColumnDirective
                     field="notificationDate"
                     headerText="Fecha Notificación"
-                    width="80"
+                    width="110"
                     editType="datepickeredit"
                     type="date"
                     format={this.format}

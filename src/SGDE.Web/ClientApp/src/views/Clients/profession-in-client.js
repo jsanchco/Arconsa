@@ -183,7 +183,8 @@ class ProfessionInClient extends Component {
                         headerText: "Ordinaria",
                         width: "70",
                         fotmat: "N1",
-                        textAlign: "left",
+                        textAlign: "Rigth",
+                        headerTextAlign: "Left",
                         editType: "numericedit",
                         edit: this.numericParams
                       },
@@ -192,7 +193,8 @@ class ProfessionInClient extends Component {
                         headerText: "Extra",
                         width: "70",
                         fotmat: "N1",
-                        textAlign: "left",
+                        textAlign: "Rigth",
+                        headerTextAlign: "Left",
                         editType: "numericedit",
                         edit: this.numericParams
                       },
@@ -201,7 +203,8 @@ class ProfessionInClient extends Component {
                         headerText: "Festivo",
                         width: "70",
                         fotmat: "N1",
-                        textAlign: "left",
+                        textAlign: "Rigth",
+                        headerTextAlign: "Left",
                         editType: "numericedit",
                         edit: this.numericParams
                       },
@@ -210,7 +213,8 @@ class ProfessionInClient extends Component {
                         headerText: "Nocturna",
                         width: "70",
                         fotmat: "N1",
-                        textAlign: "left",
+                        textAlign: "Rigth",
+                        headerTextAlign: "Left",
                         editType: "numericedit",
                         edit: this.numericParams
                       },
@@ -219,7 +223,8 @@ class ProfessionInClient extends Component {
                         headerText: "Diario",
                         width: "70",
                         fotmat: "N1",
-                        textAlign: "left",
+                        textAlign: "Rigth",
+                        headerTextAlign: "Left",
                         editType: "numericedit",
                         edit: this.numericParams
                       }                      

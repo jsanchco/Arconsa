@@ -416,8 +416,8 @@ class AuthorizeCancelWorkers extends Component {
                     headerText="Precio Coste"
                     template={this.tamplateNumericTotal}
                     width="90"
-                    //format="n2"
                     textAlign="Right"
+                    headerTextAlign="Left"
                   />
                   <ColumnDirective
                     field="priceTotalSale"
@@ -425,8 +425,8 @@ class AuthorizeCancelWorkers extends Component {
                     //editType="numericedit"
                     width="90"
                     template={this.tamplateNumericTotalSale}
-                    // format="n2"
                     textAlign="Right"
+                    headerTextAlign="Left"
                   />
                 </ColumnsDirective>
 

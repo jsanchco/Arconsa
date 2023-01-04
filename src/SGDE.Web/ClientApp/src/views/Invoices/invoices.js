@@ -1287,6 +1287,24 @@ class Invoices extends Component {
                       headerTextAlign="Left"
                     />
                     <ColumnDirective
+                      field="totalPayment"
+                      headerText="Tot. Pagado"
+                      width="120"
+                      allowEditing={false}
+                      template={this.templateTotalPayment}
+                      textAlign="Right"
+                      headerTextAlign="Left"
+                      defaultValue={0}
+                    />
+                    <ColumnDirective
+                      field="payDate"
+                      headerText="F. Pago"
+                      width="120"
+                      type="date"
+                      format={this.formatDate}
+                      editType="datepickeredit"
+                    />
+                    <ColumnDirective
                       field="retentions"
                       headerText="Ret."
                       width="70"
@@ -1299,23 +1317,6 @@ class Invoices extends Component {
                       headerTextAlign="Left"
                     />
                     <ColumnDirective
-                      field="totalPayment"
-                      headerText="Tot. Pagado"
-                      width="120"
-                      allowEditing={false}
-                      template={this.templateTotalPayment}
-                      textAlign="Right"
-                      headerTextAlign="Left"
-                    />
-                    <ColumnDirective
-                      field="payDate"
-                      headerText="F. Pago"
-                      width="120"
-                      type="date"
-                      format={this.formatDate}
-                      editType="datepickeredit"
-                    />
-                    <ColumnDirective
                       field="invoiceToCancelName"
                       headerText="Cancelada"
                       width="100"
@@ -1323,15 +1324,7 @@ class Invoices extends Component {
                     />
                     <ColumnDirective field="typeInvoice" visible={false} />
                   </ColumnsDirective>
-                  <Inject
-                    services={[
-                      Page,
-                      Toolbar,
-                      Edit,
-                      Resize,
-                      DetailRow
-                    ]}
-                  />
+                  <Inject services={[Page, Toolbar, Edit, Resize, DetailRow]} />
                 </GridComponent>
               </Row>
             </div>

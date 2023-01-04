@@ -59,7 +59,7 @@ class ReportsVarious extends Component {
       companyName: "",
       cif: "",
       address: "",
-      phoneNumber: ""
+      phoneNumber: "",
     };
 
     this.toolbarOptions = [
@@ -370,7 +370,11 @@ class ReportsVarious extends Component {
             index: 6,
             cells: [
               { index: 5, value: this.formatDate(this.dtpStartDate.value) },
-              { index: 6, value: this.formatDate(this.dtpEndDate.value), width: 150 },
+              {
+                index: 6,
+                value: this.formatDate(this.dtpEndDate.value),
+                width: 150,
+              },
             ],
           },
         ],
@@ -590,95 +594,95 @@ class ReportsVarious extends Component {
                   field: "workerName",
                 */}
                   <ColumnsDirective>
-                    <ColumnDirective width="100" />
+                    <ColumnDirective width="120" />
                     <ColumnDirective
                       field="totalWorkers"
                       headerText="Nº Trab."
-                      width="70"
+                      width="110"
                       visible={false}
                     />
                     <ColumnDirective
                       field="totalHoursOrdinary"
                       headerText="Ordinarias"
-                      width="70"
+                      width="120"
                     />
                     <ColumnDirective
                       field="priceTotalHoursOrdinary"
                       headerText="Precio Ord."
-                      width="70"
+                      width="120"
                     />
                     <ColumnDirective
                       field="priceTotalHoursSaleOrdinary"
                       headerText="Venta Ord."
-                      width="70"
+                      width="120"
                     />
                     <ColumnDirective
                       field="totalHoursExtraordinary"
                       headerText="Extra"
-                      width="70"
+                      width="100"
                     />
                     <ColumnDirective
                       field="priceTotalHoursExtraordinary"
                       headerText="Precio Extra"
-                      width="70"
+                      width="130"
                     />
                     <ColumnDirective
                       field="priceTotalHoursSaleExtraordinary"
                       headerText="Venta Extra"
-                      width="70"
+                      width="120"
                     />
                     <ColumnDirective
                       field="totalHoursFestive"
                       headerText="Festivo"
-                      width="70"
+                      width="100"
                     />
                     <ColumnDirective
                       field="priceTotalHoursFestive"
                       headerText="Precio Festivo"
-                      width="70"
+                      width="135"
                     />
                     <ColumnDirective
                       field="priceTotalHoursSaleFestive"
                       headerText="Venta Festivo"
-                      width="70"
+                      width="130"
                     />
                     <ColumnDirective
                       field="totalHoursNocturnal"
                       headerText="Nocturna"
-                      width="70"
+                      width="110"
                     />
                     <ColumnDirective
                       field="priceTotalHoursNocturnal"
                       headerText="Precio Nocturna"
-                      width="70"
+                      width="145"
                     />
                     <ColumnDirective
                       field="priceTotalHoursSaleNocturnal"
-                      headerText="Venta Festivo"
-                      width="70"
+                      headerText="Venta Nocturna"
+                      width="145"
                     />
                     <ColumnDirective
                       field="priceDiary"
                       headerText="Precio Diario"
-                      width="70"
+                      width="130"
                     />
                     <ColumnDirective
                       field="priceSaleDiary"
                       headerText="Venta Diario"
-                      width="70"
+                      width="130"
                     />
                     <ColumnDirective
                       field="totalEmbargos"
                       headerText="Embargos"
                       // template={this.templateHasEmbargosPendings}
-                      width="70"
+                      width="120"
                       visible={false}
                     />
                     <ColumnDirective
                       field="totalAdvances"
                       headerText="Adelantos"
                       // template={this.templateHasAdvancesPendings}
-                      width="70"
+                      width="120"
                       visible={false}
                     />
                     {/* <ColumnDirective

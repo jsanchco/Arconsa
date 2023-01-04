@@ -593,7 +593,7 @@ class Works extends Component {
                     <ColumnDirective
                       field="numberPersonsRequested"
                       headerText="Personas"
-                      width="50"
+                      width="100"
                       textAlign="right"
                       allowEditing={false}
                     />
@@ -612,7 +612,7 @@ class Works extends Component {
                     <ColumnDirective
                       field="closeDate"
                       headerText="Fechas"
-                      width="100"
+                      width="120"
                       template={this.dateTemplate}
                       textAlign="Center"
                       allowEditing={false}

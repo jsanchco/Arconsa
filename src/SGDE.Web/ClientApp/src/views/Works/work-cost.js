@@ -465,7 +465,8 @@ class WorkCosts extends Component {
                     field="taxBase"
                     headerText="Base"
                     width="100"
-                    textAlign="right"
+                    textAlign="Right"
+                    headerTextAlign="Left"
                     editType="numericedit"
                     allowGrouping={false}
                     edit={this.numericParams}

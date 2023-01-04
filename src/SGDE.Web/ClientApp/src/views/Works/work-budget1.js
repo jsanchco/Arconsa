@@ -632,6 +632,7 @@ class WorkBudgets1 extends Component {
                   marginRight: 30,
                   marginTop: -20,
                   marginBottom: 20,
+                  overflow: "auto",
                 }}
                 actionFailure={this.actionFailureWorkBudgetData}
                 actionComplete={this.actionCompleteWorkBudgetData}
@@ -674,7 +675,8 @@ class WorkBudgets1 extends Component {
                     field="total"
                     headerText="Total"
                     width="100"
-                    textAlign="right"
+                    textAlign="Right"
+                    headerTextAlign="Left"
                     allowEditing={false}
                   />
                 </ColumnsDirective>

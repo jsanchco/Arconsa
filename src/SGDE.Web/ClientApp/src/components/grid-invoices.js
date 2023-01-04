@@ -321,6 +321,7 @@ class GridInvoice extends Component {
             marginRight: 30,
             marginTop: -20,
             marginBottom: 20,
+            overflow: "auto",
           }}
           actionFailure={this.actionFailure}
           actionComplete={this.actionComplete}
@@ -356,28 +357,28 @@ class GridInvoice extends Component {
             <ColumnDirective
               field="startDate"
               headerText="F. Inicio"
-              width="100"
+              width="120"
               allowEditing={false}
               format={this.formatDate}
             />
             <ColumnDirective
               field="endDate"
               headerText="F. Fin"
-              width="100"
+              width="120"
               allowEditing={false}
               format={this.formatDate}
             />
             <ColumnDirective
               field="issueDate"
               headerText="F. Emisión"
-              width="100"
+              width="120"
               allowEditing={false}
               format={this.formatDate}
             />
             <ColumnDirective
               field="clientName"
               headerText="Cliente"
-              width="100"
+              width="110"
               allowEditing={false}
               visible={this.props.clientId === null}
             />
@@ -391,7 +392,7 @@ class GridInvoice extends Component {
             <ColumnDirective
               field="taxBase"
               headerText="B. Imponible"
-              width="100"
+              width="120"
               allowEditing={false}
             />
             <ColumnDirective
@@ -403,13 +404,13 @@ class GridInvoice extends Component {
             <ColumnDirective
               field="total"
               headerText="Total"
-              width="100"
+              width="120"
               allowEditing={false}
             />
             <ColumnDirective
               field="retentions"
               headerText="Retenciones"
-              width="100"
+              width="120"
               fotmat="N2"
               editType="numericedit"
               edit={this.numericParams}
@@ -417,7 +418,7 @@ class GridInvoice extends Component {
             <ColumnDirective
               field="payDate"
               headerText="F. Pago"
-              width="100"
+              width="120"
               allowEditing={false}
               format={this.formatDate}
             />
