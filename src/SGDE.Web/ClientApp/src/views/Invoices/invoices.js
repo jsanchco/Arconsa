@@ -426,7 +426,7 @@ class Invoices extends Component {
             {
               field: "amountUnits",
               headerText: "Trámite",
-              width: "100",
+              width: "130",
               fotmat: "N2",
               textAlign: "right",
               editType: "numericedit",
