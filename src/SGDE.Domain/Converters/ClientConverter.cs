@@ -1,5 +1,6 @@
 ﻿namespace SGDE.Domain.Converters
 {
+    using System;
     #region Using
 
     using System.Collections.Generic;
@@ -22,6 +23,12 @@
                 addedDate = client.AddedDate,
                 modifiedDate = client.ModifiedDate,
                 iPAddress = client.IPAddress,
+
+                idClient = string.IsNullOrEmpty(client.Cif) ? 
+                    string.Empty :
+                    client.Cif.Length < 5 ?
+                        client.Cif :
+                        client.Cif.Substring(client.Cif.Length - 5),
 
                 name = client.Name,
                 cif = client.Cif,
@@ -50,6 +57,12 @@
                     addedDate = client.AddedDate,
                     modifiedDate = client.ModifiedDate,
                     iPAddress = client.IPAddress,
+
+                    idClient = string.IsNullOrEmpty(client.Cif) ?
+                    string.Empty :
+                    client.Cif.Length < 5 ?
+                        client.Cif :
+                        client.Cif.Substring(client.Cif.Length - 5),
 
                     name = client.Name,
                     cif = client.Cif,

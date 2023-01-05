@@ -40,6 +40,7 @@ class DetailClient extends Component {
       this.setState({
         client: {
           name: result.name,
+          idClient: result.idClient
         },
       });
     });
@@ -93,7 +94,7 @@ class DetailClient extends Component {
 
     let title = "";
     if (this.state.client !== null && this.state.client !== undefined) {
-      title = ` Detalle Cliente [${this.state.client.name}]`;
+      title = ` Detalle Cliente [${this.state.client.idClient}][${this.state.client.name}]`;
     }
 
     return (

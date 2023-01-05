@@ -2,6 +2,7 @@
 {
     public class ClientViewModel : BaseEntityViewModel
     {
+        public string idClient { get; set; }
         public string name { get; set; }
         public string cif { get; set; }
         public string phoneNumber { get; set; }

@@ -22,6 +22,7 @@ class BasicDataClient extends Component {
     getClient(this.props.clientId).then((result) => {
       this.setState({
         id: result.id,
+        idClient: result.idClient,
         name: result.name,
         cif: result.cif,
         phoneNumber: result.phoneNumber,
@@ -64,6 +65,7 @@ class BasicDataClient extends Component {
   getClient() {
     return {
       id: this.state.id,
+      idClient: this.state.idClient,
       name: this.state.name,
       cif: this.state.cif,
       phoneNumber: this.state.phoneNumber,
@@ -106,8 +108,11 @@ class BasicDataClient extends Component {
       >
         <Fragment>
           <Form>
-            <Row style={{ textAlign: "right" }}>
-              <Col xs="12">
+            <Row>
+              <Col xs="6" style={{ textAlign: "left" }}>
+                <h2>{this.state.idClient}</h2>
+              </Col>
+              <Col xs="6" style={{ textAlign: "right" }}>
                 <FormGroup>
                   <Label htmlFor="active" style={{ verticalAlign: "bottom" }}>
                     Activo&nbsp;

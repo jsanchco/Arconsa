@@ -155,10 +155,20 @@ class Clients extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (prevState.showAllClients !== this.state.showAllClients) {
-      this.grid.query = new Query()
-        .addParams("allClients", this.state.showAllClients);
+      this.grid.query = new Query().addParams(
+        "allClients",
+        this.state.showAllClients
+      );
       this.grid.refresh();
     }
+  }
+
+  idClientTemplate(args) {
+    return (
+      <div>
+        <span><strong>{args.idClient}</strong></span>
+      </div>
+    );
   }
 
   render() {
@@ -240,6 +250,13 @@ class Clients extends Component {
                       isPrimaryKey={true}
                       isIdentity={true}
                       visible={false}
+                    />
+                    <ColumnDirective
+                      field="idClient"
+                      headerText="Id Cliente"
+                      width="110"
+                      allowEditing={false}
+                      template={this.idClientTemplate}
                     />
                     <ColumnDirective
                       field="name"
