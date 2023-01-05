@@ -45,14 +45,14 @@
                 invoiceToCancelName = invoice.InvoiceToCancel?.Name,
                 workBudgetId = invoice.WorkBudgetId,
                 workBudgetName = invoice.WorkBudget?.Name,
-                ivaTaxBase = invoice.IvaTaxBase,
-                taxBase = invoice.TaxBase,
-                totalPayment = invoice.TotalPayment,
+                ivaTaxBase = Math.Round(invoice.IvaTaxBase, 2),
+                taxBase = Math.Round(invoice.TaxBase, 2),
+                totalPayment = Math.Round(invoice.TotalPayment, 2),
 
                 //detailInvoice = DetailInvoiceConverter.ConvertList(invoice.DetailsInvoice)
             };
 
-            invoiceViewModel.retentions = invoice.Work.InvoiceToOrigin == true ? (invoiceViewModel.taxBase) * (double)invoice.Work.PercentageRetention : 0;
+            invoiceViewModel.retentions = invoice.Work.InvoiceToOrigin == true ? Math.Round((invoiceViewModel.taxBase) * (double)invoice.Work.PercentageRetention, 2) : 0;
             invoiceViewModel.total = Math.Round(invoiceViewModel.taxBase + invoiceViewModel.ivaTaxBase - invoiceViewModel.retentions, 2);
 
             return invoiceViewModel;
@@ -90,13 +90,13 @@
                     invoiceToCancelName = invoice.InvoiceToCancel?.Name,
                     workBudgetId = invoice.WorkBudgetId,
                     workBudgetName = invoice.WorkBudget?.Name,
-                    ivaTaxBase = invoice.IvaTaxBase,
-                    taxBase = invoice.TaxBase,
-                    totalPayment = invoice.TotalPayment,
+                    ivaTaxBase = Math.Round(invoice.IvaTaxBase, 2),
+                    taxBase = Math.Round(invoice.TaxBase, 2),
+                    totalPayment = Math.Round(invoice.TotalPayment, 2),
 
                     //detailInvoice = DetailInvoiceConverter.ConvertList(invoice.DetailsInvoice)
                 };
-                model.retentions = invoice.Work.InvoiceToOrigin == true ? model.taxBase * (double)invoice.Work.PercentageRetention : 0;
+                model.retentions = invoice.Work.InvoiceToOrigin == true ? Math.Round(model.taxBase * (double)invoice.Work.PercentageRetention, 2) : 0;
                 model.total = Math.Round(model.taxBase + model.ivaTaxBase - model.retentions, 2);
 
                 return model;

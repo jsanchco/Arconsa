@@ -497,43 +497,50 @@ class ReportCurrentStatus extends Component {
                       field="workBudgetsSum"
                       headerText="Total Presupuesto(s)"
                       width="180"
-                      textAlign="right"
+                      textAlign="Right"
+                      headerTextAlign="Left"
                     />
                     <ColumnDirective
                       field="invoicesSum"
                       headerText="Facturación"
                       width="180"
-                      textAlign="right"
+                      textAlign="Right"
+                      headerTextAlign="Left"
                     />
                     <ColumnDirective
                       field="invoiceTotalPaymentSum"
                       headerText="Cobrado"
-                      width="120"
-                      textAlign="right"
+                      width="150"
+                      textAlign="Right"
+                      headerTextAlign="Left"
                     />
                     <ColumnDirective
                       field="workCostsSum"
                       headerText="Gastos Prov."
                       width="180"
-                      textAlign="right"
+                      textAlign="Right"
+                      headerTextAlign="Left"
                     />
                     <ColumnDirective
                       field="authorizeCancelWorkersCostsSum"
                       headerText="Gastos Trab."
                       width="180"
-                      textAlign="right"
+                      textAlign="Right"
+                      headerTextAlign="Left"
                     />
                     <ColumnDirective
                       field="indirectCostsSum"
                       headerText="Gastos Indirect."
                       width="180"
-                      textAlign="right"
+                      textAlign="Right"
+                      headerTextAlign="Left"
                     />
                     <ColumnDirective
                       field="total"
                       headerText="Total"
                       width="180"
-                      textAlign="right"
+                      textAlign="Right"
+                      headerTextAlign="Left"
                     />
                   </ColumnsDirective>
 

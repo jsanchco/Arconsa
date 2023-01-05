@@ -939,6 +939,22 @@ class Invoices extends Component {
     let total = Math.round((args.totalPayment + Number.EPSILON) * 100) / 100;
     return <span>{total}</span>;
   }
+  
+  templateRemaining(args) {
+    if (args.total === 0) {
+      return;
+    }
+
+    let remaining = Math.round((args.remaining + Number.EPSILON) * 100) / 100;
+    let color = "#16a085";
+    if (remaining > 0) {
+      color = "#e74c3c";      
+    } else {
+      remaining = "Pagado";
+    }
+
+    return <span style = {{ color: color}}>{remaining}</span>;
+  }
 
   footerSumUnits(args) {
     let amount = Number(args.Sum);
@@ -1297,6 +1313,15 @@ class Invoices extends Component {
                       headerTextAlign="Left"
                       defaultValue={0}
                     />
+                    <ColumnDirective
+                      field="remainig"
+                      headerText="Restante"
+                      width="120"
+                      allowEditing={false}
+                      template={this.templateRemaining}
+                      textAlign="Right"
+                      headerTextAlign="Left"
+                    />                    
                     <ColumnDirective
                       field="payDate"
                       headerText="F. Pago"

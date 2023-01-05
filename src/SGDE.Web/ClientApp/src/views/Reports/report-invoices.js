@@ -91,6 +91,27 @@ class ReportInvoices extends Component {
     }
   }
 
+  templateTotalPayment(args) {
+    let total = Math.round((args.totalPayment + Number.EPSILON) * 100) / 100;
+    return <span>{total}</span>;
+  }  
+
+  templateRemaining(args) {
+    if (args.total === 0) {
+      return;
+    }
+
+    let remaining = Math.round((args.remaining + Number.EPSILON) * 100) / 100;
+    let color = "#16a085";
+    if (remaining > 0) {
+      color = "#e74c3c";
+    } else {
+      remaining = "Pagado";
+    }
+
+    return <span style={{ color: color }}>{remaining}</span>;
+  }
+
   handleOnClick() {
     const valueDtpStartDate = this.formatDate(this.dtpStartDate.value);
     const valueDtpEndDate = this.formatDate(this.dtpEndDate.value);
@@ -441,28 +462,46 @@ class ReportInvoices extends Component {
                       field="taxBase"
                       headerText="Importe"
                       width="100"
+                      textAlign="Right"
+                      headerTextAlign="Left"
                     />
                     <ColumnDirective
                       field="ivaTaxBase"
                       headerText="IVA"
                       width="100"
+                      textAlign="Right"
+                      headerTextAlign="Left"
                     />
                     <ColumnDirective
                       field="total"
                       headerText="Total"
                       width="100"
+                      textAlign="Right"
+                      headerTextAlign="Left"
+                    />
+                    <ColumnDirective
+                      field="totalPayment"
+                      headerText="Tot. Pagado"
+                      width="120"
+                      allowEditing={false}
+                      template={this.templateTotalPayment}
+                      textAlign="Right"
+                      headerTextAlign="Left"
+                      defaultValue={0}
+                    />                    
+                    <ColumnDirective
+                      field="remaining"
+                      headerText="Restante"
+                      width="100"
+                      template={this.templateRemaining}
+                      textAlign="Right"
+                      headerTextAlign="Left"
                     />
                     <ColumnDirective
                       field="payDate"
                       headerText="Fecha Pago"
                       format={this.format}
                       width="100"
-                    />
-                    <ColumnDirective
-                      field="isPaid"
-                      headerText="Pagado"
-                      width="100"
-                      template={this.templateIsPaid}
                     />
                     <ColumnDirective
                       field="invoiceToCancelName"
@@ -504,6 +543,27 @@ class ReportInvoices extends Component {
                         >
                           {" "}
                         </AggregateColumnDirective>
+
+                        <AggregateColumnDirective
+                          field="totalPayment"
+                          type="Sum"
+                          format="N2"
+                          footerTemplate={this.footerSumEuros}
+                          groupCaptionTemplate={this.footerSumEuros}
+                        >
+                          {" "}
+                        </AggregateColumnDirective>
+
+                        <AggregateColumnDirective
+                          field="remaining"
+                          type="Sum"
+                          format="N2"
+                          footerTemplate={this.footerSumEuros}
+                          groupCaptionTemplate={this.footerSumEuros}
+                        >
+                          {" "}
+                        </AggregateColumnDirective>
+
                       </AggregateColumnsDirective>
                     </AggregateDirective>
                   </AggregatesDirective>

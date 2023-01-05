@@ -23,10 +23,10 @@
         public bool iva { get; set; } 
         public double ivaValue { get; set; } 
         public int typeInvoice { get; set; }  // 1 = por horas, 2 = custom
-        public double retentions { get; set; }
-        public bool isPaid => payDate != null;
+        public double retentions { get; set; }       
         public double totalPayment { get; set; }
-
+        public double remaining => total - totalPayment;
+        public bool isPaid => totalPayment >= total;
 
         public int? workId { get; set; }
         public string workName { get; set; }
