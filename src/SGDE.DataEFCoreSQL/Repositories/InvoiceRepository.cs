@@ -99,23 +99,29 @@
 
             if (!string.IsNullOrEmpty(filter))
             {
-                data = data
-                    .Where(x =>
-                        Searcher.RemoveAccentsWithNormalization(x.Work.Name?.ToLower()).Contains(filter) ||
-                        Searcher.RemoveAccentsWithNormalization(x.Work.Client.Name.ToLower()).Contains(filter) ||
-                        Searcher.RemoveAccentsWithNormalization(x.Name.ToLower()).Contains(filter) ||
-                        Searcher.RemoveAccentsWithNormalization(x.WorkBudget?.Name.ToLower()).Contains(filter) ||
-                        x.TaxBase.ToString().Contains(filter) ||
-                        Searcher.RemoveAccentsWithNormalization(x.TaxBase.ToString()).Contains(filter) ||
-                        Searcher.RemoveAccentsWithNormalization(x.Total.ToString()).Contains(filter) ||
-                        Searcher.RemoveAccentsWithNormalization(x.StartDate.ToString("dd/MM/yyyyy")).Contains(filter) ||
-                        Searcher.RemoveAccentsWithNormalization(x.EndDate.ToString("dd/MM/yyyyy")).Contains(filter) ||
-                        Searcher.RemoveAccentsWithNormalization(x.IssueDate.ToString("dd/MM/yyyyy")).Contains(filter))
-                    .ToList();
-                //            data = data
-                //.Where(x =>
-                //    x.TaxBase == Convert.ToDouble(filter))
-                //.ToList();
+                if (filter.Equals("pagado", StringComparison.InvariantCulture))
+                {
+                    data = data
+                        .Where(x => x.TaxBase != 0 && x.TotalPayment >= x.TaxBase + x.IvaTaxBase)
+                        .ToList();
+
+                }
+                else
+                {
+                    data = data
+                        .Where(x =>
+                            Searcher.RemoveAccentsWithNormalization(x.Work.Name?.ToLower()).Contains(filter) ||
+                            Searcher.RemoveAccentsWithNormalization(x.Work.Client.Name.ToLower()).Contains(filter) ||
+                            Searcher.RemoveAccentsWithNormalization(x.Name.ToLower()).Contains(filter) ||
+                            Searcher.RemoveAccentsWithNormalization(x.WorkBudget?.Name.ToLower()).Contains(filter) ||
+                            x.TaxBase.ToString().Contains(filter) ||
+                            Searcher.RemoveAccentsWithNormalization(x.TaxBase.ToString()).Contains(filter) ||
+                            Searcher.RemoveAccentsWithNormalization(x.Total.ToString()).Contains(filter) ||
+                            Searcher.RemoveAccentsWithNormalization(x.StartDate.ToString("dd/MM/yyyyy")).Contains(filter) ||
+                            Searcher.RemoveAccentsWithNormalization(x.EndDate.ToString("dd/MM/yyyyy")).Contains(filter) ||
+                            Searcher.RemoveAccentsWithNormalization(x.IssueDate.ToString("dd/MM/yyyyy")).Contains(filter))
+                        .ToList();
+                }
             }
 
             var count = data.Count;
