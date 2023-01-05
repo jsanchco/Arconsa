@@ -397,7 +397,7 @@
         {
             var invoiceNumber = 0;
             var invoices = _context.Invoice
-                .Where(x => x.IssueDate >= new DateTime(year, 1, 1) && x.IssueDate <= new DateTime(year, 12, 31));
+                .Where(x => x.IssueDate >= new DateTime(year, 1, 1) && x.IssueDate <= new DateTime(year, 12, 31, 23, 59, 59));
             if (invoices.Count() > 0)
             {
                 invoiceNumber = invoices.Select(x => x.InvoiceNumber).Max();
