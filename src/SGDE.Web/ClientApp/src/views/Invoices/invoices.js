@@ -565,7 +565,7 @@ class Invoices extends Component {
     });
   }
 
-  toggleModalCancelInvoice() {  
+  toggleModalCancelInvoice() {
     this.setState({
       modalCancelInvoice: !this.state.modalCancelInvoice,
     });
@@ -744,7 +744,7 @@ class Invoices extends Component {
 
     if (this.expandGridRow != null) {
       let rowIndex = parseInt(this.expandGridRow.getAttribute("aria-rowindex"));
-      this.gridInvoice.detailRowModule.expand(rowIndex);      
+      this.gridInvoice.detailRowModule.expand(rowIndex);
     }
   }
 
@@ -1303,7 +1303,8 @@ class Invoices extends Component {
                       width="120"
                       type="date"
                       format={this.formatDate}
-                      editType="datepickeredit"
+                      allowEditing={false}
+                      // editType="datepickeredit"
                     />
                     <ColumnDirective
                       field="retentions"
@@ -1325,7 +1326,16 @@ class Invoices extends Component {
                     />
                     <ColumnDirective field="typeInvoice" visible={false} />
                   </ColumnsDirective>
-                  <Inject services={[Page, Toolbar, Edit, Resize, DetailRow]} />
+                  <Inject
+                    services={[
+                      Page,
+                      Toolbar,
+                      Edit,
+                      Resize,
+                      DetailRow,
+                      Aggregate,
+                    ]}
+                  />
                 </GridComponent>
               </Row>
             </div>
