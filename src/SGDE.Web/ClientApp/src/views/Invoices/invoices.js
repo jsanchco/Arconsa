@@ -54,24 +54,6 @@ class Invoices extends Component {
     headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }],
   });
 
-  // clients = new DataManager({
-  //   adaptor: new WebApiAdaptor(),
-  //   url: `${config.URL_API}/${CLIENTSLITE}`,
-  //   headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }],
-  // });
-
-  // works = new DataManager({
-  //   adaptor: new WebApiAdaptor(),
-  //   url: `${config.URL_API}/${WORKSLITE}`,
-  //   headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }],
-  // });
-
-  // workBudgets = new DataManager({
-  //   adaptor: new WebApiAdaptor(),
-  //   url: `${config.URL_API}/${WORKBUDGETSLITE}`,
-  //   headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }],
-  // });
-
   detailsInvoice = new DataManager({
     adaptor: new WebApiAdaptor(),
     url: `${config.URL_API}/${DETAILSINVOICE}`,
@@ -109,12 +91,6 @@ class Invoices extends Component {
       "Delete",
       "Update",
       "Cancel",
-      // {
-      //   text: "Detalles",
-      //   tooltipText: "Detalles",
-      //   prefixIcon: "e-custom-icons e-details",
-      //   id: "Details",
-      // },
       "Print",
       {
         text: "Imprimir Factura",
@@ -174,7 +150,6 @@ class Invoices extends Component {
       {
         click: () => {
           this.setState({ hideConfirmDialog: false });
-          // this.billPayment();
         },
         buttonModel: { content: "Si", isPrimary: true },
       },
@@ -230,6 +205,7 @@ class Invoices extends Component {
           popupWidth: "auto",
           allowFiltering: true,
           filtering: this.handleFilteringClients.bind(this, clients),
+          showClearButton : true
         });
         this.clientsObj.appendTo(this.clientsElem);
         if (
@@ -259,7 +235,7 @@ class Invoices extends Component {
           headers: [
             { Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) },
           ],
-        });
+        });        
         this.worksObj = new DropDownList({
           change: () => {
             this.workBudgetsObj.enabled = true;
@@ -272,8 +248,14 @@ class Invoices extends Component {
             this.workBudgetsObj.value = null;
             this.workBudgetsObj.dataBind();
           },
+          open: () => {
+            const tempQuery = new Query().addParams(
+              "clientId",
+              this.clientsObj.value
+            );
+            this.worksObj.query = tempQuery;    
+          },          
           dataSource: works,
-          enabled: false,
           fields: { value: "id", text: "name" },
           floatLabelType: "Never",
           placeholder: "Selecciona Obra",
@@ -284,6 +266,7 @@ class Invoices extends Component {
             works,
             this.clientsObj
           ),
+          showClearButton : true
         });
         this.worksObj.appendTo(this.worksElem);
         if (
@@ -315,11 +298,18 @@ class Invoices extends Component {
               { Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) },
             ],
           }),
-          enabled: false,
+          open: () => {
+            const tempQuery = new Query().addParams(
+              "workId",
+              this.worksObj.value
+            );
+            this.workBudgetsObj.query = tempQuery;    
+          },            
           fields: { value: "id", text: "name" },
           floatLabelType: "Never",
           placeholder: "Selecciona Presupuesto",
           popupWidth: "auto",
+          showClearButton : true
         });
         this.workBudgetsObj.appendTo(this.workBudgetsElem);
         if (
@@ -341,7 +331,6 @@ class Invoices extends Component {
       this.gridDetailsInvoiceActionComplete.bind(this);
     this.detailDataBound = this.detailDataBound.bind(this);
     this.clickHandlerGridInvoice = this.clickHandlerGridInvoice.bind(this);
-    // this.billPayment = this.billPayment.bind(this);
     this.billPaymentWithAmount = this.billPaymentWithAmount.bind(this);
     this.clientTemplate = this.clientTemplate.bind(this);
     this.workTemplate = this.workTemplate.bind(this);
@@ -551,7 +540,6 @@ class Invoices extends Component {
       load: this.loadGridDetailsInvoice,
       actionComplete: this.gridDetailsInvoiceActionComplete,
       actionBegin: this.gridDetailsInvoiceActionBegin,
-      dataBound: this.dataBoundDetailsInvoice,
       editSettings: this.editSettings,
       rowSelected: this.fnRowSelectedDetailsInvoice,
       toolbarClick: this.clickHandlerGridDetailsInvoice,
@@ -579,34 +567,6 @@ class Invoices extends Component {
       modalInvoicePaymentsHistory: !this.state.modalInvoicePaymentsHistory,
     });
   }
-
-  // billPayment() {
-  //   const element = document.getElementById("gridInvoices");
-
-  //   createSpinner({
-  //     target: element,
-  //   });
-  //   showSpinner(element);
-
-  //   billPayment(this.gridInvoice.getSelectedRecords()[0].id)
-  //     .then(() => {
-  //       this.props.showMessage({
-  //         statusText: "200",
-  //         responseText: "Operación realizada con éxito",
-  //         type: "success",
-  //       });
-  //       this.gridInvoice.refresh();
-  //       hideSpinner(element);
-  //     })
-  //     .catch((error) => {
-  //       this.props.showMessage({
-  //         statusText: "Ha ocurrido un error en la operación",
-  //         responseText: "Ha ocurrido un error en la operación",
-  //         type: "danger",
-  //       });
-  //       hideSpinner(element);
-  //     });
-  // }
 
   billPaymentWithAmount(amount, iva, description) {
     const element = document.getElementById("gridInvoices");
@@ -639,10 +599,6 @@ class Invoices extends Component {
         });
         hideSpinner(element);
       });
-  }
-
-  dataBoundDetailsInvoice(args) {
-    // console.log();
   }
 
   clientTemplate(args) {
@@ -728,11 +684,6 @@ class Invoices extends Component {
         showCloseIcon: true,
         position: { Y: 100 },
       });
-
-      // this.query = [];
-      // this.query = new Query()
-      //   .addParams("invoiceId", this.parentDetails.parentRowData.id)
-      //   .addParams("previousInvoice", true);
     }
   }
 
@@ -822,12 +773,6 @@ class Invoices extends Component {
       error.statusText = error.error.statusText;
       error.responseText = JSON.parse(error.error.responseText).Message;
     }
-
-    // this.query = [];
-    // this.query = new Query().addParams(
-    //   "invoiceId",
-    //   this.parentDetails.parentRowData.id
-    // );
 
     this.props.showMessage({
       statusText: error.statusText,
@@ -1021,19 +966,6 @@ class Invoices extends Component {
     return <span>Cert. Origen: {amount}€</span>;
   }
 
-  // footerTaxBase(args) {
-  //   let amount = Number(args.Sum);
-  //   amount = Math.round((amount + Number.EPSILON) * 100) / 100;
-
-  //   if (isNaN(amount)) {
-  //     amount = args.Sum.replace(",", "").replace("$", "");
-  //     amount = Number(amount);
-  //     amount = Math.round((amount + Number.EPSILON) * 100) / 100;
-  //   }
-
-  //   return <span>B. Imponible: {amount}€</span>;
-  // }
-
   customAggregateFn(args) {
     let total = 0;
     for (let cont = 0; cont < args.result.length; cont++) {
@@ -1086,7 +1018,6 @@ class Invoices extends Component {
       } else {
         this.setState({ invoiceSelected: selectedRecords[0] });
         this.toggleModalCancelInvoice();
-        // this.setState({ hideConfirmDialog: true });
       }
     }
 
@@ -1100,7 +1031,6 @@ class Invoices extends Component {
       } else {
         this.setState({ invoiceSelected: selectedRecords[0] });
         this.toggleModalInvoicePaymentsHistory();
-        // this.setState({ hideConfirmDialog: true });
       }
     }
   }
@@ -1222,7 +1152,6 @@ class Invoices extends Component {
                       format={this.formatDate}
                       editType="datepickeredit"
                       validationRules={this.requeridIdRules}
-                      // allowEditing={false}
                     />
                     <ColumnDirective
                       field="endDate"
@@ -1232,7 +1161,6 @@ class Invoices extends Component {
                       format={this.formatDate}
                       editType="datepickeredit"
                       validationRules={this.requeridIdRules}
-                      // allowEditing={false}
                     />
                     <ColumnDirective
                       field="issueDate"
@@ -1242,7 +1170,6 @@ class Invoices extends Component {
                       format={this.formatDate}
                       editType="datepickeredit"
                       validationRules={this.requeridIdRules}
-                      // allowEditing={false}
                     />
                     <ColumnDirective
                       field="clientId"
@@ -1251,7 +1178,6 @@ class Invoices extends Component {
                       foreignKeyValue="name"
                       foreignKeyField="id"
                       validationRules={this.requeridIdRules}
-                      dataSource={this.clients}
                       edit={this.editClients}
                       template={this.clientTemplate}
                     />
@@ -1262,7 +1188,6 @@ class Invoices extends Component {
                       foreignKeyValue="name"
                       foreignKeyField="id"
                       validationRules={this.requeridIdRules}
-                      dataSource={this.works}
                       edit={this.editWorks}
                       template={this.workTemplate}
                     />
@@ -1272,8 +1197,6 @@ class Invoices extends Component {
                       width="120"
                       foreignKeyValue="name"
                       foreignKeyField="id"
-                      // validationRules={this.requeridIdRules}
-                      dataSource={this.workBudgets}
                       edit={this.editWorkBudgets}
                       template={this.workBudgetTemplate}
                     />
@@ -1293,6 +1216,8 @@ class Invoices extends Component {
                       allowEditing={false}
                       defaultValue={0}
                       template={this.templateIVA}
+                      textAlign="Right"
+                      headerTextAlign="Left"                      
                     />
                     <ColumnDirective
                       field="total"
@@ -1329,15 +1254,11 @@ class Invoices extends Component {
                       type="date"
                       format={this.formatDate}
                       allowEditing={false}
-                      // editType="datepickeredit"
                     />
                     <ColumnDirective
                       field="retentions"
-                      headerText="Ret."
-                      width="70"
-                      // fotmat="N2"
-                      // editType="numericedit"
-                      // edit={this.numericParams}
+                      headerText="Retenciones"
+                      width="110"
                       allowEditing={false}
                       defaultValue={0}
                       textAlign="Right"

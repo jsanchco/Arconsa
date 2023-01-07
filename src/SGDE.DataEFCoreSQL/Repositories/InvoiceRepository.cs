@@ -515,6 +515,15 @@
             {
                 throw new Exception("Factura incompleta. Revisa los datos. Debes introducir el presupuesto");
             }
+
+            if (findWork.WorksToRealize == "PA" && invoice.WorkBudgetId != null)
+            {
+                var findWorkBudget = findWork.WorkBudgets.FirstOrDefault(x => x.Id == invoice.WorkBudgetId);
+                if (findWorkBudget == null)
+                {
+                    throw new Exception("Presupuesto no encontrado");
+                }
+            }
         }
 
         private double GetTotalDetailInvoice(Invoice invoice, ICollection<DetailInvoice> detailsInvoices)
