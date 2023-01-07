@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SGDE.Domain\SGDE.Domain.csproj" />
+    <ProjectReference Include="..\SGDE.ReadingCertifications\SGDE.ReadingCertifications.csproj" />
   </ItemGroup>
 
 </Project>
