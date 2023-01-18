@@ -1,10 +1,10 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SGDE.ReadingCertifications;
+using SGDE.ReadingCertifications.Service;
 
 namespace SGDE.Tests.ReadingCerifications
 {
     [TestClass]
-    public class ReadingCerticationsTests
+    public class ReadingCerticationsUnitTests
     {
         [TestMethod]
         public void ReadFile_ResultOk()
