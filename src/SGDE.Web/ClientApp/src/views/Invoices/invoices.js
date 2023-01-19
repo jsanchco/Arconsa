@@ -568,7 +568,7 @@ class Invoices extends Component {
     });
   }
 
-  billPaymentWithAmount(amount, iva, description) {
+  billPaymentWithAmount(issueDate, amount, iva, description) {
     const element = document.getElementById("gridInvoices");
 
     createSpinner({
@@ -581,6 +581,7 @@ class Invoices extends Component {
       amount: amount,
       iva: iva,
       description: description,
+      issueDate: issueDate
     })
       .then(() => {
         this.props.showMessage({

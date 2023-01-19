@@ -168,8 +168,8 @@
                 Name = $"AB_{invoiceNumber:0000}_{DateTime.Now.Year.ToString().Substring(2, 2)}",
                 InvoiceNumber = invoiceNumber,
                 InvoiceToCancelId = cancelInvoiceWithAmount.invoiceId,
-                IssueDate = DateTime.Now,
-                TaxBase = cancelInvoiceWithAmount.amount,
+                IssueDate = cancelInvoiceWithAmount.issueDate,
+                //TaxBase = cancelInvoiceWithAmount.amount,
                 WorkId = invoiceParent.WorkId,
                 ClientId = invoiceParent.ClientId,
                 WorkBudgetId = invoiceParent.WorkBudgetId,
@@ -178,7 +178,7 @@
                 EndDate = invoiceParent.EndDate,
                 Retentions = invoiceParent.Retentions,
                 AddedDate = DateTime.Now,
-                Iva = invoiceParent.Iva,
+                //Iva = invoiceParent.Iva,
                 TypeInvoice = invoiceParent.TypeInvoice
             };
 

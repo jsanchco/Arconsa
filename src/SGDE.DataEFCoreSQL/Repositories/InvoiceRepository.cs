@@ -505,7 +505,10 @@
                 throw new Exception("Factura incompleta. Revisa los datos");
             }
 
-            var findWork = _context.Work.Find(invoice.WorkId);
+            var findWork = _context.Work
+                .Include(x => x.WorkBudgets)
+                .FirstOrDefault(x => x.Id == invoice.WorkId);
+
             if (findWork == null)
             {
                 throw new Exception("Obra no encontrada");
