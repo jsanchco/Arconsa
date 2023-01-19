@@ -280,6 +280,7 @@ class WorkCosts extends Component {
     documentSelected.file = args.fileUrl.substring(remove);
     documentSelected.fileName = args.fileName;
     documentSelected.typeFile = args.file.type;
+    documentSelected.hasFile = args.file.size > 0;
 
     updateDocumentInWorkCost(documentSelected).then(() => {
       this.grid.setRowData(this.state.rowSelected.id, documentSelected);

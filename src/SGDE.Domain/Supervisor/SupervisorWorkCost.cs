@@ -60,7 +60,13 @@ namespace SGDE.Domain.Supervisor
 
             workCost.Date = workCostViewModel.date;
             workCost.Description = workCostViewModel.description;
-            workCost.File = workCostViewModel.file;
+
+            if ((workCost.File == null && workCostViewModel.file != null) ||
+                (workCost.File != null && workCostViewModel.file != null))
+            {
+                workCost.File = workCostViewModel.file;
+            }
+
             workCost.TypeFile = workCostViewModel.typeFile;
             workCost.WorkId = workCostViewModel.workId;
             workCost.NumberInvoice = workCostViewModel.numberInvoice;
