@@ -47,6 +47,17 @@ class WorkCosts extends Component {
     },
   };
 
+  numericParamsIVA = {
+    params: {
+      decimals: 5,
+      format: "N",
+      validateDecimalOnType: true,
+      showSpinButton: false,
+      min: 0,
+      max: 1,
+    },
+  };  
+
   grid = null;
 
   constructor(props) {
@@ -473,6 +484,17 @@ class WorkCosts extends Component {
                     edit={this.numericParams}
                     validationRules={{ required: true }}
                   />
+                  <ColumnDirective
+                    field="iva"
+                    headerText="Iva"
+                    width="100"
+                    textAlign="Right"
+                    headerTextAlign="Left"
+                    editType="numericedit"
+                    allowGrouping={false}
+                    edit={this.numericParamsIVA}
+                    defaultValue={0.21}
+                  />                  
                   <ColumnDirective
                     field="fileName"
                     headerText="Nombre del Documento"

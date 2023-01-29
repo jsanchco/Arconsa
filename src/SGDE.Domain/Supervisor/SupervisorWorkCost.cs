@@ -36,6 +36,7 @@ namespace SGDE.Domain.Supervisor
                 WorkId = newWorkCostViewModel.workId,
                 NumberInvoice = newWorkCostViewModel.numberInvoice,
                 TaxBase = newWorkCostViewModel.taxBase,
+                Iva = newWorkCostViewModel.iva,
                 TypeWorkCost = newWorkCostViewModel.typeWorkCost,
                 Provider = newWorkCostViewModel.provider,
 
@@ -71,6 +72,7 @@ namespace SGDE.Domain.Supervisor
             workCost.WorkId = workCostViewModel.workId;
             workCost.NumberInvoice = workCostViewModel.numberInvoice;
             workCost.TaxBase = workCostViewModel.taxBase;
+            workCost.Iva = workCostViewModel.iva;
             workCost.TypeWorkCost = workCostViewModel.typeWorkCost;
             workCost.Provider = workCostViewModel.provider;
 
