@@ -36,6 +36,7 @@ namespace SGDE.Domain.Supervisor
                 WorkId = newWorkCostViewModel.workId,
                 NumberInvoice = newWorkCostViewModel.numberInvoice,
                 TaxBase = newWorkCostViewModel.taxBase,
+                Iva = newWorkCostViewModel.iva,
                 TypeWorkCost = newWorkCostViewModel.typeWorkCost,
                 Provider = newWorkCostViewModel.provider,
 
@@ -60,11 +61,18 @@ namespace SGDE.Domain.Supervisor
 
             workCost.Date = workCostViewModel.date;
             workCost.Description = workCostViewModel.description;
-            workCost.File = workCostViewModel.file;
+
+            if ((workCost.File == null && workCostViewModel.file != null) ||
+                (workCost.File != null && workCostViewModel.file != null))
+            {
+                workCost.File = workCostViewModel.file;
+            }
+
             workCost.TypeFile = workCostViewModel.typeFile;
             workCost.WorkId = workCostViewModel.workId;
             workCost.NumberInvoice = workCostViewModel.numberInvoice;
             workCost.TaxBase = workCostViewModel.taxBase;
+            workCost.Iva = workCostViewModel.iva;
             workCost.TypeWorkCost = workCostViewModel.typeWorkCost;
             workCost.Provider = workCostViewModel.provider;
 

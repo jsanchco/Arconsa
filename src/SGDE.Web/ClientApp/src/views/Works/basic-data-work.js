@@ -98,17 +98,17 @@ class BasicDataWork extends Component {
   }
 
   updateFromInvoiceToOrigin() {
-    if (this.state.invoiceToOrigin) {
-      this.ntbPercentageRetention.enabled = true;
-      if (this.ntbTotalContract) {
-        this.ntbTotalContract.enabled = true;
-      }
-    } else {
-      this.ntbPercentageRetention.enabled = false;
-      if (this.ntbTotalContract) {
-        this.ntbTotalContract.enabled = false;
-      }
-    }
+    // if (this.state.invoiceToOrigin) {
+    //   this.ntbPercentageRetention.enabled = true;
+    //   if (this.ntbTotalContract) {
+    //     this.ntbTotalContract.enabled = true;
+    //   }
+    // } else {
+    //   this.ntbPercentageRetention.enabled = false;
+    //   if (this.ntbTotalContract) {
+    //     this.ntbTotalContract.enabled = false;
+    //   }
+    // }
   }
 
   updateFromPassiveSubject() {

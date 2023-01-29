@@ -9,6 +9,7 @@ namespace SGDE.Domain.ViewModels
         public string numberInvoice { get; set; }
         public string provider { get; set; }
         public double taxBase { get; set; }
+        public double iva { get; set; }
         public string description { get; set; }
         public string fileName { get; set; }
         public string typeFile { get; set; }

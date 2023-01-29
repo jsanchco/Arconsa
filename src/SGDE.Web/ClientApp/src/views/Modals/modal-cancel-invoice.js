@@ -15,11 +15,13 @@ import {
 } from "reactstrap";
 import "./modal-select.css";
 import { NumericTextBoxComponent } from "@syncfusion/ej2-react-inputs";
+import { DatePickerComponent } from "@syncfusion/ej2-react-calendars";
 
 class ModalCancelInvoice extends Component {
   constructor(props) {
     super(props);
 
+    this.dtpIssueDate = null;
     this.ntbAmount = null;
     this.ntbIva = null;
 
@@ -29,6 +31,7 @@ class ModalCancelInvoice extends Component {
   handleOnClick() {
     this.props.toggle();
     this.props.billPaymentWithAmount(
+      this.dtpIssueDate.value,
       this.ntbAmount.value,
       this.ntbIva.value,
       document.getElementById("description").value
@@ -69,7 +72,18 @@ class ModalCancelInvoice extends Component {
               </Col>
             </Row>
             <Row>
-              <Col xs="6">
+              <Col xs="4">
+                <FormGroup>
+                  <Label for="issueDate">Fecha</Label>
+                  <DatePickerComponent
+                    id="issueDate"
+                    ref={(g) => (this.dtpIssueDate = g)}
+                    format="dd/MM/yyyy"
+                    value={new Date()}
+                  />
+                </FormGroup>
+              </Col>
+              <Col xs="4">
                 <FormGroup>
                   <Label htmlFor="amount">Cantidad Abono</Label>
                   <NumericTextBoxComponent
@@ -87,7 +101,7 @@ class ModalCancelInvoice extends Component {
                   />
                 </FormGroup>
               </Col>
-              <Col xs="6">
+              <Col xs="4">
                 <FormGroup>
                   <Label htmlFor="iva">IVA</Label>
                   <NumericTextBoxComponent

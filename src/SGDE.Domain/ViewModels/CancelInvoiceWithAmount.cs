@@ -1,4 +1,6 @@
-﻿namespace SGDE.Domain.ViewModels
+﻿using System;
+
+namespace SGDE.Domain.ViewModels
 {
     public class CancelInvoiceWithAmount
     {
@@ -6,5 +8,6 @@
         public double amount { get; set; } 
         public double iva { get; set; }
         public string description { get; set; }
+        public DateTime issueDate { get; set; }
     }
 }

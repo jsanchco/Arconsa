@@ -5,6 +5,8 @@
 
     using System.Collections.Generic;
     using System.Linq;
+    using System.Reflection;
+    using System.Text.RegularExpressions;
     using Entities;
     using ViewModels;
 
@@ -24,11 +26,11 @@
                 modifiedDate = client.ModifiedDate,
                 iPAddress = client.IPAddress,
 
-                idClient = string.IsNullOrEmpty(client.Cif) ? 
-                    string.Empty :
-                    client.Cif.Length < 5 ?
-                        client.Cif :
-                        client.Cif.Substring(client.Cif.Length - 5),
+                //idClient = string.IsNullOrEmpty(client.Cif) ? 
+                //    string.Empty :
+                //    client.Cif.Length < 5 ?
+                //        client.Cif :
+                //        client.Cif.Substring(client.Cif.Length - 5),
 
                 name = client.Name,
                 cif = client.Cif,
@@ -44,6 +46,20 @@
                 active= client.Active
             };
 
+            if (!string.IsNullOrEmpty(client.Cif))
+            {
+                var match = Regex.Match(client.Cif.Replace(".", string.Empty), @"\d+(?!\d+)");
+                if (match.Success)
+                {
+                    if (match.Value.Length < 5)
+                        clientViewModel.idClient = match.Value;
+                    else
+                        clientViewModel.idClient = match.Value.Substring(match.Value.Length - 5);
+                }
+                else
+                    clientViewModel.idClient = client.Cif.Replace(".", string.Empty);
+            }
+
             return clientViewModel;
         }
 
@@ -58,11 +74,11 @@
                     modifiedDate = client.ModifiedDate,
                     iPAddress = client.IPAddress,
 
-                    idClient = string.IsNullOrEmpty(client.Cif) ?
-                    string.Empty :
-                    client.Cif.Length < 5 ?
-                        client.Cif :
-                        client.Cif.Substring(client.Cif.Length - 5),
+                    //idClient = string.IsNullOrEmpty(client.Cif) ?
+                    //string.Empty :
+                    //client.Cif.Length < 5 ?
+                    //    client.Cif :
+                    //    client.Cif.Substring(client.Cif.Length - 5),
 
                     name = client.Name,
                     cif = client.Cif,
@@ -77,6 +93,21 @@
                     emailInvoice = client.EmailInvoice,
                     active = client.Active
                 };
+
+                if (!string.IsNullOrEmpty(client.Cif))
+                {
+                    var match = Regex.Match(client.Cif.Replace(".", string.Empty), @"\d+(?!\d+)");
+                    if (match.Success)
+                    {
+                        if (match.Value.Length < 5)
+                            model.idClient = match.Value;
+                        else
+                            model.idClient = match.Value.Substring(match.Value.Length - 5);
+                    }
+                    else
+                        model.idClient = client.Cif.Replace(".", string.Empty);
+                }
+
                 return model;
             })
                 .ToList();

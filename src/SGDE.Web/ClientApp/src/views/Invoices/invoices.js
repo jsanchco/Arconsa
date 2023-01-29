@@ -568,7 +568,7 @@ class Invoices extends Component {
     });
   }
 
-  billPaymentWithAmount(amount, iva, description) {
+  billPaymentWithAmount(issueDate, amount, iva, description) {
     const element = document.getElementById("gridInvoices");
 
     createSpinner({
@@ -581,6 +581,7 @@ class Invoices extends Component {
       amount: amount,
       iva: iva,
       description: description,
+      issueDate: issueDate
     })
       .then(() => {
         this.props.showMessage({
@@ -1194,7 +1195,7 @@ class Invoices extends Component {
                     <ColumnDirective
                       field="workBudgetId"
                       headerText="Presupuesto"
-                      width="120"
+                      width="140"
                       foreignKeyValue="name"
                       foreignKeyField="id"
                       edit={this.editWorkBudgets}
@@ -1203,7 +1204,7 @@ class Invoices extends Component {
                     <ColumnDirective
                       field="taxBase"
                       headerText="B. Impon."
-                      width="100"
+                      width="120"
                       allowEditing={false}
                       defaultValue={0}
                       textAlign="Right"
@@ -1212,7 +1213,7 @@ class Invoices extends Component {
                     <ColumnDirective
                       field="ivaTaxBase"
                       headerText="IVA"
-                      width="90"
+                      width="120"
                       allowEditing={false}
                       defaultValue={0}
                       template={this.templateIVA}
@@ -1222,7 +1223,7 @@ class Invoices extends Component {
                     <ColumnDirective
                       field="total"
                       headerText="Total"
-                      width="100"
+                      width="120"
                       allowEditing={false}
                       defaultValue={0}
                       textAlign="Right"
@@ -1267,7 +1268,7 @@ class Invoices extends Component {
                     <ColumnDirective
                       field="invoiceToCancelName"
                       headerText="Cancelada"
-                      width="100"
+                      width="120"
                       allowEditing={false}
                     />
                     <ColumnDirective field="typeInvoice" visible={false} />

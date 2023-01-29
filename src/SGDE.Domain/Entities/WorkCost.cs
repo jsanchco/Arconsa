@@ -9,6 +9,7 @@ namespace SGDE.Domain.Entities
         public string NumberInvoice { get; set; }
         public string Provider { get; set; }
         public double TaxBase { get; set; }
+        public double Iva { get; set; }
         public string Description { get; set; }
         public string FileName { get; set; }
         public string TypeFile { get; set; }
