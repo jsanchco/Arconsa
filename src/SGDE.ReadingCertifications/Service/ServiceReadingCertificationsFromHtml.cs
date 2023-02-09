@@ -15,11 +15,15 @@ namespace SGDE.ReadingCertifications.Service
 
             var htmlDocument = new HtmlDocument();
             htmlDocument.LoadHtml(html);
+            var nodesDetailCertification = htmlDocument.DocumentNode.SelectNodes("//td/span[@class='fc1538a29d-f953-4d11-a6b0-46c28732c2d0-5' or @class='fc1538a29d-f953-4d11-a6b0-46c28732c2d0-6']");
             var nodeBase = htmlDocument.DocumentNode.SelectSingleNode("//div[@class='crystalstyle']");
+
             foreach (var node in nodeBase.ChildNodes)
             {
-                if (node.InnerText.Contains("Section6"))
-                    System.Diagnostics.Debug.WriteLine(node.InnerText);
+                if (node.OuterHtml.Contains("Section6"))
+                {
+
+                }
             }
         }
     }
