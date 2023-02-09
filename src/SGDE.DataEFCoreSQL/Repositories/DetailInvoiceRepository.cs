@@ -199,7 +199,8 @@
                         .Where(x => x.ClientId == invoice.ClientId &&
                                     x.WorkId == invoice.WorkId &&
                                     x.WorkBudgetId == invoice.WorkBudgetId &&
-                                    x.Id != invoice.Id)
+                                    x.Id != invoice.Id &&
+                                    x.InvoiceToCancelId == null)
                         .OrderByDescending(x => x.Id)
                         .FirstOrDefault();
 
