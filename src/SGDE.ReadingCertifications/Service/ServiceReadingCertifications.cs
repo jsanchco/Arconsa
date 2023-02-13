@@ -25,7 +25,7 @@ namespace SGDE.ReadingCertifications.Service
                 var orderReading = 0;
                 foreach (DataRow row in rows)
                 {
-                    CertificarionXLS.AddPartida(new Partida(row, orderReading));
+                    //CertificarionXLS.AddPartida(new Partida(row, orderReading));
                     orderReading++;
                     //for (int col = 0; col < numColumns; col++)
                     //{

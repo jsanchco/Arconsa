@@ -23,9 +23,18 @@ namespace SGDE.ReadingCertifications.Models
             if (partida.IsSubCapitulo)
             {
                 SubCapitulos.Add(partida);
-                var findCapitulo = Capitulos.FirstOrDefault(x => x.NombreCapitulo == partida.NombreCapitulo);
+                var split = partida.Codigo.Split('.');
+                if (split.Length != 2)
+                    return;
+
+                var findCapitulo = Capitulos.FirstOrDefault(x => x.Codigo == split[0]);
                 if (findCapitulo != null)
+                {
+                    if (findCapitulo.SubCapitulos == null)
+                        findCapitulo.SubCapitulos = new List<Partida>();
+
                     findCapitulo.SubCapitulos.Add(partida);
+                }
             }
         }
     }
