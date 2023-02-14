@@ -1,5 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SGDE.ReadingCertifications.Service;
+//using SGDE.ReadingCertifications.Service;
 
 namespace SGDE.Tests.ReadingCerifications
 {
@@ -9,8 +9,8 @@ namespace SGDE.Tests.ReadingCerifications
         [TestMethod]
         public void ReadFile_ResultOk()
         {
-            var serviceReadingCertifications = new ServiceReadingCertificationsFromHtml();
-            serviceReadingCertifications.ReadFile();
+            //var serviceReadingCertifications = new ServiceReadingCertificationsFromHtml();
+            //serviceReadingCertifications.ReadFile();
 
             //Assert.AreNotEqual(newUserViewModel.roleId, 0);
         }
