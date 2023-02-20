@@ -147,6 +147,7 @@
                     endDate = DateTime.ParseExact(endDate, "dd/MM/yyyy", null),
                     filter = filter
                 };
+                reportAllViewModel.endDate = reportAllViewModel.endDate.AddDays(1).AddSeconds(-1);
 
                 var data = _supervisor.GetAllInvoice(reportAllViewModel);
 
@@ -176,6 +177,7 @@
                     startDate = DateTime.ParseExact(startDate, "dd/MM/yyyy", null),
                     endDate = DateTime.ParseExact(endDate, "dd/MM/yyyy", null)
                 };
+                reportAllViewModel.endDate = reportAllViewModel.endDate.AddDays(1).AddSeconds(-1);
 
                 var data = _supervisor.GetAllResultsByWork(reportAllViewModel);
 
@@ -205,6 +207,7 @@
                     startDate = DateTime.ParseExact(startDate, "dd/MM/yyyy", null),
                     endDate = DateTime.ParseExact(endDate, "dd/MM/yyyy", null)
                 };
+                reportAllViewModel.endDate = reportAllViewModel.endDate.AddDays(1).AddSeconds(-1);
 
                 var data = _supervisor.GetTracing(reportAllViewModel);
 
@@ -262,6 +265,8 @@
                     reportAllViewModel.endDate = DateTime.Now;
                 else
                     reportAllViewModel.endDate = DateTime.ParseExact(endDate, "dd/MM/yyyy", null);
+
+                reportAllViewModel.endDate = reportAllViewModel.endDate.AddDays(1).AddSeconds(-1);
 
                 var data = _supervisor.GetAllWorkBetweenDates(reportAllViewModel);
 
