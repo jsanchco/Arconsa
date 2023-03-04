@@ -27,7 +27,7 @@
     "bootstrap": "^4.6.0",
     "chart.js": "^2.9.4",
     "classnames": "^2.3.1",
-    "cldr-data": "^36.0.0",
+    "cldr-data": "^36.0.1",
     "core-js": "^2.6.12",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.6",
