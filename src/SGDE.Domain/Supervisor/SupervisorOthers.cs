@@ -202,19 +202,31 @@
             //    }
             //}
 
-            foreach (var invoice in _invoiceRepository.GetAll().Data)
+            //foreach (var invoice in _invoiceRepository.GetAll().Data)
+            //{
+            //    if (invoice.IsPaid)
+            //    {
+            //        var invoicePaymentHistory = new InvoicePaymentHistory
+            //        {
+            //            InvoiceId = invoice.Id,
+            //            DatePayment = invoice.PayDate.Value,
+            //            Amount = invoice.Total
+            //        };
+            //        _invoicePaymentHistoryRepository.Add(invoicePaymentHistory);
+            //    }
+            //}
+
+            var invoices = _invoiceRepository.GetAll().Data.Where(x => x.ClientId == null);
+            foreach (var invoice in invoices) 
             {
-                if (invoice.IsPaid)
+                if (invoice.WorkId.HasValue)
                 {
-                    var invoicePaymentHistory = new InvoicePaymentHistory
-                    {
-                        InvoiceId = invoice.Id,
-                        DatePayment = invoice.PayDate.Value,
-                        Amount = invoice.Total
-                    };
-                    _invoicePaymentHistoryRepository.Add(invoicePaymentHistory);
+                    var clientId = _workRepository.GetById(invoice.WorkId.Value).ClientId;
+                    invoice.ClientId = clientId;
+                    _invoiceRepository.Update(invoice);
                 }
             }
+
         }
     }
 }
