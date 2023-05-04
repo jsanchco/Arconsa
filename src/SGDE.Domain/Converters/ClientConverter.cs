@@ -1,11 +1,9 @@
 ﻿namespace SGDE.Domain.Converters
 {
-    using System;
     #region Using
 
     using System.Collections.Generic;
     using System.Linq;
-    using System.Reflection;
     using System.Text.RegularExpressions;
     using Entities;
     using ViewModels;

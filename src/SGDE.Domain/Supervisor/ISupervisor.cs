@@ -423,6 +423,17 @@ namespace SGDE.Domain.Supervisor
 
         #endregion
 
+        #region Enterprise
+
+        List<EnterpriseViewModel> GetAllEnterprise();
+        List<EnterpriseViewModel> GetEnterpriseByUser(int userId);
+        EnterpriseViewModel GetEnterpriseById(int id);
+        EnterpriseViewModel AddEnterprise(EnterpriseViewModel newEnterpriseViewModel);
+        bool UpdateEnterprise(EnterpriseViewModel enterpriseViewModel);
+        bool DeleteEnterprise(int id);
+
+        #endregion
+
         double CalculateIndirectCostsByWork(int workId);
 
         void Update();

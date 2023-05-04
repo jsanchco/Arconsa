@@ -46,6 +46,7 @@ namespace SGDE.DataEFCoreSQL
         public virtual DbSet<WorkHistory> WorkHistory { get; set; }
         public virtual DbSet<WorkStatusHistory> WorkStatusHistory { get; set; }
         public virtual DbSet<InvoicePaymentHistory> InvoicePaymentHistory { get; set; }
+        public virtual DbSet<Enterprise> Enterprise { get; set; }
 
         public static long InstanceCount;
 
@@ -87,6 +88,8 @@ namespace SGDE.DataEFCoreSQL
             new WorkHistoryConfiguration(modelBuilder.Entity<WorkHistory>());
             new WorkStatusHistoryConfiguration(modelBuilder.Entity<WorkStatusHistory>());
             new InvoicePaymentHistoryConfiguration(modelBuilder.Entity<InvoicePaymentHistory>());
+            new EnterpriseConfiguration(modelBuilder.Entity<Enterprise>());
+            new UserEnterpriseConfiguration(modelBuilder.Entity<UserEnterprise>());
         }
 
         //public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<EFContextSQL>
