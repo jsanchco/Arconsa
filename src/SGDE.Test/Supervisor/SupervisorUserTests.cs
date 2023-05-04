@@ -70,6 +70,7 @@ namespace SGDE.Tests
             var workHistoryRepository = new Mock<IWorkHistoryRepository>();
             var workStatusHistoryRepository = new Mock<IWorkStatusHistoryRepository>();
             var invoicePaymentHistoryRepository = new Mock<IInvoicePaymentHistoryRepository>();
+            var enterpriseRepository = new Mock<IEnterpriseRepository>();
 
             _supervisor = new Supervisor(
                 userRepositoryMock.Object,
@@ -103,7 +104,8 @@ namespace SGDE.Tests
                 companyDataRepository.Object,
                 workHistoryRepository.Object,
                 workStatusHistoryRepository.Object,
-                invoicePaymentHistoryRepository.Object);
+                invoicePaymentHistoryRepository.Object,
+                enterpriseRepository.Object);
         }
 
         [TestMethod]
