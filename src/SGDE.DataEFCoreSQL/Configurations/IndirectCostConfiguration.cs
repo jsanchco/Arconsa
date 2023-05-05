@@ -19,6 +19,9 @@
             //entity.Ignore(x => x.Year);
             //entity.Ignore(x => x.Month);
             entity.Ignore(x => x.Key);
+
+            entity.HasIndex(x => x.EnterpriseId).HasName("IFK_Enterprise_IndirectCost");
+            entity.HasOne(u => u.Enterprise).WithMany(a => a.IndirectCosts).HasForeignKey(a => a.EnterpriseId).HasConstraintName("FK__IndirectCost__EnerpriseId");
         }
     }
 }

@@ -14,6 +14,7 @@ namespace SGDE.Domain.ViewModels
         public string typeFile { get; set; }
         public byte[] file { get; set; }
         public string fileName { get; set; }
+        public int? enterpriseId { get; set; }
         public bool hasFile => file != null;
     }
 }

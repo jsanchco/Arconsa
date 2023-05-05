@@ -9,7 +9,7 @@ export default {
       },
     },
     {
-      name: JSON.parse(localStorage.getItem("enterprise")).alias,
+      name: "Datos de Empresa",
       url: "/Enterprise/DetailCompany",
     },
     {

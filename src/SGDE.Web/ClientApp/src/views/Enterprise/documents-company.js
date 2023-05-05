@@ -10,7 +10,7 @@ import {
   Page,
 } from "@syncfusion/ej2-react-grids";
 import { getValue } from "@syncfusion/ej2-base";
-import { DataManager, WebApiAdaptor } from "@syncfusion/ej2-data";
+import { DataManager, WebApiAdaptor, Query } from "@syncfusion/ej2-data";
 import { config, COMPANY_DOCUMENTS } from "../../constants";
 import { L10n } from "@syncfusion/ej2-base";
 import data from "../../locales/locale.json";
@@ -82,6 +82,9 @@ class DocumentsCompany extends Component {
     this.selectionSettings = {
       checkboxMode: "ResetOnRowClick",
     };
+
+    this.query = new Query()
+      .addParams("enterpriseId", JSON.parse(localStorage.getItem("enterprise")).id);
 
     this.format = { type: "dateTime", format: "dd/MM/yyyy" };
   }
@@ -275,6 +278,11 @@ class DocumentsCompany extends Component {
               >
                 <ColumnsDirective>
                   <ColumnDirective type="checkbox" width="50"></ColumnDirective>
+                  <ColumnDirective 
+                    field="enterpriseId" 
+                    defaultValue={JSON.parse(localStorage.getItem("enterprise")).id}
+                    visible={false}
+                  />
                   <ColumnDirective
                     field="id"
                     headerText="Id"

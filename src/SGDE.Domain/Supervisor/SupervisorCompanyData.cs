@@ -8,9 +8,9 @@ namespace SGDE.Domain.Supervisor
 {
     public partial class Supervisor
     {
-        public QueryResult<CompanyDataViewModel> GetAllCompanyData(int skip = 0, int take = 0, string filter = null)
+        public QueryResult<CompanyDataViewModel> GetAllCompanyData(int skip = 0, int take = 0, int enterpriseId = 0, string filter = null)
         {
-            var queryResult = _companyDataRepository.GetAll(skip, take, filter);
+            var queryResult = _companyDataRepository.GetAll(skip, take, enterpriseId, filter);
             return new QueryResult<CompanyDataViewModel>
             {
                 Data = CompanyDataConverter.ConvertList(queryResult.Data),
@@ -35,6 +35,7 @@ namespace SGDE.Domain.Supervisor
                 ModifiedDate = null,
                 IPAddress = newCompanyDataViewModel.iPAddress,
 
+                EnterpriseId = newCompanyDataViewModel.enterpriseId,
                 Reference = newCompanyDataViewModel.reference,
                 Description = newCompanyDataViewModel.description,
                 Observations = newCompanyDataViewModel.observations,
@@ -64,6 +65,7 @@ namespace SGDE.Domain.Supervisor
             companyData.ModifiedDate = DateTime.Now;
             companyData.IPAddress = companyDataViewModel.iPAddress;
 
+            companyData.EnterpriseId = companyDataViewModel.enterpriseId;
             companyData.Reference = companyDataViewModel.reference;
             companyData.Description = companyDataViewModel.description;
             companyData.Observations = companyDataViewModel.observations;

@@ -40,10 +40,21 @@
             return GetById(id) != null;
         }
 
-        public QueryResult<IndirectCost> GetAll(int skip = 0, int take = 0, string filter = null)
+        public QueryResult<IndirectCost> GetAll(int skip = 0, int take = 0, int enterpriseId = 0, string filter = null)
         {
-            var data = _context.IndirectCost
-                .ToList();
+            List<IndirectCost> data;
+
+            if (enterpriseId == 0)
+            {
+                data = _context.IndirectCost
+                     .ToList();
+            }
+            else
+            {
+                data = _context.IndirectCost
+                     .Where(x => x.EnterpriseId == enterpriseId)
+                     .ToList();
+            }
 
             if (!string.IsNullOrEmpty(filter))
             {
