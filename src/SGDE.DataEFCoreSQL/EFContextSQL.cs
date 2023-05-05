@@ -47,6 +47,7 @@ namespace SGDE.DataEFCoreSQL
         public virtual DbSet<WorkStatusHistory> WorkStatusHistory { get; set; }
         public virtual DbSet<InvoicePaymentHistory> InvoicePaymentHistory { get; set; }
         public virtual DbSet<Enterprise> Enterprise { get; set; }
+        public virtual DbSet<UserEnterprise> UserEnterprise { get; set; }
 
         public static long InstanceCount;
 

@@ -13,16 +13,20 @@ import {
   InputGroupText,
   Row
 } from "reactstrap";
-import { login, logout } from "../../../services";
+import { login, logout, getEnterprisesByUserId } from "../../../services";
 import { connect } from "react-redux";
 import ACTION_APPLICATION from "../../../actions/applicationAction";
 import ACTION_AUTHENTICATION from "../../../actions/authenticationAction";
 import ReactNotification, { store } from "react-notifications-component";
+import { DropDownListComponent } from "@syncfusion/ej2-react-dropdowns";
 import "react-notifications-component/dist/theme.css";
 
 class Login extends Component {
   constructor(props) {
     super(props);
+
+    this.ddl = null;
+    this.fields = { text: "alias", value: "id" };
 
     this.state = {
       username: "",
@@ -31,6 +35,7 @@ class Login extends Component {
 
     this.handleUsernameChange = this.handleUsernameChange.bind(this);
     this.handlePasswordChange = this.handlePasswordChange.bind(this);
+    this.handleSelectEnterprise = this.handleSelectEnterprise.bind(this);
   }
 
   handleUsernameChange(e) {
@@ -41,8 +46,103 @@ class Login extends Component {
     this.setState({ password: e.target.value });
   }
 
-  handleLogin() {
-    login(this.state.username, this.state.password, this.props.history);
+  handleLogin(e) {
+    e.preventDefault();
+
+    login(this.state.username, this.state.password, this.props.history)
+      .then((result) => {
+        const elementBtnLogin = document.getElementById("btn-login");
+        const elementBtnRegresar = document.getElementById("btn-regresar");
+        const elementIniciaSesion = document.getElementById("label-inicia-sesion");
+        const elementUser = document.getElementById("select-user");
+        const elementPassword = document.getElementById("select-password");
+        const elementEnterprise = document.getElementById("select-enterprise");
+
+        switch (result.status) {
+          case "LOGIN_OK":            
+            elementBtnLogin.style.display = "none";
+            elementBtnRegresar.style.display = "";
+            elementIniciaSesion.style.display = "none";
+            elementUser.style.display = "none";
+            elementPassword.style.display = "none";
+            elementEnterprise.style.display = "";
+
+            getEnterprisesByUserId(result.result.user.id)
+            .then((result) => {
+              if (result.length === 1) {
+                const enterprise = {
+                  id: result[0].id,
+                  alias: result[0].alias,
+                  name: result[0].name
+                };
+                localStorage.setItem("enterprise", enterprise);
+                this.props.history.push("/dashboard");
+              } else {
+                this.ddl.dataSource = result;
+              }
+            })
+            .catch((error) => {
+              store.addNotification({
+                message: error,
+                type: "danger",
+                container: "bottom-center",
+                animationIn: ["animated", "fadeIn"],
+                animationOut: ["animated", "fadeOut"],
+                dismiss: {
+                  duration: 5000,
+                  showIcon: true
+                },
+                width: 800
+              });
+            });
+
+            break;
+
+          case "LOGIN_KO":
+            elementBtnLogin.style.display = "";
+            elementBtnRegresar.style.display = "none";
+            elementIniciaSesion.style.display = "";
+            elementUser.style.display = "";
+            elementPassword.style.display = "";
+            elementEnterprise.style.display = "none";
+            break;            
+
+          default:
+            elementBtnLogin.style.display = "";
+            elementBtnRegresar.style.display = "none";
+            elementIniciaSesion.style.display = "";
+            elementUser.style.display = "";
+            elementPassword.style.display = "";
+            elementEnterprise.style.display = "none";
+            break;  
+        }
+    });  
+  }
+
+  handleRegresar(e) {
+    const elementBtnLogin = document.getElementById("btn-login");
+    const elementBtnRegresar = document.getElementById("btn-regresar");
+    const elementIniciaSesion = document.getElementById("label-inicia-sesion");
+    const elementUser = document.getElementById("select-user");
+    const elementPassword = document.getElementById("select-password");
+    const elementEnterprise = document.getElementById("select-enterprise"); 
+    
+    elementBtnLogin.style.display = "";
+    elementBtnRegresar.style.display = "none";
+    elementIniciaSesion.style.display = "";
+    elementUser.style.display = "";
+    elementPassword.style.display = "";
+    elementEnterprise.style.display = "none";    
+  }
+
+  handleSelectEnterprise(e) {
+    const enterprise = {
+      id: e.itemData.id,
+      alias: e.itemData.alias,
+      name: e.itemData.name
+    };
+    localStorage.setItem("enterprise", enterprise);
+    this.props.history.push("/dashboard");
   }
 
   componentDidMount() {
@@ -106,8 +206,10 @@ class Login extends Component {
                     <CardBody>
                       <Form>
                         <h1>Login</h1>
-                        <p className="text-muted">Inicia sesión en tu cuenta</p>
-                        <InputGroup className="mb-3">
+                        <p className="text-muted" id="label-inicia-sesion">Inicia sesión en tu cuenta</p>
+                        <InputGroup 
+                          className="mb-3"
+                          id="select-user">
                           <InputGroupAddon addonType="prepend">
                             <InputGroupText>
                               <i className="icon-user"></i>
@@ -121,7 +223,9 @@ class Login extends Component {
                             onChange={this.handleUsernameChange}
                           />
                         </InputGroup>
-                        <InputGroup className="mb-4">
+                        <InputGroup 
+                          className="mb-4"
+                          id="select-password">
                           <InputGroupAddon addonType="prepend">
                             <InputGroupText>
                               <i className="icon-lock"></i>
@@ -135,21 +239,41 @@ class Login extends Component {
                             onChange={this.handlePasswordChange}
                           />
                         </InputGroup>
+                        <InputGroup 
+                          className="mb-4" 
+                          id="select-enterprise"
+                          style={{ display: "none" }}>
+                          <p>&nbsp;</p>
+                          <DropDownListComponent
+                            dataSource={null}
+                            fields={this.fields}
+                            placeholder={`Selecciona empresa`}
+                            ref={(g) => (this.ddl = g)}
+                            select={this.handleSelectEnterprise.bind(this)}
+                            // popupWidth="auto"
+                          />                          
+                        </InputGroup>                        
                         <Row>
                           <Col xs="6">
                             <Button
                               color="primary"
                               className="px-4"
-                              onClick={() => this.handleLogin()}
+                              onClick={(e) => this.handleLogin(e)}
+                              id="btn-login"
                             >
                               Entrar
                             </Button>
                           </Col>
-                          {/* <Col xs="6" className="text-right">
-                            <Button color="link" className="px-0">
-                              Forgot password?
+                          <Col xs="6" className="text-right">
+                            <Button 
+                              color="link" 
+                              className="px-0"
+                              id="btn-regresar"
+                              onClick={(e) => this.handleRegresar(e)}
+                              style={{ display: "none" }}>
+                              Regresar
                             </Button>
-                          </Col> */}
+                          </Col>
                         </Row>
                       </Form>
                     </CardBody>

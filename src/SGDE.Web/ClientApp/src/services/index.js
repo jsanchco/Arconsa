@@ -37,6 +37,7 @@ import {
   WORKHISTORIES,
   WORKCLOSEPAGE,
   BILLPAYMENTWITHAMOUNT,
+  ENTERPRISEBYUSERID,
   DASHBOARD,
   DASHBOARD_COSTANDINCOMES,
   DASHBOARD_WORKSOPENEDANDCLOSED
@@ -49,6 +50,56 @@ import { INVOICES } from "./../constants/index";
 export const TOKEN_KEY = "jwt";
 
 export const login = (username, password, history) => {
+  return new Promise((resolve, reject) => {
+  const url = `${config.URL_API}/${AUTHENTICATE}`;
+  fetch(url, {
+    headers: {
+      Accept: "text/plain",
+      "Content-Type": "application/json",
+    },
+    method: "POST",
+    body: JSON.stringify({ username, password }),
+  })
+    .then((data) => data.json())
+    .then((result) => {
+      if (result.user != null && result.token != null) {
+        localStorage.setItem("user", JSON.stringify(result.user));
+        localStorage.setItem(TOKEN_KEY, result.token);
+        store.dispatch(ACTION_AUTHENTICATION.logIn(result.user, result.token));
+        // history.push("/dashboard");
+        resolve({ status: "LOGIN_OK", result });
+      } else {
+        if (result.message) {
+          console.log("error ->", result.message);
+          localStorage.removeItem("user");
+          localStorage.removeItem(TOKEN_KEY);
+          store.dispatch(ACTION_AUTHENTICATION.logOut());
+          store.dispatch(
+            ACTION_APPLICATION.showMessage({
+              statusText: result.message,
+              responseText: result.message,
+              type: "danger",
+            })
+          );
+        }
+        resolve({ status: "LOGIN_KO", result });
+      }
+    })
+    .catch((error) => {
+      console.log("error ->", error);
+      store.dispatch(
+        ACTION_APPLICATION.showMessage({
+          statusText: error,
+          responseText: error,
+          type: "danger",
+        })        
+      );
+      reject({ status: "LOGIN_OK" });
+    });
+  });
+};
+
+export const login_old = (username, password, history) => {
   const url = `${config.URL_API}/${AUTHENTICATE}`;
   fetch(url, {
     headers: {
@@ -69,6 +120,7 @@ export const login = (username, password, history) => {
         if (result.message) {
           console.log("error ->", result.message);
           localStorage.removeItem("user");
+          localStorage.removeItem("enterprise");
           localStorage.removeItem(TOKEN_KEY);
           store.dispatch(ACTION_AUTHENTICATION.logOut());
           store.dispatch(
@@ -104,6 +156,28 @@ export const isLogin = () => {
 
   return false;
 };
+
+export const getEnterprisesByUserId = (id) => {
+  return new Promise((resolve, reject) => {
+    const url = `${config.URL_API}/${ENTERPRISEBYUSERID}/${id}`;
+    fetch(url, {
+      headers: {
+        Accept: "text/plain",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`,
+      },
+      method: "GET",
+    })
+      .then((data) => data.json())
+      .then((result) => {
+        resolve(result);
+      })
+      .catch((error) => {
+        console.log("error ->", error);
+        reject();
+      });
+  });
+}
 
 export const getUsers = () => {
   const url = `${config.URL_API}/${USERS}`;
