@@ -61,7 +61,7 @@ class DetailCompany extends Component {
   }
 
   render() {
-    let title = " ADECUA";
+    let title = JSON.parse(localStorage.getItem("enterprise")).alias;
 
     return (
       <Fragment>
@@ -71,7 +71,7 @@ class DetailCompany extends Component {
             <a href="#">Inicio</a>
           </BreadcrumbItem>
           {/* eslint-disable-next-line*/}
-          <BreadcrumbItem active>ADECUA</BreadcrumbItem>
+          <BreadcrumbItem active>{title}</BreadcrumbItem>
         </Breadcrumb>
 
         <Container fluid>

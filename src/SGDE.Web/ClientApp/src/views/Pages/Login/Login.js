@@ -75,7 +75,7 @@ class Login extends Component {
                   alias: result[0].alias,
                   name: result[0].name
                 };
-                localStorage.setItem("enterprise", enterprise);
+                localStorage.setItem("enterprise", JSON.stringify(enterprise));
                 this.props.history.push("/dashboard");
               } else {
                 this.ddl.dataSource = result;
@@ -141,7 +141,7 @@ class Login extends Component {
       alias: e.itemData.alias,
       name: e.itemData.name
     };
-    localStorage.setItem("enterprise", enterprise);
+    localStorage.setItem("enterprise", JSON.stringify(enterprise));
     this.props.history.push("/dashboard");
   }
 

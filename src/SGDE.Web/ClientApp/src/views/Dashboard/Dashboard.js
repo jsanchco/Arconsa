@@ -95,7 +95,8 @@ class Dashboard extends Component {
 
   render() {
     const element = document.getElementById("container-bar");
-    if (element == null) {
+    const enterprise = JSON.parse(localStorage.getItem("enterprise"));
+    if (element == null || enterprise == null) {
       return (
         <Fragment>
           <Container id="container-bar" />
@@ -118,7 +119,7 @@ class Dashboard extends Component {
                     fontStyle: "italic",
                   }}
                 >
-                  ADECUA
+                  { enterprise.alias }
                 </h1>
               </div>
             </Col>

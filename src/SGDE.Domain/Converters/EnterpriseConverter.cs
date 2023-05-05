@@ -21,7 +21,9 @@ namespace SGDE.Domain.Converters
 
                 name = enterprise.Name,
                 alias = enterprise.Alias,
-                address = enterprise.Address
+                cif = enterprise.CIF,
+                address = enterprise.Address,
+                phoneNumber = enterprise.PhoneNumber
             };
 
             return enterpriseViewModel;
@@ -40,7 +42,9 @@ namespace SGDE.Domain.Converters
 
                     name = enterprise.Name,
                     alias = enterprise.Alias,
-                    address = enterprise.Address
+                    cif = enterprise.CIF,
+                    address = enterprise.Address,
+                    phoneNumber = enterprise.PhoneNumber
                 };
                 return model;
             })

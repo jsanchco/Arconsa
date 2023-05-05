@@ -13,15 +13,16 @@ import {
   showSpinner,
   hideSpinner,
 } from "@syncfusion/ej2-popups";
-import { getSettings, updateSettings } from "../../services";
-import { COMPANY_DATA } from "../../constants";
+import { getEnterprise, updateEnterprise } from "../../services";
 
 class BasicDataCompany extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      companyName: "",
+      id: JSON.parse(localStorage.getItem("enterprise")).id,
+      name: "",
+      alias: "",
       cif: "",
       address: "",
       phoneNumber: "",
@@ -39,14 +40,16 @@ class BasicDataCompany extends Component {
       target: element,
     });
     showSpinner(element);
-    getSettings(COMPANY_DATA)
+
+    const enterpriseId = JSON.parse(localStorage.getItem("enterprise")).id;
+    getEnterprise(enterpriseId)
       .then((result) => {
-        const data = JSON.parse(result.data);
         this.setState({
-          companyName: data.companyName,
-          cif: data.cif,
-          address: data.address,
-          phoneNumber: data.phoneNumber,
+          companyName: result.name,
+          alias: result.alias,
+          cif: result.cif,
+          address: result.address,
+          phoneNumber: result.phoneNumber,
         });
         hideSpinner(element);
       })
@@ -58,11 +61,33 @@ class BasicDataCompany extends Component {
         });
         hideSpinner(element);
       });
+
+    // getSettings(COMPANY_DATA)
+    //   .then((result) => {
+    //     const data = JSON.parse(result.data);
+    //     this.setState({
+    //       companyName: data.companyName,
+    //       cif: data.cif,
+    //       address: data.address,
+    //       phoneNumber: data.phoneNumber,
+    //     });
+    //     hideSpinner(element);
+    //   })
+    //   .catch((error) => {
+    //     this.props.showMessage({
+    //       statusText: error,
+    //       responseText: error,
+    //       type: "danger",
+    //     });
+    //     hideSpinner(element);
+    //   });
   }
 
   getCompanyData() {
     return {
-      companyName: this.state.companyName,
+      id: this.state.id,
+      name: this.state.companyName,
+      alias: this.state.alias,
       cif: this.state.cif,
       address: this.state.address,
       phoneNumber: this.state.phoneNumber,
@@ -85,7 +110,7 @@ class BasicDataCompany extends Component {
       target: element,
     });
     showSpinner(element);
-    updateSettings(this.getCompanyData())
+    updateEnterprise(this.getCompanyData())
       .then(() => {
         hideSpinner(element);
       })
@@ -117,8 +142,8 @@ class BasicDataCompany extends Component {
                 <Label htmlFor="name">Nombre de la Empresa</Label>
                 <Input
                   type="text"
-                  id="companyName"
-                  name="companyName"
+                  id="name"
+                  name="name"
                   placeholder="nombre de la empresa"
                   required
                   value={this.state.companyName}
@@ -168,6 +193,22 @@ class BasicDataCompany extends Component {
                 />
               </FormGroup>
             </Col>
+          </Row>
+          <Row>
+            <Col xs="3">
+              <FormGroup>
+                <Label htmlFor="alias">Nombre corto</Label>
+                <Input
+                  type="text"
+                  id="alias"
+                  name="alias"
+                  placeholder="nombre corto"
+                  required
+                  value={this.state.alias}
+                  onChange={this.handleInputChange}
+                />
+              </FormGroup>
+            </Col>            
           </Row>
           <Row>
             <Col xs="12" style={{ marginTop: "20px", textAlign: "right" }}>
