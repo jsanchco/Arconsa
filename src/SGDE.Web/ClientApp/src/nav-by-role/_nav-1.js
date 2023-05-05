@@ -9,8 +9,8 @@ export default {
       },
     },
     {
-      name: "ADECUA",
-      url: "/ADECUA/DetailCompany",
+      name: JSON.parse(localStorage.getItem("enterprise")).alias,
+      url: "/Enterprise/DetailCompany",
     },
     {
       name: "Configuración",

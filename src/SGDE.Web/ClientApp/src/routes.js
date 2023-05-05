@@ -43,8 +43,8 @@ const DetailEmployee = React.lazy(() => import('./views/Employees/detail-employe
 const BasicData = React.lazy(() => import('./views/Employees/basic-data'));
 const AddNewEmployee = React.lazy(() => import('./views/Employees/add-new'));
 
-const DetailCompany = React.lazy(() => import('./views/ADECUA/detail-company'));
-const BasicDataCompany = React.lazy(() => import('./views/ADECUA/basic-data-company'));
+const DetailCompany = React.lazy(() => import('./views/Enterprise/detail-company'));
+const BasicDataCompany = React.lazy(() => import('./views/Enterprise/basic-data-company'));
 const Roles = React.lazy(() => import('./views/Settings/roles'));
 const Professions = React.lazy(() => import('./views/Settings/professions'));
 const TypesDocument = React.lazy(() => import('./views/Settings/types-document'));
@@ -128,8 +128,8 @@ const routes = [
   { path: '/employees/detailemployee/:id', exact: true, name: 'Detalle Trabajador', component: DetailEmployee },
   { path: '/employees/basicdata', exact: true, name: 'Datos Básicos', component: BasicData },
   { path: '/employees/add-new', exact: true, name: 'Datos Básicos', component: AddNewEmployee },
-  { path: '/ADECUA/detailcompany', exact: true, name: 'ADECUA', component: DetailCompany},
-  { path: '/ADECUA/basicdatacompany', exact: true, name: 'ADECUA', component: BasicDataCompany},
+  { path: '/Enterprise/detailcompany', exact: true, name: 'ADECUA', component: DetailCompany},
+  { path: '/Enterprise/basicdatacompany', exact: true, name: 'ADECUA', component: BasicDataCompany},
   // { path: '/settings/company/indirect-costs', exact: true, name: 'Gastos Indirectos', component: IndirectCosts },
   { path: '/settings/roles', exact: true, name: 'Roles', component: Roles },
   { path: '/settings/professions', exact: true, name: 'Puestos de Trabajo', component: Professions },

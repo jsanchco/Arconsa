@@ -35,7 +35,9 @@ namespace SGDE.Domain.Supervisor
 
                 Name = newEnterpriseViewModel.name,
                 Alias = newEnterpriseViewModel.alias,
-                Address = newEnterpriseViewModel.address 
+                CIF = newEnterpriseViewModel.cif,
+                Address = newEnterpriseViewModel.address,
+                PhoneNumber = newEnterpriseViewModel.phoneNumber
             };
 
             _enterpriseRepsitory.Add(enterprise);
@@ -56,7 +58,9 @@ namespace SGDE.Domain.Supervisor
 
             enterprise.Name = enterpriseViewModel.name;
             enterprise.Alias = enterpriseViewModel.alias;
+            enterprise.CIF = enterpriseViewModel.cif;
             enterprise.Address = enterpriseViewModel.address;
+            enterprise.PhoneNumber = enterpriseViewModel.phoneNumber;
 
             return _enterpriseRepsitory.Update(enterprise);
         }
