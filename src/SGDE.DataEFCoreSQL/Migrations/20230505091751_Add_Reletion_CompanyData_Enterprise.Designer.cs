@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SGDE.DataEFCoreSQL;
 
 namespace SGDE.DataEFCoreSQL.Migrations
 {
     [DbContext(typeof(EFContextSQL))]
-    partial class EFContextSQLModelSnapshot : ModelSnapshot
+    [Migration("20230505091751_Add_Reletion_CompanyData_Enterprise")]
+    partial class Add_Reletion_CompanyData_Enterprise
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -506,9 +508,6 @@ namespace SGDE.DataEFCoreSQL.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("EnterpriseId")
-                        .HasColumnType("int");
-
                     b.Property<string>("IPAddress")
                         .HasColumnType("nvarchar(max)");
 
@@ -516,9 +515,6 @@ namespace SGDE.DataEFCoreSQL.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("EnterpriseId")
-                        .HasName("IFK_Enterprise_IndirectCost");
 
                     b.ToTable("IndirectCost");
                 });
@@ -1649,14 +1645,6 @@ namespace SGDE.DataEFCoreSQL.Migrations
                         .HasConstraintName("FK__Embargo__UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("SGDE.Domain.Entities.IndirectCost", b =>
-                {
-                    b.HasOne("SGDE.Domain.Entities.Enterprise", "Enterprise")
-                        .WithMany("IndirectCosts")
-                        .HasForeignKey("EnterpriseId")
-                        .HasConstraintName("FK__IndirectCost__EnerpriseId");
                 });
 
             modelBuilder.Entity("SGDE.Domain.Entities.Invoice", b =>

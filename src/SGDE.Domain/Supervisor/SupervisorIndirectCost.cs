@@ -8,9 +8,9 @@ namespace SGDE.Domain.Supervisor
 {
     public partial class Supervisor
     {
-        public QueryResult<IndirectCostViewModel> GetAllIndirectCost(int skip = 0, int take = 0, string filter = null)
+        public QueryResult<IndirectCostViewModel> GetAllIndirectCost(int skip = 0, int take = 0, int enterpriseId = 0, string filter = null)
         {
-            var queryResult = _indirectCostRepository.GetAll(skip, take, filter);
+            var queryResult = _indirectCostRepository.GetAll(skip, take, enterpriseId, filter);
             return new QueryResult<IndirectCostViewModel>
             {
                 Data = IndirectCostConverter.ConvertList(queryResult.Data),
@@ -33,6 +33,7 @@ namespace SGDE.Domain.Supervisor
                 ModifiedDate = null,
                 IPAddress = newIndirectCostViewModel.iPAddress,
 
+                EnterpriseId = newIndirectCostViewModel.enterpriseId,
                 Date = new DateTime(newIndirectCostViewModel.year, newIndirectCostViewModel.month, 1),
                 Description = newIndirectCostViewModel.description,
                 AccountNumber = newIndirectCostViewModel.accountNumber,
@@ -55,6 +56,7 @@ namespace SGDE.Domain.Supervisor
             indirectCost.ModifiedDate = DateTime.Now;
             indirectCost.IPAddress = indirectCostViewModel.iPAddress;
 
+            indirectCost.EnterpriseId = indirectCostViewModel.enterpriseId;
             indirectCost.Date = new DateTime(indirectCostViewModel.year, indirectCostViewModel.month, 1);
             indirectCost.Description = indirectCostViewModel.description;
             indirectCost.AccountNumber = indirectCostViewModel.accountNumber;
@@ -90,7 +92,8 @@ namespace SGDE.Domain.Supervisor
                     1),
                     AccountNumber = indirectCost.AccountNumber,
                     Amount = indirectCost.Amount,
-                    Description = indirectCost.Description                    
+                    Description = indirectCost.Description,
+                    EnterpriseId = indirectCost.EnterpriseId
                 };
                 var resultAdd = _indirectCostRepository.Add(newIndirectCost);
                 if (resultAdd == null && result)

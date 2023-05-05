@@ -252,11 +252,12 @@
         }
 
         [HttpPost("updateDB")]
+        [AllowAnonymous]
         public object UpdateDB()
         {
             try
             {
-                //_supervisor.Update();
+                _supervisor.Update();
 
                 return new ObjectResult(true);
             }

@@ -216,17 +216,27 @@
             //    }
             //}
 
-            var invoices = _invoiceRepository.GetAll().Data.Where(x => x.ClientId == null);
-            foreach (var invoice in invoices) 
+            //var invoices = _invoiceRepository.GetAll().Data.Where(x => x.ClientId == null);
+            //foreach (var invoice in invoices) 
+            //{
+            //    if (invoice.WorkId.HasValue)
+            //    {
+            //        var clientId = _workRepository.GetById(invoice.WorkId.Value).ClientId;
+            //        invoice.ClientId = clientId;
+            //        _invoiceRepository.Update(invoice);
+            //    }
+            //}
+
+            var indirectCosts = _indirectCostRepository.GetAll().Data.Where(x => x.EnterpriseId == null);
+            foreach (var indirectCost in indirectCosts)
             {
-                if (invoice.WorkId.HasValue)
+                if (!indirectCost.EnterpriseId.HasValue)
                 {
-                    var clientId = _workRepository.GetById(invoice.WorkId.Value).ClientId;
-                    invoice.ClientId = clientId;
-                    _invoiceRepository.Update(invoice);
+                    var findIndirectCost = _indirectCostRepository.GetById(indirectCost.Id);
+                    findIndirectCost.EnterpriseId = 1;
+                    _indirectCostRepository.Update(findIndirectCost);
                 }
             }
-
         }
     }
 }

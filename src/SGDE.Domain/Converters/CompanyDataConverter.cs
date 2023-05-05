@@ -19,6 +19,7 @@ namespace SGDE.Domain.Converters
                 modifiedDate = companyData.ModifiedDate,
                 iPAddress = companyData.IPAddress,
 
+                enterpriseId = companyData.EnterpriseId,
                 reference = companyData.Reference,                
                 description = companyData.Description,
                 observations = companyData.Observations,
@@ -26,7 +27,7 @@ namespace SGDE.Domain.Converters
                 dateWarning = companyData.DateWarning,
                 dateExpiration = companyData.DateExpiration,
                 typeFile = companyData.TypeFile,
-                file = companyData.File    ,
+                file = companyData.File,
                 fileName = companyData.FileName
             };
 
@@ -44,6 +45,7 @@ namespace SGDE.Domain.Converters
                     modifiedDate = companyData.ModifiedDate,
                     iPAddress = companyData.IPAddress,
 
+                    enterpriseId = companyData.EnterpriseId,
                     reference = companyData.Reference,
                     description = companyData.Description,
                     observations = companyData.Observations,

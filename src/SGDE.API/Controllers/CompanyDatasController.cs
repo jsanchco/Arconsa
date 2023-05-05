@@ -42,11 +42,12 @@ namespace SGDE.API.Controllers
             try
             {
                 var queryString = Request.Query;
+                var enterpriseId = Convert.ToInt32(queryString["enterpriseId"]);
                 var skip = Convert.ToInt32(queryString["$skip"]);
                 var take = Convert.ToInt32(queryString["$top"]);
                 var filter = Util.Helper.getSearch(queryString["$filter"]);
 
-                var queryResult = _supervisor.GetAllCompanyData(skip, take, filter);
+                var queryResult = _supervisor.GetAllCompanyData(skip, take, enterpriseId, filter);
                 return new { Items = queryResult.Data, Count = queryResult.Count };
             }
             catch (Exception ex)

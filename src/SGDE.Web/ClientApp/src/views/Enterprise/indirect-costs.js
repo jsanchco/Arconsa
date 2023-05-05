@@ -16,7 +16,7 @@ import {
   AggregateDirective,
   AggregatesDirective,
 } from "@syncfusion/ej2-react-grids";
-import { DataManager, WebApiAdaptor } from "@syncfusion/ej2-data";
+import { DataManager, WebApiAdaptor, Query } from "@syncfusion/ej2-data";
 import { config, COMPANY_INDIRECTCOSTS } from "../../constants";
 import { L10n } from "@syncfusion/ej2-base";
 import data from "../../locales/locale.json";
@@ -115,6 +115,9 @@ class IndirectCosts extends Component {
     this.groupOptions = {
       columns: ["key"],
     };
+
+    this.query = new Query()
+      .addParams("enterpriseId", JSON.parse(localStorage.getItem("enterprise")).id);
   }
 
   actionFailure(args) {
@@ -211,8 +214,14 @@ class IndirectCosts extends Component {
   }
 
   updateInidrectCosts(yearOld, monthOld, yearNew, monthNew) {
-    addIndirectCosts({ yearOld, monthOld, yearNew, monthNew }).then(() => {
-      this.grid.refresh();
+    addIndirectCosts({ 
+        enterpriseId: JSON.parse(localStorage.getItem("enterprise")).id,
+        yearOld, 
+        monthOld, 
+        yearNew, 
+        monthNew })
+      .then(() => {
+        this.grid.refresh();
     });
   }
 
@@ -266,6 +275,7 @@ class IndirectCosts extends Component {
                 rowSelected={this.rowSelected}
                 ref={(g) => (this.grid = g)}
                 groupSettings={this.groupOptions}
+                query={this.query}
               >
                 <ColumnsDirective>
                   <ColumnDirective

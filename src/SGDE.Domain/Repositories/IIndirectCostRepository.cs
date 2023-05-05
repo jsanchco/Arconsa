@@ -7,7 +7,7 @@ namespace SGDE.Domain.Repositories
 {
     public interface IIndirectCostRepository
     {
-        QueryResult<IndirectCost> GetAll(int skip = 0, int take = 0, string filter = null);
+        QueryResult<IndirectCost> GetAll(int skip = 0, int take = 0, int enterpriseId = 0, string filter = null);
         List<IndirectCost> GetBetweeenDates(DateTime startDate, DateTime endDate);
         IndirectCost GetById(int id);
         IndirectCost Add(IndirectCost newIndirectCost);

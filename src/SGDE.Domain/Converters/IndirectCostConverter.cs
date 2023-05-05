@@ -23,6 +23,7 @@
                 modifiedDate = indirectCost.ModifiedDate,
                 iPAddress = indirectCost.IPAddress,
 
+                enterpriseId = indirectCost.EnterpriseId,
                 date = indirectCost.Date,
                 description = indirectCost.Description,
                 accountNumber = indirectCost.AccountNumber,
@@ -46,6 +47,7 @@
                     modifiedDate = indirectCost.ModifiedDate,
                     iPAddress = indirectCost.IPAddress,
 
+                    enterpriseId = indirectCost.EnterpriseId,
                     date = indirectCost.Date,
                     description = indirectCost.Description,
                     accountNumber = indirectCost.AccountNumber,
