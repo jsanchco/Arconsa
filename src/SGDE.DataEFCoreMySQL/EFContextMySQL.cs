@@ -46,6 +46,8 @@ namespace SGDE.DataEFCoreMySQL
         public virtual DbSet<Advance> Advance { get; set; }
         public virtual DbSet<WorkStatusHistory> WorkStatusHistory { get; set; }
         public virtual DbSet<InvoicePaymentHistory> InvoicePaymentHistory { get; set; }
+        public virtual DbSet<Enterprise> Enterprise { get; set; }
+        public virtual DbSet<UserEnterprise> UserEnterprise { get; set; }
 
         public static long InstanceCount;
 
@@ -83,6 +85,8 @@ namespace SGDE.DataEFCoreMySQL
             new IndirectCostConfiguration(modelBuilder.Entity<IndirectCost>());
             new AdvanceConfiguration(modelBuilder.Entity<Advance>());
             new InvoicePaymentHistoryConfiguration(modelBuilder.Entity<InvoicePaymentHistory>());
+            new EnterpriseConfiguration(modelBuilder.Entity<Enterprise>());
+            new UserEnterpriseConfiguration(modelBuilder.Entity<UserEnterprise>());
         }
 
         public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<EFContextMySQL>

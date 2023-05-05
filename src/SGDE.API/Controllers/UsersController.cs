@@ -118,6 +118,22 @@
             }
         }
 
+        // GET api/enterprise/5
+        [HttpGet("enterprise/{enterpriseId}")]
+        [AllowAnonymous]
+        public object GetByEnterprise(int enterpriseId)
+        {
+            try
+            {
+                return _supervisor.GetUsersByEnterpriseId(enterpriseId);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Exception: ");
+                return StatusCode(500, ex);
+            }
+        }
+
         // GET api/users/5/jesus
         [HttpGet("{id}/{name}")]
         public object Get(int id, string name)
@@ -235,7 +251,6 @@
             }
         }
 
-        [AllowAnonymous]
         [HttpPost("updateDB")]
         public object UpdateDB()
         {

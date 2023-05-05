@@ -75,7 +75,7 @@
                         professions = string.Join(',', user.UserProfessions?.Select(x => x.Profession?.Name)),
                         userProfessions = user.UserProfessions?.Select(x => x.ProfessionId).ToList(),
                         roleId = user.RoleId,
-                        roleName = user.Role.Name,
+                        roleName = user.Role?.Name,
                         workId = user.WorkId,
                         workName = user.Work?.Name,
                         clientId = user.ClientId,

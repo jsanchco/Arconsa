@@ -110,6 +110,13 @@ namespace SGDE.Domain.Supervisor
             };
         }
 
+        public List<UserViewModel> GetUsersByEnterpriseId(int enterpriseId)
+        {
+            var userViewModel = UserConverter.ConvertList(_userRepository.GetUsersByEnterpriseId(enterpriseId));
+
+            return userViewModel;
+        }
+
         public UserViewModel GetUserById(int id)
         {
             var userViewModel = UserConverter.Convert(_userRepository.GetById(id));

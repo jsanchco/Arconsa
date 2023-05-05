@@ -192,6 +192,16 @@
                 };
         }
 
+        public List<User> GetUsersByEnterpriseId(int enterpriseId)
+        {
+            return _context.UserEnterprise
+                .Include(x => x.User)
+                .Include(x => x.Enterprise)
+                .Where(x => x.EnterpriseId == enterpriseId)
+                .Select(x => x.User)
+                .ToList();
+        }
+
         public List<User> GetUsersByRole(List<int> roles)
         {
             return _context.User
