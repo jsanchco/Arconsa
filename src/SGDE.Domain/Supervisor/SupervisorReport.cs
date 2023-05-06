@@ -117,7 +117,7 @@
 
         public List<ReportVariousInfoViewModel> GetHoursByAllWork(ReportQueryAllViewModel reportAllViewModel)
         {
-            var works = _workRepository.GetAll(0, 0, null, 0);
+            var works = _workRepository.GetAll(0, 0, reportAllViewModel.enterpriseId, null, 0);
             var result = new List<ReportVariousInfoViewModel>();
             foreach (var work in works.Data)
             {
@@ -196,7 +196,7 @@
 
         public List<ReportVariousInfoViewModel> GetHoursByAllClient(ReportQueryAllViewModel reportAllViewModel)
         {
-            var clients = _clientRepository.GetAll(0, 0, true, null);
+            var clients = _clientRepository.GetAll(0, 0, reportAllViewModel.enterpriseId, true, null);
             var result = new List<ReportVariousInfoViewModel>();
             foreach (var client in clients.Data)
             {
@@ -276,7 +276,7 @@
         public List<InvoiceViewModel> GetAllInvoice(ReportQueryAllViewModel reportAllViewModel)
         {
             List<Invoice> invoices = !string.IsNullOrEmpty(reportAllViewModel.filter)
-                ? _invoiceRepository.GetAll(0, 0, reportAllViewModel.filter).Data
+                ? _invoiceRepository.GetAll(0, 0, reportAllViewModel.enterpriseId, reportAllViewModel.filter).Data
                 : _invoiceRepository.GetAll().Data;
             var result = InvoiceConverter.ConvertList(invoices.Where(x => x.IssueDate >= reportAllViewModel.startDate &&
                                                                           x.IssueDate <= reportAllViewModel.endDate)

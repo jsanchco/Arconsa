@@ -49,10 +49,11 @@
                 var skip = Convert.ToInt32(queryString["$skip"]);
                 var take = Convert.ToInt32(queryString["$top"]);
                 var filter = Util.Helper.getSearch(queryString["$filter"]);
+                var enterpriseId = Convert.ToInt32(queryString["enterpriseId"]);
                 var workId = Convert.ToInt32(queryString["workId"]);
                 var clientId = Convert.ToInt32(queryString["clientId"]);
 
-                var queryResult = _supervisor.GetAllInvoice(skip, take, filter, workId, clientId);
+                var queryResult = _supervisor.GetAllInvoice(skip, take, enterpriseId, filter, workId, clientId);
 
                 return new { Items = queryResult.Data, Count = queryResult.Count };
             }

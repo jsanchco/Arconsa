@@ -237,6 +237,17 @@
                     _indirectCostRepository.Update(findIndirectCost);
                 }
             }
+
+            var clients = _clientRepository.GetAll().Data.Where(x => x.EnterpriseId == null);
+            foreach (var client in clients) 
+            { 
+                if (!client.EnterpriseId.HasValue)
+                {
+                    var findClient = _clientRepository.GetById(client.Id);
+                    findClient.EnterpriseId = 1;
+                    _clientRepository.Update(findClient);
+                }
+            }
         }
     }
 }

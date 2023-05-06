@@ -41,7 +41,8 @@
                 typeClientName = client.TypeClient?.Name,
                 email = client.Email,
                 emailInvoice = client.EmailInvoice,
-                active= client.Active
+                active= client.Active,
+                enterpriseId = client.EnterpriseId
             };
 
             if (!string.IsNullOrEmpty(client.Cif))
@@ -89,7 +90,8 @@
                     typeClientName = client.TypeClient?.Name,
                     email = client.Email,
                     emailInvoice = client.EmailInvoice,
-                    active = client.Active
+                    active = client.Active,
+                    enterpriseId = client.EnterpriseId
                 };
 
                 if (!string.IsNullOrEmpty(client.Cif))

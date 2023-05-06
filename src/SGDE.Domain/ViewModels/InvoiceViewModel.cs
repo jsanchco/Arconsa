@@ -28,6 +28,7 @@
         public double remaining => total - totalPayment;
         public bool isPaid => totalPayment >= total;
 
+        public int? enterpriseId { get; set; }
         public int? workId { get; set; }
         public string workName { get; set; }
         public int? clientId { get; set; }

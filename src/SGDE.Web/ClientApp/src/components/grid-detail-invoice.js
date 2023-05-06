@@ -175,6 +175,7 @@ class GridDetailInvoice extends Component {
 
     if (args.item.id === "PreviousInvoice") {
       importPreviousInvoice({
+        enterpriseId: JSON.parse(localStorage.getItem("enterprise")).id,
         workId: this.props.workId,
         startDate: this.props.startDate,
       }).then((result) => {

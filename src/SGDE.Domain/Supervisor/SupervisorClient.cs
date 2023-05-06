@@ -18,9 +18,9 @@
             return ClientConverter.ConvertList(_clientRepository.GetAllWithoutFilter());
         }
 
-        public QueryResult<ClientViewModel> GetAllClient(int skip = 0, int take = 0, bool allClients = true, string filter = null)
+        public QueryResult<ClientViewModel> GetAllClient(int skip = 0, int take = 0, int enterpriseId = 0, bool allClients = true, string filter = null)
         {
-            var queryResult = _clientRepository.GetAll(skip, take, allClients, filter);
+            var queryResult = _clientRepository.GetAll(skip, take, enterpriseId, allClients, filter);
             return new QueryResult<ClientViewModel>
             {
                 Data = ClientConverter.ConvertList(queryResult.Data),
@@ -52,7 +52,8 @@
                 AccountNumber = newClientViewModel.accountNumber,
                 Email = newClientViewModel.email,
                 EmailInvoice = newClientViewModel.emailInvoice,
-                Active = newClientViewModel.active
+                Active = newClientViewModel.active,
+                EnterpriseId = newClientViewModel.enterpriseId
             };
 
             _clientRepository.Add(client);
@@ -81,6 +82,7 @@
             client.Email = clientViewModel.email;
             client.EmailInvoice = clientViewModel.emailInvoice;
             client.Active = clientViewModel.active;
+            client.EnterpriseId = clientViewModel.enterpriseId;
 
             return _clientRepository.Update(client);
         }

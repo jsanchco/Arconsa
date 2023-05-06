@@ -15,5 +15,6 @@
         public string email { get; set; }
         public string emailInvoice { get; set; }
         public bool active { get; set; }
+        public int ? enterpriseId { get; set; }
     }
 }

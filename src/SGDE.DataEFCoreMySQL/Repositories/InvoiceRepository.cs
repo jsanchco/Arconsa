@@ -44,7 +44,7 @@
             return GetById(id) != null;
         }
 
-        public QueryResult<Invoice> GetAll(int skip = 0, int take = 0, string filter = null, int workId = 0, int clientId = 0)
+        public QueryResult<Invoice> GetAll(int skip = 0, int take = 0, int enterpriseId = 0, string filter = null, int workId = 0, int clientId = 0)
         {
             List<Invoice> data = new List<Invoice>();
 

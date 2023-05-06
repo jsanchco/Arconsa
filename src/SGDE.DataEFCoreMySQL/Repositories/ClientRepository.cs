@@ -51,17 +51,18 @@
                 .ToList();
         }
 
-        public QueryResult<Client> GetAll(int skip = 0, int take = 0, bool allClients = true, string filter = null)
+        public QueryResult<Client> GetAll(int skip = 0, int take = 0, int enterpriseId = 0, bool allClients = true, string filter = null)
         {
-            var data = allClients ? 
+            var data = allClients ?
                 _context.Client
                     .Include(x => x.ClientResponsibles)
                     .Include(x => x.ProfessionInClients)
-                    .ToList() : 
+                    .Where(x => x.EnterpriseId == enterpriseId)
+                    .ToList() :
                 _context.Client
                     .Include(x => x.ClientResponsibles)
                     .Include(x => x.ProfessionInClients)
-                    .Where(x => x.Active)
+                    .Where(x => x.EnterpriseId == enterpriseId && x.Active)
                     .ToList();
 
             if (!string.IsNullOrEmpty(filter))
