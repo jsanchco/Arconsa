@@ -13,9 +13,9 @@
 
     public partial class Supervisor
     {
-        public QueryResult<InvoiceViewModel> GetAllInvoice(int skip = 0, int take = 0, string filter = null, int workId = 0, int clientId = 0)
+        public QueryResult<InvoiceViewModel> GetAllInvoice(int skip = 0, int take = 0, int enterpriseId = 0, string filter = null, int workId = 0, int clientId = 0)
         {
-            var queryResult = _invoiceRepository.GetAll(skip, take, filter, workId, clientId);
+            var queryResult = _invoiceRepository.GetAll(skip, take, enterpriseId, filter, workId, clientId);
             return new QueryResult<InvoiceViewModel>
             {
                 Data = InvoiceConverter.ConvertList(queryResult.Data),
@@ -202,7 +202,7 @@
 
         public InvoiceViewModel GetPreviousInvoice(InvoiceViewModel invoiceViewModel)
         {
-            var invoices = GetAllInvoice(0, 0, null, (int)invoiceViewModel.workId, 0);
+            var invoices = GetAllInvoice(0, 0, invoiceViewModel.enterpriseId.Value, null, (int)invoiceViewModel.workId, 0);
             var invoice = invoices.Data
                 .Where(x => x.endDate < invoiceViewModel.startDate)
                 .OrderByDescending(x => x.startDate)

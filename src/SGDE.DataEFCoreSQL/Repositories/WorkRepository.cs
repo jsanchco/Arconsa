@@ -40,7 +40,7 @@
             return GetById(id) != null;
         }
 
-        public QueryResult<Work> GetAll(int skip = 0, int take = 0, string filter = null, int clientId = 0, bool showCloseWorks = true)
+        public QueryResult<Work> GetAll(int skip = 0, int take = 0, int enterpriseId = 0, string filter = null, int clientId = 0, bool showCloseWorks = true)
         {
             List<Work> data;
 
@@ -62,6 +62,13 @@
                         .Include(x => x.WorkStatusHistories)
                         .Where(x => x.ClientId == clientId)
                         .ToList();
+            }
+
+            if (enterpriseId != 0)
+            {
+                data = data
+                    .Where(x => x.Client.EnterpriseId == enterpriseId)
+                    .ToList();
             }
 
             if (!showCloseWorks)

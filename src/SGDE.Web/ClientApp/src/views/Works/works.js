@@ -140,10 +140,9 @@ class Works extends Component {
       type: "Single",
     };
 
-    this.query = new Query().addParams(
-      "showCloseWorks",
-      this.state.showCloseWorks
-    );
+    this.query = new Query()
+      .addParams("enterpriseId", JSON.parse(localStorage.getItem("enterprise")).id)
+      .addParams("showCloseWorks", this.state.showCloseWorks);
 
     this.editClients = {
       params: {

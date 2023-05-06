@@ -82,7 +82,9 @@ class Clients extends Component {
     this.dataBound = this.dataBound.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
 
-    this.query = new Query().addParams("allClients", this.state.showAllClients);
+    this.query = new Query()
+      .addParams("enterpriseId", JSON.parse(localStorage.getItem("enterprise")).id)
+      .addParams("allClients", this.state.showAllClients);
   }
 
   clickHandler(args) {
@@ -243,6 +245,11 @@ class Clients extends Component {
                   dataBound={this.dataBound}
                 >
                   <ColumnsDirective>
+                    <ColumnDirective 
+                      field="enterpriseId" 
+                      defaultValue={JSON.parse(localStorage.getItem("enterprise")).id}
+                      visible={false}
+                    />                  
                     <ColumnDirective
                       field="id"
                       headerText="Id"

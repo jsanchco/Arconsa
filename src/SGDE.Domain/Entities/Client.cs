@@ -25,6 +25,9 @@
         public int? TypeClientId { get; set; }
         public virtual TypeClient TypeClient { get; set; }
 
+        public int? EnterpriseId { get; set; }
+        public virtual Enterprise Enterprise { get; set; }
+
         public virtual ICollection<User> ClientResponsibles { get; set; } = new HashSet<User>();
         public virtual ICollection<Work> Works { get; set; } = new HashSet<Work>();
         public virtual ICollection<ProfessionInClient> ProfessionInClients { get; set; } = new HashSet<ProfessionInClient>();

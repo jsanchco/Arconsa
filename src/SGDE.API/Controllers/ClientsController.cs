@@ -47,12 +47,13 @@ namespace SGDE.API.Controllers
             try
             {
                 var queryString = Request.Query;
+                var enterpriseId = Convert.ToInt32(queryString["enterpriseId"]);
                 var allClients = Convert.ToBoolean(queryString["allClients"]);
                 var skip = Convert.ToInt32(queryString["$skip"]);
                 var take = Convert.ToInt32(queryString["$top"]);
                 var filter = Util.Helper.getSearch(queryString["$filter"]);
 
-                var queryResult = _supervisor.GetAllClient(skip, take, allClients, filter);
+                var queryResult = _supervisor.GetAllClient(skip, take, enterpriseId, allClients, filter);
 
                 return new { Items = queryResult.Data, Count = queryResult.Count };
             }

@@ -22,6 +22,7 @@ class BasicDataClient extends Component {
     getClient(this.props.clientId).then((result) => {
       this.setState({
         id: result.id,
+        enterpriseId: result.enterpriseId,
         idClient: result.idClient,
         name: result.name,
         cif: result.cif,
@@ -65,6 +66,7 @@ class BasicDataClient extends Component {
   getClient() {
     return {
       id: this.state.id,
+      enterpriseId: this.state.enterpriseId,
       idClient: this.state.idClient,
       name: this.state.name,
       cif: this.state.cif,

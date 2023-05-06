@@ -49,7 +49,7 @@
                 .ToList();
         }
 
-        public QueryResult<Client> GetAll(int skip = 0, int take = 0, bool allClients = true, string filter = null)
+        public QueryResult<Client> GetAll(int skip = 0, int take = 0, int enterpriseId = 0, bool allClients = true, string filter = null)
         {
             var data = allClients ?
                 _context.Client
@@ -61,6 +61,13 @@
                     .Include(x => x.ProfessionInClients)
                     .Where(x => x.Active)
                     .ToList();
+
+            if (enterpriseId != 0)
+            {
+                data = data
+                    .Where(x => x.EnterpriseId == enterpriseId)
+                    .ToList();
+            }
 
             if (!string.IsNullOrEmpty(filter))
             {

@@ -62,7 +62,8 @@ class Dashboard extends Component {
       showSpinner(element);
     }
 
-    getWorksOpenedAndClosed()
+    const enterpriseId = JSON.parse(localStorage.getItem("enterprise")).id;
+    getWorksOpenedAndClosed(enterpriseId)
       .then((result) => {
         this.setState({
           chartWorksOpenedAndClosed: result.chart,

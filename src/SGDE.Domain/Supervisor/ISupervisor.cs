@@ -57,7 +57,7 @@ namespace SGDE.Domain.Supervisor
 
         List<ClientViewModel> GetAllClientWithoutFilter();
         List<ClientViewModel> GetAllClientLite(string filter = null);
-        QueryResult<ClientViewModel> GetAllClient(int skip = 0, int take = 0, bool allClients = true, string filter = null);
+        QueryResult<ClientViewModel> GetAllClient(int skip = 0, int take = 0, int enterpriseId = 0, bool allClients = true, string filter = null);
         ClientViewModel GetClientById(int id);
         ClientViewModel AddClient(ClientViewModel newClientViewModel);
         bool UpdateClient(ClientViewModel clientViewModel);
@@ -101,7 +101,7 @@ namespace SGDE.Domain.Supervisor
 
         List<WorkViewModel> GetAllWorkLite(string filter = null, int clientId = 0);
         List<WorkReportViewModel> GetAllWorkBetweenDates(ReportQueryAllViewModel reportQueryAllViewModel);
-        QueryResult<WorkViewModel> GetAllWork(int skip = 0, int take = 0, string filter = null, int clientId = 0, bool showCloseWorks = true);
+        QueryResult<WorkViewModel> GetAllWork(int skip = 0, int take = 0, int enterpriseId = 0, string filter = null, int clientId = 0, bool showCloseWorks = true);
         WorkViewModel GetWorkById(int id);
         List<UserViewModel> GetUsersByWork(int workId, int state = 0); // 0 = all, 1 = asset, 2 = no asset
         WorkViewModel AddWork(WorkViewModel newWorkViewModel);
@@ -237,7 +237,7 @@ namespace SGDE.Domain.Supervisor
 
         #region Invoice
 
-        QueryResult<InvoiceViewModel> GetAllInvoice(int skip = 0, int take = 0, string filter = null, int workId = 0, int clientId = 0);
+        QueryResult<InvoiceViewModel> GetAllInvoice(int skip = 0, int take = 0, int enterpriseId = 0, string filter = null, int workId = 0, int clientId = 0);
         InvoiceViewModel GetInvoiceById(int id);
         Invoice GetInvoice(int invoiceId);
         InvoiceViewModel AddInvoice(InvoiceViewModel newInvoiceViewModel);
@@ -418,9 +418,9 @@ namespace SGDE.Domain.Supervisor
 
         #region Dashboard
 
-        (BarItemViewModel costsAndIncomes, BarItemViewModel worksOpenedAndClosed) GetDashboard();
+        (BarItemViewModel costsAndIncomes, BarItemViewModel worksOpenedAndClosed) GetDashboard(int enterpriseId);
         BarItemViewModel GetCostsAndIncomes();
-        BarItemViewModel GetWorksOpenedAndClosed();
+        BarItemViewModel GetWorksOpenedAndClosed(int enterpriseId);
 
         #endregion
 

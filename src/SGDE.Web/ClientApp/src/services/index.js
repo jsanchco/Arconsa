@@ -2207,9 +2207,10 @@ export const getCostsAndIncomes = () => {
   });
 };
 
-export const getWorksOpenedAndClosed = () => {
+export const getWorksOpenedAndClosed = (enterpriseId) => {
   return new Promise((resolve, reject) => {
-    const url = `${config.URL_API}/${DASHBOARD_WORKSOPENEDANDCLOSED}`;
+    let url = `${config.URL_API}/${DASHBOARD_WORKSOPENEDANDCLOSED}`;
+    url = url.replace("{0}", enterpriseId);
     fetch(url, {
       headers: {
         Accept: "text/plain",

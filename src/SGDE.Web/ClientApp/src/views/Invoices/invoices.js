@@ -17,7 +17,7 @@ import {
   showSpinner,
   hideSpinner,
 } from "@syncfusion/ej2-popups";
-import { DataManager, WebApiAdaptor } from "@syncfusion/ej2-data";
+import { DataManager, WebApiAdaptor, Query } from "@syncfusion/ej2-data";
 import {
   config,
   INVOICES,
@@ -38,7 +38,6 @@ import {
   printInvoice,
   billPaymentWithAmount,
 } from "../../services";
-import { Query } from "@syncfusion/ej2-data";
 import { DropDownList } from "@syncfusion/ej2-dropdowns";
 import { DialogComponent } from "@syncfusion/ej2-react-popups";
 import { DialogUtility } from "@syncfusion/ej2-popups";
@@ -84,6 +83,9 @@ class Invoices extends Component {
     this.workBudgetsElem = null;
     this.worksBudgetObj = null;
     this.loadFirstTime = true;
+
+    this.queryInvoices = new Query()
+      .addParams("enterpriseId", JSON.parse(localStorage.getItem("enterprise")).id);
 
     this.toolbarOptions = [
       "Add",
@@ -1124,6 +1126,7 @@ class Invoices extends Component {
                   detailDataBound={this.detailDataBound}
                   invoiceIdCleaned={null}
                   beforePrint={this.beforePrint}
+                  query={this.queryInvoices}
                 >
                   <ColumnsDirective>
                     <ColumnDirective

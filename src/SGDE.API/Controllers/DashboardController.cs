@@ -21,12 +21,12 @@ namespace SGDE.API.Controllers
         }
 
         [HttpGet]
-        [Route("")]
-        public object Get()
+        [Route("{enterpriseId}")]
+        public object Get(int enterpriseId)
         {
             try
             {
-                var result = _supervisor.GetDashboard();
+                var result = _supervisor.GetDashboard(enterpriseId);
 
                 return new { data = result };
             }
@@ -55,12 +55,12 @@ namespace SGDE.API.Controllers
         }
 
         [HttpGet]
-        [Route("worksopenedandclosed")]
-        public object GetWorksOpenedAndClosed()
+        [Route("enterprise/{enterpriseId}/worksopenedandclosed")]
+        public object GetWorksOpenedAndClosed(int enterpriseId)
         {
             try
             {
-                var result = _supervisor.GetWorksOpenedAndClosed();
+                var result = _supervisor.GetWorksOpenedAndClosed(enterpriseId);
 
                 return new { chart = result };
             }
@@ -72,8 +72,8 @@ namespace SGDE.API.Controllers
         }
 
         [HttpGet]
-        [Route("dates/{start}/{end}")]
-        public object GetWithDates(string start, string end)
+        [Route("enterprise/{enterpriseId}/dates/{start}/{end}")]
+        public object GetWithDates(int enterpriseId, string start, string end)
         {
             try
             {
@@ -87,7 +87,7 @@ namespace SGDE.API.Controllers
                 var take = Convert.ToInt32(queryString["$top"]);
                 var filter = Util.Helper.getSearch(queryString["$filter"]);
 
-                var queryResult = _supervisor.GetAllClient(skip, take, true, filter);
+                var queryResult = _supervisor.GetAllClient(skip, take, enterpriseId, true, filter);
 
                 return new { Items = queryResult.Data, Count = queryResult.Count };
             }

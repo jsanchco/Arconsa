@@ -21,6 +21,9 @@
 
             entity.HasIndex(x => x.PromoterId).HasName("IFK_Promoter_Client");
             entity.HasOne(u => u.Promoter).WithMany(a => a.Clients).HasForeignKey(a => a.PromoterId).HasConstraintName("FK__Client__PromoterId");
+
+            entity.HasIndex(x => x.EnterpriseId).HasName("IFK_Enterprise_Client");
+            entity.HasOne(u => u.Enterprise).WithMany(a => a.Clients).HasForeignKey(a => a.EnterpriseId).HasConstraintName("FK__Client__EnerpriseId");
         }
     }
 }

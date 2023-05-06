@@ -14,9 +14,9 @@
 
     public partial class Supervisor
     {
-        public (BarItemViewModel costsAndIncomes, BarItemViewModel worksOpenedAndClosed) GetDashboard()
+        public (BarItemViewModel costsAndIncomes, BarItemViewModel worksOpenedAndClosed) GetDashboard(int enterpriseId)
         {
-            return (costsAndIncomes: GetCostsAndIncomes(), worksOpenedAndClosed: GetWorksOpenedAndClosed());
+            return (costsAndIncomes: GetCostsAndIncomes(), worksOpenedAndClosed: GetWorksOpenedAndClosed(enterpriseId));
         }
 
         public BarItemViewModel GetCostsAndIncomes_old()
@@ -544,7 +544,7 @@
             return result;
         }
 
-        public BarItemViewModel GetWorksOpenedAndClosed()
+        public BarItemViewModel GetWorksOpenedAndClosed(int enterpriseId)
         {
             DateTime startDate;
             DateTime endDate;
