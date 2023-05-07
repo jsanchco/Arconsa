@@ -5,7 +5,7 @@ namespace SGDE.Domain.Repositories
 {
     public interface ILibraryRepository
     {
-        QueryResult<Library> GetAll(int skip = 0, int take = 0, string filter = null);
+        QueryResult<Library> GetAll(int enterpriseId = 0, int skip = 0, int take = 0, string filter = null);
         Library GetById(int id);
         Library Add(Library newLibrary);
         bool Update(Library library);

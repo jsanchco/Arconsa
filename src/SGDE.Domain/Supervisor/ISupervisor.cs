@@ -367,7 +367,7 @@ namespace SGDE.Domain.Supervisor
 
         #region Library
 
-        QueryResult<LibraryViewModel> GetAllLibrary(int skip = 0, int take = 0, string filter = null);
+        QueryResult<LibraryViewModel> GetAllLibrary(int enterpriseId = 0, int skip = 0, int take = 0, string filter = null);
         LibraryViewModel GetLibraryById(int id);
         LibraryViewModel AddLibrary(LibraryViewModel newLibraryViewModel);
         bool UpdateLibrary(LibraryViewModel libraryViewModel);

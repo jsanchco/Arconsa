@@ -8,9 +8,9 @@ namespace SGDE.Domain.Supervisor
 {
     public partial class Supervisor
     {
-        public QueryResult<LibraryViewModel> GetAllLibrary(int skip = 0, int take = 0, string filter = null)
+        public QueryResult<LibraryViewModel> GetAllLibrary(int enterpriseId = 0, int skip = 0, int take = 0, string filter = null)
         {
-            var queryResult = _libraryRepository.GetAll(skip, take, filter);
+            var queryResult = _libraryRepository.GetAll(enterpriseId, skip, take, filter);
             return new QueryResult<LibraryViewModel>
             {
                 Data = LibraryConverter.ConvertList(queryResult.Data),
@@ -33,6 +33,7 @@ namespace SGDE.Domain.Supervisor
                 ModifiedDate = null,
                 IPAddress = newLibraryViewModel.iPAddress,
 
+                EnterpriseId = newLibraryViewModel.enterpriseId,
                 Reference = newLibraryViewModel.reference,
                 Department = newLibraryViewModel.department,
                 Description = newLibraryViewModel.description,
@@ -60,6 +61,7 @@ namespace SGDE.Domain.Supervisor
             library.ModifiedDate = DateTime.Now;
             library.IPAddress = libraryViewModel.iPAddress;
 
+            library.EnterpriseId = libraryViewModel.enterpriseId;
             library.Reference = libraryViewModel.reference;
             library.Department = libraryViewModel.department;
             library.Description = libraryViewModel.description;

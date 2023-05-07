@@ -35,13 +35,23 @@ namespace SGDE.DataEFCoreSQL.Repositories
             return GetById(id) != null;
         }
 
-        public QueryResult<Library> GetAll(int skip = 0, int take = 0, string filter = null)
+        public QueryResult<Library> GetAll(int enterpriseId = 0, int skip = 0, int take = 0, string filter = null)
         {
             List<Library> data;
 
-            data = _context.Library
-                .OrderBy(x => x.Date)
-                .ToList();
+            if (enterpriseId == 0)
+            {
+                data = _context.Library
+                    .OrderBy(x => x.Date)
+                    .ToList();
+            }
+            else
+            {
+                data = _context.Library
+                    .Where(x => x.EnterpriseId == enterpriseId)
+                    .OrderBy(x => x.Date)
+                    .ToList();
+            }
 
             if (!string.IsNullOrEmpty(filter) && filter.Equals("activo", StringComparison.InvariantCultureIgnoreCase))
             {

@@ -12,6 +12,9 @@ namespace SGDE.DataEFCoreSQL.Configurations
 
             entity.HasKey(x => x.Id);
             entity.Property(x => x.Id).ValueGeneratedOnAdd();
+
+            entity.HasIndex(x => x.EnterpriseId).HasName("IFK_Enterprise_Library");
+            entity.HasOne(u => u.Enterprise).WithMany(a => a.Libraries).HasForeignKey(a => a.EnterpriseId).HasConstraintName("FK__Library__EnerpriseId");
         }
     }
 }
