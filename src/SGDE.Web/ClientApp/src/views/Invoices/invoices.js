@@ -179,9 +179,10 @@ class Invoices extends Component {
         return this.clientsObj.value;
       },
       write: (args) => {
+        const enterpriseId = JSON.parse(localStorage.getItem("enterprise")).id;
         let clients = new DataManager({
           adaptor: new WebApiAdaptor(),
-          url: `${config.URL_API}/${CLIENTSLITE}`,
+          url: `${config.URL_API}/${CLIENTSLITE}?enterpriseId=${enterpriseId}`,
           headers: [
             { Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) },
           ],
@@ -231,9 +232,10 @@ class Invoices extends Component {
         return this.worksObj.value;
       },
       write: (args) => {
+        const enterpriseId = JSON.parse(localStorage.getItem("enterprise")).id;
         let works = new DataManager({
           adaptor: new WebApiAdaptor(),
-          url: `${config.URL_API}/${WORKSLITE}`,
+          url: `${config.URL_API}/${WORKSLITE}?enterpriseId=${enterpriseId}`,
           headers: [
             { Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) },
           ],

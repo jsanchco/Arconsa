@@ -232,14 +232,15 @@
             return true;
         }
 
-        public List<Work> GetAllLite(string filter = null, int clientId = 0)
+        public List<Work> GetAllLite(int enterpriseId = 0, string filter = null, int clientId = 0)
         {
             List<Work> data;
 
             if (clientId != 0)
             {
                 data = _context.Work
-                    .Where(x => x.ClientId == clientId)
+                    .Include(x => x.Client)
+                    .Where(x => x.Client.EnterpriseId == enterpriseId && x.ClientId == clientId)
                     .Select(x => new Work
                     {
                         Id = x.Id,
@@ -249,6 +250,8 @@
             else
             {
                 data = _context.Work
+                    .Include(x => x.Client)
+                    .Where(x => x.Client.EnterpriseId == enterpriseId && x.ClientId == clientId)
                     .Select(x => new Work
                     {
                         Id = x.Id,

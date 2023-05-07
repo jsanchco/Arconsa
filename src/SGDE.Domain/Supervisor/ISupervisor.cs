@@ -56,7 +56,7 @@ namespace SGDE.Domain.Supervisor
         #region Client
 
         List<ClientViewModel> GetAllClientWithoutFilter();
-        List<ClientViewModel> GetAllClientLite(string filter = null);
+        List<ClientViewModel> GetAllClientLite(int enterpriseId = 0, string filter = null);
         QueryResult<ClientViewModel> GetAllClient(int skip = 0, int take = 0, int enterpriseId = 0, bool allClients = true, string filter = null);
         ClientViewModel GetClientById(int id);
         ClientViewModel AddClient(ClientViewModel newClientViewModel);
@@ -99,7 +99,7 @@ namespace SGDE.Domain.Supervisor
 
         #region Work
 
-        List<WorkViewModel> GetAllWorkLite(string filter = null, int clientId = 0);
+        List<WorkViewModel> GetAllWorkLite(int enterpriseId = 0, string filter = null, int clientId = 0);
         List<WorkReportViewModel> GetAllWorkBetweenDates(ReportQueryAllViewModel reportQueryAllViewModel);
         QueryResult<WorkViewModel> GetAllWork(int skip = 0, int take = 0, int enterpriseId = 0, string filter = null, int clientId = 0, bool showCloseWorks = true);
         WorkViewModel GetWorkById(int id);

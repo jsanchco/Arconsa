@@ -92,9 +92,9 @@
             return _clientRepository.Delete(id);
         }
 
-        public List<ClientViewModel> GetAllClientLite(string filter = null)
+        public List<ClientViewModel> GetAllClientLite(int enterpriseId = 0, string filter = null)
         {
-            return ClientConverter.ConvertList(_clientRepository.GetAllLite(filter));
+            return ClientConverter.ConvertList(_clientRepository.GetAllLite(enterpriseId, filter));
         }
     }
 }
