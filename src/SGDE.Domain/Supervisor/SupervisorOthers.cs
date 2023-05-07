@@ -259,6 +259,17 @@
                     _userRepository.Update(findUser);
                 }
             }
+
+            var libraries = _libraryRepository.GetAll().Data.Where(x => x.EnterpriseId == null);
+            foreach (var library in libraries)
+            {
+                if (!library.EnterpriseId.HasValue)
+                {
+                    var findLibrary = _libraryRepository.GetById(library.Id);
+                    findLibrary.EnterpriseId = 1;
+                    _libraryRepository.Update(findLibrary);
+                }
+            }
         }
     }
 }

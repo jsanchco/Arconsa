@@ -19,6 +19,7 @@ namespace SGDE.Domain.Converters
                 modifiedDate = library.ModifiedDate,
                 iPAddress = library.IPAddress,
 
+                enterpriseId = library.EnterpriseId,
                 reference = library.Reference,
                 department = library.Department,
                 description = library.Description,
@@ -44,6 +45,7 @@ namespace SGDE.Domain.Converters
                     modifiedDate = library.ModifiedDate,
                     iPAddress = library.IPAddress,
 
+                    enterpriseId = library.EnterpriseId,
                     reference = library.Reference,
                     department = library.Department,
                     description = library.Description,

@@ -4,6 +4,7 @@ namespace SGDE.Domain.ViewModels
 {
     public class LibraryViewModel : BaseEntityViewModel
     {
+        public int? enterpriseId { get; set; }
         public string reference { get; set; }
         public string department { get; set; }
         public string description { get; set; }

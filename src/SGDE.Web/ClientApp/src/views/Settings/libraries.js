@@ -79,7 +79,9 @@ class Libraries extends Component {
 
     this.template = this.gridTemplate;
 
-    this.query = new Query().addParams("userId", props.userId);
+    this.query = new Query()
+      .addParams("enterpriseId", JSON.parse(localStorage.getItem("enterprise")).id)
+      .addParams("userId", props.userId);
 
     this.selectionSettings = {
       checkboxMode: "ResetOnRowClick",
