@@ -215,9 +215,9 @@
             return _workRepository.Delete(id);
         }
 
-        public List<WorkViewModel> GetAllWorkLite(string filter = null, int clientId = 0)
+        public List<WorkViewModel> GetAllWorkLite(int enterpriseId = 0, string filter = null, int clientId = 0)
         {
-            return WorkConverter.ConvertListLite(_workRepository.GetAllLite(filter, clientId));
+            return WorkConverter.ConvertListLite(_workRepository.GetAllLite(enterpriseId, filter, clientId));
         }
 
         public WorkClosePageViewModel GetWorkClosePage(int workId)

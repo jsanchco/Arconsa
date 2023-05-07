@@ -125,9 +125,10 @@
             return true;
         }
 
-        public List<Client> GetAllLite(string filter = null)
+        public List<Client> GetAllLite(int enterpriseId = 0, string filter = null)
         {
             var data = _context.Client
+                .Where(x => x.EnterpriseId == enterpriseId)
                 .Select(x => new Client
                 {
                     Id = x.Id,
