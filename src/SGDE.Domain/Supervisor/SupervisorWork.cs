@@ -26,7 +26,10 @@
 
         public List<WorkReportViewModel> GetAllWorkBetweenDates(ReportQueryAllViewModel reportQueryAllViewModel)
         {
-            var works = _workRepository.GetAllWorkBetweenDates(reportQueryAllViewModel.startDate, reportQueryAllViewModel.endDate);
+            var works = _workRepository.GetAllWorkBetweenDates(
+                reportQueryAllViewModel.enterpriseId,
+                reportQueryAllViewModel.startDate, 
+                reportQueryAllViewModel.endDate);
 
             var result = new List<WorkReportViewModel>();
             if (works != null)

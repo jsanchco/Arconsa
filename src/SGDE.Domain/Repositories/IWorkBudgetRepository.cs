@@ -9,7 +9,7 @@ namespace SGDE.Domain.Repositories
         List<WorkBudget> GetAllLite(int workId = 0);
         List<WorkBudget> GetAll(int workId = 0, int workBudgetDataId = 0);
         WorkBudget GetById(int id);
-        List<WorkBudget> GetByDates(DateTime? startDate = null, DateTime? endDate = null, string filter = null);
+        List<WorkBudget> GetByDates(int enterpriseId = 0, DateTime? startDate = null, DateTime? endDate = null, string filter = null);
         WorkBudget Add(WorkBudget newWorkBudget);
         bool Update(WorkBudget workBudget);
         bool Delete(int id);

@@ -18,7 +18,7 @@
             return workerHiringViewModel;
         }
 
-        public QueryResult<WorkerHiringViewModel> GetAllWorkerHiring(int skip = 0, int take = 0, string filter = null, int workId = 0)
+        public QueryResult<WorkerHiringViewModel> GetAllWorkerHiring(int skip = 0, int take = 0, int enterpriseId = 0, string filter = null, int workId = 0)
         {
             #region Old code
             //var workersInUsers = _userRepository.GetUsersByRole(new List<int> { 3 });
@@ -98,7 +98,7 @@
             //};
             #endregion
 
-            var workersWithSS = _userRepository.GetWorkersWithSS();
+            var workersWithSS = _userRepository.GetWorkersWithSS(enterpriseId);
             if (!string.IsNullOrEmpty(filter))
             {
                 workersWithSS = workersWithSS

@@ -105,10 +105,11 @@
                 };
         }
 
-        public List<Work> GetAllLiteIncludeClient(string filter = null)
+        public List<Work> GetAllLiteIncludeClient(int enterpriseId = 0, string filter = null)
         {
             var result = _context.Work
                     .Include(x => x.Client)
+                    .Where(x => x.Client.EnterpriseId == enterpriseId)
                     .ToList();
 
             if (!string.IsNullOrEmpty(filter))
@@ -124,14 +125,14 @@
             return result;
         }
 
-        public List<Work> GetAllWorkBetweenDates(DateTime startDate, DateTime endDate)
+        public List<Work> GetAllWorkBetweenDates(int enterpriseId, DateTime startDate, DateTime endDate)
         {
             List<Work> data = _context.Work
                         .Include(x => x.Client)
                         .Include(x => x.Invoices)
                         .Include(x => x.WorkBudgets)
                         .Include(x => x.WorkStatusHistories)
-                        .Where(x => x.OpenDate >= startDate && x.OpenDate <= endDate)
+                        .Where(x => x.Client.EnterpriseId == enterpriseId && x.OpenDate >= startDate && x.OpenDate <= endDate)
                         .ToList();
 
             return data;

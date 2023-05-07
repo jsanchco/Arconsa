@@ -117,7 +117,7 @@
                 .ToList();
         }
 
-        public List<DailySigning> GetHistoryBetweenDates(DateTime startDate, DateTime endDate)
+        public List<DailySigning> GetHistoryBetweenDates(int enterpriseId, DateTime startDate, DateTime endDate)
         {
             //return _context.DailySigning
             //    .Include(x => x.UserHiring)
@@ -142,7 +142,8 @@
                 .Include(x => x.UserHiring)
                 .ThenInclude(y => y.User)
                 .ThenInclude(ux => ux.CostWorkers)
-                .Where(x => x.StartHour >= startDate && x.StartHour <= endDate)
+                .Where(x => x.UserHiring.User.EnterpriseId == enterpriseId && 
+                            x.StartHour >= startDate && x.StartHour <= endDate)
                 .ToList();
         }
 

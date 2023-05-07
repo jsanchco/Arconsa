@@ -16,10 +16,10 @@
     {
         public (BarItemViewModel costsAndIncomes, BarItemViewModel worksOpenedAndClosed) GetDashboard(int enterpriseId)
         {
-            return (costsAndIncomes: GetCostsAndIncomes(), worksOpenedAndClosed: GetWorksOpenedAndClosed(enterpriseId));
+            return (costsAndIncomes: GetCostsAndIncomes(enterpriseId), worksOpenedAndClosed: GetWorksOpenedAndClosed(enterpriseId));
         }
 
-        public BarItemViewModel GetCostsAndIncomes_old()
+        public BarItemViewModel GetCostsAndIncomes_old(int enterpriseId)
         {
             DateTime startDate;
             DateTime endDate;
@@ -39,7 +39,7 @@
                 datasets = new List<Dataset>()
             };
 
-            var costsWorkers = GetHistoryBetweenDates(new DateTime(actualYear - 1, 1, 1), new DateTime(actualYear, 12, 31));
+            var costsWorkers = GetHistoryBetweenDates(enterpriseId, new DateTime(actualYear - 1, 1, 1), new DateTime(actualYear, 12, 31));
 
             // año Pasado
             var dataCostsPrevious = new List<double>();
@@ -48,13 +48,13 @@
             endDate = new DateTime(actualYear - 1, 3, 31);
             //var sumCostsWorkers = 0.0;
             var sumCostsWorkers = costsWorkers.Where(x => x.dtStartDate >= startDate && x.dtStartDate <= endDate).Sum(x => x.priceTotal);
-            var sumCostsProviders = _workCostRepository.GetBetweenDates(startDate, endDate).Sum(x => x.TaxBase);
-            var sumCostsIndirects = _indirectCostRepository.GetBetweeenDates(startDate, endDate).Sum(x => x.Amount);
+            var sumCostsProviders = _workCostRepository.GetBetweenDates(enterpriseId, startDate, endDate).Sum(x => x.TaxBase);
+            var sumCostsIndirects = _indirectCostRepository.GetBetweeenDates(enterpriseId, startDate, endDate).Sum(x => x.Amount);
             var sumCosts = sumCostsWorkers + sumCostsProviders + sumCostsIndirects;
             dataCostsPrevious.Add(Math.Round(sumCosts, 2));
 
             var dataInvoicesPrevious = new List<double>();
-            var invoices = _invoiceRepository.GetAllBetweenDates(startDate, endDate);
+            var invoices = _invoiceRepository.GetAllBetweenDates(enterpriseId, startDate, endDate);
             var sumInvoices = invoices.Sum(x => x.TaxBase);
             dataInvoicesPrevious.Add(Math.Round(sumInvoices, 2));
 
@@ -63,12 +63,12 @@
             startDate = new DateTime(actualYear - 1, 4, 1);
             endDate = new DateTime(actualYear - 1, 6, 30);
             sumCostsWorkers = costsWorkers.Where(x => x.dtStartDate >= startDate && x.dtStartDate <= endDate).Sum(x => x.priceTotal);
-            sumCostsProviders = _workCostRepository.GetBetweenDates(startDate, endDate).Sum(x => x.TaxBase);
-            sumCostsIndirects = _indirectCostRepository.GetBetweeenDates(startDate, endDate).Sum(x => x.Amount);
+            sumCostsProviders = _workCostRepository.GetBetweenDates(enterpriseId, startDate, endDate).Sum(x => x.TaxBase);
+            sumCostsIndirects = _indirectCostRepository.GetBetweeenDates(enterpriseId, startDate, endDate).Sum(x => x.Amount);
             sumCosts = sumCostsWorkers + sumCostsProviders + sumCostsIndirects;
             dataCostsPrevious.Add(Math.Round(sumCosts, 2));
 
-            invoices = _invoiceRepository.GetAllBetweenDates(startDate, endDate);
+            invoices = _invoiceRepository.GetAllBetweenDates(enterpriseId, startDate, endDate);
             sumInvoices = invoices.Sum(x => x.TaxBase);
             dataInvoicesPrevious.Add(Math.Round(sumInvoices, 2));
 
@@ -77,12 +77,12 @@
             startDate = new DateTime(actualYear - 1, 7, 1);
             endDate = new DateTime(actualYear - 1, 9, 30);
             sumCostsWorkers = costsWorkers.Where(x => x.dtStartDate >= startDate && x.dtStartDate <= endDate).Sum(x => x.priceTotal);
-            sumCostsProviders = _workCostRepository.GetBetweenDates(startDate, endDate).Sum(x => x.TaxBase);
-            sumCostsIndirects = _indirectCostRepository.GetBetweeenDates(startDate, endDate).Sum(x => x.Amount);
+            sumCostsProviders = _workCostRepository.GetBetweenDates(enterpriseId, startDate, endDate).Sum(x => x.TaxBase);
+            sumCostsIndirects = _indirectCostRepository.GetBetweeenDates(enterpriseId, startDate, endDate).Sum(x => x.Amount);
             sumCosts = sumCostsWorkers + sumCostsProviders + sumCostsIndirects;
             dataCostsPrevious.Add(Math.Round(sumCosts, 2));
 
-            invoices = _invoiceRepository.GetAllBetweenDates(startDate, endDate);
+            invoices = _invoiceRepository.GetAllBetweenDates(enterpriseId, startDate, endDate);
             sumInvoices = invoices.Sum(x => x.TaxBase);
             dataInvoicesPrevious.Add(Math.Round(sumInvoices, 2));
 
@@ -90,12 +90,12 @@
             startDate = new DateTime(actualYear - 1, 10, 1);
             endDate = new DateTime(actualYear - 1, 12, 31);
             sumCostsWorkers = costsWorkers.Where(x => x.dtStartDate >= startDate && x.dtStartDate <= endDate).Sum(x => x.priceTotal);
-            sumCostsProviders = _workCostRepository.GetBetweenDates(startDate, endDate).Sum(x => x.TaxBase);
-            sumCostsIndirects = _indirectCostRepository.GetBetweeenDates(startDate, endDate).Sum(x => x.Amount);
+            sumCostsProviders = _workCostRepository.GetBetweenDates(enterpriseId, startDate, endDate).Sum(x => x.TaxBase);
+            sumCostsIndirects = _indirectCostRepository.GetBetweeenDates(enterpriseId, startDate, endDate).Sum(x => x.Amount);
             sumCosts = sumCostsWorkers + sumCostsProviders + sumCostsIndirects;
             dataCostsPrevious.Add(Math.Round(sumCosts, 2));
 
-            invoices = _invoiceRepository.GetAllBetweenDates(startDate, endDate);
+            invoices = _invoiceRepository.GetAllBetweenDates(enterpriseId, startDate, endDate);
             sumInvoices = invoices.Sum(x => x.TaxBase);
             dataInvoicesPrevious.Add(Math.Round(sumInvoices, 2));
 
@@ -125,13 +125,13 @@
             startDate = new DateTime(actualYear, 1, 1);
             endDate = new DateTime(actualYear, 3, 31);
             sumCostsWorkers = costsWorkers.Where(x => x.dtStartDate >= startDate && x.dtStartDate <= endDate).Sum(x => x.priceTotal);
-            sumCostsProviders = _workCostRepository.GetBetweenDates(startDate, endDate).Sum(x => x.TaxBase);
-            sumCostsIndirects = _indirectCostRepository.GetBetweeenDates(startDate, endDate).Sum(x => x.Amount);
+            sumCostsProviders = _workCostRepository.GetBetweenDates(enterpriseId, startDate, endDate).Sum(x => x.TaxBase);
+            sumCostsIndirects = _indirectCostRepository.GetBetweeenDates(enterpriseId, startDate, endDate).Sum(x => x.Amount);
             sumCosts = sumCostsWorkers + sumCostsProviders + sumCostsIndirects;
             dataCostsActual.Add(Math.Round(sumCosts, 2));
 
             var dataInvoicesActual = new List<double>();
-            invoices = _invoiceRepository.GetAllBetweenDates(startDate, endDate);
+            invoices = _invoiceRepository.GetAllBetweenDates(enterpriseId, startDate, endDate);
             sumInvoices = invoices.Sum(x => x.TaxBase);
             dataInvoicesActual.Add(Math.Round(sumInvoices, 2));
 
@@ -139,12 +139,12 @@
             startDate = new DateTime(actualYear, 4, 1);
             endDate = new DateTime(actualYear, 6, 30);
             sumCostsWorkers = costsWorkers.Where(x => x.dtStartDate >= startDate && x.dtStartDate <= endDate).Sum(x => x.priceTotal);
-            sumCostsProviders = _workCostRepository.GetBetweenDates(startDate, endDate).Sum(x => x.TaxBase);
-            sumCostsIndirects = _indirectCostRepository.GetBetweeenDates(startDate, endDate).Sum(x => x.Amount);
+            sumCostsProviders = _workCostRepository.GetBetweenDates(enterpriseId, startDate, endDate).Sum(x => x.TaxBase);
+            sumCostsIndirects = _indirectCostRepository.GetBetweeenDates(enterpriseId, startDate, endDate).Sum(x => x.Amount);
             sumCosts = sumCostsWorkers + sumCostsProviders + sumCostsIndirects;
             dataCostsActual.Add(Math.Round(sumCosts, 2));
 
-            invoices = _invoiceRepository.GetAllBetweenDates(startDate, endDate);
+            invoices = _invoiceRepository.GetAllBetweenDates(enterpriseId, startDate, endDate);
             sumInvoices = invoices.Sum(x => x.TaxBase);
             dataInvoicesActual.Add(Math.Round(sumInvoices, 2));
 
@@ -152,12 +152,12 @@
             startDate = new DateTime(actualYear, 7, 1);
             endDate = new DateTime(actualYear, 9, 30);
             sumCostsWorkers = costsWorkers.Where(x => x.dtStartDate >= startDate && x.dtStartDate <= endDate).Sum(x => x.priceTotal);
-            sumCostsProviders = _workCostRepository.GetBetweenDates(startDate, endDate).Sum(x => x.TaxBase);
-            sumCostsIndirects = _indirectCostRepository.GetBetweeenDates(startDate, endDate).Sum(x => x.Amount);
+            sumCostsProviders = _workCostRepository.GetBetweenDates(enterpriseId, startDate, endDate).Sum(x => x.TaxBase);
+            sumCostsIndirects = _indirectCostRepository.GetBetweeenDates(enterpriseId, startDate, endDate).Sum(x => x.Amount);
             sumCosts = sumCostsWorkers + sumCostsProviders + sumCostsIndirects;
             dataCostsActual.Add(Math.Round(sumCosts, 2));
 
-            invoices = _invoiceRepository.GetAllBetweenDates(startDate, endDate);
+            invoices = _invoiceRepository.GetAllBetweenDates(enterpriseId, startDate, endDate);
             sumInvoices = invoices.Sum(x => x.TaxBase);
             dataInvoicesActual.Add(Math.Round(sumInvoices, 2));
 
@@ -165,12 +165,12 @@
             startDate = new DateTime(actualYear, 10, 1);
             endDate = new DateTime(actualYear, 12, 31);
             sumCostsWorkers = costsWorkers.Where(x => x.dtStartDate >= startDate && x.dtStartDate <= endDate).Sum(x => x.priceTotal);
-            sumCostsProviders = _workCostRepository.GetBetweenDates(startDate, endDate).Sum(x => x.TaxBase);
-            sumCostsIndirects = _indirectCostRepository.GetBetweeenDates(startDate, endDate).Sum(x => x.Amount);
+            sumCostsProviders = _workCostRepository.GetBetweenDates(enterpriseId, startDate, endDate).Sum(x => x.TaxBase);
+            sumCostsIndirects = _indirectCostRepository.GetBetweeenDates(enterpriseId, startDate, endDate).Sum(x => x.Amount);
             sumCosts = sumCostsWorkers + sumCostsProviders + sumCostsIndirects;
             dataCostsActual.Add(Math.Round(sumCosts, 2));
 
-            invoices = _invoiceRepository.GetAllBetweenDates(startDate, endDate);
+            invoices = _invoiceRepository.GetAllBetweenDates(enterpriseId, startDate, endDate);
             sumInvoices = invoices.Sum(x => x.TaxBase);
             dataInvoicesActual.Add(Math.Round(sumInvoices, 2));
 
@@ -195,7 +195,7 @@
             return result;
         }
 
-        public BarItemViewModel GetCostsAndIncomes()
+        public BarItemViewModel GetCostsAndIncomes(int enterpriseId)
         {
             DateTime startDate;
             DateTime endDate;
@@ -215,7 +215,7 @@
                 datasets = new List<Dataset>()
             };
 
-            var costsWorkers = GetHistoryBetweenDates(new DateTime(actualYear - 1, 1, 1), new DateTime(actualYear, 12, 31));
+            var costsWorkers = GetHistoryBetweenDates(enterpriseId, new DateTime(actualYear - 1, 1, 1), new DateTime(actualYear, 12, 31));
 
             // año Pasado
             var dataCostsPrevious = new List<double>();
@@ -224,13 +224,13 @@
             endDate = new DateTime(actualYear - 1, 3, 31, 23, 59, 59);
             var sumCostsWorkers = 0.0;
             //var sumCostsWorkers = costsWorkers.Where(x => x.dtStartDate >= startDate && x.dtStartDate <= endDate).Sum(x => x.priceTotal);
-            var sumCostsProviders = _workCostRepository.GetBetweenDates(startDate, endDate).Sum(x => x.TaxBase);
-            var sumCostsIndirects = _indirectCostRepository.GetBetweeenDates(startDate, endDate).Sum(x => x.Amount);
+            var sumCostsProviders = _workCostRepository.GetBetweenDates(enterpriseId, startDate, endDate).Sum(x => x.TaxBase);
+            var sumCostsIndirects = _indirectCostRepository.GetBetweeenDates(enterpriseId, startDate, endDate).Sum(x => x.Amount);
             var sumCosts = sumCostsWorkers + sumCostsProviders + sumCostsIndirects;
             dataCostsPrevious.Add(Math.Round(sumCosts, 2));
 
             var dataInvoicesPrevious = new List<double>();
-            var invoices = _invoiceRepository.GetAllBetweenDates(startDate, endDate);
+            var invoices = _invoiceRepository.GetAllBetweenDates(enterpriseId, startDate, endDate);
             var sumInvoices = invoices.Sum(x => x.TaxBase);
             dataInvoicesPrevious.Add(Math.Round(sumInvoices, 2));
 
@@ -239,12 +239,12 @@
             startDate = new DateTime(actualYear - 1, 4, 1);
             endDate = new DateTime(actualYear - 1, 6, 30, 23, 59, 59);
             sumCostsWorkers = 0;
-            sumCostsProviders = _workCostRepository.GetBetweenDates(startDate, endDate).Sum(x => x.TaxBase);
-            sumCostsIndirects = _indirectCostRepository.GetBetweeenDates(startDate, endDate).Sum(x => x.Amount);
+            sumCostsProviders = _workCostRepository.GetBetweenDates(enterpriseId, startDate, endDate).Sum(x => x.TaxBase);
+            sumCostsIndirects = _indirectCostRepository.GetBetweeenDates(enterpriseId, startDate, endDate).Sum(x => x.Amount);
             sumCosts = sumCostsWorkers + sumCostsProviders + sumCostsIndirects;
             dataCostsPrevious.Add(Math.Round(sumCosts, 2));
 
-            invoices = _invoiceRepository.GetAllBetweenDates(startDate, endDate);
+            invoices = _invoiceRepository.GetAllBetweenDates(enterpriseId, startDate, endDate);
             sumInvoices = invoices.Sum(x => x.TaxBase);
             dataInvoicesPrevious.Add(Math.Round(sumInvoices, 2));
 
@@ -253,12 +253,12 @@
             startDate = new DateTime(actualYear - 1, 7, 1);
             endDate = new DateTime(actualYear - 1, 9, 30, 23, 59, 59);
             sumCostsWorkers = 0;
-            sumCostsProviders = _workCostRepository.GetBetweenDates(startDate, endDate).Sum(x => x.TaxBase);
-            sumCostsIndirects = _indirectCostRepository.GetBetweeenDates(startDate, endDate).Sum(x => x.Amount);
+            sumCostsProviders = _workCostRepository.GetBetweenDates(enterpriseId, startDate, endDate).Sum(x => x.TaxBase);
+            sumCostsIndirects = _indirectCostRepository.GetBetweeenDates(enterpriseId, startDate, endDate).Sum(x => x.Amount);
             sumCosts = sumCostsWorkers + sumCostsProviders + sumCostsIndirects;
             dataCostsPrevious.Add(Math.Round(sumCosts, 2));
 
-            invoices = _invoiceRepository.GetAllBetweenDates(startDate, endDate);
+            invoices = _invoiceRepository.GetAllBetweenDates(enterpriseId, startDate, endDate);
             sumInvoices = invoices.Sum(x => x.TaxBase);
             dataInvoicesPrevious.Add(Math.Round(sumInvoices, 2));
 
@@ -266,12 +266,12 @@
             startDate = new DateTime(actualYear - 1, 10, 1);
             endDate = new DateTime(actualYear - 1, 12, 31, 23, 59, 59);
             sumCostsWorkers = 0;
-            sumCostsProviders = _workCostRepository.GetBetweenDates(startDate, endDate).Sum(x => x.TaxBase);
-            sumCostsIndirects = _indirectCostRepository.GetBetweeenDates(startDate, endDate).Sum(x => x.Amount);
+            sumCostsProviders = _workCostRepository.GetBetweenDates(enterpriseId, startDate, endDate).Sum(x => x.TaxBase);
+            sumCostsIndirects = _indirectCostRepository.GetBetweeenDates(enterpriseId, startDate, endDate).Sum(x => x.Amount);
             sumCosts = sumCostsWorkers + sumCostsProviders + sumCostsIndirects;
             dataCostsPrevious.Add(Math.Round(sumCosts, 2));
 
-            invoices = _invoiceRepository.GetAllBetweenDates(startDate, endDate);
+            invoices = _invoiceRepository.GetAllBetweenDates(enterpriseId, startDate, endDate);
             sumInvoices = invoices.Sum(x => x.TaxBase);
             dataInvoicesPrevious.Add(Math.Round(sumInvoices, 2));
 
@@ -301,13 +301,13 @@
             startDate = new DateTime(actualYear, 1, 1);
             endDate = new DateTime(actualYear, 3, 31, 23, 59, 59);
             sumCostsWorkers = 0;
-            sumCostsProviders = _workCostRepository.GetBetweenDates(startDate, endDate).Sum(x => x.TaxBase);
-            sumCostsIndirects = _indirectCostRepository.GetBetweeenDates(startDate, endDate).Sum(x => x.Amount);
+            sumCostsProviders = _workCostRepository.GetBetweenDates(enterpriseId, startDate, endDate).Sum(x => x.TaxBase);
+            sumCostsIndirects = _indirectCostRepository.GetBetweeenDates(enterpriseId, startDate, endDate).Sum(x => x.Amount);
             sumCosts = sumCostsWorkers + sumCostsProviders + sumCostsIndirects;
             dataCostsActual.Add(Math.Round(sumCosts, 2));
 
             var dataInvoicesActual = new List<double>();
-            invoices = _invoiceRepository.GetAllBetweenDates(startDate, endDate);
+            invoices = _invoiceRepository.GetAllBetweenDates(enterpriseId, startDate, endDate);
             sumInvoices = invoices.Sum(x => x.TaxBase);
             dataInvoicesActual.Add(Math.Round(sumInvoices, 2));
 
@@ -315,12 +315,12 @@
             startDate = new DateTime(actualYear, 4, 1);
             endDate = new DateTime(actualYear, 6, 30, 23, 59, 59);
             sumCostsWorkers = 0;
-            sumCostsProviders = _workCostRepository.GetBetweenDates(startDate, endDate).Sum(x => x.TaxBase);
-            sumCostsIndirects = _indirectCostRepository.GetBetweeenDates(startDate, endDate).Sum(x => x.Amount);
+            sumCostsProviders = _workCostRepository.GetBetweenDates(enterpriseId, startDate, endDate).Sum(x => x.TaxBase);
+            sumCostsIndirects = _indirectCostRepository.GetBetweeenDates(enterpriseId, startDate, endDate).Sum(x => x.Amount);
             sumCosts = sumCostsWorkers + sumCostsProviders + sumCostsIndirects;
             dataCostsActual.Add(Math.Round(sumCosts, 2));
 
-            invoices = _invoiceRepository.GetAllBetweenDates(startDate, endDate);
+            invoices = _invoiceRepository.GetAllBetweenDates(enterpriseId, startDate, endDate);
             sumInvoices = invoices.Sum(x => x.TaxBase);
             dataInvoicesActual.Add(Math.Round(sumInvoices, 2));
 
@@ -328,12 +328,12 @@
             startDate = new DateTime(actualYear, 7, 1);
             endDate = new DateTime(actualYear, 9, 30, 23, 59, 59);
             sumCostsWorkers = 0;
-            sumCostsProviders = _workCostRepository.GetBetweenDates(startDate, endDate).Sum(x => x.TaxBase);
-            sumCostsIndirects = _indirectCostRepository.GetBetweeenDates(startDate, endDate).Sum(x => x.Amount);
+            sumCostsProviders = _workCostRepository.GetBetweenDates(enterpriseId, startDate, endDate).Sum(x => x.TaxBase);
+            sumCostsIndirects = _indirectCostRepository.GetBetweeenDates(enterpriseId, startDate, endDate).Sum(x => x.Amount);
             sumCosts = sumCostsWorkers + sumCostsProviders + sumCostsIndirects;
             dataCostsActual.Add(Math.Round(sumCosts, 2));
 
-            invoices = _invoiceRepository.GetAllBetweenDates(startDate, endDate);
+            invoices = _invoiceRepository.GetAllBetweenDates(enterpriseId, startDate, endDate);
             sumInvoices = invoices.Sum(x => x.TaxBase);
             dataInvoicesActual.Add(Math.Round(sumInvoices, 2));
 
@@ -341,12 +341,12 @@
             startDate = new DateTime(actualYear, 10, 1);
             endDate = new DateTime(actualYear, 12, 31, 23, 59, 59);
             sumCostsWorkers = 0;
-            sumCostsProviders = _workCostRepository.GetBetweenDates(startDate, endDate).Sum(x => x.TaxBase);
-            sumCostsIndirects = _indirectCostRepository.GetBetweeenDates(startDate, endDate).Sum(x => x.Amount);
+            sumCostsProviders = _workCostRepository.GetBetweenDates(enterpriseId, startDate, endDate).Sum(x => x.TaxBase);
+            sumCostsIndirects = _indirectCostRepository.GetBetweeenDates(enterpriseId, startDate, endDate).Sum(x => x.Amount);
             sumCosts = sumCostsWorkers + sumCostsProviders + sumCostsIndirects;
             dataCostsActual.Add(Math.Round(sumCosts, 2));
 
-            invoices = _invoiceRepository.GetAllBetweenDates(startDate, endDate);
+            invoices = _invoiceRepository.GetAllBetweenDates(enterpriseId, startDate, endDate);
             sumInvoices = invoices.Sum(x => x.TaxBase);
             dataInvoicesActual.Add(Math.Round(sumInvoices, 2));
 
@@ -371,7 +371,7 @@
             return result;
         }
 
-        public BarItemViewModel GetCostsAndIncomes_good()
+        public BarItemViewModel GetCostsAndIncomes_good(int enterpriseId)
         {
             DateTime startDate;
             DateTime endDate;
@@ -396,14 +396,14 @@
             // 1º Trimestre
             startDate = new DateTime(actualYear - 1, 1, 1);
             endDate = new DateTime(actualYear - 1, 3, 31);
-            var sumCostsWorkers = GetHistoryBetweenDates(startDate, endDate).Sum(x => x.priceTotal);
-            var sumCostsProviders = _workCostRepository.GetBetweenDates(startDate, endDate).Sum(x => x.TaxBase);
-            var sumCostsIndirects = _indirectCostRepository.GetBetweeenDates(startDate, endDate).Sum(x => x.Amount);
+            var sumCostsWorkers = GetHistoryBetweenDates(enterpriseId, startDate, endDate).Sum(x => x.priceTotal);
+            var sumCostsProviders = _workCostRepository.GetBetweenDates(enterpriseId, startDate, endDate).Sum(x => x.TaxBase);
+            var sumCostsIndirects = _indirectCostRepository.GetBetweeenDates(enterpriseId, startDate, endDate).Sum(x => x.Amount);
             var sumCosts = sumCostsWorkers + sumCostsProviders + sumCostsIndirects;
             dataCostsPrevious.Add(Math.Round(sumCosts, 2));
 
             var dataInvoicesPrevious = new List<double>();
-            var invoices = _invoiceRepository.GetAllBetweenDates(startDate, endDate);
+            var invoices = _invoiceRepository.GetAllBetweenDates(enterpriseId, startDate, endDate);
             var sumInvoices = invoices.Sum(x => x.TaxBase);
             dataInvoicesPrevious.Add(Math.Round(sumInvoices, 2));
 
@@ -411,13 +411,13 @@
             // 2º Trimestre
             startDate = new DateTime(actualYear - 1, 4, 1);
             endDate = new DateTime(actualYear - 1, 6, 30);
-            sumCostsWorkers = GetHistoryBetweenDates(startDate, endDate).Sum(x => x.priceTotal);
-            sumCostsProviders = _workCostRepository.GetBetweenDates(startDate, endDate).Sum(x => x.TaxBase);
-            sumCostsIndirects = _indirectCostRepository.GetBetweeenDates(startDate, endDate).Sum(x => x.Amount);
+            sumCostsWorkers = GetHistoryBetweenDates(enterpriseId, startDate, endDate).Sum(x => x.priceTotal);
+            sumCostsProviders = _workCostRepository.GetBetweenDates(enterpriseId, startDate, endDate).Sum(x => x.TaxBase);
+            sumCostsIndirects = _indirectCostRepository.GetBetweeenDates(enterpriseId, startDate, endDate).Sum(x => x.Amount);
             sumCosts = sumCostsWorkers + sumCostsProviders + sumCostsIndirects;
             dataCostsPrevious.Add(Math.Round(sumCosts, 2));
 
-            invoices = _invoiceRepository.GetAllBetweenDates(startDate, endDate);
+            invoices = _invoiceRepository.GetAllBetweenDates(enterpriseId, startDate, endDate);
             sumInvoices = invoices.Sum(x => x.TaxBase);
             dataInvoicesPrevious.Add(Math.Round(sumInvoices, 2));
 
@@ -425,26 +425,26 @@
             // 3º Trimestre
             startDate = new DateTime(actualYear - 1, 7, 1);
             endDate = new DateTime(actualYear - 1, 9, 30);
-            sumCostsWorkers = GetHistoryBetweenDates(startDate, endDate).Sum(x => x.priceTotal);
-            sumCostsProviders = _workCostRepository.GetBetweenDates(startDate, endDate).Sum(x => x.TaxBase);
-            sumCostsIndirects = _indirectCostRepository.GetBetweeenDates(startDate, endDate).Sum(x => x.Amount);
+            sumCostsWorkers = GetHistoryBetweenDates(enterpriseId, startDate, endDate).Sum(x => x.priceTotal);
+            sumCostsProviders = _workCostRepository.GetBetweenDates(enterpriseId, startDate, endDate).Sum(x => x.TaxBase);
+            sumCostsIndirects = _indirectCostRepository.GetBetweeenDates(enterpriseId, startDate, endDate).Sum(x => x.Amount);
             sumCosts = sumCostsWorkers + sumCostsProviders + sumCostsIndirects;
             dataCostsPrevious.Add(Math.Round(sumCosts, 2));
 
-            invoices = _invoiceRepository.GetAllBetweenDates(startDate, endDate);
+            invoices = _invoiceRepository.GetAllBetweenDates(enterpriseId, startDate, endDate);
             sumInvoices = invoices.Sum(x => x.TaxBase);
             dataInvoicesPrevious.Add(Math.Round(sumInvoices, 2));
 
             // 4º Trimestre
             startDate = new DateTime(actualYear - 1, 10, 1);
             endDate = new DateTime(actualYear - 1, 12, 31);
-            sumCostsWorkers = GetHistoryBetweenDates(startDate, endDate).Sum(x => x.priceTotal);
-            sumCostsProviders = _workCostRepository.GetBetweenDates(startDate, endDate).Sum(x => x.TaxBase);
-            sumCostsIndirects = _indirectCostRepository.GetBetweeenDates(startDate, endDate).Sum(x => x.Amount);
+            sumCostsWorkers = GetHistoryBetweenDates(enterpriseId, startDate, endDate).Sum(x => x.priceTotal);
+            sumCostsProviders = _workCostRepository.GetBetweenDates(enterpriseId, startDate, endDate).Sum(x => x.TaxBase);
+            sumCostsIndirects = _indirectCostRepository.GetBetweeenDates(enterpriseId, startDate, endDate).Sum(x => x.Amount);
             sumCosts = sumCostsWorkers + sumCostsProviders + sumCostsIndirects;
             dataCostsPrevious.Add(Math.Round(sumCosts, 2));
 
-            invoices = _invoiceRepository.GetAllBetweenDates(startDate, endDate);
+            invoices = _invoiceRepository.GetAllBetweenDates(enterpriseId, startDate, endDate);
             sumInvoices = invoices.Sum(x => x.TaxBase);
             dataInvoicesPrevious.Add(Math.Round(sumInvoices, 2));
 
@@ -473,53 +473,53 @@
             // 1º Trimestre
             startDate = new DateTime(actualYear, 1, 1);
             endDate = new DateTime(actualYear, 3, 31);
-            sumCostsWorkers = GetHistoryBetweenDates(startDate, endDate).Sum(x => x.priceTotal);
-            sumCostsProviders = _workCostRepository.GetBetweenDates(startDate, endDate).Sum(x => x.TaxBase);
-            sumCostsIndirects = _indirectCostRepository.GetBetweeenDates(startDate, endDate).Sum(x => x.Amount);
+            sumCostsWorkers = GetHistoryBetweenDates(enterpriseId, startDate, endDate).Sum(x => x.priceTotal);
+            sumCostsProviders = _workCostRepository.GetBetweenDates(enterpriseId, startDate, endDate).Sum(x => x.TaxBase);
+            sumCostsIndirects = _indirectCostRepository.GetBetweeenDates(enterpriseId, startDate, endDate).Sum(x => x.Amount);
             sumCosts = sumCostsWorkers + sumCostsProviders + sumCostsIndirects;
             dataCostsActual.Add(Math.Round(sumCosts, 2));
 
             var dataInvoicesActual = new List<double>();
-            invoices = _invoiceRepository.GetAllBetweenDates(startDate, endDate);
+            invoices = _invoiceRepository.GetAllBetweenDates(enterpriseId, startDate, endDate);
             sumInvoices = invoices.Sum(x => x.TaxBase);
             dataInvoicesActual.Add(Math.Round(sumInvoices, 2));
 
             // 2º Trimestre
             startDate = new DateTime(actualYear, 4, 1);
             endDate = new DateTime(actualYear, 6, 30);
-            sumCostsWorkers = GetHistoryBetweenDates(startDate, endDate).Sum(x => x.priceTotal);
-            sumCostsProviders = _workCostRepository.GetBetweenDates(startDate, endDate).Sum(x => x.TaxBase);
-            sumCostsIndirects = _indirectCostRepository.GetBetweeenDates(startDate, endDate).Sum(x => x.Amount);
+            sumCostsWorkers = GetHistoryBetweenDates(enterpriseId, startDate, endDate).Sum(x => x.priceTotal);
+            sumCostsProviders = _workCostRepository.GetBetweenDates(enterpriseId, startDate, endDate).Sum(x => x.TaxBase);
+            sumCostsIndirects = _indirectCostRepository.GetBetweeenDates(enterpriseId, startDate, endDate).Sum(x => x.Amount);
             sumCosts = sumCostsWorkers + sumCostsProviders + sumCostsIndirects;
             dataCostsActual.Add(Math.Round(sumCosts, 2));
 
-            invoices = _invoiceRepository.GetAllBetweenDates(startDate, endDate);
+            invoices = _invoiceRepository.GetAllBetweenDates(enterpriseId, startDate, endDate);
             sumInvoices = invoices.Sum(x => x.TaxBase);
             dataInvoicesActual.Add(Math.Round(sumInvoices, 2));
 
             // 3º Trimestre
             startDate = new DateTime(actualYear, 7, 1);
             endDate = new DateTime(actualYear, 9, 30);
-            sumCostsWorkers = GetHistoryBetweenDates(startDate, endDate).Sum(x => x.priceTotal);
-            sumCostsProviders = _workCostRepository.GetBetweenDates(startDate, endDate).Sum(x => x.TaxBase);
-            sumCostsIndirects = _indirectCostRepository.GetBetweeenDates(startDate, endDate).Sum(x => x.Amount);
+            sumCostsWorkers = GetHistoryBetweenDates(enterpriseId, startDate, endDate).Sum(x => x.priceTotal);
+            sumCostsProviders = _workCostRepository.GetBetweenDates(enterpriseId, startDate, endDate).Sum(x => x.TaxBase);
+            sumCostsIndirects = _indirectCostRepository.GetBetweeenDates(enterpriseId, startDate, endDate).Sum(x => x.Amount);
             sumCosts = sumCostsWorkers + sumCostsProviders + sumCostsIndirects;
             dataCostsActual.Add(Math.Round(sumCosts, 2));
 
-            invoices = _invoiceRepository.GetAllBetweenDates(startDate, endDate);
+            invoices = _invoiceRepository.GetAllBetweenDates(enterpriseId, startDate, endDate);
             sumInvoices = invoices.Sum(x => x.TaxBase);
             dataInvoicesActual.Add(Math.Round(sumInvoices, 2));
 
             // 4º Trimestre
             startDate = new DateTime(actualYear, 10, 1);
             endDate = new DateTime(actualYear, 12, 31);
-            sumCostsWorkers = GetHistoryBetweenDates(startDate, endDate).Sum(x => x.priceTotal);
-            sumCostsProviders = _workCostRepository.GetBetweenDates(startDate, endDate).Sum(x => x.TaxBase);
-            sumCostsIndirects = _indirectCostRepository.GetBetweeenDates(startDate, endDate).Sum(x => x.Amount);
+            sumCostsWorkers = GetHistoryBetweenDates(enterpriseId, startDate, endDate).Sum(x => x.priceTotal);
+            sumCostsProviders = _workCostRepository.GetBetweenDates(enterpriseId, startDate, endDate).Sum(x => x.TaxBase);
+            sumCostsIndirects = _indirectCostRepository.GetBetweeenDates(enterpriseId, startDate, endDate).Sum(x => x.Amount);
             sumCosts = sumCostsWorkers + sumCostsProviders + sumCostsIndirects;
             dataCostsActual.Add(Math.Round(sumCosts, 2));
 
-            invoices = _invoiceRepository.GetAllBetweenDates(startDate, endDate);
+            invoices = _invoiceRepository.GetAllBetweenDates(enterpriseId, startDate, endDate);
             sumInvoices = invoices.Sum(x => x.TaxBase);
             dataInvoicesActual.Add(Math.Round(sumInvoices, 2));
 
@@ -564,7 +564,7 @@
                 datasets = new List<Dataset>()
             };
 
-            var worksStatusHistory = _workStatusHistoryRepository.GetAll();
+            var worksStatusHistory = _workStatusHistoryRepository.GetAll(enterpriseId);
 
             var dataOpenPrevious = new List<double>();
             var dataJuridicPrevious = new List<double>();

@@ -69,7 +69,7 @@ class Dashboard extends Component {
           chartWorksOpenedAndClosed: result.chart,
         });
 
-        getCostsAndIncomes()
+        getCostsAndIncomes(enterpriseId)
           .then((result) => {
             this.setState({
               chartCostsAndIncomes: result.chart,

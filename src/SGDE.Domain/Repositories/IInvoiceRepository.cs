@@ -20,7 +20,7 @@
         int CountInvoices();
         int CountInvoicesInYear(int year);
         int? CheckInvoice(Invoice newInvoice);
-        List<Invoice> GetAllBetweenDates(DateTime startDate, DateTime endDate, int workId = 0, int clientId = 0);
+        List<Invoice> GetAllBetweenDates(int enterpriseId, DateTime startDate, DateTime endDate, int workId = 0, int clientId = 0);
         List<Invoice> GetAllLite();
     }
 }

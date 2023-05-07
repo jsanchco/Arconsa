@@ -52,10 +52,12 @@ namespace SGDE.DataEFCoreSQL.Repositories
                 .ToList();
         }
 
-        public List<WorkCost> GetBetweenDates(DateTime startDate, DateTime endDate)
+        public List<WorkCost> GetBetweenDates(int enterpriseId, DateTime startDate, DateTime endDate)
         {
             return _context.WorkCost
-                .Where(x => x.Date >= startDate && x.Date <= endDate)
+                .Include(x => x.Work)
+                .ThenInclude(y => y.Client)
+                .Where(x => x.Work.Client.EnterpriseId == enterpriseId && x.Date >= startDate && x.Date <= endDate)
                 .ToList();
         }
 

@@ -31,7 +31,7 @@
 
         public List<ReportVariousInfoViewModel> GetHoursByAllUser(ReportQueryAllViewModel reportAllViewModel)
         {
-            var users = _userRepository.GetAll(0, 0, null, null, new List<int> { 3 });
+            var users = _userRepository.GetAll(0, 0, null, reportAllViewModel.enterpriseId, null, new List<int> { 3 });
             var result = new List<ReportVariousInfoViewModel>();
             foreach (var user in users.Data)
             {
@@ -277,7 +277,7 @@
         {
             List<Invoice> invoices = !string.IsNullOrEmpty(reportAllViewModel.filter)
                 ? _invoiceRepository.GetAll(0, 0, reportAllViewModel.enterpriseId, reportAllViewModel.filter).Data
-                : _invoiceRepository.GetAll().Data;
+                : _invoiceRepository.GetAll(0, 0, reportAllViewModel.enterpriseId).Data;
             var result = InvoiceConverter.ConvertList(invoices.Where(x => x.IssueDate >= reportAllViewModel.startDate &&
                                                                           x.IssueDate <= reportAllViewModel.endDate)
                                                               .ToList());
@@ -293,6 +293,7 @@
         public List<TracingViewModel> GetTracing(ReportQueryAllViewModel reportAllViewModel)
         {
             var result = _workBudgetRepository.GetByDates(
+                reportAllViewModel.enterpriseId,
                 reportAllViewModel.startDate,
                 reportAllViewModel.endDate,
                 reportAllViewModel.filter);
@@ -323,9 +324,9 @@
             return null;
         }
 
-        public QueryResult<WorkClosePageViewModel> GetAllCurrentStatus(int skip = 0, int take = 0, string filter = null)
+        public QueryResult<WorkClosePageViewModel> GetAllCurrentStatus(int enterpriseId = 0, int skip = 0, int take = 0, string filter = null)
         {
-            var worksWithFilter = _workRepository.GetAllLiteIncludeClient(filter);
+            var worksWithFilter = _workRepository.GetAllLiteIncludeClient(enterpriseId, filter);
             var worksWithSkipAndTake = worksWithFilter.Skip(skip).Take(take);
             var data = new List<WorkClosePageViewModel>();
             foreach (var work in worksWithSkipAndTake)

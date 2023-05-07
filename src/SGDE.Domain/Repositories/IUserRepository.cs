@@ -19,10 +19,10 @@
         Task<User> AddAsync(User newUser, CancellationToken ct = default(CancellationToken));
         Task<bool> UpdateAsync(User user, CancellationToken ct = default(CancellationToken));
         Task<bool> DeleteAsync(int id, CancellationToken ct = default(CancellationToken));
-        QueryResult<User> GetAll(int skip = 0, int take = 0, string orderBy = null, string filter = null, List<int> roles = null, bool showAllEmployees = true);
+        QueryResult<User> GetAll(int skip = 0, int take = 0, string orderBy = null, int enterpriseId = 0, string filter = null, List<int> roles = null, bool showAllEmployees = true);
         List<User> GetUsersByRole(List<int> roles);
         List<User> GetUsersByEnterpriseId(int enterpriseId);
-        List<User> GetWorkersWithSS();
+        List<User> GetWorkersWithSS(int enterpriseId);
         User GetById(int id);
         User Add(User newUser);
         User AddWithProfessions(User newUser, List<int> professions);

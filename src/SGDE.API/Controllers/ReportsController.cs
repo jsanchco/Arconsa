@@ -32,6 +32,7 @@
             try
             {
                 var queryString = Request.Query;
+                var enterpriseId = Convert.ToInt32(queryString["enterpriseId"]);
                 var skip = Convert.ToInt32(queryString["$skip"]);
                 var take = Convert.ToInt32(queryString["$top"]);
                 var startDate = queryString["startDate"];
@@ -46,6 +47,7 @@
 
                 var reportViewModel = new ReportQueryViewModel
                 {
+                    enterpriseId = enterpriseId,
                     startDate = DateTime.ParseExact(startDate, "dd/MM/yyyy", null),
                     endDate = DateTime.ParseExact(endDate, "dd/MM/yyyy", null),
                     workerId = workerId,
@@ -83,6 +85,7 @@
             try
             {
                 var queryString = Request.Query;
+                var enterpriseId = Convert.ToInt32(queryString["enterpriseId"]);
                 var skip = Convert.ToInt32(queryString["$skip"]);
                 var take = Convert.ToInt32(queryString["$top"]);
                 var startDate = queryString["startDate"];
@@ -97,6 +100,7 @@
 
                 var reportAllViewModel = new ReportQueryAllViewModel
                 {
+                    enterpriseId = enterpriseId,
                     startDate = DateTime.ParseExact(startDate, "dd/MM/yyyy", null),
                     endDate = DateTime.ParseExact(endDate, "dd/MM/yyyy", null),
                     workers = workers,
@@ -134,6 +138,7 @@
             try
             {
                 var queryString = Request.Query;
+                var enterpriseId = Convert.ToInt32(queryString["enterpriseId"]);
                 var startDate = queryString["startDate"];
                 var endDate = queryString["endDate"];
                 var filter = queryString["filter"];
@@ -143,6 +148,7 @@
 
                 var reportAllViewModel = new ReportQueryAllViewModel
                 {
+                    enterpriseId = enterpriseId,
                     startDate = DateTime.ParseExact(startDate, "dd/MM/yyyy", null),
                     endDate = DateTime.ParseExact(endDate, "dd/MM/yyyy", null),
                     filter = filter
@@ -196,6 +202,7 @@
             try
             {
                 var queryString = Request.Query;
+                var enterpriseId = Convert.ToInt32(queryString["enterpriseId"]);
                 var startDate = queryString["startDate"];
                 var endDate = queryString["endDate"];
 
@@ -204,6 +211,7 @@
 
                 var reportAllViewModel = new ReportQueryAllViewModel
                 {
+                    enterpriseId = enterpriseId,
                     startDate = DateTime.ParseExact(startDate, "dd/MM/yyyy", null),
                     endDate = DateTime.ParseExact(endDate, "dd/MM/yyyy", null)
                 };
@@ -226,11 +234,12 @@
             try
             {
                 var queryString = Request.Query;
+                var enterpriseId = Convert.ToInt32(queryString["enterpriseId"]);
                 var skip = Convert.ToInt32(queryString["$skip"]);
                 var take = Convert.ToInt32(queryString["$top"]);
                 var filter = Util.Helper.getSearch(queryString["$filter"]);
 
-                var data = _supervisor.GetAllCurrentStatus(skip, take, filter);
+                var data = _supervisor.GetAllCurrentStatus(enterpriseId, skip, take, filter);
 
                 return new { Items = data.Data, data.Count };
             }
@@ -248,12 +257,14 @@
             try
             {
                 var queryString = Request.Query;
+                var enterpriseId = Convert.ToInt32(queryString["enterpriseId"]);
                 var startDate = queryString["startDate"].ToString();
                 var endDate = queryString["endDate"].ToString();
                 var filter = queryString["filter"].ToString();
 
                 var reportAllViewModel = new ReportQueryAllViewModel
                 {
+                    enterpriseId = enterpriseId,
                     filter = filter
                 };
                 if (string.IsNullOrEmpty(startDate))

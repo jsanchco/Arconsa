@@ -414,7 +414,7 @@
             return invoiceNumber;
         }
 
-        public List<Invoice> GetAllBetweenDates(DateTime startDate, DateTime endDate, int workId = 0, int clientId = 0)
+        public List<Invoice> GetAllBetweenDates(int enterpriseId, DateTime startDate, DateTime endDate, int workId = 0, int clientId = 0)
         {
             List<Invoice> data = new List<Invoice>();
 
@@ -425,7 +425,7 @@
                     .ThenInclude(x => x.Client)
                     .Include(x => x.Work)
                     .Include(x => x.DetailsInvoice)
-                    .Where(x => x.IssueDate >= startDate && x.IssueDate <= endDate)
+                    .Where(x => x.Client.EnterpriseId == enterpriseId && x.IssueDate >= startDate && x.IssueDate <= endDate)
                     .ToList()
                     .OrderByDescending(x => x.KeyOrder)
                     .ToList();
@@ -437,7 +437,7 @@
                     .ThenInclude(x => x.Client)
                     .Include(x => x.Work)
                     .Include(x => x.DetailsInvoice)
-                    .Where(x => x.IssueDate >= startDate && x.IssueDate <= endDate && x.WorkId == workId)
+                    .Where(x => x.Client.EnterpriseId == enterpriseId && x.IssueDate >= startDate && x.IssueDate <= endDate && x.WorkId == workId)
                     .ToList()
                     .OrderByDescending(x => x.KeyOrder)
                     .ToList();
@@ -449,7 +449,7 @@
                     .ThenInclude(x => x.Client)
                     .Include(x => x.Work)
                     .Include(x => x.DetailsInvoice)
-                    .Where(x => x.IssueDate >= startDate && x.IssueDate <= endDate && x.Work.ClientId == clientId)
+                    .Where(x => x.Client.EnterpriseId == enterpriseId && x.IssueDate >= startDate && x.IssueDate <= endDate && x.Work.ClientId == clientId)
                     .ToList()
                     .OrderByDescending(x => x.KeyOrder)
                     .ToList();
@@ -461,7 +461,7 @@
                     .ThenInclude(x => x.Client)
                     .Include(x => x.Work)
                     .Include(x => x.DetailsInvoice)
-                    .Where(x => x.IssueDate >= startDate && x.IssueDate <= endDate && x.WorkId == workId && x.Work.ClientId == clientId)
+                    .Where(x => x.Client.EnterpriseId == enterpriseId && x.IssueDate >= startDate && x.IssueDate <= endDate && x.WorkId == workId && x.Work.ClientId == clientId)
                     .ToList()
                     .OrderByDescending(x => x.KeyOrder)
                     .ToList();

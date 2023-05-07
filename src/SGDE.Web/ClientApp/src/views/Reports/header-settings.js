@@ -53,8 +53,10 @@ class HeaderSettings extends Component {
     });
 
     showSpinner(this.element);
-    if (this.props.type === "workers") {
-      getWorkers()
+
+    const enterpriseId = JSON.parse(localStorage.getItem("enterprise")).id;
+    if (this.props.type === "workers") {      
+      getWorkers(enterpriseId)
         .then((items) => {
           this.ddl.dataSource = items;
           this.searchData = this.ddl.dataSource;
@@ -67,7 +69,7 @@ class HeaderSettings extends Component {
     }
 
     if (this.props.type === "works") {
-      getAllWorks()
+      getAllWorks(enterpriseId)
         .then((items) => {
           this.ddl.dataSource = items;
           this.searchData = this.ddl.dataSource;
@@ -80,7 +82,7 @@ class HeaderSettings extends Component {
     }
 
     if (this.props.type === "clients") {
-      getClients()
+      getClients(enterpriseId)
         .then((items) => {
           this.ddl.dataSource = items;
           this.searchData = this.ddl.dataSource;

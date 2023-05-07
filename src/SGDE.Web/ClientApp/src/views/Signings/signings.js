@@ -157,7 +157,8 @@ class Signings extends Component {
   }
 
   componentDidMount() {
-    getWorkers().then((items) => {
+    const enterpriseId = JSON.parse(localStorage.getItem("enterprise")).id;
+    getWorkers(enterpriseId).then((items) => {
       this.ddlEmployees.dataSource = items;
       this.searchDataEmployees = items;
     });

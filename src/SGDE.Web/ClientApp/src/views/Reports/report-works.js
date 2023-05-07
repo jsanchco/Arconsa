@@ -116,6 +116,7 @@ class ReportWorks extends Component {
       headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }],
     });
     this.grid.query = new Query()
+      .addParams("enterpriseId", JSON.parse(localStorage.getItem("enterprise")).id)
       .addParams("startDate", valueDtpStartDate)
       .addParams("endDate", valueDtpEndDate)
       .addParams("filter", valueFilter);

@@ -23,7 +23,7 @@ namespace SGDE.Domain.Supervisor
         Task<UserViewModel> AddUserAsync(UserViewModel newUserViewModel, CancellationToken ct = default(CancellationToken));
         Task<bool> UpdateUserAsync(UserViewModel userViewModel, CancellationToken ct = default(CancellationToken));
         Task<bool> DeleteUserAsync(int id, CancellationToken ct = default(CancellationToken));
-        QueryResult<UserViewModel> GetAllUsers(int skip = 0, int take = 0, string orderBy = null, string filter = null, List<int> roles = null, bool showAllEmployees = true);
+        QueryResult<UserViewModel> GetAllUsers(int skip = 0, int take = 0, string orderBy = null, int enterpriseId = 0, string filter = null, List<int> roles = null, bool showAllEmployees = true);
         List<UserViewModel> GetUsersByEnterpriseId(int enterpriseId);
         UserViewModel GetUserById(int id);
         UserViewModel AddUser(UserViewModel newUserViewModel);
@@ -167,7 +167,7 @@ namespace SGDE.Domain.Supervisor
         #region WorkerHiring
 
         WorkerHiringViewModel GetWorkerHiring(WorkerHiringViewModel workerHiringViewModel);
-        QueryResult<WorkerHiringViewModel> GetAllWorkerHiring(int skip = 0, int take = 0, string filter = null, int workId = 0);
+        QueryResult<WorkerHiringViewModel> GetAllWorkerHiring(int skip = 0, int take = 0, int enterpriseId = 0, string filter = null, int workId = 0);
 
         #endregion
 
@@ -182,7 +182,7 @@ namespace SGDE.Domain.Supervisor
         List<InvoiceViewModel> GetAllInvoice(ReportQueryAllViewModel reportAllViewModel);
         List<ReportResultsByWorkViewModel> GetAllResultsByWork(ReportQueryAllViewModel reportAllViewModel);
         List<TracingViewModel> GetTracing(ReportQueryAllViewModel reportAllViewModel);
-        QueryResult<WorkClosePageViewModel> GetAllCurrentStatus(int skip = 0, int take = 0, string filter = null);
+        QueryResult<WorkClosePageViewModel> GetAllCurrentStatus(int enterpriseId = 0, int skip = 0, int take = 0, string filter = null);
 
         #endregion
 
@@ -278,7 +278,7 @@ namespace SGDE.Domain.Supervisor
 
         QueryResult<HistoryHiringViewModel> GetHistoryByUserId(int userId, int skip = 0, int take = 0);
         QueryResult<HistoryHiringViewModel> GetHistoryByWorkId(int workId, int skip = 0, int take = 0);
-        List<HistoryHiringViewModel> GetHistoryBetweenDates(DateTime startDate, DateTime endDate);
+        List<HistoryHiringViewModel> GetHistoryBetweenDates(int enterpriseId, DateTime startDate, DateTime endDate);
         bool UpdateHistoryInWork(HistoryHiringViewModel historyHiringViewModel);
 
         #endregion
@@ -419,7 +419,7 @@ namespace SGDE.Domain.Supervisor
         #region Dashboard
 
         (BarItemViewModel costsAndIncomes, BarItemViewModel worksOpenedAndClosed) GetDashboard(int enterpriseId);
-        BarItemViewModel GetCostsAndIncomes();
+        BarItemViewModel GetCostsAndIncomes(int enterpriseId);
         BarItemViewModel GetWorksOpenedAndClosed(int enterpriseId);
 
         #endregion

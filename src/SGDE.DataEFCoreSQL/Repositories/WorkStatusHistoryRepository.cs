@@ -40,7 +40,7 @@
             return GetById(id) != null;
         }
 
-        public List<WorkStatusHistory> GetAll(int workId)
+        public List<WorkStatusHistory> GetAll(int enterpriseId = 0, int workId = 0)
         {
             List<WorkStatusHistory> data;
 
@@ -48,13 +48,15 @@
             {
                 data = _context.WorkStatusHistory
                         .Include(x => x.Work)
+                        .ThenInclude(x => x.Client)
+                        .Where(x => x.Work.Client.EnterpriseId == enterpriseId)
                         .ToList();
             }
             else
             {
                 data = _context.WorkStatusHistory
                         .Include(x => x.Work)
-                        .Where(x => x.WorkId == workId)
+                        .Where(x => x.Work.Client.EnterpriseId == enterpriseId && x.WorkId == workId)
                         .ToList();
             }
 

@@ -26,7 +26,8 @@
         }
 
         [HttpGet]
-        public object Get()
+        [Route("enterprise/{enterpriseId}")]
+        public object Get(int enterpriseId)
         {
             try
             {
@@ -36,7 +37,7 @@
                 var filter = Util.Helper.getSearch(queryString["$filter"]);
                 var workId = Convert.ToInt32(queryString["workId"]);
 
-                var queryResult = _supervisor.GetAllWorkerHiring(skip, take, filter, workId);
+                var queryResult = _supervisor.GetAllWorkerHiring(skip, take, enterpriseId, filter, workId);
 
                 return new { Items = queryResult.Data, Count = queryResult.Count };
             }

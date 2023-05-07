@@ -139,6 +139,7 @@ class ReportsVarious extends Component {
         switch (textDdl) {
           case "Trabajadores":
             this.grid.query = new Query()
+              .addParams("enterpriseId", JSON.parse(localStorage.getItem("enterprise")).id)
               .addParams("workers", true)
               .addParams("startDate", valueDtpStartDate)
               .addParams("endDate", valueDtpEndDate)
@@ -147,6 +148,7 @@ class ReportsVarious extends Component {
             break;
           case "Obras":
             this.grid.query = new Query()
+              .addParams("enterpriseId", JSON.parse(localStorage.getItem("enterprise")).id)
               .addParams("works", true)
               .addParams("startDate", valueDtpStartDate)
               .addParams("endDate", valueDtpEndDate)
@@ -155,6 +157,7 @@ class ReportsVarious extends Component {
             break;
           case "Clientes":
             this.grid.query = new Query()
+              .addParams("enterpriseId", JSON.parse(localStorage.getItem("enterprise")).id)
               .addParams("clients", true)
               .addParams("startDate", valueDtpStartDate)
               .addParams("endDate", valueDtpEndDate)

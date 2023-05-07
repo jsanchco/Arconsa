@@ -7,7 +7,7 @@ namespace SGDE.Domain.Repositories
     public interface IWorkCostRepository
     {
         List<WorkCost> GetAll(int workId);
-        List<WorkCost> GetBetweenDates(DateTime startDate, DateTime endDate);
+        List<WorkCost> GetBetweenDates(int enterpriseId, DateTime startDate, DateTime endDate);
         double SumAll(int workId);
         WorkCost GetById(int id);
         WorkCost Add(WorkCost newWorkCost);

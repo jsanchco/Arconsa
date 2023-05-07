@@ -38,12 +38,12 @@ namespace SGDE.API.Controllers
         }
 
         [HttpGet]
-        [Route("costsandincomes")]
-        public object GetCostsAndIncomes()
+        [Route("enterprise/{enterpriseId}/costsandincomes")]
+        public object GetCostsAndIncomes(int enterpriseId)
         {
             try
             {
-                var result = _supervisor.GetCostsAndIncomes();
+                var result = _supervisor.GetCostsAndIncomes(enterpriseId);
 
                 return new { chart = result };
             }

@@ -4,6 +4,7 @@ namespace SGDE.Domain.ViewModels
 {
     public class ReportQueryViewModel
     {
+        public int enterpriseId { get; set; }
         public DateTime startDate { get; set; }
         public DateTime endDate { get; set; }
         public int? workerId { get; set; }

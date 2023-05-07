@@ -36,6 +36,9 @@
         public int? ClientId { get; set; }
         public virtual Client Client { get; set; }
 
+        public int? EnterpriseId { get; set; }
+        public virtual Enterprise Enterprise { get; set; }
+
         public virtual ICollection<UserProfession> UserProfessions { get; set; } = new HashSet<UserProfession>();
         public virtual ICollection<Training> Trainings { get; set; } = new HashSet<Training>();
         public virtual ICollection<User> ContactPersons { get; set; } = new HashSet<User>();
