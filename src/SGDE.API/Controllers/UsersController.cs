@@ -91,8 +91,9 @@
                 var filter = Util.Helper.getSearch(queryString["$filter"]);               
                 var roles = string.IsNullOrEmpty(queryString["roles"].ToString()) ? null : queryString["roles"].ToString().Split(',').Select(int.Parse).ToList();
                 var showAllEmployees = Convert.ToBoolean(queryString["showAllEmployees"]);
+                var enterpriseId = Convert.ToInt32(queryString["enterpriseId"]);
 
-                var queryResult = _supervisor.GetAllUsers(skip, take, orderBy, filter, roles, showAllEmployees);
+                var queryResult = _supervisor.GetAllUsers(skip, take, orderBy, enterpriseId, filter, roles, showAllEmployees);
 
                 return new { Items = queryResult.Data, Count = queryResult.Count };
             }

@@ -46,5 +46,6 @@ namespace SGDE.Domain.ViewModels
         public bool hasEmbargosPending { get; set; }
         public bool hasAdvancesPending { get; set; }
         public bool isActuallyWorking { get; set; }
+        public int? enterpriseId { get; set; }
     }
 }

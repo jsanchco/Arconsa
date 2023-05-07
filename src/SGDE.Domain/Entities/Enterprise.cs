@@ -14,5 +14,6 @@ namespace SGDE.Domain.Entities
         public virtual ICollection<CompanyData> CompanyDatas { get; set; } = new HashSet<CompanyData>();
         public virtual ICollection<IndirectCost> IndirectCosts{ get; set; } = new HashSet<IndirectCost>();
         public virtual ICollection<Client> Clients { get; set; } = new HashSet<Client>();
+        public virtual ICollection<User> Users { get; set; } = new HashSet<User>();
     }
 }

@@ -118,6 +118,7 @@ class GridReportVarious extends Component {
             ],
           });
           this.grid.query = new Query()
+            .addParams("enterpriseId", JSON.parse(localStorage.getItem("enterprise")).id)
             .addParams("workers", true)
             .addParams("startDate", settings.start)
             .addParams("endDate", settings.end)
@@ -146,6 +147,7 @@ class GridReportVarious extends Component {
             ],
           });
           this.grid.query = new Query()
+            .addParams("enterpriseId", JSON.parse(localStorage.getItem("enterprise")).id)
             .addParams("works", true)
             .addParams("startDate", settings.start)
             .addParams("endDate", settings.end)
@@ -174,6 +176,7 @@ class GridReportVarious extends Component {
             ],
           });
           this.grid.query = new Query()
+            .addParams("enterpriseId", JSON.parse(localStorage.getItem("enterprise")).id)
             .addParams("clients", true)
             .addParams("startDate", settings.start)
             .addParams("endDate", settings.end)
@@ -207,6 +210,7 @@ class GridReportVarious extends Component {
           ],
         });
         this.grid.query = new Query()
+          .addParams("enterpriseId", JSON.parse(localStorage.getItem("enterprise")).id)
           .addParams("workers", true)
           .addParams("startDate", data.start)
           .addParams("endDate", data.end)
@@ -230,6 +234,7 @@ class GridReportVarious extends Component {
           ],
         });
         this.grid.query = new Query()
+          .addParams("enterpriseId", JSON.parse(localStorage.getItem("enterprise")).id)
           .addParams("works", true)
           .addParams("startDate", data.start)
           .addParams("endDate", data.end)
@@ -253,6 +258,7 @@ class GridReportVarious extends Component {
           ],
         });
         this.grid.query = new Query()
+          .addParams("enterpriseId", JSON.parse(localStorage.getItem("enterprise")).id)
           .addParams("clients", true)
           .addParams("startDate", data.start)
           .addParams("endDate", data.end)

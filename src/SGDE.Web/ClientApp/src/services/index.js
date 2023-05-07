@@ -1044,9 +1044,9 @@ export const restorePassword = (userId) => {
   });
 };
 
-export const getWorkers = () => {
+export const getWorkers = (enterpiseId) => {
   return new Promise((resolve, reject) => {
-    const url = `${config.URL_API}/${WORKERSHIRING}`;
+    const url = `${config.URL_API}/${WORKERSHIRING}/${enterpiseId}`;
     fetch(url, {
       headers: {
         Accept: "text/plain",
@@ -1088,9 +1088,9 @@ export const getWorks = () => {
   });
 };
 
-export const getAllWorks = () => {
+export const getAllWorks = (enterpriseId) => {
   return new Promise((resolve, reject) => {
-    const url = `${config.URL_API}/${WORKS}?showCloseWorks=true`;
+    const url = `${config.URL_API}/${WORKS}?showCloseWorks=true&enterpriseId=${enterpriseId}`;
     fetch(url, {
       headers: {
         Accept: "text/plain",
@@ -1415,9 +1415,9 @@ export const removeAllWorkCosts = (data) => {
   });
 };
 
-export const getClients = () => {
+export const getClients = (enterpriseId) => {
   return new Promise((resolve, reject) => {
-    const url = `${config.URL_API}/${CLIENTS}`;
+    const url = `${config.URL_API}/${CLIENTS}?enterpriseId=${enterpriseId}`;
     fetch(url, {
       headers: {
         Accept: "text/plain",
@@ -2166,9 +2166,10 @@ export const getDashboard = () => {
   });
 };
 
-export const getCostsAndIncomes = () => {
+export const getCostsAndIncomes = (enterpriseId) => {
   return new Promise((resolve, reject) => {
-    const url = `${config.URL_API}/${DASHBOARD_COSTANDINCOMES}`;
+    let url = `${config.URL_API}/${DASHBOARD_COSTANDINCOMES}`;
+    url = url.replace("{0}", enterpriseId);
     fetch(url, {
       headers: {
         Accept: "text/plain",

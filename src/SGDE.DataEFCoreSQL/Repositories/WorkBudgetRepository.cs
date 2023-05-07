@@ -143,7 +143,7 @@ namespace SGDE.DataEFCoreSQL.Repositories
             return data;
         }
 
-        public List<WorkBudget> GetByDates(DateTime? startDate = null, DateTime? endDate = null, string filter = null)
+        public List<WorkBudget> GetByDates(int enterpriseId = 0, DateTime? startDate = null, DateTime? endDate = null, string filter = null)
         {
             if (!startDate.HasValue)
                 startDate = DateTime.MinValue;
@@ -152,13 +152,14 @@ namespace SGDE.DataEFCoreSQL.Repositories
                 endDate = DateTime.Now;
 
             var result = _context.WorkBudget
-                .Where(x => x.Date >= startDate && x.Date <= endDate &&
-                            x.Type == "Definitivo" || x.Type == "Complementario X" || x.Type == "Modificado")
                 .Include(x => x.Invoices)
                 .Include(x => x.Work)
                 .ThenInclude(y => y.Client)
+                .Where(x => x.Work.Client.EnterpriseId == enterpriseId)
                 .Include(x => x.Work)
                 .ThenInclude(y => y.WorkStatusHistories)
+                .Where(x => x.Date >= startDate && x.Date <= endDate &&
+                            x.Type == "Definitivo" || x.Type == "Complementario X" || x.Type == "Modificado")
                 .ToList();
 
             if (!string.IsNullOrEmpty(filter) && result != null)

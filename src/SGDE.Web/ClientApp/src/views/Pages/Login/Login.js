@@ -54,6 +54,8 @@ class Login extends Component {
         const elementBtnLogin = document.getElementById("btn-login");
         const elementBtnRegresar = document.getElementById("btn-regresar");
         const elementIniciaSesion = document.getElementById("label-inicia-sesion");
+        const elementLogin = document.getElementById("label-login");
+        const elementEmpresas = document.getElementById("label-empresas");
         const elementUser = document.getElementById("select-user");
         const elementPassword = document.getElementById("select-password");
         const elementEnterprise = document.getElementById("select-enterprise");
@@ -63,6 +65,8 @@ class Login extends Component {
             elementBtnLogin.style.display = "none";
             elementBtnRegresar.style.display = "";
             elementIniciaSesion.style.display = "none";
+            elementLogin.style.display = "none";
+            elementEmpresas.style.display = "";
             elementUser.style.display = "none";
             elementPassword.style.display = "none";
             elementEnterprise.style.display = "";
@@ -102,6 +106,8 @@ class Login extends Component {
             elementBtnLogin.style.display = "";
             elementBtnRegresar.style.display = "none";
             elementIniciaSesion.style.display = "";
+            elementLogin.style.display = "";
+            elementEmpresas.style.display = "none";
             elementUser.style.display = "";
             elementPassword.style.display = "";
             elementEnterprise.style.display = "none";
@@ -111,6 +117,8 @@ class Login extends Component {
             elementBtnLogin.style.display = "";
             elementBtnRegresar.style.display = "none";
             elementIniciaSesion.style.display = "";
+            elementLogin.style.display = "";
+            elementEmpresas.style.display = "none";
             elementUser.style.display = "";
             elementPassword.style.display = "";
             elementEnterprise.style.display = "none";
@@ -120,9 +128,11 @@ class Login extends Component {
   }
 
   handleRegresar(e) {
-    const elementBtnLogin = document.getElementById("btn-login");
-    const elementBtnRegresar = document.getElementById("btn-regresar");
+    const elementBtnLogin = document.getElementById("btn-login");    
+    const elementBtnRegresar = document.getElementById("btn-regresar");    
     const elementIniciaSesion = document.getElementById("label-inicia-sesion");
+    const elementLogin = document.getElementById("label-login");
+    const elementEmpresas = document.getElementById("label-empresas");
     const elementUser = document.getElementById("select-user");
     const elementPassword = document.getElementById("select-password");
     const elementEnterprise = document.getElementById("select-enterprise"); 
@@ -130,6 +140,8 @@ class Login extends Component {
     elementBtnLogin.style.display = "";
     elementBtnRegresar.style.display = "none";
     elementIniciaSesion.style.display = "";
+    elementLogin.style.display = "";
+    elementEmpresas.style.display = "none";
     elementUser.style.display = "";
     elementPassword.style.display = "";
     elementEnterprise.style.display = "none";    
@@ -205,7 +217,8 @@ class Login extends Component {
                   <Card className="p-4">
                     <CardBody>
                       <Form>
-                        <h1>Login</h1>
+                        <h1 id="label-login" style={{ display: "" }}>Login</h1>
+                        <h1 id="label-empresas" style={{ display: "none" }}>Empresas</h1>
                         <p className="text-muted" id="label-inicia-sesion">Inicia sesión en tu cuenta</p>
                         <InputGroup 
                           className="mb-3"

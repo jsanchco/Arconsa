@@ -80,6 +80,7 @@ class AddNew extends Component {
   getUser() {
     return {
       id: this.state.userId,
+      enterpriseId: JSON.parse(localStorage.getItem("enterprise")).id,
       name: this.state.name,
       surname: this.state.surname,
       dni: this.state.dni,

@@ -165,10 +165,10 @@
         //    return listHistoryHiringViewModel.OrderBy(x => x.dtStartDate).ToList();
         //}
 
-        public List<HistoryHiringViewModel> GetHistoryBetweenDates(DateTime startDate, DateTime endDate)
+        public List<HistoryHiringViewModel> GetHistoryBetweenDates(int enterprise, DateTime startDate, DateTime endDate)
         {
             var listHistoryHiringViewModel = new List<HistoryHiringViewModel>();
-            var dailySignings = _dailySigningRepository.GetHistoryBetweenDates(startDate, endDate);
+            var dailySignings = _dailySigningRepository.GetHistoryBetweenDates(enterprise, startDate, endDate);
 
             if (dailySignings == null || dailySignings.Count == 0)
                 return new List<HistoryHiringViewModel>();

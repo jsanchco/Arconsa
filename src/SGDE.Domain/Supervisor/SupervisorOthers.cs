@@ -248,6 +248,17 @@
                     _clientRepository.Update(findClient);
                 }
             }
+
+            var users = _userRepository.GetAll().Data.Where(x => x.EnterpriseId == null && x.RoleId == 3);
+            foreach (var user in users)
+            {
+                if (!user.EnterpriseId.HasValue)
+                {
+                    var findUser = _userRepository.GetById(user.Id);
+                    findUser.EnterpriseId = 1;
+                    _userRepository.Update(findUser);
+                }
+            }
         }
     }
 }

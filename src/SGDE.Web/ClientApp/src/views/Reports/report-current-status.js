@@ -3,14 +3,8 @@ import {
   Breadcrumb,
   BreadcrumbItem,
   Container,
-  Row,
-  Form,
-  FormGroup,
-  Label,
-  Button,
-  Col,
+  Row
 } from "reactstrap";
-import { DatePickerComponent } from "@syncfusion/ej2-react-calendars";
 import {
   ColumnDirective,
   ColumnsDirective,
@@ -63,6 +57,9 @@ class ReportCurrentStatus extends Component {
     this.beforePrint = this.beforePrint.bind(this);
 
     this.format = { type: "dateTime", format: "dd/MM/yyyy" };
+
+    this.query = new Query()
+      .addParams("enterpriseId", JSON.parse(localStorage.getItem("enterprise")).id);
   }
 
   componentDidMount() {
@@ -126,6 +123,7 @@ class ReportCurrentStatus extends Component {
           ],
         });
         this.grid.query = new Query()
+          .addParams("enterpriseId", JSON.parse(localStorage.getItem("enterprise")).id)
           .addParams("startDate", valueDtpStartDate)
           .addParams("endDate", valueDtpEndDate);
 
@@ -455,6 +453,7 @@ class ReportCurrentStatus extends Component {
                   beforePrint={this.beforePrint}
                   excelQueryCellInfo={this.exportQueryCellInfo}
                   dataBound={this.dataBound}
+                  query={this.query}
                 >
                   <ColumnsDirective>
                     <ColumnDirective

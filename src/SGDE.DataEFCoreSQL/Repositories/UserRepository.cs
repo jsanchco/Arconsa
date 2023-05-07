@@ -112,6 +112,7 @@
             int skip = 0,
             int take = 0,
             string orderBy = null,
+            int enterpriseId = 0,
             string filter = null,
             List<int> roles = null,
             bool showAllEmployees = true)
@@ -128,6 +129,7 @@
                             .Include(x => x.UserProfessions)
                             .ThenInclude(y => y.Profession)
                             .Include(x => x.Advances)
+                            .Where(x => x.EnterpriseId == enterpriseId)
                             .ToList();
             }
             else
@@ -142,7 +144,8 @@
                                 .ThenInclude(y => y.Profession)
                                 .Include(x => x.SSHirings)
                                 .Include(x => x.Advances)
-                                .Where(x => roles.Contains(x.RoleId))
+                                .Where(x => x.EnterpriseId == enterpriseId && 
+                                            roles.Contains(x.RoleId))
                                 .ToList()
                     : _context.User
                                 .Include(x => x.Role)
@@ -153,7 +156,8 @@
                                 .ThenInclude(y => y.Profession)
                                 .Include(x => x.SSHirings)
                                 .Include(x => x.Advances)
-                                .Where(x => roles.Contains(x.RoleId) &&
+                                .Where(x => x.EnterpriseId == enterpriseId &&
+                                            roles.Contains(x.RoleId) &&
                                             x.SSHirings.Count > 0 &&
                                             x.SSHirings.Any(y => y.EndDate == null))
                                 .ToList();
@@ -238,13 +242,14 @@
                 .ToList();
         }
 
-        public List<User> GetWorkersWithSS()
+        public List<User> GetWorkersWithSS(int enterpriseId)
         {
             return _context.User
                 .Include(x => x.Work)
                 .Include(x => x.SSHirings)
                 .Include(x => x.UserHirings)
-                .Where(x => x.RoleId == 3 &&
+                .Where(x => x.EnterpriseId == enterpriseId &&
+                            x.RoleId == 3 &&
                             x.SSHirings.Count > 0 &&
                             x.SSHirings.Any(y => y.EndDate == null))
                 .ToList();

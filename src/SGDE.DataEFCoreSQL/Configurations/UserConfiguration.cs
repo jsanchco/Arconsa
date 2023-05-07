@@ -30,6 +30,9 @@
 
             entity.HasIndex(x => x.WorkId).HasName("IFK_Work_User");
             entity.HasOne(u => u.Work).WithMany(a => a.WorkResponsibles).HasForeignKey(a => a.WorkId).HasConstraintName("FK__User__WorkId").OnDelete(DeleteBehavior.SetNull);
+
+            entity.HasIndex(x => x.EnterpriseId).HasName("IFK_Enterprise_User");
+            entity.HasOne(u => u.Enterprise).WithMany(a => a.Users).HasForeignKey(a => a.EnterpriseId).HasConstraintName("FK__User__EnerpriseId");
         }
     }
 }

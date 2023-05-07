@@ -4,6 +4,7 @@
 
     using Domain.Entities;
     using Domain.Repositories;
+    using Microsoft.EntityFrameworkCore;
     using SGDE.Domain.Helpers;
     using System;
     using System.Collections.Generic;
@@ -98,10 +99,10 @@
                 };
         }
 
-        public List<IndirectCost> GetBetweeenDates(DateTime startDate, DateTime endDate)
+        public List<IndirectCost> GetBetweeenDates(int enterpriseId, DateTime startDate, DateTime endDate)
         {
             return _context.IndirectCost
-                .Where(x => x.Date >= startDate && x.Date <= endDate)
+                .Where(x => x.EnterpriseId == enterpriseId && x.Date >= startDate && x.Date <= endDate)
                 .ToList();
         }
 

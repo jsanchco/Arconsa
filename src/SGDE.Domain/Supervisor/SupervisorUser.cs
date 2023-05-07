@@ -92,11 +92,12 @@ namespace SGDE.Domain.Supervisor
             int skip = 0,
             int take = 0,
             string orderBy = null,
+            int enterpriseId = 0, 
             string filter = null,
             List<int> roles = null,
             bool showAllEmployees = true)
         {
-            var queryResult = _userRepository.GetAll(skip, take, orderBy, filter, roles, showAllEmployees);
+            var queryResult = _userRepository.GetAll(skip, take, orderBy, enterpriseId, filter, roles, showAllEmployees);
             var data = UserConverter.ConvertList(queryResult.Data);
             foreach (var item in data)
             {
@@ -151,7 +152,8 @@ namespace SGDE.Domain.Supervisor
                 AccountNumber = newUserViewModel.accountNumber,
                 Photo = newUserViewModel.photo,
                 RoleId = newUserViewModel.roleId,
-                Password = "123456"
+                Password = "123456",
+                EnterpriseId = newUserViewModel.enterpriseId
             };
 
             if (newUserViewModel.roleId == 3)
@@ -203,6 +205,7 @@ namespace SGDE.Domain.Supervisor
             user.RoleId = userViewModel.roleId;
             user.WorkId = userViewModel.workId;
             user.ClientId = userViewModel.clientId;
+            user.EnterpriseId = userViewModel.enterpriseId;
 
             var toAdd = userViewModel.userProfessions
                 .Except(user.UserProfessions.Select(x => x.ProfessionId)).ToList();

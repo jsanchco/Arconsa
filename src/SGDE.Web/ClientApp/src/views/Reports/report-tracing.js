@@ -114,6 +114,7 @@ class ReportTracing extends Component {
           ],
         });
         this.grid.query = new Query()
+          .addParams("enterpriseId", JSON.parse(localStorage.getItem("enterprise")).id)
           .addParams("startDate", valueDtpStartDate)
           .addParams("endDate", valueDtpEndDate);
 

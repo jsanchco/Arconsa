@@ -25,7 +25,7 @@ L10n.load(data);
 class ModalWorkers extends Component {
   workers = new DataManager({
     adaptor: new WebApiAdaptor(),
-    url: `${config.URL_API}/${WORKERSHIRING}`,
+    url: `${config.URL_API}/${WORKERSHIRING}/${JSON.parse(localStorage.getItem("enterprise")).id}`,
     headers: [{ Authorization: "Bearer " + localStorage.getItem(TOKEN_KEY) }]
   });
 
