@@ -263,7 +263,8 @@
             {
                 data = int.TryParse(filter, out int number)
                     ? data
-                        .Where(x => x.Id == number)
+                        .Where(x => x.Id == number ||
+                                    x.Name.Contains(filter, StringComparison.InvariantCultureIgnoreCase))
                         .ToList()
                     : data
                         .Where(x => x.Name.Contains(filter, StringComparison.InvariantCultureIgnoreCase))
