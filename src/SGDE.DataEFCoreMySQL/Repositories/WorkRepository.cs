@@ -235,9 +235,14 @@
 
             if (filter != null)
             {
-                data = data.Where(x =>
-                        Searcher.RemoveAccentsWithNormalization(x.Name.ToLower()).Contains(filter))
-                    .ToList();
+                data = int.TryParse(filter, out int number)
+                    ? data
+                        .Where(x => x.Id == number ||
+                                    x.Name.Contains(filter, StringComparison.InvariantCultureIgnoreCase))
+                        .ToList()
+                    : data
+                        .Where(x => x.Name.Contains(filter, StringComparison.InvariantCultureIgnoreCase))
+                        .ToList();
             }
 
             return data;
