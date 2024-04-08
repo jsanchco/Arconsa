@@ -69,7 +69,10 @@ namespace SGDE.API.Controllers
         {
             try
             {
-                var queryResult = _supervisor.GetAllClientWithoutFilter();
+                var queryString = Request.Query;
+                var enterpriseId = Convert.ToInt32(queryString["enterpriseId"]);
+
+                var queryResult = _supervisor.GetAllClientWithoutFilter(enterpriseId);
 
                 return new { Items = queryResult, Count = queryResult.Count };
             }

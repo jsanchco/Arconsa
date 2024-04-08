@@ -43,12 +43,23 @@
             return GetById(id) != null;
         }
 
-        public List<Client> GetAllWithoutFilter()
+        public List<Client> GetAllWithoutFilter(int enterpriseId = 0)
         {
-            return _context.Client
-                .Include(x => x.ClientResponsibles)
-                .Include(x => x.ProfessionInClients)
-                .ToList();
+            if (enterpriseId == 0)
+            {
+                return _context.Client
+                    .Include(x => x.ClientResponsibles)
+                    .Include(x => x.ProfessionInClients)
+                    .ToList();
+            }
+            else
+            {
+                return _context.Client
+                    .Where(x => x.EnterpriseId == enterpriseId)
+                    .Include(x => x.ClientResponsibles)
+                    .Include(x => x.ProfessionInClients)
+                    .ToList();
+            }
         }
 
         public QueryResult<Client> GetAll(int skip = 0, int take = 0, int enterpriseId = 0, bool allClients = true, string filter = null)

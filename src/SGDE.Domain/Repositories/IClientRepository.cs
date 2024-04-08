@@ -10,7 +10,7 @@
 
     public interface IClientRepository
     {
-        List<Client> GetAllWithoutFilter();
+        List<Client> GetAllWithoutFilter(int enterpriseId = 0);
         List<Client> GetAllLite(int enterpriseId = 0, string filter = null);
         QueryResult<Client> GetAll(int skip = 0, int take = 0, int enterpriseId = 0, bool allClients = true, string filter = null);
         Client GetById(int id);

@@ -147,6 +147,7 @@ class Works extends Component {
     this.editClients = {
       params: {
         popupWidth: "auto",
+        query: new Query().addParams("enterpriseId", JSON.parse(localStorage.getItem("enterprise")).id),
       },
     };
 
