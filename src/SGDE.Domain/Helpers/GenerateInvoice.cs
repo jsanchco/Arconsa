@@ -1,19 +1,17 @@
 ﻿namespace SGDE.Domain.Helpers
-{    
+{
     #region Using
 
-    using SGDE.Domain.ViewModels;
-    using SGDE.Domain.Supervisor;
     using iTextSharp.text;
     using iTextSharp.text.pdf;
-    using System.IO;
-    using System;
-    using SGDE.Domain.Converters;
     using Newtonsoft.Json.Linq;
-    using System.Collections.Generic;
     using SGDE.Domain.Entities;
+    using SGDE.Domain.Supervisor;
+    using SGDE.Domain.ViewModels;
+    using System;
+    using System.IO;
     using System.Linq;
-    using iTextSharp.text.rtf.table;
+    using System.Net.Http.Headers;
 
     #endregion
 
@@ -47,7 +45,7 @@
         public InvoiceQueryViewModel _invoiceQueryViewModel;
         protected ISupervisor _supervisor;
         protected int _invoiceId;
-        
+
         public GenerateInvoice(ISupervisor supervisor, InvoiceQueryViewModel invoiceQueryViewModel)
         {
             _supervisor = supervisor;
@@ -129,14 +127,15 @@
 
         protected PdfPTable GetHeader()
         {
-            var companyData = _supervisor.GetSettingByName("COMPANY_DATA");
-            if (companyData == null)
-                throw new Exception("No existen datos de tu Empresa para poder realizar la factura");
-            var jsonCompanyData = JObject.Parse(companyData.data);
+            if (!_invoice.Client.EnterpriseId.HasValue)
+                throw new ArgumentNullException("Enterprise not found");
+
+            var enterprise = _supervisor.GetEnterpriseById(_invoice.Client.EnterpriseId.Value);
 
             var pdfPTable = new PdfPTable(2) { WidthPercentage = 100 };
 
-            var image = Image.GetInstance(Directory.GetCurrentDirectory() + "\\assets\\images\\arconsa.png");
+            //var image = Image.GetInstance(Directory.GetCurrentDirectory() + "\\assets\\images\\arconsa.png");
+            var image = Image.GetInstance(Directory.GetCurrentDirectory() + $"\\assets\\images\\enterprise_{_invoice.Client.EnterpriseId.Value}.png");
             image.ScalePercent(75f);
             var pdfCellImage = new PdfPCell(image)
             {
@@ -146,14 +145,14 @@
             };
             pdfPTable.AddCell(pdfCellImage);
 
-            var pdfCell = new PdfPCell(new Phrase(jsonCompanyData["companyName"].ToString(), _STANDARFONT_12_BOLD)) { BorderWidth = 0 };
+            var pdfCell = new PdfPCell(new Phrase(enterprise.name, _STANDARFONT_12_BOLD)) { BorderWidth = 0 };
             pdfPTable.AddCell(pdfCell);
-            pdfCell = new PdfPCell(new Phrase(jsonCompanyData["cif"].ToString(), _STANDARFONT_12_BOLD)) { BorderWidth = 0 };
+            pdfCell = new PdfPCell(new Phrase(enterprise.cif, _STANDARFONT_12_BOLD)) { BorderWidth = 0 };
             pdfPTable.AddCell(pdfCell);
-            pdfCell = new PdfPCell(new Phrase(jsonCompanyData["address"].ToString(), _STANDARFONT_12_BOLD))
+            pdfCell = new PdfPCell(new Phrase(enterprise.address, _STANDARFONT_12_BOLD))
             { BorderWidth = 0 };
             pdfPTable.AddCell(pdfCell);
-            pdfCell = new PdfPCell(new Phrase(jsonCompanyData["phoneNumber"].ToString(), _STANDARFONT_12_BOLD)) { BorderWidth = 0 };
+            pdfCell = new PdfPCell(new Phrase(enterprise.phoneNumber, _STANDARFONT_12_BOLD)) { BorderWidth = 0 };
             pdfPTable.AddCell(pdfCell);
 
             return pdfPTable;
@@ -379,8 +378,8 @@
 
             var pdfCell = new PdfPCell(new Phrase("Método de Pago", _STANDARFONT_10_BOLD_CUSTOMCOLOR)) { BorderWidth = 0 };
             pdfPTable.AddCell(pdfCell);
-            pdfCell = new PdfPCell(new Phrase(_client.WayToPay, _STANDARFONT_10)) 
-            { 
+            pdfCell = new PdfPCell(new Phrase(_client.WayToPay, _STANDARFONT_10))
+            {
                 BorderWidth = 0,
                 HorizontalAlignment = Element.ALIGN_RIGHT
             };

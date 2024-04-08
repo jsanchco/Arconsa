@@ -13,9 +13,9 @@
 
     public partial class Supervisor
     {
-        public List<ClientViewModel> GetAllClientWithoutFilter()
+        public List<ClientViewModel> GetAllClientWithoutFilter(int enterpriseId = 0)
         {
-            return ClientConverter.ConvertList(_clientRepository.GetAllWithoutFilter());
+            return ClientConverter.ConvertList(_clientRepository.GetAllWithoutFilter(enterpriseId));
         }
 
         public QueryResult<ClientViewModel> GetAllClient(int skip = 0, int take = 0, int enterpriseId = 0, bool allClients = true, string filter = null)
