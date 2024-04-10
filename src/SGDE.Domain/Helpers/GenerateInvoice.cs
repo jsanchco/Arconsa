@@ -486,7 +486,8 @@
             };
             pdfPTable.AddCell(pdfCell);
 
-            var image = Image.GetInstance(Directory.GetCurrentDirectory() + "\\assets\\images\\FirmAndSign.png");
+            //var image = Image.GetInstance(Directory.GetCurrentDirectory() + "\\assets\\images\\FirmAndSign.png");
+            var image = Image.GetInstance(Directory.GetCurrentDirectory() + $"\\assets\\images\\FirmAndSign_{_invoice.Client.EnterpriseId.Value}.png");
             image.ScalePercent(50);
             var pdfCellImage = new PdfPCell(image)
             {

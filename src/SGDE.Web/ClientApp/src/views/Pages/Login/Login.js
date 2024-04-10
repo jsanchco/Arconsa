@@ -77,7 +77,10 @@ class Login extends Component {
                 const enterprise = {
                   id: result[0].id,
                   alias: result[0].alias,
-                  name: result[0].name
+                  name: result[0].name,
+                  address: result[0].address,
+                  cif: result[0].cif,
+                  phoneNumber: result[0].phoneNumber,
                 };
                 localStorage.setItem("enterprise", JSON.stringify(enterprise));
                 this.props.history.push("/dashboard");
@@ -151,7 +154,10 @@ class Login extends Component {
     const enterprise = {
       id: e.itemData.id,
       alias: e.itemData.alias,
-      name: e.itemData.name
+      name: e.itemData.name,
+      address: e.itemData.address,
+      cif: e.itemData.cif,
+      phoneNumber: e.itemData.phoneNumber,
     };
     localStorage.setItem("enterprise", JSON.stringify(enterprise));
     this.props.history.push("/dashboard");
