@@ -64,23 +64,31 @@ class ReportInvoices extends Component {
   }
 
   componentDidMount() {
-    getSettings(COMPANY_DATA)
-      .then((result) => {
-        const data = JSON.parse(result.data);
-        this.setState({
-          companyName: data.companyName,
-          cif: data.cif,
-          address: data.address,
-          phoneNumber: data.phoneNumber,
-        });
-      })
-      .catch((error) => {
-        this.props.showMessage({
-          statusText: error,
-          responseText: error,
-          type: "danger",
-        });
-      });
+    const enterprise = JSON.parse(localStorage.getItem("enterprise"))
+    this.setState({
+      companyName: enterprise.name,
+      cif: enterprise.cif,
+      address: enterprise.address,
+      phoneNumber: enterprise.phoneNumber,
+    });  
+
+    // getSettings(COMPANY_DATA)
+    //   .then((result) => {
+    //     const data = JSON.parse(result.data);
+    //     this.setState({
+    //       companyName: data.companyName,
+    //       cif: data.cif,
+    //       address: data.address,
+    //       phoneNumber: data.phoneNumber,
+    //     });
+    //   })
+    //   .catch((error) => {
+    //     this.props.showMessage({
+    //       statusText: error,
+    //       responseText: error,
+    //       type: "danger",
+    //     });
+    //   });
   }
 
   templateIsPaid(args) {

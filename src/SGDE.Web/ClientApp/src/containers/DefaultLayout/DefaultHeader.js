@@ -16,8 +16,12 @@ import {
   AppNavbarBrand,
   AppSidebarToggler
 } from "@coreui/react";
-import logo from "../../assets/img/brand/logo.svg";
-import sygnet from "../../assets/img/brand/sygnet.svg";
+import logo from "../../assets/img/brand/logo_1.svg";
+import sygnet from "../../assets/img/brand/sygnet_1.svg";
+import logo_1 from "../../assets/img/brand/logo_1.svg";
+import sygnet_1 from "../../assets/img/brand/sygnet_1.svg";
+import logo_2 from "../../assets/img/brand/logo_2.svg";
+import sygnet_2 from "../../assets/img/brand/sygnet_2.svg";
 
 const propTypes = {
   children: PropTypes.node
@@ -76,6 +80,23 @@ class DefaultHeader extends Component {
     });
   }
 
+  getLogos() {
+    var enterpriseId = JSON.parse(localStorage.getItem("enterprise")).id;
+    if (enterpriseId === 1) {
+      return (<AppNavbarBrand
+        full={{ src: logo_1, width: 89, height: 25, alt: "CoreUI Logo" }}
+        minimized={{ src: sygnet_1, width: 30, height: 30, alt: "CoreUI Logo" }}
+      />);
+    }
+
+    if (enterpriseId === 2) {
+      return (<AppNavbarBrand
+        full={{ src: logo_2, width: 89, height: 25, alt: "CoreUI Logo" }}
+        minimized={{ src: sygnet_2, width: 30, height: 30, alt: "CoreUI Logo" }}
+      />);
+    }
+  }
+
   render() {
     // eslint-disable-next-line
     const { children, ...attributes } = this.props;
@@ -83,10 +104,13 @@ class DefaultHeader extends Component {
     return (
       <React.Fragment>
         <AppSidebarToggler className="d-lg-none" display="md" mobile />
-        <AppNavbarBrand
+
+        { this.getLogos() }
+
+        {/* <AppNavbarBrand
           full={{ src: logo, width: 89, height: 25, alt: "CoreUI Logo" }}
           minimized={{ src: sygnet, width: 30, height: 30, alt: "CoreUI Logo" }}
-        />
+        /> */}
         <AppSidebarToggler className="d-md-down-none" display="lg" />
 
         <Nav className="d-md-down-none" navbar>
