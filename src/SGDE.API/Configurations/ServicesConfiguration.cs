@@ -58,7 +58,8 @@
                         .AddScoped<IWorkHistoryRepository, DataEFCoreSQL.Repositories.WorkHistoryRepository>()
                         .AddScoped<IWorkStatusHistoryRepository, DataEFCoreSQL.Repositories.WorkStatusHistoryRepository>()
                         .AddScoped<IInvoicePaymentHistoryRepository, DataEFCoreSQL.Repositories.InvoicePaymentHistoryRepository>()
-                        .AddScoped<IEnterpriseRepository, DataEFCoreSQL.Repositories.EnterpriseRepository>();
+                        .AddScoped<IEnterpriseRepository, DataEFCoreSQL.Repositories.EnterpriseRepository>()
+                        .AddScoped<IUserEnterpriseRepository, DataEFCoreSQL.Repositories.UserEnterpriseRepository>();
                     break;
                 case "MySQL":
                     services
@@ -90,7 +91,8 @@
                         .AddScoped<IIndirectCostRepository, DataEFCoreMySQL.Repositories.IndirectCostRepository>()
                         .AddScoped<IAdvanceRepository, DataEFCoreMySQL.Repositories.AdvanceRepository>()
                         .AddScoped<IInvoicePaymentHistoryRepository, DataEFCoreMySQL.Repositories.InvoicePaymentHistoryRepository>()
-                        .AddScoped<IEnterpriseRepository, DataEFCoreMySQL.Repositories.EnterpriseRepository>();
+                        .AddScoped<IEnterpriseRepository, DataEFCoreMySQL.Repositories.EnterpriseRepository>()
+                        .AddScoped<IUserEnterpriseRepository, DataEFCoreMySQL.Repositories.UserEnterpriseRepository>();
                     break;
 
                 default:
@@ -126,7 +128,8 @@
                         .AddScoped<IWorkHistoryRepository, DataEFCoreSQL.Repositories.WorkHistoryRepository>()
                         .AddScoped<IWorkStatusHistoryRepository, DataEFCoreSQL.Repositories.WorkStatusHistoryRepository>()
                         .AddScoped<IInvoicePaymentHistoryRepository, DataEFCoreSQL.Repositories.InvoicePaymentHistoryRepository>()
-                        .AddScoped<IEnterpriseRepository, DataEFCoreSQL.Repositories.EnterpriseRepository>();
+                        .AddScoped<IEnterpriseRepository, DataEFCoreSQL.Repositories.EnterpriseRepository>()
+                        .AddScoped<IUserEnterpriseRepository, DataEFCoreSQL.Repositories.UserEnterpriseRepository>();
                     break;
             }
 

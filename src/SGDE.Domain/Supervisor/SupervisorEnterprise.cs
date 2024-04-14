@@ -10,17 +10,17 @@ namespace SGDE.Domain.Supervisor
     {
         public List<EnterpriseViewModel> GetAllEnterprise()
         {
-            return EnterpriseConverter.ConvertList(_enterpriseRepsitory.GetAll());
+            return EnterpriseConverter.ConvertList(_enterpriseRepository.GetAll());
         }
 
         public List<EnterpriseViewModel> GetEnterpriseByUser(int userId)
         {
-            return EnterpriseConverter.ConvertList(_enterpriseRepsitory.GetByUserId(userId));
+            return EnterpriseConverter.ConvertList(_enterpriseRepository.GetByUserId(userId));
         }
 
         public EnterpriseViewModel GetEnterpriseById(int id)
         {
-            var enterpriseViewModel = EnterpriseConverter.Convert(_enterpriseRepsitory.GetById(id));
+            var enterpriseViewModel = EnterpriseConverter.Convert(_enterpriseRepository.GetById(id));
 
             return enterpriseViewModel;
         }
@@ -40,7 +40,7 @@ namespace SGDE.Domain.Supervisor
                 PhoneNumber = newEnterpriseViewModel.phoneNumber
             };
 
-            _enterpriseRepsitory.Add(enterprise);
+            _enterpriseRepository.Add(enterprise);
             return newEnterpriseViewModel;
         }
 
@@ -49,7 +49,7 @@ namespace SGDE.Domain.Supervisor
             if (enterpriseViewModel.id == null)
                 return false;
 
-            var enterprise = _enterpriseRepsitory.GetById((int)enterpriseViewModel.id);
+            var enterprise = _enterpriseRepository.GetById((int)enterpriseViewModel.id);
 
             if (enterprise == null) return false;
 
@@ -62,12 +62,12 @@ namespace SGDE.Domain.Supervisor
             enterprise.Address = enterpriseViewModel.address;
             enterprise.PhoneNumber = enterpriseViewModel.phoneNumber;
 
-            return _enterpriseRepsitory.Update(enterprise);
+            return _enterpriseRepository.Update(enterprise);
         }
 
         public bool DeleteEnterprise(int id)
         {
-            return _enterpriseRepsitory.Delete(id);
+            return _enterpriseRepository.Delete(id);
         }
     }
 }
