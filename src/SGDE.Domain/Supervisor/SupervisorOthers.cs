@@ -227,27 +227,77 @@
             //    }
             //}
 
-            var indirectCosts = _indirectCostRepository.GetAll().Data.Where(x => x.EnterpriseId == null);
-            foreach (var indirectCost in indirectCosts)
-            {
-                if (!indirectCost.EnterpriseId.HasValue)
-                {
-                    var findIndirectCost = _indirectCostRepository.GetById(indirectCost.Id);
-                    findIndirectCost.EnterpriseId = 1;
-                    _indirectCostRepository.Update(findIndirectCost);
-                }
-            }
+            //_enterpriseRepository.Add(new Enterprise
+            //{
+            //    Name = "Adecua Project New, S.L.",
+            //    Alias = "Adecua",
+            //    CIF = "B01769546",
+            //    Address = "C/ Abeto nº 10 Nave 28500 Arganda del Rey (Madrid)",
+            //    PhoneNumber = "917129482"
+            //});
+            //_enterpriseRepository.Add(new Enterprise
+            //{
+            //    Name = "EF7 TERRA CONSULTING PROJECT, SL",
+            //    Alias = "EF7 TERRA",
+            //    CIF = "B44591659",
+            //    Address = "c/ Sierra de Cuerda Larga nº 4 Madrid 28038",
+            //    PhoneNumber = "665828838"
+            //});
 
-            var clients = _clientRepository.GetAll().Data.Where(x => x.EnterpriseId == null);
-            foreach (var client in clients) 
-            { 
-                if (!client.EnterpriseId.HasValue)
-                {
-                    var findClient = _clientRepository.GetById(client.Id);
-                    findClient.EnterpriseId = 1;
-                    _clientRepository.Update(findClient);
-                }
-            }
+            //_userEnterpriseRepository.Add(new UserEnterprise
+            //{
+            //    UserId = 1,
+            //    EnterpriseId = 1
+            //});
+            //_userEnterpriseRepository.Add(new UserEnterprise
+            //{
+            //    UserId = 1,
+            //    EnterpriseId = 2
+            //});
+
+            //_userEnterpriseRepository.Add(new UserEnterprise
+            //{
+            //    UserId = 2,
+            //    EnterpriseId = 1
+            //});
+            //_userEnterpriseRepository.Add(new UserEnterprise
+            //{
+            //    UserId = 2,
+            //    EnterpriseId = 2
+            //});
+
+            //_userEnterpriseRepository.Add(new UserEnterprise
+            //{
+            //    UserId = 135,
+            //    EnterpriseId = 1
+            //});
+            //_userEnterpriseRepository.Add(new UserEnterprise
+            //{
+            //    UserId = 135,
+            //    EnterpriseId = 2
+            //});
+
+            //var indirectCosts = _indirectCostRepository.GetAll().Data.Where(x => x.EnterpriseId == null);
+            //foreach (var indirectCost in indirectCosts)
+            //{
+            //    if (!indirectCost.EnterpriseId.HasValue)
+            //    {
+            //        var findIndirectCost = _indirectCostRepository.GetById(indirectCost.Id);
+            //        findIndirectCost.EnterpriseId = 1;
+            //        _indirectCostRepository.Update(findIndirectCost);
+            //    }
+            //}
+
+            //var clients = _clientRepository.GetAll().Data.Where(x => x.EnterpriseId == null);
+            //foreach (var client in clients) 
+            //{ 
+            //    if (!client.EnterpriseId.HasValue)
+            //    {
+            //        var findClient = _clientRepository.GetById(client.Id);
+            //        findClient.EnterpriseId = 1;
+            //        _clientRepository.Update(findClient);
+            //    }
+            //}
 
             var users = _userRepository.GetAll().Data.Where(x => x.EnterpriseId == null && x.RoleId == 3);
             foreach (var user in users)
@@ -260,16 +310,16 @@
                 }
             }
 
-            var libraries = _libraryRepository.GetAll().Data.Where(x => x.EnterpriseId == null);
-            foreach (var library in libraries)
-            {
-                if (!library.EnterpriseId.HasValue)
-                {
-                    var findLibrary = _libraryRepository.GetById(library.Id);
-                    findLibrary.EnterpriseId = 1;
-                    _libraryRepository.Update(findLibrary);
-                }
-            }
+            //var libraries = _libraryRepository.GetAll().Data.Where(x => x.EnterpriseId == null);
+            //foreach (var library in libraries)
+            //{
+            //    if (!library.EnterpriseId.HasValue)
+            //    {
+            //        var findLibrary = _libraryRepository.GetById(library.Id);
+            //        findLibrary.EnterpriseId = 1;
+            //        _libraryRepository.Update(findLibrary);
+            //    }
+            //}
         }
     }
 }
