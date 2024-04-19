@@ -71,13 +71,13 @@ class Employees extends Component {
         prefixIcon: "e-btn-icon e-add e-icons e-icon-left",
         id: "Add",
       },
-      "Edit",
+      // "Edit",
       "Delete",
-      "Update",
-      "Cancel",
+      // "Update",
+      // "Cancel",
       {
-        text: "Detalles",
-        tooltipText: "Detalles",
+        text: "Editar/Detalles",
+        tooltipText: "Editar/Detalles",
         prefixIcon: "e-custom-icons e-details",
         id: "Details",
       },
@@ -86,10 +86,10 @@ class Employees extends Component {
     ];
     this.editSettings = {
       showDeleteConfirmDialog: true,
-      allowEditing: true,
-      allowAdding: true,
+      // allowEditing: true,
+      // allowAdding: true,
       allowDeleting: true,
-      newRowPosition: "Top",
+      // newRowPosition: "Top",
     };
     this.pageSettings = {
       pageCount: 10,
