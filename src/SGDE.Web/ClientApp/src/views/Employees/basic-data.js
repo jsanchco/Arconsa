@@ -46,6 +46,7 @@ class BasicData extends Component {
         userProfessions: result.userProfessions,
         workId: result.workId,
         clientId: result.clientId,
+        enterpriseId: result.enterpriseId,
         modal: false,
       });
     });
@@ -117,6 +118,7 @@ class BasicData extends Component {
       userProfessions: this.state.userProfessions,
       workId: this.state.workId,
       clientId: this.state.clientId,
+      enterpriseId: this.state.enterpriseId
     };
   }
 
