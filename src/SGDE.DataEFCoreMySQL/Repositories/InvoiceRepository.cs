@@ -125,7 +125,7 @@
         {
             Validate(newInvoice);
 
-            var invoiceNumber = CountInvoicesInYear(newInvoice.IssueDate.Year);
+            var invoiceNumber = CountInvoicesInYear(newInvoice.Client.EnterpriseId, newInvoice.IssueDate.Year);
             var work = _context.Work.FirstOrDefault(x => x.Id == newInvoice.WorkId);
 
             newInvoice.InvoiceNumber = invoiceNumber;
@@ -357,11 +357,13 @@
             return _context.Invoice.Count();
         }
 
-        public int CountInvoicesInYear(int year)
+        public int CountInvoicesInYear(int? enterpriseId, int year)
         {
             var invoiceNumber = 0;
             var invoices = _context.Invoice
-                .Where(x => x.IssueDate >= new DateTime(year, 1, 1) && x.IssueDate <= new DateTime(year, 12, 31));
+                .Where(x => x.Client.EnterpriseId == enterpriseId &&
+                    x.IssueDate >= new DateTime(year, 1, 1) &&
+                    x.IssueDate <= new DateTime(year, 12, 31, 23, 59, 59));
             if (invoices.Count() > 0)
             {
                 invoiceNumber = invoices.Select(x => x.InvoiceNumber).Max();

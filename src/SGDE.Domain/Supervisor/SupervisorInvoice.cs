@@ -158,7 +158,7 @@
             if (invoiceParent.InvoiceToCancelId != null)
                 throw new Exception("No de puede anular una Factura ya Anulada");
 
-            var invoiceNumber = _invoiceRepository.CountInvoicesInYear(DateTime.Now.Year);
+            var invoiceNumber = _invoiceRepository.CountInvoicesInYear(invoiceParent.Client.EnterpriseId, DateTime.Now.Year);
 
             if (cancelInvoiceWithAmount.amount < -invoiceParent.TaxBase)
                 throw new Exception("No de puede anular una Factura con importe mayor de la Base Imponible");
