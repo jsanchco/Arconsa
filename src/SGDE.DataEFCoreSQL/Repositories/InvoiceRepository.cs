@@ -52,6 +52,7 @@
                 data = _context.Invoice
                     .Include(x => x.Work)
                     .ThenInclude(x => x.Client)
+                    .ThenInclude(x => x.Enterprise)
                     .Include(x => x.InvoiceToCancel)
                     //.ThenInclude(y => y.DetailsInvoice)
                     //.Include(x => x.Work)
@@ -69,6 +70,7 @@
                 data = _context.Invoice
                     .Include(x => x.Work)
                     .ThenInclude(x => x.Client)
+                    .ThenInclude(x => x.Enterprise)
                     .Include(x => x.InvoiceToCancel)
                     //.ThenInclude(y => y.DetailsInvoice)
                     //.Include(x => x.Work)
@@ -86,6 +88,7 @@
                 data = _context.Invoice
                     .Include(x => x.Work)
                     .ThenInclude(x => x.Client)
+                    .ThenInclude(x => x.Enterprise)
                     .Include(x => x.InvoiceToCancel)
                     //.ThenInclude(y => y.DetailsInvoice)
                     //.Include(x => x.Work)
@@ -150,6 +153,7 @@
                     .ThenInclude(x => x.DetailsInvoice)
                     .Include(x => x.InvoiceToCancel)
                     .ThenInclude(x => x.Client)
+                    .ThenInclude(x => x.Enterprise)
                     .Include(x => x.Work)
                     .ThenInclude(x => x.WorkBudgets)
                     .Include(x => x.DetailsInvoice)
@@ -170,7 +174,7 @@
         {
             Validate(newInvoice);
 
-            var invoiceNumber = CountInvoicesInYear(newInvoice.IssueDate.Year);
+            var invoiceNumber = CountInvoicesInYear(newInvoice.Client.EnterpriseId, newInvoice.IssueDate.Year);
             var work = _context.Work.FirstOrDefault(x => x.Id == newInvoice.WorkId);
 
             newInvoice.InvoiceNumber = invoiceNumber;
@@ -208,7 +212,7 @@
                             invoice.Iva = true;
                         }
 
-                        var invoiceNumber = CountInvoicesInYear(invoice.IssueDate.Year);
+                        var invoiceNumber = CountInvoicesInYear(invoice.Client.EnterpriseId, invoice.IssueDate.Year);
 
                         invoice.InvoiceNumber = invoiceNumber;
                         invoice.Name = work != null
@@ -400,11 +404,13 @@
             return _context.Invoice.Count();
         }
 
-        public int CountInvoicesInYear(int year)
+        public int CountInvoicesInYear(int? enterpriseId, int year)
         {
             var invoiceNumber = 0;
             var invoices = _context.Invoice
-                .Where(x => x.IssueDate >= new DateTime(year, 1, 1) && x.IssueDate <= new DateTime(year, 12, 31, 23, 59, 59));
+                .Where(x => x.Client.EnterpriseId == enterpriseId && 
+                    x.IssueDate >= new DateTime(year, 1, 1) && 
+                    x.IssueDate <= new DateTime(year, 12, 31, 23, 59, 59));
             if (invoices.Count() > 0)
             {
                 invoiceNumber = invoices.Select(x => x.InvoiceNumber).Max();
@@ -423,6 +429,7 @@
                 data = _context.Invoice
                     .Include(x => x.Work)
                     .ThenInclude(x => x.Client)
+                    .ThenInclude(x => x.Enterprise)
                     .Include(x => x.Work)
                     .Include(x => x.DetailsInvoice)
                     .Where(x => x.Client.EnterpriseId == enterpriseId && x.IssueDate >= startDate && x.IssueDate <= endDate)
@@ -435,6 +442,7 @@
                 data = _context.Invoice
                     .Include(x => x.Work)
                     .ThenInclude(x => x.Client)
+                    .ThenInclude(x => x.Enterprise)
                     .Include(x => x.Work)
                     .Include(x => x.DetailsInvoice)
                     .Where(x => x.Client.EnterpriseId == enterpriseId && x.IssueDate >= startDate && x.IssueDate <= endDate && x.WorkId == workId)
@@ -447,6 +455,7 @@
                 data = _context.Invoice
                     .Include(x => x.Work)
                     .ThenInclude(x => x.Client)
+                    .ThenInclude(x => x.Enterprise)
                     .Include(x => x.Work)
                     .Include(x => x.DetailsInvoice)
                     .Where(x => x.Client.EnterpriseId == enterpriseId && x.IssueDate >= startDate && x.IssueDate <= endDate && x.Work.ClientId == clientId)
@@ -459,6 +468,7 @@
                 data = _context.Invoice
                     .Include(x => x.Work)
                     .ThenInclude(x => x.Client)
+                    .ThenInclude(x => x.Enterprise)
                     .Include(x => x.Work)
                     .Include(x => x.DetailsInvoice)
                     .Where(x => x.Client.EnterpriseId == enterpriseId && x.IssueDate >= startDate && x.IssueDate <= endDate && x.WorkId == workId && x.Work.ClientId == clientId)
@@ -505,6 +515,11 @@
             {
                 throw new Exception("Factura incompleta. Revisa los datos");
             }
+
+            invoice.Client = _context.Client
+                .Where(x => x.Id == invoice.ClientId)
+                .Include(x => x.Enterprise)
+                .FirstOrDefault();
 
             var findWork = _context.Work
                 .Include(x => x.WorkBudgets)

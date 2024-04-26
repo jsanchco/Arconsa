@@ -18,7 +18,7 @@
         bool Update(Invoice invoice);
         bool Delete(int id);
         int CountInvoices();
-        int CountInvoicesInYear(int year);
+        int CountInvoicesInYear(int? enterpriseId, int year);
         int? CheckInvoice(Invoice newInvoice);
         List<Invoice> GetAllBetweenDates(int enterpriseId, DateTime startDate, DateTime endDate, int workId = 0, int clientId = 0);
         List<Invoice> GetAllLite();
