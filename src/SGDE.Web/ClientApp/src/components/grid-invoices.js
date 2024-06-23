@@ -117,11 +117,16 @@ class GridInvoice extends Component {
       },
     ];
     this.animationSettings = { effect: "None" };
+
     if (props.workId) {
-      this.query = new Query().addParams("workId", props.workId);
+      this.query = new Query()
+        .addParams("workId", props.workId)
+        .addParams("enterpriseId", JSON.parse(localStorage.getItem("enterprise")).id);
     }
     if (props.clientId) {
-      this.query = new Query().addParams("clientId", props.clientId);
+      this.query = new Query()
+        .addParams("clientId", props.clientId)
+        .addParams("enterpriseId", JSON.parse(localStorage.getItem("enterprise")).id);
     }
 
     this.formatDate = { type: "dateTime", format: "dd/MM/yyyy" };
